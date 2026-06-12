@@ -75,10 +75,52 @@ function syncFromGithub() {
       ];
     });
 
+  var history = data.history || {};
+  var cupRows = (history.tournaments || []).map(function (cup) {
+    return [cup.year, cup.name, cup.matches, cup.teams, cup.goals, cup.avg_goals, cup.champion || '', cup.source || ''];
+  });
+  var historicalCountryRows = (history.countries || []).map(function (row) {
+    return [
+      row.team_id,
+      row.team,
+      row.appearances,
+      row.matches,
+      row.wins,
+      row.draws,
+      row.losses,
+      row.goals_for,
+      row.goals_against,
+      row.goal_difference,
+      row.titles,
+      row.finals,
+      row.win_rate
+    ];
+  });
+  var historicalMatchRows = (history.historical_matches || []).map(function (row) {
+    return [
+      row.historical_match_id,
+      row.year,
+      row.round,
+      row.date,
+      row.team1,
+      row.team2,
+      row.score,
+      row.winner,
+      row.ground
+    ];
+  });
+  var historicalScorerRows = (history.scorers || []).map(function (row) {
+    return [row.team_id, row.team, row.player, row.goals, (row.years || []).join(', '), (row.opponents || []).join(', ')];
+  });
+
   setSheetData_('EQUIPOS', SHEET_HEADERS.EQUIPOS, teamRows);
   setSheetData_('JUGADORES', SHEET_HEADERS.JUGADORES, playerRows);
   setSheetData_('PARTIDOS', SHEET_HEADERS.PARTIDOS, matchRows);
   setSheetData_('PRONOSTICOS', SHEET_HEADERS.PRONOSTICOS, forecastRows);
+  setSheetData_('HISTORICO_COPAS', SHEET_HEADERS.HISTORICO_COPAS, cupRows);
+  setSheetData_('HISTORICO_PAISES', SHEET_HEADERS.HISTORICO_PAISES, historicalCountryRows);
+  setSheetData_('HISTORICO_PARTIDOS', SHEET_HEADERS.HISTORICO_PARTIDOS, historicalMatchRows);
+  setSheetData_('HISTORICO_GOLEADORES', SHEET_HEADERS.HISTORICO_GOLEADORES, historicalScorerRows);
 
   var runId = Utilities.getUuid();
   var hash = hashRecord_(JSON.stringify(data.metadata.coverage) + version + now);
@@ -128,4 +170,3 @@ function installDailySyncTrigger() {
   audit_('system', 'installDailySyncTrigger', 'Trigger diario 06:00 instalado', '');
   return { ok: true, hour: 6, timezone: APP_CONFIG.TIMEZONE };
 }
-

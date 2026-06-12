@@ -331,6 +331,10 @@ button:hover {
   gap: 7px;
 }
 
+.segmented-buttons.compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .quick-team-grid {
   display: grid;
   gap: 7px;
@@ -677,6 +681,178 @@ button:hover {
   font-size: 0.88rem;
 }
 
+.evidence-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 18px;
+  padding: 22px;
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(15, 90, 74, 0.94), rgba(46, 117, 182, 0.82)),
+    var(--primary);
+  color: #ffffff;
+  box-shadow: var(--shadow);
+}
+
+.evidence-hero h2 {
+  margin-bottom: 8px;
+  font-size: 2rem;
+}
+
+.evidence-hero p {
+  max-width: 760px;
+  margin-bottom: 0;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.evidence-badges {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+.evidence-badges span {
+  min-height: 82px;
+  display: grid;
+  align-content: space-between;
+  padding: 12px;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.evidence-badges small {
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.evidence-badges b {
+  font-size: 1.35rem;
+}
+
+.timeline-chart {
+  min-height: 300px;
+  padding: 12px;
+}
+
+.timeline-chart svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.timeline-bar rect {
+  fill: rgba(46, 117, 182, 0.28);
+}
+
+.timeline-bar.active rect {
+  fill: rgba(210, 155, 45, 0.72);
+}
+
+.timeline-bar text {
+  fill: var(--muted);
+  font-size: 11px;
+}
+
+.head-panel {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.h2h-score {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.h2h-score span {
+  min-height: 96px;
+  display: grid;
+  align-content: space-between;
+  padding: 12px;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.h2h-score b {
+  font-size: 1.7rem;
+}
+
+.meeting-list {
+  display: grid;
+  gap: 8px;
+}
+
+.meeting-list article {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: 8px 12px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.meeting-list small {
+  grid-column: 2;
+}
+
+.history-ranking {
+  display: grid;
+  gap: 7px;
+  padding: 14px;
+}
+
+.history-row {
+  display: grid;
+  grid-template-columns: 34px minmax(140px, 1fr) repeat(5, minmax(72px, auto));
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #ffffff;
+}
+
+.history-row span:not(.rank) {
+  color: #42534f;
+}
+
+.scorer-list {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+}
+
+.scorer-card {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(90deg, rgba(210, 155, 45, 0.12), transparent),
+    #ffffff;
+}
+
+.scorer-card b:last-child {
+  min-width: 42px;
+  text-align: center;
+  padding: 6px 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--primary);
+}
+
+.empty-note {
+  margin: 0;
+  padding: 12px;
+  color: var(--muted);
+}
+
 .table-block {
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -894,6 +1070,7 @@ label {
   .summary-band,
   .workbench,
   .dashboard-grid,
+  .evidence-hero,
   .content-grid.two {
     grid-template-columns: 1fr;
   }
@@ -949,6 +1126,20 @@ label {
   .heatmap-grid,
   .standings-grid {
     grid-template-columns: 1fr;
+  }
+
+  .segmented-buttons.compact,
+  .evidence-badges {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .history-row {
+    grid-template-columns: 34px minmax(120px, 1fr) repeat(2, minmax(54px, auto));
+  }
+
+  .history-row span:nth-of-type(n + 4),
+  .history-row b {
+    display: none;
   }
 
   .chart-box {

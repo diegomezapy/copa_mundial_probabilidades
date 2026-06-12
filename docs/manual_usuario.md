@@ -11,8 +11,20 @@ partir de datos abiertos y un modelo bayesiano explicable.
 - Equipos: rating, ataque, defensa, plantel y probabilidad de avance.
 - Jugadores: planteles con posicion, edad, caps, goles y club.
 - Partidos: calendario, resultados y probabilidades 1-X-2.
+- Evidencia: historia por pais, Copa, partidos, mano a mano y goleadores.
 - Modelo: laboratorio para comparar dos equipos.
 - Auditoria: fuentes, version de datos y estado del backend.
+
+## Filtros
+
+El panel lateral permite combinar:
+
+- grupo 2026;
+- pais/equipo;
+- estado de partidos;
+- Copa historica;
+- posicion de jugadores;
+- busqueda por texto para paises, jugadores, sedes o rondas.
 
 ## Lectura prudente
 
@@ -24,4 +36,3 @@ apuestas.
 
 Despues de una primera carga, el navegador conserva la app y el ultimo JSON en
 cache. Si no hay conexion, se puede consultar la ultima version disponible.
-

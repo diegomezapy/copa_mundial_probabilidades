@@ -18,13 +18,14 @@ certeza; muestra probabilidades, supuestos, limitaciones y trazabilidad de datos
 
 ## Version actual
 
-`0.1.1` agrega panel lateral de filtros con botones, mapa de probabilidades por
-grupo, grafico ataque-defensa, tarjetas de proximos partidos y bloque didactico
-para explicar prior, datos y posterior.
+`0.2.0` agrega evidencia historica 1930-2022, filtros por Copa, pais, jugador
+y posicion, vista de mano a mano, linea de tiempo, ranking historico por pais,
+partidos historicos filtrables y goleadores historicos.
 
 ## Fuentes
 
-- OpenFootball `worldcup.json` para calendario y resultados.
+- OpenFootball `worldcup.json` para calendario y resultados 2026.
+- OpenFootball `worldcup.json` historico 1930-2022 para Copas pasadas.
 - Pagina estructurada de squads de Wikipedia para planteles.
 - Sitio oficial FIFA como referencia institucional del torneo.
 
@@ -62,6 +63,10 @@ Funciones manuales relevantes desde el editor de Apps Script:
 - `syncFromGithub()`: copia el JSON publicado a Sheets.
 - `installDailySyncTrigger()`: instala sincronizacion diaria a las 06:00.
 - `setAdminToken(token)`: guarda un token administrativo en Script Properties.
+
+La sincronizacion `syncFromGithub()` tambien crea pestanas historicas:
+`HISTORICO_COPAS`, `HISTORICO_PAISES`, `HISTORICO_PARTIDOS` y
+`HISTORICO_GOLEADORES`.
 
 El endpoint `/exec?action=bootstrap&callback=...` debe verificarse anonimamente
 antes de escribir su URL en `assets/js/config.js`.

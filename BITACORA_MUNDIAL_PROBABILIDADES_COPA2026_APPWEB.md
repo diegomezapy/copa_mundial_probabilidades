@@ -1,5 +1,118 @@
 # Bitacora Mundial Probabilidades Copa 2026 Appweb
 
+## 2026-06-12 09:05
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: Proyecto academico publico
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.2.0`
+
+### Objetivo de la intervencion
+
+Enriquecer la app con evidencia historica y estadisticas didacticas filtrables
+por pais, Copa pasada y jugadores, para que el tablero sea mas comprensible,
+atractivo y util en aula.
+
+### Diagnostico inicial
+
+* La app tenia panel lateral, mapa de avance por grupo y tarjetas didacticas,
+  pero aun faltaba contexto historico profundo.
+* El JSON solo exponia datos 2026 y planteles actuales; los partidos historicos
+  se usaban internamente para rating pero no estaban disponibles para el panel.
+
+### Acciones realizadas
+
+* Se amplio `scripts/update_data.py` para descargar Copas 1930-2022 desde
+  OpenFootball.
+* Se agregaron agregaciones historicas: Copas, paises, pais-Copa, mano a mano,
+  partidos historicos y goleadores historicos.
+* Se corrigio el conteo de titulos para contar un titulo por torneo, no por
+  partido del campeon.
+* Se normalizaron alias historicos clave: `United States` a `USA`,
+  `West Germany` a `Germany` y `Czechoslovakia` a `Czech Republic`.
+* Se agregaron filtros por Copa historica y posicion de jugadores.
+* Se creo la vista `Evidencia` con hero, badges, linea de tiempo, mano a mano,
+  ranking historico por pais y tabla de partidos historicos.
+* Se agregaron goleadores historicos a la vista `Jugadores`.
+* Se agrego soporte de URL directa `?view=evidencia`.
+* Se ampliaron pestañas GAS para historico:
+  `HISTORICO_COPAS`, `HISTORICO_PAISES`, `HISTORICO_PARTIDOS`,
+  `HISTORICO_GOLEADORES`.
+
+### Archivos modificados
+
+* `scripts/update_data.py`
+* `data/worldcup2026_latest.json`
+* `data/sources_manifest.json`
+* `index.html`
+* `assets/js/app.js`
+* `assets/js/config.js`
+* `assets/css/styles.css`
+* `service-worker.js`
+* `gas/Config.gs`
+* `gas/Sync.gs`
+* `README.md`
+* `docs/manual_tecnico.md`
+* `docs/manual_usuario.md`
+* `docs/diccionario_datos.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+python scripts\update_data.py
+python -m py_compile scripts\update_data.py scripts\make_assets.py
+node --check assets\js\config.js
+node --check assets\js\model.js
+node --check assets\js\data.js
+node --check assets\js\app.js
+node --check service-worker.js
+npx playwright screenshot --full-page --wait-for-selector "#countryHistoryTable .history-row" --viewport-size "1440,1200" "http://localhost:8080?v=020&view=evidencia" tmp\app-evidencia-desktop.png
+npx playwright screenshot --full-page --wait-for-selector "#scorersList .scorer-card" --viewport-size "390,980" "http://localhost:8080?v=020&view=jugadores" tmp\app-jugadores-mobile.png
+```
+
+### Resultados verificados
+
+* Cache `0.2.0` generado con 48 equipos, 1.248 jugadores, 104 partidos 2026,
+  22 Copas historicas, 964 partidos historicos, 152 paises historicos y 536
+  goleadores historicos detectados.
+* Captura local de `Evidencia`: `tmp/app-evidencia-desktop.png`.
+* Captura local de `Jugadores`: `tmp/app-jugadores-mobile.png`.
+
+### Pruebas realizadas
+
+* `py_compile`: correcto.
+* `node --check`: correcto.
+* Playwright espero selectores de datos reales antes de capturar.
+
+### Errores o incidentes
+
+* Se detecto conteo incorrecto de titulos historicos por acumulacion por
+  partido; corregido a acumulacion por torneo.
+
+### Soluciones aplicadas
+
+* Dataset historico reproducible dentro del JSON publico.
+* Filtros combinables por pais, Copa, jugador, posicion, grupo y estado.
+* Vista de evidencia separada para no saturar el resumen principal.
+
+### Pendientes
+
+* Publicar commit y verificar URL publica con `?view=evidencia`.
+* Empujar GAS v0.2.0 y versionar.
+* Mantener pendiente autorizacion anonima del Web App GAS si sigue 403.
+
+### Riesgos
+
+* OpenFootball no reemplaza fuente oficial FIFA; se usa como fuente estructurada
+  reproducible y FIFA queda como referencia oficial.
+* Los goleadores historicos dependen de eventos de gol disponibles en la fuente;
+  no deben interpretarse como base biografica completa de jugadores.
+
 ## 2026-06-12 08:05
 
 ### Proyecto

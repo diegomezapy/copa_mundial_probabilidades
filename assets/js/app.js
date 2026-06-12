@@ -6,7 +6,9 @@
       group: "all",
       team: "all",
       query: "",
-      matchStatus: "all"
+      matchStatus: "all",
+      cup: "all",
+      playerPosition: "all"
     },
     filtersReady: false
   };
@@ -70,6 +72,44 @@
       .filter((match) => {
         if (!query) return true;
         return `${match.team1} ${match.team2} ${match.ground} ${match.round}`.toLowerCase().includes(query);
+      });
+  }
+
+  function filteredPlayers() {
+    const query = state.filters.query.toLowerCase();
+    return state.data.players
+      .filter((player) => state.filters.team === "all" || player.team === state.filters.team)
+      .filter((player) => {
+        if (state.filters.group === "all") return true;
+        const team = state.data.teams.find((item) => item.team === player.team);
+        return team?.group === state.filters.group;
+      })
+      .filter((player) => state.filters.playerPosition === "all" || player.position === state.filters.playerPosition)
+      .filter((player) => {
+        if (!query) return true;
+        return `${player.name} ${player.team} ${player.club} ${player.position}`.toLowerCase().includes(query);
+      });
+  }
+
+  function filteredHistoricalMatches() {
+    const query = state.filters.query.toLowerCase();
+    return (state.data.history?.historical_matches || [])
+      .filter((match) => state.filters.cup === "all" || String(match.year) === state.filters.cup)
+      .filter((match) => state.filters.team === "all" || match.team1 === state.filters.team || match.team2 === state.filters.team)
+      .filter((match) => {
+        if (!query) return true;
+        return `${match.team1} ${match.team2} ${match.round} ${match.ground} ${match.winner}`.toLowerCase().includes(query);
+      });
+  }
+
+  function filteredScorers() {
+    const query = state.filters.query.toLowerCase();
+    return (state.data.history?.scorers || [])
+      .filter((scorer) => state.filters.team === "all" || scorer.team === state.filters.team)
+      .filter((scorer) => state.filters.cup === "all" || scorer.years.includes(Number(state.filters.cup)))
+      .filter((scorer) => {
+        if (!query) return true;
+        return `${scorer.player} ${scorer.team} ${scorer.years.join(" ")}`.toLowerCase().includes(query);
       });
   }
 
@@ -144,8 +184,15 @@
       .join("");
     $("#teamFilter").innerHTML = teamOptions();
     $("#teamFilter").value = state.filters.team;
+    $("#cupFilter").innerHTML = `<option value="all">Todas las Copas</option>${(state.data.history?.tournaments || [])
+      .map((cup) => `<option value="${cup.year}">${cup.year} · ${escapeHtml(cup.champion || "s/d")}</option>`)
+      .join("")}`;
+    $("#cupFilter").value = state.filters.cup;
     $$("#statusButtons button").forEach((button) => {
       button.classList.toggle("active", button.dataset.status === state.filters.matchStatus);
+    });
+    $$("#positionButtons button").forEach((button) => {
+      button.classList.toggle("active", button.dataset.position === state.filters.playerPosition);
     });
     const quickTeams = [...state.data.teams].sort((a, b) => b.p_champion_rough - a.p_champion_rough).slice(0, 8);
     $("#teamQuickButtons").innerHTML = quickTeams
@@ -165,7 +212,8 @@
       scheduled: "pendientes",
       final: "finalizados"
     }[state.filters.matchStatus];
-    $("#filterSummary").textContent = `${groupLabel} · ${teamLabel} · ${statusLabel}`;
+    const cupLabel = state.filters.cup === "all" ? "todas las Copas" : `Copa ${state.filters.cup}`;
+    $("#filterSummary").textContent = `${groupLabel} · ${teamLabel} · ${cupLabel} · ${statusLabel}`;
   }
 
   function renderGroupHeatmap() {
@@ -394,19 +442,7 @@
   }
 
   function renderPlayers() {
-    const query = state.filters.query.toLowerCase();
-    const rows = state.data.players
-      .filter((player) => state.filters.team === "all" || player.team === state.filters.team)
-      .filter((player) => {
-        if (state.filters.group === "all") return true;
-        const team = state.data.teams.find((item) => item.team === player.team);
-        return team?.group === state.filters.group;
-      })
-      .filter((player) => {
-        if (!query) return true;
-        return `${player.name} ${player.team} ${player.club} ${player.position}`.toLowerCase().includes(query);
-      })
-      .slice(0, 260);
+    const rows = filteredPlayers().slice(0, 260);
 
     $("#playersCount").textContent = `${rows.length} visibles`;
     $("#playersTable").innerHTML = rows
@@ -424,6 +460,206 @@
       `
       )
       .join("");
+    renderScorers();
+  }
+
+  function renderScorers() {
+    const rows = filteredScorers().slice(0, 18);
+    $("#scorersCount").textContent = `${rows.length} visibles`;
+    $("#scorersList").innerHTML = rows
+      .map(
+        (row, index) => `
+          <article class="scorer-card">
+            <span class="rank">${index + 1}</span>
+            <div>
+              <strong>${escapeHtml(row.player)}</strong>
+              <small>${escapeHtml(row.team)} · ${row.years.join(", ")}</small>
+            </div>
+            <b>${row.goals}</b>
+          </article>
+        `
+      )
+      .join("");
+  }
+
+  function selectedCountryHistory() {
+    if (state.filters.team === "all") return null;
+    return (state.data.history?.countries || []).find((row) => row.team === state.filters.team) || null;
+  }
+
+  function renderEvidenceHero() {
+    const history = selectedCountryHistory();
+    const cup = state.filters.cup === "all" ? null : (state.data.history?.tournaments || []).find((row) => String(row.year) === state.filters.cup);
+    $("#evidenceTitle").textContent = history ? `${history.team}: historia mundialista` : "Historia mundialista comparada";
+    $("#evidenceSubtitle").textContent = cup
+      ? `Copa ${cup.year}: campeon ${cup.champion || "s/d"}, ${cup.matches} partidos y ${cup.goals} goles.`
+      : "Cruza paises, Copas, partidos y jugadores para entender por que el modelo parte de ciertos priors.";
+    const badges = history
+      ? [
+          ["Copas", history.appearances],
+          ["Titulos", history.titles],
+          ["Partidos", history.matches],
+          ["GF/GC", `${history.goals_for}/${history.goals_against}`],
+        ]
+      : [
+          ["Copas", state.data.history.coverage.tournaments],
+          ["Partidos", state.data.history.coverage.historical_matches],
+          ["Paises", state.data.history.coverage.countries],
+          ["Goleadores", state.data.history.coverage.scorers],
+        ];
+    $("#evidenceBadges").innerHTML = badges
+      .map(([label, value]) => `<span><small>${escapeHtml(label)}</small><b>${escapeHtml(value)}</b></span>`)
+      .join("");
+  }
+
+  function renderTimelineChart() {
+    const history = selectedCountryHistory();
+    const cups = state.data.history?.tournaments || [];
+    const yearRows = state.data.history?.country_years || [];
+    const width = 680;
+    const height = 280;
+    const pad = 34;
+    const maxGoals = Math.max(1, ...cups.map((cup) => cup.goals));
+    let bars;
+    if (history) {
+      const byYear = new Map(yearRows.filter((row) => row.team === history.team).map((row) => [row.year, row]));
+      bars = cups.map((cup) => {
+        const row = byYear.get(cup.year);
+        return {
+          year: cup.year,
+          value: row ? row.goals_for : 0,
+          label: row ? `${row.goals_for} GF · ${row.matches} PJ` : "No participo",
+          active: Boolean(row),
+        };
+      });
+    } else {
+      bars = cups.map((cup) => ({
+        year: cup.year,
+        value: cup.goals,
+        label: `${cup.goals} goles · campeon ${cup.champion || "s/d"}`,
+        active: state.filters.cup === "all" || String(cup.year) === state.filters.cup,
+      }));
+    }
+    const maxValue = Math.max(1, ...bars.map((barItem) => barItem.value), maxGoals / 2);
+    const step = (width - pad * 2) / Math.max(1, bars.length);
+    $("#timelineChart").innerHTML = `
+      <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Linea de tiempo historica">
+        <rect width="${width}" height="${height}" rx="8" class="chart-bg"></rect>
+        <line x1="${pad}" y1="${height - pad}" x2="${width - pad}" y2="${height - pad}" class="axis"></line>
+        ${bars
+          .map((barItem, index) => {
+            const x = pad + index * step + step * 0.18;
+            const h = (barItem.value / maxValue) * (height - pad * 2);
+            const y = height - pad - h;
+            return `
+              <g class="timeline-bar ${barItem.active ? "active" : ""}">
+                <rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${Math.max(6, step * 0.58).toFixed(1)}" height="${h.toFixed(1)}" rx="5"></rect>
+                <title>${barItem.year}: ${escapeHtml(barItem.label)}</title>
+                ${index % 3 === 0 ? `<text x="${(x + step * 0.3).toFixed(1)}" y="${height - 10}" text-anchor="middle">${barItem.year}</text>` : ""}
+              </g>
+            `;
+          })
+          .join("")}
+      </svg>
+    `;
+  }
+
+  function renderHeadToHead() {
+    const matches = filteredMatches().filter((match) => match.prediction).slice(0, 1);
+    let pair = null;
+    if (matches.length) {
+      const [a, b] = [matches[0].team1, matches[0].team2].sort();
+      pair = (state.data.history?.head_to_head || []).find((row) => row.team_a === a && row.team_b === b);
+    }
+    if (!pair && state.filters.team !== "all") {
+      pair = (state.data.history?.head_to_head || []).find((row) => row.team_a === state.filters.team || row.team_b === state.filters.team);
+    }
+    if (!pair) {
+      $("#headToHeadPanel").innerHTML = `<p class="empty-note">Elegí un país o revisá próximos cruces para ver antecedentes.</p>`;
+      return;
+    }
+    $("#headToHeadPanel").innerHTML = `
+      <div class="h2h-score">
+        <span><small>${escapeHtml(pair.team_a)}</small><b>${pair.wins_a}</b></span>
+        <span><small>Empates</small><b>${pair.draws}</b></span>
+        <span><small>${escapeHtml(pair.team_b)}</small><b>${pair.wins_b}</b></span>
+      </div>
+      <p>${pair.matches} cruces · goles ${pair.goals_a}-${pair.goals_b}</p>
+      <div class="meeting-list">
+        ${pair.meetings
+          .slice(0, 5)
+          .map(
+            (m) => `
+              <article>
+                <b>${m.year}</b>
+                <span>${escapeHtml(m.team1)} ${escapeHtml(m.score)} ${escapeHtml(m.team2)}</span>
+                <small>${escapeHtml(m.round)} · ganador: ${escapeHtml(m.winner)}</small>
+              </article>
+            `
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCountryHistoryTable() {
+    let rows;
+    if (state.filters.cup !== "all") {
+      rows = (state.data.history?.country_years || [])
+        .filter((row) => String(row.year) === state.filters.cup)
+        .sort((a, b) => b.wins - a.wins || b.goal_difference - a.goal_difference || b.goals_for - a.goals_for);
+    } else {
+      rows = [...(state.data.history?.countries || [])].sort(
+        (a, b) => b.titles - a.titles || b.wins - a.wins || b.goal_difference - a.goal_difference
+      );
+    }
+    if (state.filters.team !== "all") rows = rows.filter((row) => row.team === state.filters.team);
+    rows = rows.slice(0, 16);
+    $("#countryHistoryCount").textContent = `${rows.length} filas`;
+    $("#countryHistoryTable").innerHTML = rows
+      .map((row, index) => {
+        const titleValue = state.filters.cup === "all" ? row.titles : row.champion ? "si" : "no";
+        const appearanceValue = state.filters.cup === "all" ? row.appearances : row.year;
+        return `
+          <article class="history-row">
+            <span class="rank">${index + 1}</span>
+            <strong>${escapeHtml(row.team)}</strong>
+            <span>${appearanceValue}</span>
+            <span>${row.matches} PJ</span>
+            <span>${row.wins}-${row.draws}-${row.losses}</span>
+            <span>${row.goals_for}/${row.goals_against}</span>
+            <b>${escapeHtml(titleValue)}</b>
+          </article>
+        `;
+      })
+      .join("");
+  }
+
+  function renderHistoricalMatches() {
+    const rows = filteredHistoricalMatches().slice(0, 160);
+    $("#historicalMatchesCount").textContent = `${rows.length} partidos`;
+    $("#historicalMatchesTable").innerHTML = rows
+      .map(
+        (match) => `
+          <tr>
+            <td>${match.year}</td>
+            <td>${escapeHtml(match.round)}</td>
+            <td><strong>${escapeHtml(match.team1)}</strong><small>${escapeHtml(match.team2)}</small></td>
+            <td>${escapeHtml(match.score)}</td>
+            <td>${escapeHtml(match.winner)}</td>
+            <td>${escapeHtml(match.ground)}</td>
+          </tr>
+        `
+      )
+      .join("");
+  }
+
+  function renderEvidence() {
+    renderEvidenceHero();
+    renderTimelineChart();
+    renderHeadToHead();
+    renderCountryHistoryTable();
+    renderHistoricalMatches();
   }
 
   function renderModelLab() {
@@ -492,17 +728,25 @@
     renderMatches();
     renderTeams();
     renderPlayers();
+    renderEvidence();
     renderModelLab();
     renderMethod();
     renderSourcePanel();
+  }
+
+  function activateView(target) {
+    $$(".tab-button").forEach((item) => item.classList.toggle("active", item.dataset.target === target));
+    $$(".view").forEach((view) => view.classList.toggle("active", view.id === target));
   }
 
   function bindNavigation() {
     $$(".tab-button").forEach((button) => {
       button.addEventListener("click", () => {
         const target = button.dataset.target;
-        $$(".tab-button").forEach((item) => item.classList.toggle("active", item === button));
-        $$(".view").forEach((view) => view.classList.toggle("active", view.id === target));
+        activateView(target);
+        const url = new URL(window.location.href);
+        url.searchParams.set("view", target);
+        window.history.replaceState({}, "", url);
       });
     });
   }
@@ -526,6 +770,10 @@
       state.filters.team = event.target.value;
       renderAll();
     });
+    $("#cupFilter").addEventListener("change", (event) => {
+      state.filters.cup = event.target.value;
+      renderAll();
+    });
     $("#teamQuickButtons").addEventListener("click", (event) => {
       const button = event.target.closest("button[data-team]");
       if (!button) return;
@@ -538,12 +786,18 @@
       state.filters.matchStatus = button.dataset.status;
       renderAll();
     });
+    $("#positionButtons").addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-position]");
+      if (!button) return;
+      state.filters.playerPosition = button.dataset.position;
+      renderAll();
+    });
     $("#searchInput").addEventListener("input", (event) => {
       state.filters.query = event.target.value;
       renderAll();
     });
     $("#resetFilters").addEventListener("click", () => {
-      state.filters = { group: "all", team: "all", query: "", matchStatus: "all" };
+      state.filters = { group: "all", team: "all", query: "", matchStatus: "all", cup: "all", playerPosition: "all" };
       $("#searchInput").value = "";
       renderAll();
     });
@@ -595,6 +849,8 @@
       state.data = loaded.data;
       state.status = loaded.status;
       renderAll();
+      const requestedView = new URLSearchParams(window.location.search).get("view");
+      if (requestedView && document.getElementById(requestedView)) activateView(requestedView);
       $("#appShell").classList.remove("loading");
     } catch (error) {
       $("#fatalError").hidden = false;

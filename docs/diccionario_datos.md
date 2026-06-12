@@ -10,6 +10,18 @@
 | `coverage` | Conteos de equipos, jugadores, partidos y grupos |
 | `model` | Supuestos, prior, likelihood, posterior y limitaciones |
 
+## `history`
+
+| Campo | Descripcion |
+| --- | --- |
+| `tournaments` | Copas historicas 1930-2022 con partidos, equipos, goles y campeon |
+| `countries` | Estadisticas agregadas por pais en todas las Copas |
+| `country_years` | Rendimiento pais-Copa |
+| `head_to_head` | Mano a mano historico entre paises |
+| `historical_matches` | Partidos historicos normalizados |
+| `scorers` | Goleadores historicos extraidos de eventos de gol disponibles |
+| `coverage` | Conteos de cobertura historica |
+
 ## `teams`
 
 | Campo | Descripcion |
@@ -53,3 +65,23 @@
 | `score` | Marcador final cuando existe |
 | `prediction` | Probabilidades y goles esperados |
 
+## `history.countries`
+
+| Campo | Descripcion |
+| --- | --- |
+| `appearances` | Cantidad de Copas con participacion |
+| `matches` | Partidos historicos jugados |
+| `wins`, `draws`, `losses` | Balance historico |
+| `goals_for`, `goals_against` | Goles a favor y en contra |
+| `titles`, `finals` | Titulos y finales detectadas |
+| `win_rate` | Proporcion de victorias historicas |
+
+## `history.scorers`
+
+| Campo | Descripcion |
+| --- | --- |
+| `player` | Nombre del goleador segun la fuente |
+| `team` | Pais |
+| `goals` | Goles detectados en eventos de gol historicos |
+| `years` | Copas donde aparece el jugador |
+| `opponents` | Rivales a los que marco, limitado para interfaz |

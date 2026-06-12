@@ -20,10 +20,21 @@ pronosticos bayesianos de la Copa Mundial 2026.
 
 1. `scripts/update_data.py` descarga calendario/resultados desde OpenFootball.
 2. El script descarga planteles desde la pagina estructurada de squads.
-3. Se calculan parametros posteriores Gamma-Poisson por equipo.
-4. Se simula el avance de grupos y se genera `worldcup2026_latest.json`.
-5. GitHub Pages consume el JSON.
-6. GAS puede ejecutar `syncFromGithub()` para copiar el mismo estado a Sheets.
+3. El script descarga Copas historicas 1930-2022 desde OpenFootball.
+4. Se generan evidencias historicas por pais, Copa, mano a mano y goleadores.
+5. Se calculan parametros posteriores Gamma-Poisson por equipo.
+6. Se simula el avance de grupos y se genera `worldcup2026_latest.json`.
+7. GitHub Pages consume el JSON.
+8. GAS puede ejecutar `syncFromGithub()` para copiar el mismo estado a Sheets.
+
+## Pestañas historicas en Sheets
+
+`syncFromGithub()` crea y actualiza:
+
+- `HISTORICO_COPAS`
+- `HISTORICO_PAISES`
+- `HISTORICO_PARTIDOS`
+- `HISTORICO_GOLEADORES`
 
 ## Validaciones minimas
 
@@ -46,4 +57,3 @@ Luego verificar en navegador:
 No se publican tokens ni credenciales en el frontend. La vista publica solo lee
 JSON abierto. Las acciones de sincronizacion sobre Sheets deben ejecutarse desde
 Apps Script autorizado o con token administrativo guardado en Script Properties.
-

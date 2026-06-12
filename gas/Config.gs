@@ -1,6 +1,6 @@
 var APP_CONFIG = {
   APP_NAME: 'Copa Mundial 2026 - Probabilidades Bayesianas',
-  APP_VERSION: '0.1.1',
+  APP_VERSION: '0.2.0',
   SPREADSHEET_ID: '1k_zmucPFA9A7pyE7Y6ZZgb-c4K3UTlp6YknpovCv5pQ',
   PUBLIC_DATA_URL: 'https://raw.githubusercontent.com/diegomezapy/copa_mundial_probabilidades/main/data/worldcup2026_latest.json',
   GITHUB_REPO: 'https://github.com/diegomezapy/copa_mundial_probabilidades',
@@ -65,6 +65,24 @@ var SHEET_HEADERS = {
     'expected_goals_away',
     'data_version'
   ],
+  HISTORICO_COPAS: ['year', 'name', 'matches', 'teams', 'goals', 'avg_goals', 'champion', 'source'],
+  HISTORICO_PAISES: [
+    'team_id',
+    'team',
+    'appearances',
+    'matches',
+    'wins',
+    'draws',
+    'losses',
+    'goals_for',
+    'goals_against',
+    'goal_difference',
+    'titles',
+    'finals',
+    'win_rate'
+  ],
+  HISTORICO_PARTIDOS: ['historical_match_id', 'year', 'round', 'date', 'team1', 'team2', 'score', 'winner', 'ground'],
+  HISTORICO_GOLEADORES: ['team_id', 'team', 'player', 'goals', 'years', 'opponents'],
   RUNS_MODELO: [
     'run_id',
     'fecha_hora',

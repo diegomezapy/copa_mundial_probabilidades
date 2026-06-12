@@ -25,10 +25,34 @@ import requests
 from bs4 import BeautifulSoup
 
 
-APP_VERSION = "0.1.1"
+APP_VERSION = "0.2.0"
 DATA_VERSION_PREFIX = "wc26"
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
+WORLD_CUP_YEARS = [
+    1930,
+    1934,
+    1938,
+    1950,
+    1954,
+    1958,
+    1962,
+    1966,
+    1970,
+    1974,
+    1978,
+    1982,
+    1986,
+    1990,
+    1994,
+    1998,
+    2002,
+    2006,
+    2010,
+    2014,
+    2018,
+    2022,
+]
 OPENFOOTBALL_2026_URL = (
     "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json"
 )
@@ -43,14 +67,18 @@ USER_AGENT = (
 
 TEAM_ALIASES = {
     "Bosnia and Herzegovina": "Bosnia & Herzegovina",
+    "Bosnia-Herzegovina": "Bosnia & Herzegovina",
     "Cote d'Ivoire": "Ivory Coast",
     "Côte d'Ivoire": "Ivory Coast",
+    "Czechoslovakia": "Czech Republic",
     "DR Congo": "DR Congo",
+    "Germany FR": "Germany",
     "Iran": "Iran",
     "South Korea": "South Korea",
     "Türkiye": "Turkey",
-    "United States": "United States",
-    "United States of America": "United States",
+    "United States": "USA",
+    "United States of America": "USA",
+    "West Germany": "Germany",
 }
 
 POSITION_ALIASES = {
@@ -138,21 +166,45 @@ def fetch_worldcup_2026() -> tuple[dict[str, Any], dict[str, Any]]:
     return json.loads(body), meta
 
 
-def fetch_historical_matches() -> list[dict[str, Any]]:
+def fetch_historical_worldcups() -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
     matches: list[dict[str, Any]] = []
-    for year in [1998, 2002, 2006, 2010, 2014, 2018, 2022]:
+    tournaments: list[dict[str, Any]] = []
+    source_meta: list[dict[str, Any]] = []
+    for year in WORLD_CUP_YEARS:
         try:
-            body, _ = http_get(OPENFOOTBALL_YEAR_URL.format(year=year))
+            body, meta = http_get(OPENFOOTBALL_YEAR_URL.format(year=year))
             data = json.loads(body)
         except Exception as exc:
             print(f"[warn] historical fetch failed for {year}: {exc}")
             continue
+        source_meta.append(meta | {"year": year})
+        teams = set()
+        goals = 0
         for match in data.get("matches", []):
             if "score" in match and match["score"].get("ft"):
                 item = dict(match)
                 item["year"] = year
+                item["tournament"] = data.get("name", f"World Cup {year}")
                 matches.append(item)
-    return matches
+                teams.add(normalize_team(item.get("team1", "")))
+                teams.add(normalize_team(item.get("team2", "")))
+                final_score = final_goals(item)
+                if final_score:
+                    goals += final_score[0] + final_score[1]
+        champion = infer_champion(data.get("matches", []))
+        tournaments.append(
+            {
+                "year": year,
+                "name": data.get("name", f"World Cup {year}"),
+                "matches": len(data.get("matches", [])),
+                "teams": len([team for team in teams if team]),
+                "goals": goals,
+                "avg_goals": round(goals / max(1, len(data.get("matches", []))), 2),
+                "champion": champion,
+                "source": "openfootball_worldcup_json",
+            }
+        )
+    return matches, tournaments, source_meta
 
 
 def extract_squads() -> tuple[list[dict[str, Any]], dict[str, Any]]:
@@ -213,6 +265,34 @@ def completed_score(match: dict[str, Any]) -> tuple[int, int] | None:
     if isinstance(ft, list) and len(ft) == 2:
         return int(ft[0]), int(ft[1])
     return None
+
+
+def final_goals(match: dict[str, Any]) -> tuple[int, int] | None:
+    score = match.get("score") or {}
+    for key in ("et", "ft"):
+        value = score.get(key)
+        if isinstance(value, list) and len(value) == 2:
+            return int(value[0]), int(value[1])
+    return None
+
+
+def match_winner(match: dict[str, Any]) -> str | None:
+    team1 = normalize_team(match.get("team1", ""))
+    team2 = normalize_team(match.get("team2", ""))
+    score = match.get("score") or {}
+    penalty = score.get("p")
+    if isinstance(penalty, list) and len(penalty) == 2 and penalty[0] != penalty[1]:
+        return team1 if penalty[0] > penalty[1] else team2
+    goals = final_goals(match)
+    if not goals or goals[0] == goals[1]:
+        return None
+    return team1 if goals[0] > goals[1] else team2
+
+
+def infer_champion(matches: list[dict[str, Any]]) -> str:
+    final_match = next((m for m in reversed(matches) if clean_text(m.get("round")).lower() == "final"), None)
+    candidate = final_match or (matches[-1] if matches else None)
+    return match_winner(candidate) if candidate else ""
 
 
 def build_elo(matches: list[dict[str, Any]]) -> dict[str, float]:
@@ -522,10 +602,292 @@ def build_squad_stats(players: list[dict[str, Any]]) -> dict[str, dict[str, Any]
     return stats
 
 
+def empty_team_history(team: str) -> dict[str, Any]:
+    return {
+        "team": team,
+        "team_id": team_id(team),
+        "appearances": set(),
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "goals_for": 0,
+        "goals_against": 0,
+        "goal_difference": 0,
+        "knockout_matches": 0,
+        "finals": 0,
+        "titles": 0,
+        "last_year": None,
+    }
+
+
+def normalize_history_row(row: dict[str, Any]) -> dict[str, Any]:
+    appearances = sorted(row["appearances"])
+    matches = row["matches"]
+    wins = row["wins"]
+    row = dict(row)
+    row["appearances"] = len(appearances)
+    row["years"] = appearances
+    row["last_year"] = appearances[-1] if appearances else None
+    row["win_rate"] = round(wins / matches, 4) if matches else 0
+    row["goals_per_match"] = round(row["goals_for"] / matches, 3) if matches else 0
+    row["goals_against_per_match"] = round(row["goals_against"] / matches, 3) if matches else 0
+    return row
+
+
+def is_knockout_round(round_name: str) -> bool:
+    text = clean_text(round_name).lower()
+    return any(
+        key in text
+        for key in [
+            "round of",
+            "quarter",
+            "semi",
+            "final",
+            "third",
+            "match for third",
+            "replay",
+        ]
+    )
+
+
+def build_historical_evidence(
+    historical_matches: list[dict[str, Any]],
+    tournaments: list[dict[str, Any]],
+    current_matches: list[dict[str, Any]],
+) -> dict[str, Any]:
+    country: dict[str, dict[str, Any]] = {}
+    country_year: dict[tuple[str, int], dict[str, Any]] = {}
+    pair_stats: dict[tuple[str, str], dict[str, Any]] = {}
+    scorer_stats: dict[tuple[str, str], dict[str, Any]] = {}
+    tournament_by_year = {row["year"]: row for row in tournaments}
+
+    def ensure_country(team: str) -> dict[str, Any]:
+        if team not in country:
+            country[team] = empty_team_history(team)
+        return country[team]
+
+    def ensure_country_year(team: str, year: int) -> dict[str, Any]:
+        key = (team, year)
+        if key not in country_year:
+            country_year[key] = {
+                "team": team,
+                "team_id": team_id(team),
+                "year": year,
+                "matches": 0,
+                "wins": 0,
+                "draws": 0,
+                "losses": 0,
+                "goals_for": 0,
+                "goals_against": 0,
+                "goal_difference": 0,
+                "stage_reached": "",
+                "champion": tournament_by_year.get(year, {}).get("champion") == team,
+            }
+        return country_year[key]
+
+    def add_scorer(team: str, year: int, goal: dict[str, Any], opponent: str) -> None:
+        name = clean_text(goal.get("name"))
+        if not name:
+            return
+        key = (team, name)
+        row = scorer_stats.setdefault(
+            key,
+            {
+                "team": team,
+                "team_id": team_id(team),
+                "player": name,
+                "goals": 0,
+                "years": set(),
+                "opponents": set(),
+            },
+        )
+        row["goals"] += 1
+        row["years"].add(year)
+        row["opponents"].add(opponent)
+
+    for match in historical_matches:
+        year = int(match["year"])
+        t1 = normalize_team(match.get("team1", ""))
+        t2 = normalize_team(match.get("team2", ""))
+        if not t1 or not t2:
+            continue
+        goals = final_goals(match)
+        if not goals:
+            continue
+        g1, g2 = goals
+        winner = match_winner(match)
+        round_name = clean_text(match.get("round"))
+        knockout = is_knockout_round(round_name)
+
+        for team, opponent, gf, ga in [(t1, t2, g1, g2), (t2, t1, g2, g1)]:
+            row = ensure_country(team)
+            row["appearances"].add(year)
+            row["matches"] += 1
+            row["goals_for"] += gf
+            row["goals_against"] += ga
+            row["goal_difference"] += gf - ga
+            if winner == team:
+                row["wins"] += 1
+            elif winner is None:
+                row["draws"] += 1
+            else:
+                row["losses"] += 1
+            if knockout:
+                row["knockout_matches"] += 1
+            if round_name.lower() == "final":
+                row["finals"] += 1
+            year_row = ensure_country_year(team, year)
+            year_row["matches"] += 1
+            year_row["goals_for"] += gf
+            year_row["goals_against"] += ga
+            year_row["goal_difference"] += gf - ga
+            year_row["stage_reached"] = round_name
+            if winner == team:
+                year_row["wins"] += 1
+            elif winner is None:
+                year_row["draws"] += 1
+            else:
+                year_row["losses"] += 1
+
+        pair_key = tuple(sorted([t1, t2]))
+        pair = pair_stats.setdefault(
+            pair_key,
+            {
+                "pair_id": "__".join(team_id(team) for team in pair_key),
+                "team_a": pair_key[0],
+                "team_b": pair_key[1],
+                "matches": 0,
+                "draws": 0,
+                "wins_a": 0,
+                "wins_b": 0,
+                "goals_a": 0,
+                "goals_b": 0,
+                "meetings": [],
+            },
+        )
+        pair["matches"] += 1
+        if pair_key[0] == t1:
+            ga, gb = g1, g2
+        else:
+            ga, gb = g2, g1
+        pair["goals_a"] += ga
+        pair["goals_b"] += gb
+        if winner is None:
+            pair["draws"] += 1
+        elif winner == pair_key[0]:
+            pair["wins_a"] += 1
+        else:
+            pair["wins_b"] += 1
+        pair["meetings"].append(
+            {
+                "year": year,
+                "round": round_name,
+                "team1": t1,
+                "team2": t2,
+                "score": f"{g1}-{g2}",
+                "winner": winner or "draw",
+                "ground": clean_text(match.get("ground")),
+            }
+        )
+
+        for goal in match.get("goals1", []):
+            add_scorer(t1, year, goal, t2)
+        for goal in match.get("goals2", []):
+            add_scorer(t2, year, goal, t1)
+
+    current_teams = sorted(
+        {
+            normalize_team(match.get("team1", ""))
+            for match in current_matches
+            if match.get("team1")
+        }
+        | {
+            normalize_team(match.get("team2", ""))
+            for match in current_matches
+            if match.get("team2")
+        }
+    )
+    for team in current_teams:
+        ensure_country(team)
+
+    for tournament in tournaments:
+        champion = normalize_team(tournament.get("champion", ""))
+        if champion:
+            ensure_country(champion)["titles"] += 1
+
+    historical_matches_light = []
+    for idx, match in enumerate(historical_matches, 1):
+        goals = final_goals(match)
+        historical_matches_light.append(
+            {
+                "historical_match_id": f"hist-{match['year']}-{idx:04d}",
+                "year": match["year"],
+                "round": clean_text(match.get("round")),
+                "date": clean_text(match.get("date")),
+                "team1": normalize_team(match.get("team1", "")),
+                "team2": normalize_team(match.get("team2", "")),
+                "score": f"{goals[0]}-{goals[1]}" if goals else "",
+                "winner": match_winner(match) or "draw",
+                "ground": clean_text(match.get("ground")),
+            }
+        )
+
+    country_rows = sorted(
+        [normalize_history_row(row) for row in country.values()],
+        key=lambda row: (row["titles"], row["wins"], row["goal_difference"], row["matches"]),
+        reverse=True,
+    )
+    country_year_rows = sorted(
+        [
+            {
+                **row,
+                "win_rate": round(row["wins"] / row["matches"], 4) if row["matches"] else 0,
+            }
+            for row in country_year.values()
+        ],
+        key=lambda row: (row["year"], row["team"]),
+    )
+    pair_rows = []
+    for pair in pair_stats.values():
+        pair["meetings"] = sorted(pair["meetings"], key=lambda row: row["year"], reverse=True)[:8]
+        pair_rows.append(pair)
+    pair_rows.sort(key=lambda row: row["matches"], reverse=True)
+
+    scorers = []
+    for row in scorer_stats.values():
+        scorers.append(
+            {
+                "team": row["team"],
+                "team_id": row["team_id"],
+                "player": row["player"],
+                "goals": row["goals"],
+                "years": sorted(row["years"]),
+                "opponents": sorted(row["opponents"])[:8],
+            }
+        )
+    scorers.sort(key=lambda row: (row["goals"], len(row["years"]), row["player"]), reverse=True)
+
+    return {
+        "tournaments": tournaments,
+        "countries": country_rows,
+        "country_years": country_year_rows,
+        "head_to_head": pair_rows,
+        "historical_matches": historical_matches_light,
+        "scorers": scorers[:250],
+        "coverage": {
+            "tournaments": len(tournaments),
+            "historical_matches": len(historical_matches_light),
+            "countries": len(country_rows),
+            "scorers": len(scorers),
+        },
+    }
+
+
 def build_payload() -> dict[str, Any]:
     worldcup, openfootball_meta = fetch_worldcup_2026()
     players, squads_meta = extract_squads()
-    historical = fetch_historical_matches()
+    historical, tournaments, historical_metas = fetch_historical_worldcups()
     current_completed = [m | {"year": 2026} for m in worldcup["matches"] if completed_score(m)]
     ratings = build_elo(historical + current_completed)
     groups = build_groups(worldcup["matches"])
@@ -534,6 +896,7 @@ def build_payload() -> dict[str, Any]:
     posteriors = build_team_posteriors(teams, worldcup["matches"], ratings, squad_stats)
     standings = build_actual_standings(worldcup["matches"], groups)
     advancement = simulate_group_advancement(worldcup["matches"], groups, posteriors)
+    history = build_historical_evidence(historical, tournaments, worldcup["matches"])
 
     team_rows = []
     for team in teams:
@@ -581,6 +944,10 @@ def build_payload() -> dict[str, Any]:
                 "matches": len(matches),
                 "completed_matches": completed,
                 "groups": len(groups),
+                "historical_tournaments": history["coverage"]["tournaments"],
+                "historical_matches": history["coverage"]["historical_matches"],
+                "historical_countries": history["coverage"]["countries"],
+                "historical_scorers": history["coverage"]["scorers"],
             },
             "model": {
                 "name": "Gamma-Poisson + Monte Carlo group advancement",
@@ -604,12 +971,19 @@ def build_payload() -> dict[str, Any]:
                 "url": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026",
                 "note": "Used as official reference for tournament context; automated cache uses open reproducible data sources.",
             },
+            "fifa_archive": {
+                "name": "FIFA World Cup archive",
+                "url": "https://www.archives.fifa.com/fifa_world_cup",
+                "note": "Official archive reference for past tournaments. Structured app data is regenerated from OpenFootball JSON.",
+            },
+            "openfootball_historical_worldcups": historical_metas,
         },
         "groups": groups,
         "teams": sorted(team_rows, key=lambda r: (r["group"], r["team"])),
         "players": sorted(players, key=lambda r: (r["team"], r.get("number") or 99, r["name"])),
         "matches": matches,
         "standings": standings,
+        "history": history,
     }
     return payload
 

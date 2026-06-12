@@ -82,6 +82,22 @@
               </div>
             </div>
 
+            <label>
+              Copa historica
+              <select id="cupFilter"></select>
+            </label>
+
+            <div class="filter-section">
+              <h3>Jugadores</h3>
+              <div id="positionButtons" class="segmented-buttons compact">
+                <button type="button" data-position="all">Todos</button>
+                <button type="button" data-position="GK">Arqueros</button>
+                <button type="button" data-position="DF">Defensas</button>
+                <button type="button" data-position="MF">Medios</button>
+                <button type="button" data-position="FW">Delanteros</button>
+              </div>
+            </div>
+
             <button id="resetFilters" class="secondary-button full-button">Limpiar filtros</button>
           </aside>
 
@@ -91,6 +107,7 @@
               <button class="tab-button" data-target="equipos">Equipos</button>
               <button class="tab-button" data-target="jugadores">Jugadores</button>
               <button class="tab-button" data-target="partidos">Partidos</button>
+              <button class="tab-button" data-target="evidencia">Evidencia</button>
               <button class="tab-button" data-target="modelo">Modelo</button>
               <button class="tab-button" data-target="auditoria">Auditoria</button>
             </nav>
@@ -152,28 +169,37 @@
             </section>
 
             <section id="jugadores" class="view">
-              <section class="panel">
-                <header class="panel-header">
-                  <h2>Planteles</h2>
-                  <span id="playersCount">0 visibles</span>
-                </header>
-                <div class="table-wrap tall">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>No.</th>
-                        <th>Jugador</th>
-                        <th>Equipo</th>
-                        <th>Pos.</th>
-                        <th>Edad</th>
-                        <th>Caps</th>
-                        <th>Goles</th>
-                      </tr>
-                    </thead>
-                    <tbody id="playersTable"></tbody>
-                  </table>
-                </div>
-              </section>
+              <div class="content-grid two">
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Planteles 2026</h2>
+                    <span id="playersCount">0 visibles</span>
+                  </header>
+                  <div class="table-wrap tall">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>No.</th>
+                          <th>Jugador</th>
+                          <th>Equipo</th>
+                          <th>Pos.</th>
+                          <th>Edad</th>
+                          <th>Caps</th>
+                          <th>Goles</th>
+                        </tr>
+                      </thead>
+                      <tbody id="playersTable"></tbody>
+                    </table>
+                  </div>
+                </section>
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Goleadores historicos</h2>
+                    <span id="scorersCount">0 visibles</span>
+                  </header>
+                  <div id="scorersList" class="scorer-list"></div>
+                </section>
+              </div>
             </section>
 
             <section id="partidos" class="view">
@@ -198,6 +224,62 @@
                   </table>
                 </div>
               </section>
+            </section>
+
+            <section id="evidencia" class="view">
+              <div class="evidence-hero">
+                <div>
+                  <p class="eyebrow">Evidencia historica</p>
+                  <h2 id="evidenceTitle">Historia mundialista</h2>
+                  <p id="evidenceSubtitle">Resumen interactivo por pais, copa y jugador.</p>
+                </div>
+                <div id="evidenceBadges" class="evidence-badges"></div>
+              </div>
+
+              <div class="dashboard-grid">
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Linea de tiempo</h2>
+                    <span>participaciones y goles</span>
+                  </header>
+                  <div id="timelineChart" class="timeline-chart"></div>
+                </section>
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Mano a mano</h2>
+                    <span>cruces historicos</span>
+                  </header>
+                  <div id="headToHeadPanel" class="head-panel"></div>
+                </section>
+                <section class="panel span-2">
+                  <header class="panel-header">
+                    <h2>Ranking historico por pais</h2>
+                    <span id="countryHistoryCount">0 paises</span>
+                  </header>
+                  <div id="countryHistoryTable" class="history-ranking"></div>
+                </section>
+                <section class="panel span-2">
+                  <header class="panel-header">
+                    <h2>Partidos historicos filtrados</h2>
+                    <span id="historicalMatchesCount">0 partidos</span>
+                  </header>
+                  <div class="table-wrap tall">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Copa</th>
+                          <th>Ronda</th>
+                          <th>Partido</th>
+                          <th>Marcador</th>
+                          <th>Ganador</th>
+                          <th>Sede</th>
+                        </tr>
+                      </thead>
+                      <tbody id="historicalMatchesTable"></tbody>
+                    </table>
+                  </div>
+                </section>
+              </div>
             </section>
 
             <section id="modelo" class="view">
@@ -266,7 +348,7 @@
       </main>
 
       <footer class="footer">
-        <span>v0.1.1 · 2026-06-12</span>
+        <span>v0.2.0 · 2026-06-12</span>
         <a href="docs/metodologia_bayesiana.md">metodologia</a>
         <a href="docs/diccionario_datos.md">diccionario</a>
       </footer>
