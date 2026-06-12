@@ -76,7 +76,9 @@ El panel lateral permite combinar:
 - busqueda por texto para paises, jugadores, sedes o rondas.
 
 En escritorio, el panel lateral tiene desplazamiento interno para acceder a
-todos los filtros sin cambiar el zoom del navegador. En movil, los filtros
+todos los filtros sin cambiar el zoom del navegador. En movil, la app usa
+tipografia mas grande, botones tactiles, filtros menos comprimidos y tablas con
+desplazamiento horizontal para no depender del zoom del navegador. Los filtros
 quedan debajo del contenido principal.
 
 ## Lectura prudente

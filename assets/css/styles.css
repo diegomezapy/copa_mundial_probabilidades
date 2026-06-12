@@ -2364,19 +2364,59 @@ label {
 }
 
 @media (max-width: 680px) {
+  html {
+    font-size: 17px;
+  }
+
+  body {
+    line-height: 1.55;
+  }
+
   .topbar {
     position: static;
     align-items: flex-start;
-    padding: 12px 14px;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .brand {
+    align-items: flex-start;
+  }
+
+  .brand-mark {
+    width: 42px;
+    height: 42px;
+  }
+
+  .brand strong {
+    font-size: 1.08rem;
+  }
+
+  .brand small {
+    font-size: 0.94rem;
+  }
+
+  .topbar-status {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .pill,
+  .ghost-button,
+  .secondary-button {
+    min-height: 42px;
+    font-size: 0.96rem;
   }
 
   main {
-    padding: 14px;
+    padding: 12px;
   }
 
   .summary-band {
     min-height: auto;
-    padding: 22px;
+    gap: 18px;
+    padding: 20px;
   }
 
   .ball-motion-layer {
@@ -2388,14 +2428,35 @@ label {
   }
 
   h1 {
-    font-size: 2.2rem;
+    font-size: 2.45rem;
+    line-height: 1.03;
+  }
+
+  .eyebrow {
+    font-size: 0.88rem;
+  }
+
+  .summary-copy p:last-child {
+    font-size: 1.05rem;
+  }
+
+  .summary-band .kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .kpi {
+    min-height: 100px;
+    padding: 14px;
+  }
+
+  .kpi span {
+    font-size: 0.95rem;
   }
 
   .kpi strong {
-    font-size: 1.8rem;
+    font-size: 1.95rem;
   }
 
-  .kpi-grid,
   .classroom-grid,
   .prob-grid,
   .model-controls,
@@ -2410,9 +2471,65 @@ label {
     grid-template-columns: 1fr;
   }
 
+  button,
+  select,
+  input {
+    min-height: 48px;
+    font-size: 1rem;
+  }
+
+  .tabs {
+    gap: 8px;
+    padding-bottom: 12px;
+  }
+
+  .tab-button {
+    min-height: 46px;
+    padding: 0 15px;
+    border-color: var(--line);
+    background: rgba(255, 255, 255, 0.86);
+    font-size: 1rem;
+  }
+
+  .tab-button.active {
+    background: var(--primary);
+    border-color: var(--primary);
+  }
+
+  .workbench {
+    gap: 16px;
+    margin-top: 14px;
+  }
+
+  .panel-header {
+    align-items: flex-start;
+    padding: 15px 16px;
+  }
+
+  .panel-header h2 {
+    font-size: 1.12rem;
+  }
+
+  .panel-header span {
+    font-size: 0.96rem;
+  }
+
   .acerta-hero,
   .authors-hero {
-    padding: 18px;
+    padding: 20px;
+  }
+
+  .acerta-hero h2,
+  .authors-hero h2,
+  .evidence-hero h2 {
+    font-size: 2rem;
+    line-height: 1.08;
+  }
+
+  .acerta-hero p,
+  .authors-hero p,
+  .evidence-hero p {
+    font-size: 1.02rem;
   }
 
   .acerta-hero::after {
@@ -2429,11 +2546,47 @@ label {
   }
 
   .summary-copy p:last-child {
-    font-size: 0.98rem;
+    font-size: 1.05rem;
   }
 
   .filter-panel {
-    padding: 14px;
+    gap: 18px;
+    padding: 16px;
+  }
+
+  .filter-title h2 {
+    font-size: 1.2rem;
+  }
+
+  .filter-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .filter-section {
+    gap: 10px;
+  }
+
+  .filter-section h3,
+  label {
+    font-size: 0.96rem;
+  }
+
+  .chip-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .chip-grid button,
+  .segmented-buttons button,
+  .quick-team-grid button {
+    min-height: 48px;
+    padding: 8px 10px;
+    font-size: 1rem;
+  }
+
+  .quick-team-grid {
+    gap: 8px;
   }
 
   .workspace {
@@ -2447,6 +2600,8 @@ label {
   .heatmap-grid,
   .standings-grid {
     grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 12px;
   }
 
   .segmented-buttons.compact,
@@ -2464,7 +2619,13 @@ label {
   }
 
   .chart-box {
-    min-height: 250px;
+    min-height: 320px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .chart-box svg {
+    min-width: 520px;
   }
 
   .auth-gate {
@@ -2493,10 +2654,167 @@ label {
 
   .model-flow {
     grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 14px;
   }
 
   .flow-step {
-    min-height: 104px;
+    min-height: 118px;
+    padding: 15px;
+  }
+
+  .flow-step span {
+    font-size: 0.9rem;
+  }
+
+  .flow-step strong {
+    font-size: 1.55rem;
+  }
+
+  .flow-step small {
+    font-size: 0.98rem;
+  }
+
+  .heatmap-group > button {
+    min-height: 48px;
+    padding-inline: 12px;
+    font-size: 1rem;
+  }
+
+  .heatmap-group > div {
+    gap: 9px;
+    padding: 12px;
+  }
+
+  .heat-team {
+    min-height: 44px;
+    padding: 10px 11px;
+    font-size: 1rem;
+  }
+
+  .classroom-grid {
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .classroom-grid article {
+    min-height: 146px;
+    padding: 16px;
+  }
+
+  .classroom-grid strong {
+    font-size: 1.65rem;
+  }
+
+  .classroom-grid p {
+    font-size: 1rem;
+  }
+
+  .rank-row {
+    gap: 10px;
+    padding: 15px 16px;
+  }
+
+  .rank {
+    width: 30px;
+    height: 30px;
+  }
+
+  .match-card,
+  .prediction-card,
+  .team-card {
+    padding: 16px;
+  }
+
+  .match-card strong,
+  .prediction-teams strong {
+    font-size: 1.18rem;
+  }
+
+  .triplet span {
+    min-height: 50px;
+    padding: 8px 9px;
+  }
+
+  .prediction-inputs input[type="number"] {
+    min-height: 54px;
+  }
+
+  .prediction-badge,
+  .result-legend {
+    font-size: 0.92rem;
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
+
+  .team-card {
+    min-height: 240px;
+  }
+
+  .team-card dt {
+    font-size: 0.9rem;
+  }
+
+  .team-card dd {
+    font-size: 1.18rem;
+  }
+
+  .table-block h3 {
+    padding: 12px 14px;
+    font-size: 1rem;
+  }
+
+  .table-wrap {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table-wrap.tall {
+    max-height: none;
+  }
+
+  table {
+    min-width: 620px;
+    font-size: 1rem;
+  }
+
+  th,
+  td {
+    padding: 12px 10px;
+  }
+
+  th {
+    font-size: 0.86rem;
+  }
+
+  td small {
+    font-size: 0.92rem;
+  }
+
+  .author-card {
+    padding: 18px;
+  }
+
+  .author-card strong {
+    font-size: 1.35rem;
+  }
+
+  .author-card p,
+  .author-card em,
+  .author-details dd {
+    font-size: 1rem;
+  }
+
+  .author-details dt {
+    font-size: 0.9rem;
+  }
+
+  .author-links a {
+    min-height: 44px;
+    min-width: 72px;
+    font-size: 0.95rem;
   }
 
   .accuracy-dot small {
@@ -2522,6 +2840,21 @@ label {
   .rank-row > div:last-child {
     width: 100%;
     text-align: left;
+  }
+}
+
+@media (max-width: 380px) {
+  .summary-band .kpi-grid,
+  .chip-grid {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  main {
+    padding: 10px;
   }
 }
 

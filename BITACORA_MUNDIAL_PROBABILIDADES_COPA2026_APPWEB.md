@@ -1,5 +1,136 @@
 # Bitacora Mundial Probabilidades Copa 2026 Appweb
 
+## 2026-06-12 18:18
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: Proyecto academico publico
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.2.7`
+
+### Objetivo de la intervencion
+
+Mejorar la legibilidad y usabilidad movil porque la app se percibia demasiado
+pequena en celulares, con elementos dificiles de leer y tocar.
+
+### Diagnostico inicial
+
+* En viewport movil de `390px`, varios controles seguian con tamanos heredados
+  de escritorio: botones de filtros en torno a `13.76px`, tablas en `14.4px`
+  y controles tactiles de `36px`.
+* Los filtros de grupo usaban 4 columnas en celular, comprimiendo texto y
+  dificultando seleccion.
+* Las tablas intentaban entrar completas en pantallas pequenas, reduciendo la
+  lectura efectiva.
+
+### Acciones realizadas
+
+* Se agrego escala movil desde `@media (max-width: 680px)` con base
+  tipografica `17px`.
+* Se aumentaron botones, selects e inputs a `48px` de alto minimo.
+* Las pestanas pasan a botones tactiles de `46px` y texto mayor.
+* El hero mantiene lectura clara, con KPIs en dos columnas en celulares
+  medianos y una columna en pantallas menores a `380px`.
+* El panel de filtros usa botones de grupo mas grandes y menos comprimidos.
+* Heatmaps, tarjetas Bayes, rankings, autores, equipos y pronosticos aumentan
+  padding y tamanos de texto en movil.
+* Las tablas pasan a `17px` y `min-width: 620px` dentro de `table-wrap` con
+  desplazamiento horizontal tactil.
+* Se actualizo version/cache/frontend/GAS/JSON a `0.2.7`.
+
+### Archivos modificados
+
+* `assets/css/styles.css`
+* `assets/js/config.js`
+* `service-worker.js`
+* `scripts/update_data.py`
+* `gas/Config.gs`
+* `index.html`
+* `data/worldcup2026_latest.json`
+* `data/sources_manifest.json`
+* `README.md`
+* `docs/manual_usuario.md`
+* `docs/manual_tecnico.md`
+* `docs/PROMPTS_MUNDIAL_PROBABILIDADES_2026-06-12.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+python scripts\update_data.py
+node --check assets\js\config.js
+node --check assets\js\app.js
+node --check service-worker.js
+python -m py_compile scripts\update_data.py scripts\make_assets.py
+python -m http.server 8096
+clasp push -f
+clasp version "v0.2.7 legibilidad movil"
+clasp deploy --versionNumber 10 --description "v0.2.7 legibilidad movil"
+```
+
+### Resultados verificados
+
+* JSON local `0.2.7` generado con `data_version=wc26-20260612T221317z`.
+* Cobertura conservada: 48 equipos, 1248 jugadores, 104 partidos y 964
+  partidos historicos.
+* Viewport movil `390px`: `scrollWidth=390`, sin desborde horizontal.
+* Viewport movil `360px`: `scrollWidth=360`, sin desborde horizontal.
+* Cuerpo movil: `fontSize=17px`, `lineHeight=26.35px`.
+* H1 visible en `390px`: `41.65px`.
+* Boton de pestana: `17px`, alto `46px`.
+* Boton de filtro: `17px`, alto `48px`.
+* Heatmap por equipo: `17px`, alto `46px`.
+* Tablas: `17px`, `min-width=620px`, contenedor con `overflowX=auto`.
+* Capturas locales:
+  `tmp/mobile-after-first-viewport-390.png`,
+  `tmp/mobile-after-jugadores-390.png`,
+  `tmp/mobile-after-autores-390.png`,
+  `tmp/mobile-after-legibility-390.png` y
+  `tmp/mobile-after-legibility-360.png`.
+* Desktop `1440px`: `scrollWidth=1440`, sin desborde horizontal, panel de
+  filtros conserva `overflowY=auto`.
+* GAS version `10` desplegada como Web App candidato
+  `AKfycbwfCPG5UFL7pO7xw5NQWrTDt0zvLZdXrk6Lzb03fOfPmMbvjd4YbqrhJaTIeSx9rKpu`.
+* Prueba anonima GAS:
+  `https://script.google.com/macros/s/AKfycbwfCPG5UFL7pO7xw5NQWrTDt0zvLZdXrk6Lzb03fOfPmMbvjd4YbqrhJaTIeSx9rKpu/exec?action=health`
+  devolvio `403 Prohibido`.
+
+### Pruebas realizadas
+
+* Sintaxis JS: correcta.
+* Compilacion Python: correcta.
+* Playwright local movil `390px` y `360px`: correcto.
+* Playwright local desktop `1440px`: correcto.
+* Prueba anonima GAS version 10: `403 Prohibido`.
+
+### Errores o incidentes
+
+* No se detectaron desbordes horizontales despues del ajuste.
+* GAS sigue bloqueado anonimamente con `403 Prohibido`; se mantiene la app
+  publica consumiendo JSON local/GitHub Pages.
+* Pendiente aun la verificacion publica posterior al commit/push.
+
+### Soluciones aplicadas
+
+* Escala movil legible y tactil.
+* Tablas desplazables antes que comprimidas.
+* Cache incrementado a `mundial-probabilidades-v0-2-7`.
+
+### Pendientes
+
+* Publicar commit, esperar GitHub Pages y validar URL publica con
+  cache-busting.
+* Mantener documentado el bloqueo anonimo GAS `403 Acceso denegado` si se
+  despliega nueva version GAS.
+
+### Riesgos
+
+* Las tablas son mas legibles pero algunas requieren desplazamiento horizontal
+  en celular; se prioriza lectura real antes que miniaturizacion.
+
 ## 2026-06-12 16:31
 
 ### Proyecto

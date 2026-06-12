@@ -18,14 +18,16 @@ pronosticos bayesianos de la Copa Mundial 2026.
 
 ## Capa visual
 
-La version `0.2.6` conserva el canvas del balon del hero: posicion, velocidad,
-rebote contra limites, rotacion, sombra y estela con `requestAnimationFrame`.
-Ademas corrige `renderClassroomCards()` para que la tarjeta `Senal` use
-`filteredTeams()` y responda a filtros activos. Se agregan colores por grupo
-mediante `--group-color`, scroll interno del panel lateral en escritorio,
-microanimaciones en tablas, heatmaps y graficos, y perfiles academicos
-estructurados en `Autores`. Las animaciones respetan `prefers-reduced-motion`
-para usuarios que soliciten reducir movimiento.
+La version `0.2.7` mejora la legibilidad movil con escala tipografica mayor,
+botones tactiles de mayor altura, filtros menos comprimidos y tablas con
+desplazamiento horizontal legible. Conserva el canvas del balon del hero:
+posicion, velocidad, rebote contra limites, rotacion, sombra y estela con
+`requestAnimationFrame`. Ademas corrige `renderClassroomCards()` para que la
+tarjeta `Senal` use `filteredTeams()` y responda a filtros activos. Se agregan
+colores por grupo mediante `--group-color`, scroll interno del panel lateral en
+escritorio, microanimaciones en tablas, heatmaps y graficos, y perfiles
+academicos estructurados en `Autores`. Las animaciones respetan
+`prefers-reduced-motion` para usuarios que soliciten reducir movimiento.
 
 ## Pronosticos de usuarios
 

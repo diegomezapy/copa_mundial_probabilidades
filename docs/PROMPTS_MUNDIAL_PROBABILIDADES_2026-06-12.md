@@ -51,3 +51,5 @@ modelos multivariados de pronostico y modelos bayesianos.
   verde con colores por grupo; agregar mas efectos de movimiento en tablas y
   figuras; actualizar los datos academicos de Diego Bernardo Meza Bogado y
   resumir el perfil de Nicolas Vera Ramos.
+- Mejorar urgentemente la vista movil porque en celulares se veia demasiado
+  pequena, casi ilegible y con elementos dificiles de tocar o revisar.

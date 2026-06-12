@@ -18,13 +18,13 @@ certeza; muestra probabilidades, supuestos, limitaciones y trazabilidad de datos
 
 ## Version actual
 
-`0.2.6` corrige la tarjeta `Senal` para que responda a filtros, mejora el
-scroll del panel lateral, incorpora colores por grupo, agrega microanimaciones
-en tablas y figuras, y actualiza los perfiles academicos de autores. Mantiene
-`Autores` en pestana propia, `Acerta` reorganizada, balon canvas con rebote,
-pronosticos propios, registro inicial sin password, estadisticas de visitas,
-referencias, derechos de uso, evidencia historica 1930-2022 y filtros por Copa,
-pais, jugador y posicion.
+`0.2.7` mejora la legibilidad movil con tipografia mayor, botones tactiles mas
+grandes, filtros menos comprimidos, tablas con lectura horizontal y tarjetas
+mas respiradas en celulares. Mantiene la correccion de `Senal` filtrable,
+colores por grupo, microanimaciones, `Autores` en pestana propia, `Acerta`
+reorganizada, balon canvas con rebote, pronosticos propios, registro inicial
+sin password, estadisticas de visitas, referencias, derechos de uso, evidencia
+historica 1930-2022 y filtros por Copa, pais, jugador y posicion.
 
 ## Fuentes
 
