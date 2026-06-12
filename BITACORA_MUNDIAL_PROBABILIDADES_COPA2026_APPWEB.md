@@ -76,11 +76,17 @@ python -m http.server 8096
 clasp push -f
 clasp version "v0.2.6 filtros colores autores"
 clasp deploy --versionNumber 9 --description "v0.2.6 filtros colores autores"
+git fetch origin
+git rebase origin/main
+python scripts\update_data.py
+git push origin main
+gh run watch 27439477483 --repo diegomezapy/copa_mundial_probabilidades --exit-status --interval 10
 ```
 
 ### Resultados verificados
 
-* JSON local `0.2.6` generado con `data_version=wc26-20260612T202618z`.
+* JSON local y publico `0.2.6` generado con
+  `data_version=wc26-20260612T204155z`.
 * Cobertura conservada: 48 equipos, 1248 jugadores, 104 partidos y 964
   partidos historicos.
 * `Senal` por defecto: `Mexico`.
@@ -95,6 +101,17 @@ clasp deploy --versionNumber 9 --description "v0.2.6 filtros colores autores"
 * Enlaces verificados: ORCID `0000-0002-3469-6689` y correo
   `mailto:dmeza.py@gmail.com`.
 * Sin desborde horizontal en la vista `Autores`.
+* Commit publicado: `6056a7c feat: mejorar filtros colores y autores`.
+* GitHub Pages build `27439477483` finalizado correctamente sobre
+  `6056a7ce90791913ca08ade746739a28745471d3`.
+* URL publica validada con cache-busting:
+  `https://diegomezapy.github.io/copa_mundial_probabilidades/?view=resumen&v=6056a7c`.
+* HTTP publico verificado:
+  `index.html`, `assets/css/styles.css`, `assets/js/app.js` y
+  `data/worldcup2026_latest.json` respondieron `200`.
+* JSON publico verificado: 48 equipos, 1248 jugadores, 104 partidos, 22 copas
+  historicas, 964 partidos historicos, 152 paises historicos y 250 goleadores
+  historicos registrados.
 * GAS version `9` desplegada como Web App
   `AKfycbw6GZlQk00ZoNf1aeseouHv_y-0ONCgXNYvcIhzPDNx2HQ5UpE-ewcXROWDKXGWv8vZYw`.
 * Prueba anonima GAS:
@@ -107,6 +124,9 @@ clasp deploy --versionNumber 9 --description "v0.2.6 filtros colores autores"
   `tmp/app-local-autores-v026-mobile.png`,
   `tmp/app-local-resumen-filtros-colores-v026.png` y
   `tmp/app-local-autores-datos-v026.png`.
+* Capturas publicas:
+  `tmp/app-public-resumen-v026-desktop.png` y
+  `tmp/app-public-autores-v026-desktop.png`.
 
 ### Pruebas realizadas
 
@@ -115,12 +135,29 @@ clasp deploy --versionNumber 9 --description "v0.2.6 filtros colores autores"
 * Playwright local desktop: senal filtrable, scroll de filtros, colores por
   grupo y autores.
 * Playwright local movil: capturas de resumen y autores.
+* Playwright publico desktop:
+  * registro inicial `qa.public`;
+  * `Senal` por defecto `Mexico`;
+  * filtro `Group B` cambia `Senal` a `Switzerland`;
+  * selector `Brazil` sincroniza grupo activo a `Group C` y cambia `Senal` a
+    `Brazil`;
+  * panel lateral con `clientHeight=880`, `scrollHeight=1331`,
+    `overflowY=auto` y `scrollTop=451`;
+  * primeros colores de grupo: `#0f766e`, `#2563eb`, `#7c3aed`, `#dc2626`;
+  * autores muestran nombre completo, ORCID, correo y resumen academico.
 * Prueba anonima GAS: `403 Acceso denegado`.
 
 ### Errores o incidentes
 
 * La prueba inicial mostro que `Group B + Brazil` producia `Sin datos`; se
   resolvio sincronizando automaticamente el grupo al equipo elegido.
+* El primer `git push` fue rechazado porque el workflow remoto agrego el commit
+  `004059a data: actualizar cache mundial 2026`; se integro con rebase.
+* `git fetch` fallo inicialmente por archivos `desktop.ini` dentro de
+  `.git\refs`; se retiraron esos artefactos de Google Drive antes de continuar.
+* El rebase dejo procesos `git`/`vim` y candados `.git\index.lock` /
+  `.git\packed-refs.lock`; se confirmo que no habia procesos activos y se
+  limpiaron los candados vacios.
 
 ### Soluciones aplicadas
 
@@ -132,10 +169,10 @@ clasp deploy --versionNumber 9 --description "v0.2.6 filtros colores autores"
 
 ### Pendientes
 
-* Publicar commit, verificar GitHub Pages con cache-busting y registrar
-  evidencia publica.
 * Mantener documentado el bloqueo anonimo GAS `403 Acceso denegado` hasta que
   el propietario republique el Web App con acceso real anonimo.
+* Considerar actualizar el workflow de Pages por la advertencia de deprecacion
+  de acciones Node.js 20 antes de septiembre de 2026.
 
 ### Riesgos
 
