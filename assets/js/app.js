@@ -1483,6 +1483,194 @@
     update();
   }
 
+  function drawSoccerPolygon(ctx, sides, radius, rotation) {
+    ctx.beginPath();
+    for (let i = 0; i < sides; i += 1) {
+      const angle = rotation + (Math.PI * 2 * i) / sides;
+      const x = Math.cos(angle) * radius;
+      const y = Math.sin(angle) * radius;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+  }
+
+  function drawSoccerBall(ctx, ball) {
+    const { x, y, radius, angle } = ball;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+
+    const body = ctx.createRadialGradient(-radius * 0.35, -radius * 0.38, radius * 0.08, 0, 0, radius);
+    body.addColorStop(0, "#ffffff");
+    body.addColorStop(0.58, "#eef5f2");
+    body.addColorStop(1, "#b7c6c1");
+
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, Math.PI * 2);
+    ctx.fillStyle = body;
+    ctx.fill();
+    ctx.clip();
+
+    ctx.strokeStyle = "rgba(18, 30, 28, 0.28)";
+    ctx.lineWidth = Math.max(1.4, radius * 0.055);
+    for (let i = 0; i < 6; i += 1) {
+      const a = (Math.PI * 2 * i) / 6 + angle * 0.35;
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(a) * radius * 0.18, Math.sin(a) * radius * 0.18);
+      ctx.quadraticCurveTo(
+        Math.cos(a + 0.34) * radius * 0.52,
+        Math.sin(a + 0.34) * radius * 0.52,
+        Math.cos(a) * radius * 0.92,
+        Math.sin(a) * radius * 0.92
+      );
+      ctx.stroke();
+    }
+
+    ctx.fillStyle = "#101817";
+    ctx.strokeStyle = "rgba(255,255,255,0.5)";
+    ctx.lineWidth = Math.max(1, radius * 0.035);
+    ctx.save();
+    drawSoccerPolygon(ctx, 5, radius * 0.28, -Math.PI / 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+
+    for (let i = 0; i < 5; i += 1) {
+      const a = -Math.PI / 2 + (Math.PI * 2 * i) / 5;
+      ctx.save();
+      ctx.translate(Math.cos(a) * radius * 0.62, Math.sin(a) * radius * 0.62);
+      ctx.rotate(a + angle * 0.18);
+      drawSoccerPolygon(ctx, 5, radius * 0.18, -Math.PI / 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    ctx.rotate(-angle);
+    const shine = ctx.createRadialGradient(-radius * 0.42, -radius * 0.46, 0, -radius * 0.42, -radius * 0.46, radius * 0.75);
+    shine.addColorStop(0, "rgba(255,255,255,0.62)");
+    shine.addColorStop(0.45, "rgba(255,255,255,0.14)");
+    shine.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, Math.PI * 2);
+    ctx.fillStyle = shine;
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  function setupHeroBallCanvas() {
+    const canvas = $("#heroBallCanvas");
+    if (!canvas || canvas.dataset.ready === "true") return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    canvas.dataset.ready = "true";
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = null;
+    let lastTime = performance.now();
+    let trail = [];
+    let bounds = null;
+    const ball = {
+      x: 0,
+      y: 0,
+      vx: 2.6,
+      vy: 1.45,
+      radius: 30,
+      angle: 0
+    };
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      ball.radius = rect.width < 680 ? 22 : 34;
+      const minX = rect.width < 680 ? rect.width * 0.66 : rect.width * 0.46;
+      bounds = {
+        width: rect.width,
+        height: rect.height,
+        minX: Math.min(rect.width - ball.radius, Math.max(ball.radius, minX)),
+        maxX: rect.width - ball.radius - 18,
+        minY: ball.radius + 16,
+        maxY: rect.height - ball.radius - 18
+      };
+      if (!ball.x || !ball.y) {
+        ball.x = bounds.minX + ball.radius * 1.4;
+        ball.y = bounds.minY + ball.radius * 0.8;
+      }
+      ball.x = Math.max(bounds.minX, Math.min(bounds.maxX, ball.x));
+      ball.y = Math.max(bounds.minY, Math.min(bounds.maxY, ball.y));
+    }
+
+    function drawFrame(now) {
+      if (!bounds) resize();
+      if (!bounds) return;
+      const dt = Math.min(2.4, Math.max(0.4, (now - lastTime) / 16.7));
+      lastTime = now;
+      ctx.clearRect(0, 0, bounds.width, bounds.height);
+
+      if (!reduced.matches) {
+        ball.x += ball.vx * dt;
+        ball.y += ball.vy * dt;
+        if (ball.x <= bounds.minX || ball.x >= bounds.maxX) {
+          ball.x = Math.max(bounds.minX, Math.min(bounds.maxX, ball.x));
+          ball.vx *= -1;
+        }
+        if (ball.y <= bounds.minY || ball.y >= bounds.maxY) {
+          ball.y = Math.max(bounds.minY, Math.min(bounds.maxY, ball.y));
+          ball.vy *= -1;
+        }
+        ball.angle += (ball.vx / ball.radius) * dt * 0.9;
+      }
+
+      trail.push({ x: ball.x, y: ball.y, radius: ball.radius, age: 0 });
+      trail = trail
+        .map((item) => ({ ...item, age: item.age + 1 }))
+        .filter((item) => item.age < 18);
+
+      trail.forEach((item) => {
+        const alpha = Math.max(0, 1 - item.age / 18) * 0.28;
+        ctx.beginPath();
+        ctx.arc(item.x, item.y, item.radius * (0.5 + item.age / 44), 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(242, 201, 107, ${alpha})`;
+        ctx.fill();
+      });
+
+      ctx.save();
+      ctx.translate(ball.x + ball.radius * 0.18, ball.y + ball.radius * 1.08);
+      ctx.scale(1.2, 0.32);
+      ctx.beginPath();
+      ctx.arc(0, 0, ball.radius * 0.84, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(0, 0, 0, 0.24)";
+      ctx.filter = "blur(5px)";
+      ctx.fill();
+      ctx.restore();
+      ctx.filter = "none";
+
+      drawSoccerBall(ctx, ball);
+      frame = reduced.matches ? null : requestAnimationFrame(drawFrame);
+    }
+
+    function restart() {
+      resize();
+      if (frame) cancelAnimationFrame(frame);
+      lastTime = performance.now();
+      trail = [];
+      if (reduced.matches) drawFrame(lastTime);
+      else frame = requestAnimationFrame(drawFrame);
+    }
+
+    const observer = new ResizeObserver(restart);
+    observer.observe(canvas);
+    reduced.addEventListener?.("change", restart);
+    restart();
+  }
+
   async function registerServiceWorker() {
     if (!("serviceWorker" in navigator)) return;
     try {
@@ -1517,6 +1705,7 @@
     bindFilters();
     bindInstall();
     bindOnlineStatus();
+    setupHeroBallCanvas();
     await registerServiceWorker();
     state.user = loadUserProfile();
     renderUserButton();

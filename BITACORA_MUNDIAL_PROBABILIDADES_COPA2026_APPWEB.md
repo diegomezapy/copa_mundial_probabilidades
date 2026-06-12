@@ -1,5 +1,115 @@
 # Bitacora Mundial Probabilidades Copa 2026 Appweb
 
+## 2026-06-12 15:23
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: Proyecto academico publico
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.2.4`
+
+### Objetivo de la intervencion
+
+Corregir el efecto visual del balon, que se percibia como un boton flotante, y
+reemplazarlo por una animacion mas realista inspirada en pelota con limites,
+velocidad, rebote y repintado continuo.
+
+### Diagnostico inicial
+
+* El balon anterior era un elemento CSS circular con gradientes.
+* Visualmente no se leia como pelota de futbol y podia parecer un boton movido
+  de forma extrana por el fondo.
+* El usuario aporto un ejemplo Java con una clase `pelota`, limites, velocidad,
+  rebote y `Timer` para repintado cada 16 ms.
+
+### Acciones realizadas
+
+* Se reemplazo el `span.motion-ball` por `canvas#heroBallCanvas`.
+* Se implemento animacion con `requestAnimationFrame`, posicion, velocidad,
+  rebote contra limites, rotacion, sombra y estela.
+* Se dibujo el balon en Canvas 2D con base circular, paneles oscuros, lineas,
+  brillo y sombra.
+* Se retiro la animacion CSS antigua `ballFlight`/`ballShadow`.
+* Se ajusto el comportamiento movil para ubicar el balon mas hacia el lateral y
+  reducir su opacidad.
+* Se actualizo version frontend, cache, GAS y JSON a `0.2.4`.
+
+### Archivos modificados
+
+* `index.html`
+* `assets/js/app.js`
+* `assets/css/styles.css`
+* `assets/js/config.js`
+* `service-worker.js`
+* `scripts/update_data.py`
+* `data/worldcup2026_latest.json`
+* `data/sources_manifest.json`
+* `gas/Config.gs`
+* `README.md`
+* `docs/manual_usuario.md`
+* `docs/manual_tecnico.md`
+* `docs/PROMPTS_MUNDIAL_PROBABILIDADES_2026-06-12.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+node --check assets\js\config.js
+node --check assets\js\model.js
+node --check assets\js\data.js
+node --check assets\js\app.js
+node --check service-worker.js
+python -m py_compile scripts\update_data.py scripts\make_assets.py
+python scripts\update_data.py
+```
+
+### Resultados verificados
+
+* JSON local `0.2.4` generado con `data_version=wc26-20260612T191926z`.
+* Cobertura historica conservada: 22 Copas, 964 partidos historicos, 152
+  paises y 536 goleadores.
+* Canvas del hero verificado con pixeles no transparentes y cambio entre frames.
+* Vista desktop validada con footer `v0.2.4`.
+* Vista movil validada con canvas activo, 12 grupos y footer `v0.2.4`.
+* Capturas: `tmp/app-ball-canvas-desktop-a.png`,
+  `tmp/app-ball-canvas-desktop-b.png`, `tmp/app-ball-canvas-mobile.png` y
+  `tmp/app-ball-canvas-mobile-v2.png`.
+
+### Pruebas realizadas
+
+* `node --check`: correcto.
+* `py_compile`: correcto.
+* Playwright local desktop: registro, canvas, comparacion de frames y captura.
+* Playwright local movil: registro, canvas, tablero y captura.
+
+### Errores o incidentes
+
+* El primer ajuste movil dejaba el balon demasiado cerca del titulo; se movio
+  mas hacia el lateral y se redujo opacidad.
+
+### Soluciones aplicadas
+
+* Animacion canvas con fisica simple y repintado real.
+* Dibujo del balon como objeto futbolistico, no como boton CSS.
+* Respeto de `prefers-reduced-motion`: el canvas se desactiva junto con las
+  capas animadas.
+
+### Pendientes
+
+* Publicar commit y verificar URL publica.
+* Empujar GAS v0.2.4 y versionar.
+* Mantener pendiente el `403 Prohibido` anonimo del Web App GAS.
+
+### Riesgos
+
+* En pantallas pequenas, el balon debe acompanar sin tapar lectura; se redujo
+  opacidad y se desplazo al lateral.
+* Canvas agrega trabajo grafico; se mantiene acotado al hero y sin dependencias
+  externas.
+
 ## 2026-06-12 15:05
 
 ### Proyecto

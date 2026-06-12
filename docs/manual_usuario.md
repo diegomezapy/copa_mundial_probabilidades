@@ -21,8 +21,9 @@ partir de datos abiertos y un modelo bayesiano explicable.
 ## Lectura visual
 
 La pantalla principal muestra una ruta del modelo que ordena el flujo
-Datos-Prior-Posterior-Pronostico. El balon y los trazos de pase representan el
-movimiento de la informacion cuando se aplican filtros o se recalculan vistas.
+Datos-Prior-Posterior-Pronostico. El balon del hero rebota y rota dentro de la
+cancha visual para representar informacion en movimiento; los trazos de pase y
+simbolos estadisticos acompanan esa lectura.
 
 ## Acertá
 

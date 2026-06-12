@@ -18,12 +18,12 @@ certeza; muestra probabilidades, supuestos, limitaciones y trazabilidad de datos
 
 ## Version actual
 
-`0.2.3` agrega la vista `Acerta` para que cada usuario guarde sus propios
-pronosticos, vea aciertos, fallas, marcador exacto, evolucion de puntos y
-perfiles de autores. Mantiene la capa visual moderna con balon animado,
-simbolos estadisticos en movimiento, registro inicial sin password,
-estadisticas de visitas, referencias, derechos de uso, evidencia historica
-1930-2022 y filtros por Copa, pais, jugador y posicion.
+`0.2.4` reemplaza el balon CSS por una animacion canvas con rebote, rotacion,
+sombra y estela, inspirada en una pelota con limites y repintado continuo.
+Mantiene la vista `Acerta`, pronosticos propios, autores, simbolos
+estadisticos en movimiento, registro inicial sin password, estadisticas de
+visitas, referencias, derechos de uso, evidencia historica 1930-2022 y filtros
+por Copa, pais, jugador y posicion.
 
 ## Fuentes
 

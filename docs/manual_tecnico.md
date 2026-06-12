@@ -18,11 +18,11 @@ pronosticos bayesianos de la Copa Mundial 2026.
 
 ## Capa visual
 
-La version `0.2.3` mantiene animaciones CSS sin dependencias externas:
-movimiento del balon en el hero, trazos de pase, simbolos estadisticos en
-movimiento, transiciones de vistas, barras animadas y una ruta visual del
-modelo. Todas las animaciones respetan `prefers-reduced-motion` para usuarios
-que soliciten reducir movimiento.
+La version `0.2.4` usa un canvas para el balon del hero: posicion, velocidad,
+rebote contra limites, rotacion, sombra y estela con `requestAnimationFrame`.
+Se mantienen trazos de pase, simbolos estadisticos en movimiento, transiciones
+de vistas, barras animadas y ruta visual del modelo. Las animaciones respetan
+`prefers-reduced-motion` para usuarios que soliciten reducir movimiento.
 
 ## Pronosticos de usuarios
 
