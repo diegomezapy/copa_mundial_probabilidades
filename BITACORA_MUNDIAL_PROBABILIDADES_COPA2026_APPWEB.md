@@ -38,6 +38,9 @@ datos y paginas de interes.
 * Se preparo GAS para recibir `/exec?action=visit` y registrar eventos en la
   pestana `VISITAS` cuando el Web App quede anonimamente disponible.
 * Se actualizo version frontend, cache, GAS y JSON a `0.2.1`.
+* Se publico el commit `56c2f2f` en GitHub Pages.
+* Se subio GAS con `clasp push -f`, se creo version `4` y se desplego el Web
+  App `AKfycbx2I2cP5Wi_RZmHnrWT8X8YEYhm-tzZhPWdg8OarjlS2fBO0Gz9-1WJVF9xE9kWrpoILA`.
 
 ### Archivos modificados
 
@@ -68,6 +71,10 @@ node --check assets\js\app.js
 node --check service-worker.js
 python -m py_compile scripts\update_data.py scripts\make_assets.py
 python scripts\update_data.py
+git push
+clasp push -f
+clasp version "v0.2.1 registro visitas referencias"
+clasp deploy --versionNumber 4 --description "v0.2.1 registro visitas referencias"
 ```
 
 ### Resultados verificados
@@ -82,6 +89,12 @@ python scripts\update_data.py
 * Capturas: `tmp/app-visitas-desktop.png`,
   `tmp/app-referencias-desktop.png`, `tmp/app-registro-mobile.png` y
   `tmp/app-resumen-mobile-registered.png`.
+* URL publica verificada:
+  `https://diegomezapy.github.io/copa_mundial_probabilidades/?v=56c2f2f&view=referencias`.
+* GitHub Pages sirvio `index.html` con `0.2.1`, `authGate` y `Referencias`.
+* JSON publico verificado con `app_version=0.2.1`,
+  `data_version=wc26-20260612T182509z` y 964 partidos historicos.
+* Captura publica: `tmp/app-public-referencias-desktop.png`.
 
 ### Pruebas realizadas
 
@@ -90,6 +103,11 @@ python scripts\update_data.py
 * Playwright local desktop: registro, visitas, referencias y recarga sin
   password.
 * Playwright local movil: registro y carga de tablero con 12 grupos.
+* Playwright publico: registro nuevo `public.demo`, vista Referencias con 7
+  enlaces y footer `v0.2.1`.
+* Prueba HTTP anonima de GitHub Pages: `200`.
+* Prueba HTTP anonima del Web App GAS v4 para `health` y `visit`: `403
+  Prohibido`.
 
 ### Errores o incidentes
 
@@ -97,6 +115,8 @@ python scripts\update_data.py
   `hidden`; se corrigio la prueba usando estado `hidden`.
 * GAS sigue sin poder usarse como dependencia publica hasta resolver el `403`
   anonimo del Web App.
+* Un selector Playwright publico uso `footer` y matcheo pies internos de
+  tarjetas; se corrigio a `.footer`.
 
 ### Soluciones aplicadas
 
@@ -108,8 +128,6 @@ python scripts\update_data.py
 
 ### Pendientes
 
-* Publicar commit y verificar URL publica `?view=referencias` y `?view=visitas`.
-* Empujar GAS v0.2.1 y versionar.
 * Resolver permisos del Web App GAS para que `/exec?action=health` y
   `/exec?action=visit` respondan anonimamente.
 * Ejecutar `setupWorkbook()` o sincronizacion equivalente cuando GAS quede
