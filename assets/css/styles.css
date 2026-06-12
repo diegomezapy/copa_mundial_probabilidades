@@ -2211,10 +2211,6 @@ label {
     grid-template-columns: 1fr;
   }
 
-  .tabs {
-    flex-wrap: nowrap;
-  }
-
   .acerta-hero,
   .authors-hero {
     padding: 18px;
@@ -2234,6 +2230,14 @@ label {
 
   .filter-panel {
     padding: 14px;
+  }
+
+  .workspace {
+    order: 1;
+  }
+
+  .filter-panel {
+    order: 2;
   }
 
   .heatmap-grid,

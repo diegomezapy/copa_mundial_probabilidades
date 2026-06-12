@@ -37,6 +37,8 @@ elementos y reducir vistas cargadas o apretadas, especialmente en `Acerta`.
   busqueda del panel lateral.
 * Se ajustaron estilos para reducir densidad, evitar anchos fijos en tarjetas y
   prevenir desbordes horizontales.
+* En movil, la vista activa y sus pestanas pasan antes que el panel de filtros;
+  los filtros quedan debajo para no bloquear el contenido principal.
 * Se actualizo version frontend, cache, GAS y JSON a `0.2.5`.
 
 ### Archivos modificados
@@ -81,6 +83,8 @@ clasp deploy --versionNumber 8 --description "v0.2.5 separar autores y ordenar v
 * Sin desborde horizontal en desktop `1440px` ni movil `390px`.
 * El mensaje vacio del panel de evolucion queda debajo de la formula y no se
   superpone.
+* En movil, la pestana activa `Autores` queda visible, el contenido aparece
+  antes de filtros y no hay desborde horizontal.
 * GAS version `8` desplegada como Web App
   `AKfycbw3Ocimn2emzT6q1M9BT4EkmscVihRLRThNA9dM8tAL3fkjRez_saqRDhpjPxRqgYCM8w`.
 * Prueba anonima del nuevo Web App:
@@ -90,7 +94,9 @@ clasp deploy --versionNumber 8 --description "v0.2.5 separar autores y ordenar v
   `tmp/app-local-acerta-desktop2-v025.png`,
   `tmp/app-local-acerta-mobile-top-v025.png`,
   `tmp/app-local-acerta-mobile-focus-v025.png` y
-  `tmp/app-local-autores-desktop-v025.png`.
+  `tmp/app-local-autores-desktop-v025.png`,
+  `tmp/app-local-autores-mobile-order-v025.png` y
+  `tmp/app-local-autores-mobile-tabs-v025.png`.
 
 ### Pruebas realizadas
 
@@ -101,6 +107,8 @@ clasp deploy --versionNumber 8 --description "v0.2.5 separar autores y ordenar v
   desborde horizontal.
 * Playwright local movil: registro, vista `Acerta`, tarjetas, inicio de vista y
   control de desborde horizontal.
+* Playwright local movil `Autores`: verificacion de contenido antes de filtros,
+  pestana activa visible y sin desborde horizontal.
 * Prueba anonima GAS: `403 Acceso denegado`.
 
 ### Errores o incidentes
