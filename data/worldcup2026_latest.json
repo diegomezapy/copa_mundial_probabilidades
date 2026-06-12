@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "app_version": "0.1.0",
-    "data_version": "wc26-20260612T104958z",
-    "generated_at": "2026-06-12T10:49:58Z",
+    "app_version": "0.1.1",
+    "data_version": "wc26-20260612T115313z",
+    "generated_at": "2026-06-12T11:53:13Z",
     "timezone": "UTC",
     "tournament": "World Cup 2026",
     "coverage": {
@@ -29,17 +29,17 @@
   "sources": {
     "openfootball_worldcup_json": {
       "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json",
-      "downloaded_at": "2026-06-12T10:49:51Z",
+      "downloaded_at": "2026-06-12T11:53:05Z",
       "status_code": 200,
       "bytes": 20398,
       "sha256": "fb7b9dff371e7561f3f15e5d2f67d4b005ea55e66c850de4a09ec236849aea57"
     },
     "wikipedia_squads": {
       "url": "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads",
-      "downloaded_at": "2026-06-12T10:49:51Z",
+      "downloaded_at": "2026-06-12T11:53:05Z",
       "status_code": 200,
       "bytes": 1905338,
-      "sha256": "f6b37c688d065818ec9722e5d89743af5aef4906684bc2b3dfbd785493fde439",
+      "sha256": "a356fe88c63c177dc4cd3dfc240eb276abd46f1bca23169204d5d79dcbf5f6dc",
       "rows_extracted": 1248
     },
     "official_reference": {

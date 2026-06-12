@@ -7,7 +7,8 @@
       team: "all",
       query: "",
       matchStatus: "all"
-    }
+    },
+    filtersReady: false
   };
 
   const $ = (selector) => document.querySelector(selector);
@@ -49,6 +50,32 @@
         <span style="width:${Math.min(100, width)}%"></span>
       </div>
     `;
+  }
+
+  function filteredTeams() {
+    const query = state.filters.query.toLowerCase();
+    return state.data.teams
+      .filter((team) => state.filters.group === "all" || team.group === state.filters.group)
+      .filter((team) => state.filters.team === "all" || team.team === state.filters.team)
+      .filter((team) => !query || team.team.toLowerCase().includes(query))
+      .sort((a, b) => b.p_advance_group - a.p_advance_group);
+  }
+
+  function filteredMatches() {
+    const query = state.filters.query.toLowerCase();
+    return state.data.matches
+      .filter((match) => state.filters.group === "all" || match.group === state.filters.group)
+      .filter((match) => state.filters.team === "all" || match.team1 === state.filters.team || match.team2 === state.filters.team)
+      .filter((match) => state.filters.matchStatus === "all" || match.status === state.filters.matchStatus)
+      .filter((match) => {
+        if (!query) return true;
+        return `${match.team1} ${match.team2} ${match.ground} ${match.round}`.toLowerCase().includes(query);
+      });
+  }
+
+  function groupSortValue(group) {
+    const match = String(group).match(/[A-L]$/);
+    return match ? match[0].charCodeAt(0) : 99;
   }
 
   function renderKpis() {
@@ -98,13 +125,6 @@
       .join("");
   }
 
-  function groupOptions() {
-    const groups = Object.keys(state.data.groups);
-    return `<option value="all">Todos los grupos</option>${groups
-      .map((group) => `<option value="${escapeHtml(group)}">${escapeHtml(group)}</option>`)
-      .join("")}`;
-  }
-
   function teamOptions() {
     return `<option value="all">Todos los equipos</option>${state.data.teams
       .map((team) => `<option value="${escapeHtml(team.team)}">${escapeHtml(team.team)}</option>`)
@@ -112,11 +132,168 @@
   }
 
   function renderFilters() {
-    $("#groupFilter").innerHTML = groupOptions();
+    const groups = Object.keys(state.data.groups).sort((a, b) => groupSortValue(a) - groupSortValue(b));
+    $("#groupButtons").innerHTML = [{ label: "Todos", value: "all" }, ...groups.map((group) => ({ label: group.replace("Group ", ""), value: group }))]
+      .map(
+        (item) => `
+          <button type="button" class="${state.filters.group === item.value ? "active" : ""}" data-group="${escapeHtml(item.value)}">
+            ${escapeHtml(item.label)}
+          </button>
+        `
+      )
+      .join("");
     $("#teamFilter").innerHTML = teamOptions();
-    $("#groupFilter").value = state.filters.group;
     $("#teamFilter").value = state.filters.team;
-    $("#matchStatusFilter").value = state.filters.matchStatus;
+    $$("#statusButtons button").forEach((button) => {
+      button.classList.toggle("active", button.dataset.status === state.filters.matchStatus);
+    });
+    const quickTeams = [...state.data.teams].sort((a, b) => b.p_champion_rough - a.p_champion_rough).slice(0, 8);
+    $("#teamQuickButtons").innerHTML = quickTeams
+      .map(
+        (team) => `
+          <button type="button" class="${state.filters.team === team.team ? "active" : ""}" data-team="${escapeHtml(team.team)}">
+            <span>${escapeHtml(team.team)}</span>
+            <b>${WorldCupBayes.pct(team.p_advance_group, 0)}</b>
+          </button>
+        `
+      )
+      .join("");
+    const groupLabel = state.filters.group === "all" ? "todos los grupos" : state.filters.group;
+    const teamLabel = state.filters.team === "all" ? "todos los equipos" : state.filters.team;
+    const statusLabel = {
+      all: "todos los partidos",
+      scheduled: "pendientes",
+      final: "finalizados"
+    }[state.filters.matchStatus];
+    $("#filterSummary").textContent = `${groupLabel} · ${teamLabel} · ${statusLabel}`;
+  }
+
+  function renderGroupHeatmap() {
+    const groups = Object.keys(state.data.groups).sort((a, b) => groupSortValue(a) - groupSortValue(b));
+    $("#groupHeatmap").innerHTML = groups
+      .map((group) => {
+        const teams = state.data.groups[group]
+          .map((name) => state.data.teams.find((team) => team.team === name))
+          .filter(Boolean)
+          .sort((a, b) => b.p_advance_group - a.p_advance_group);
+        return `
+          <article class="heatmap-group ${state.filters.group === group ? "active" : ""}">
+            <button type="button" data-group="${escapeHtml(group)}">${escapeHtml(group.replace("Group ", "Grupo "))}</button>
+            <div>
+              ${teams
+                .map((team) => {
+                  const p = Math.round(team.p_advance_group * 100);
+                  return `
+                    <span class="heat-team" style="--p:${p}">
+                      <b>${escapeHtml(team.team)}</b>
+                      <small>${p}%</small>
+                    </span>
+                  `;
+                })
+                .join("")}
+            </div>
+          </article>
+        `;
+      })
+      .join("");
+  }
+
+  function renderAttackDefenseChart() {
+    const rows = filteredTeams();
+    const teams = rows.length ? rows : state.data.teams;
+    const width = 620;
+    const height = 360;
+    const padding = 42;
+    const attacks = teams.map((team) => Number(team.attack_posterior_mean));
+    const defenses = teams.map((team) => Number(team.defense_posterior_mean));
+    const minAttack = Math.min(...attacks) - 0.05;
+    const maxAttack = Math.max(...attacks) + 0.05;
+    const minDefense = Math.min(...defenses) - 0.05;
+    const maxDefense = Math.max(...defenses) + 0.05;
+    const x = (value) => padding + ((value - minAttack) / Math.max(0.01, maxAttack - minAttack)) * (width - padding * 2);
+    const y = (value) => height - padding - ((maxDefense - value) / Math.max(0.01, maxDefense - minDefense)) * (height - padding * 2);
+    const labelTeams = [...teams].sort((a, b) => b.p_advance_group - a.p_advance_group).slice(0, 7).map((team) => team.team);
+
+    $("#attackDefenseChart").innerHTML = `
+      <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Ataque y defensa posterior por equipo">
+        <rect x="0" y="0" width="${width}" height="${height}" rx="8" class="chart-bg"></rect>
+        <line x1="${padding}" y1="${height - padding}" x2="${width - padding}" y2="${height - padding}" class="axis"></line>
+        <line x1="${padding}" y1="${padding}" x2="${padding}" y2="${height - padding}" class="axis"></line>
+        <text x="${width - padding}" y="${height - 12}" class="axis-label" text-anchor="end">ataque</text>
+        <text x="18" y="${padding - 12}" class="axis-label">defensa solida</text>
+        ${teams
+          .map((team) => {
+            const cx = x(team.attack_posterior_mean);
+            const cy = y(team.defense_posterior_mean);
+            const r = 5 + team.p_advance_group * 10;
+            const top = labelTeams.includes(team.team);
+            return `
+              <g class="chart-point ${top ? "labeled" : ""}">
+                <circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r.toFixed(1)}"></circle>
+                ${top ? `<text x="${(cx + r + 4).toFixed(1)}" y="${(cy + 4).toFixed(1)}">${escapeHtml(team.team)}</text>` : ""}
+              </g>
+            `;
+          })
+          .join("")}
+      </svg>
+    `;
+  }
+
+  function renderNextMatches() {
+    const rows = filteredMatches()
+      .filter((match) => match.status === "scheduled" && match.prediction)
+      .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`))
+      .slice(0, 5);
+    $("#nextMatches").innerHTML = rows
+      .map((match) => {
+        const p = match.prediction;
+        return `
+          <article class="match-card">
+            <header>
+              <span>${shortDate(match.date)}</span>
+              <b>${escapeHtml(match.group || match.round)}</b>
+            </header>
+            <strong>${escapeHtml(match.team1)} <em>vs</em> ${escapeHtml(match.team2)}</strong>
+            <small>${escapeHtml(match.ground)}</small>
+            <div class="triplet">
+              <span style="--w:${Math.round(p.home_win * 100)}"><b>1</b>${WorldCupBayes.pct(p.home_win, 0)}</span>
+              <span style="--w:${Math.round(p.draw * 100)}"><b>X</b>${WorldCupBayes.pct(p.draw, 0)}</span>
+              <span style="--w:${Math.round(p.away_win * 100)}"><b>2</b>${WorldCupBayes.pct(p.away_win, 0)}</span>
+            </div>
+          </article>
+        `;
+      })
+      .join("");
+  }
+
+  function renderClassroomCards() {
+    const completed = state.data.metadata.coverage.completed_matches;
+    const visible = filteredTeams();
+    const avgAdvance =
+      visible.reduce((sum, team) => sum + Number(team.p_advance_group || 0), 0) / Math.max(1, visible.length);
+    const top = [...state.data.teams].sort((a, b) => b.p_advance_group - a.p_advance_group)[0];
+    $("#classroomCards").innerHTML = `
+      <article>
+        <span>Prior</span>
+        <strong>Antes</strong>
+        <p>Historia, rating y experiencia del plantel.</p>
+      </article>
+      <article>
+        <span>Datos</span>
+        <strong>${completed}</strong>
+        <p>Partidos finalizados ya entraron al modelo.</p>
+      </article>
+      <article>
+        <span>Posterior</span>
+        <strong>${WorldCupBayes.pct(avgAdvance, 0)}</strong>
+        <p>Avance promedio en la seleccion actual.</p>
+      </article>
+      <article>
+        <span>Señal</span>
+        <strong>${escapeHtml(top.team)}</strong>
+        <p>Mayor probabilidad actual de avanzar de grupo.</p>
+      </article>
+    `;
   }
 
   function renderStandings() {
@@ -162,15 +339,7 @@
   }
 
   function renderMatches() {
-    const query = state.filters.query.toLowerCase();
-    const rows = state.data.matches
-      .filter((match) => state.filters.group === "all" || match.group === state.filters.group)
-      .filter((match) => state.filters.team === "all" || match.team1 === state.filters.team || match.team2 === state.filters.team)
-      .filter((match) => state.filters.matchStatus === "all" || match.status === state.filters.matchStatus)
-      .filter((match) => {
-        if (!query) return true;
-        return `${match.team1} ${match.team2} ${match.ground} ${match.round}`.toLowerCase().includes(query);
-      });
+    const rows = filteredMatches();
 
     $("#matchesCount").textContent = `${rows.length} partidos`;
     $("#matchesTable").innerHTML = rows
@@ -198,12 +367,7 @@
   }
 
   function renderTeams() {
-    const query = state.filters.query.toLowerCase();
-    const rows = state.data.teams
-      .filter((team) => state.filters.group === "all" || team.group === state.filters.group)
-      .filter((team) => state.filters.team === "all" || team.team === state.filters.team)
-      .filter((team) => !query || team.team.toLowerCase().includes(query))
-      .sort((a, b) => b.p_advance_group - a.p_advance_group);
+    const rows = filteredTeams();
 
     $("#teamsGrid").innerHTML = rows
       .map(
@@ -319,6 +483,10 @@
   function renderAll() {
     renderKpis();
     renderFilters();
+    renderGroupHeatmap();
+    renderAttackDefenseChart();
+    renderNextMatches();
+    renderClassroomCards();
     renderContenders();
     renderStandings();
     renderMatches();
@@ -340,23 +508,39 @@
   }
 
   function bindFilters() {
-    $("#groupFilter").addEventListener("change", (event) => {
-      state.filters.group = event.target.value;
+    $("#groupButtons").addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-group]");
+      if (!button) return;
+      state.filters.group = button.dataset.group;
+      state.filters.team = "all";
+      renderAll();
+    });
+    $("#groupHeatmap").addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-group]");
+      if (!button) return;
+      state.filters.group = button.dataset.group;
+      state.filters.team = "all";
       renderAll();
     });
     $("#teamFilter").addEventListener("change", (event) => {
       state.filters.team = event.target.value;
       renderAll();
     });
-    $("#matchStatusFilter").addEventListener("change", (event) => {
-      state.filters.matchStatus = event.target.value;
-      renderMatches();
+    $("#teamQuickButtons").addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-team]");
+      if (!button) return;
+      state.filters.team = button.dataset.team;
+      renderAll();
+    });
+    $("#statusButtons").addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-status]");
+      if (!button) return;
+      state.filters.matchStatus = button.dataset.status;
+      renderAll();
     });
     $("#searchInput").addEventListener("input", (event) => {
       state.filters.query = event.target.value;
-      renderMatches();
-      renderTeams();
-      renderPlayers();
+      renderAll();
     });
     $("#resetFilters").addEventListener("click", () => {
       state.filters = { group: "all", team: "all", query: "", matchStatus: "all" };

@@ -43,166 +43,230 @@
           <div id="kpiGrid" class="kpi-grid" aria-live="polite"></div>
         </section>
 
-        <section class="controls-band" aria-label="Filtros">
-          <select id="groupFilter"></select>
-          <select id="teamFilter"></select>
-          <select id="matchStatusFilter">
-            <option value="all">Todos los estados</option>
-            <option value="scheduled">Pendientes</option>
-            <option value="final">Finalizados</option>
-          </select>
-          <input id="searchInput" type="search" placeholder="Buscar equipo, jugador, sede" />
-          <button id="resetFilters" class="secondary-button">Limpiar</button>
-        </section>
-
-        <nav class="tabs" aria-label="Vistas principales">
-          <button class="tab-button active" data-target="resumen">Resumen</button>
-          <button class="tab-button" data-target="equipos">Equipos</button>
-          <button class="tab-button" data-target="jugadores">Jugadores</button>
-          <button class="tab-button" data-target="partidos">Partidos</button>
-          <button class="tab-button" data-target="modelo">Modelo</button>
-          <button class="tab-button" data-target="auditoria">Auditoria</button>
-        </nav>
-
-        <p id="fatalError" class="fatal-error" hidden></p>
-
-        <section id="resumen" class="view active">
-          <div class="content-grid two">
-            <section class="panel">
-              <header class="panel-header">
-                <h2>Favoritos relativos</h2>
-                <span>indice academico</span>
-              </header>
-              <div id="contenders" class="rank-list"></div>
-            </section>
-            <section class="panel">
-              <header class="panel-header">
-                <h2>Tablas por grupo</h2>
-                <span>incluye resultados</span>
-              </header>
-              <div id="standings" class="standings-grid"></div>
-            </section>
-          </div>
-        </section>
-
-        <section id="equipos" class="view">
-          <div id="teamsGrid" class="team-grid"></div>
-        </section>
-
-        <section id="jugadores" class="view">
-          <section class="panel">
-            <header class="panel-header">
-              <h2>Planteles</h2>
-              <span id="playersCount">0 visibles</span>
-            </header>
-            <div class="table-wrap tall">
-              <table>
-                <thead>
-                  <tr>
-                    <th>No.</th>
-                    <th>Jugador</th>
-                    <th>Equipo</th>
-                    <th>Pos.</th>
-                    <th>Edad</th>
-                    <th>Caps</th>
-                    <th>Goles</th>
-                  </tr>
-                </thead>
-                <tbody id="playersTable"></tbody>
-              </table>
-            </div>
-          </section>
-        </section>
-
-        <section id="partidos" class="view">
-          <section class="panel">
-            <header class="panel-header">
-              <h2>Calendario, resultados y pronostico</h2>
-              <span id="matchesCount">0 partidos</span>
-            </header>
-            <div class="table-wrap tall">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Fecha</th>
-                    <th>Partido</th>
-                    <th>Fase</th>
-                    <th>Sede</th>
-                    <th>Marcador</th>
-                    <th>Prob. 1 · X · 2</th>
-                  </tr>
-                </thead>
-                <tbody id="matchesTable"></tbody>
-              </table>
-            </div>
-          </section>
-        </section>
-
-        <section id="modelo" class="view">
-          <div class="content-grid two">
-            <section class="panel">
-              <header class="panel-header">
-                <h2>Laboratorio bayesiano</h2>
-                <span>Gamma-Poisson</span>
-              </header>
-              <div class="model-controls">
-                <label>
-                  Equipo A
-                  <select id="teamA"></select>
-                </label>
-                <label>
-                  Equipo B
-                  <select id="teamB"></select>
-                </label>
+        <section class="workbench">
+          <aside class="filter-panel" aria-label="Panel de filtros">
+            <div class="filter-title">
+              <span class="filter-icon" aria-hidden="true"></span>
+              <div>
+                <h2>Filtros</h2>
+                <small id="filterSummary">Todos los datos</small>
               </div>
-              <div id="modelResult"></div>
-            </section>
-            <section class="panel">
-              <header class="panel-header">
-                <h2>Metodologia</h2>
-                <span>supuestos y limites</span>
-              </header>
-              <div id="methodology" class="methodology"></div>
-            </section>
-          </div>
-        </section>
+            </div>
 
-        <section id="auditoria" class="view">
-          <div class="content-grid two">
-            <section class="panel">
-              <header class="panel-header">
-                <h2>Fuentes y trazabilidad</h2>
-                <span>version reproducible</span>
-              </header>
-              <div id="sourcePanel" class="source-panel"></div>
+            <label>
+              Buscar
+              <input id="searchInput" type="search" placeholder="Equipo, jugador, sede" />
+            </label>
+
+            <div class="filter-section">
+              <h3>Grupos</h3>
+              <div id="groupButtons" class="chip-grid"></div>
+            </div>
+
+            <label>
+              Equipo
+              <select id="teamFilter"></select>
+            </label>
+
+            <div class="filter-section">
+              <h3>Accesos rapidos</h3>
+              <div id="teamQuickButtons" class="quick-team-grid"></div>
+            </div>
+
+            <div class="filter-section">
+              <h3>Partidos</h3>
+              <div id="statusButtons" class="segmented-buttons">
+                <button type="button" data-status="all">Todos</button>
+                <button type="button" data-status="scheduled">Pendientes</button>
+                <button type="button" data-status="final">Finalizados</button>
+              </div>
+            </div>
+
+            <button id="resetFilters" class="secondary-button full-button">Limpiar filtros</button>
+          </aside>
+
+          <div class="workspace">
+            <nav class="tabs" aria-label="Vistas principales">
+              <button class="tab-button active" data-target="resumen">Resumen</button>
+              <button class="tab-button" data-target="equipos">Equipos</button>
+              <button class="tab-button" data-target="jugadores">Jugadores</button>
+              <button class="tab-button" data-target="partidos">Partidos</button>
+              <button class="tab-button" data-target="modelo">Modelo</button>
+              <button class="tab-button" data-target="auditoria">Auditoria</button>
+            </nav>
+
+            <p id="fatalError" class="fatal-error" hidden></p>
+
+            <section id="resumen" class="view active">
+              <div class="dashboard-grid">
+                <section class="panel span-2">
+                  <header class="panel-header">
+                    <h2>Mapa de avance por grupo</h2>
+                    <span>simulacion Monte Carlo</span>
+                  </header>
+                  <div id="groupHeatmap" class="heatmap-grid"></div>
+                </section>
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Ataque vs defensa</h2>
+                    <span>posterior por equipo</span>
+                  </header>
+                  <div id="attackDefenseChart" class="chart-box"></div>
+                </section>
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Proximos cruces</h2>
+                    <span>prob. 1-X-2</span>
+                  </header>
+                  <div id="nextMatches" class="match-card-list"></div>
+                </section>
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Aula Bayes</h2>
+                    <span>idea central</span>
+                  </header>
+                  <div id="classroomCards" class="classroom-grid"></div>
+                </section>
+              </div>
+
+              <div class="content-grid two">
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Favoritos relativos</h2>
+                    <span>indice academico</span>
+                  </header>
+                  <div id="contenders" class="rank-list"></div>
+                </section>
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Tablas por grupo</h2>
+                    <span>incluye resultados</span>
+                  </header>
+                  <div id="standings" class="standings-grid"></div>
+                </section>
+              </div>
             </section>
-            <section class="panel">
-              <header class="panel-header">
-                <h2>Backend</h2>
-                <span id="backendStatus">pendiente</span>
-              </header>
-              <form class="login-box">
-                <label>
-                  Usuario
-                  <input type="text" autocomplete="username" placeholder="viewer" disabled />
-                </label>
-                <label>
-                  Rol
-                  <input type="text" value="publico" disabled />
-                </label>
-                <p>
-                  La vista publica no requiere credenciales. Las acciones de
-                  sincronizacion y administracion quedan restringidas al GAS y
-                  a la hoja operativa.
-                </p>
-              </form>
+
+            <section id="equipos" class="view">
+              <div id="teamsGrid" class="team-grid"></div>
+            </section>
+
+            <section id="jugadores" class="view">
+              <section class="panel">
+                <header class="panel-header">
+                  <h2>Planteles</h2>
+                  <span id="playersCount">0 visibles</span>
+                </header>
+                <div class="table-wrap tall">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>No.</th>
+                        <th>Jugador</th>
+                        <th>Equipo</th>
+                        <th>Pos.</th>
+                        <th>Edad</th>
+                        <th>Caps</th>
+                        <th>Goles</th>
+                      </tr>
+                    </thead>
+                    <tbody id="playersTable"></tbody>
+                  </table>
+                </div>
+              </section>
+            </section>
+
+            <section id="partidos" class="view">
+              <section class="panel">
+                <header class="panel-header">
+                  <h2>Calendario, resultados y pronostico</h2>
+                  <span id="matchesCount">0 partidos</span>
+                </header>
+                <div class="table-wrap tall">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Fecha</th>
+                        <th>Partido</th>
+                        <th>Fase</th>
+                        <th>Sede</th>
+                        <th>Marcador</th>
+                        <th>Prob. 1 · X · 2</th>
+                      </tr>
+                    </thead>
+                    <tbody id="matchesTable"></tbody>
+                  </table>
+                </div>
+              </section>
+            </section>
+
+            <section id="modelo" class="view">
+              <div class="content-grid two">
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Laboratorio bayesiano</h2>
+                    <span>Gamma-Poisson</span>
+                  </header>
+                  <div class="model-controls">
+                    <label>
+                      Equipo A
+                      <select id="teamA"></select>
+                    </label>
+                    <label>
+                      Equipo B
+                      <select id="teamB"></select>
+                    </label>
+                  </div>
+                  <div id="modelResult"></div>
+                </section>
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Metodologia</h2>
+                    <span>supuestos y limites</span>
+                  </header>
+                  <div id="methodology" class="methodology"></div>
+                </section>
+              </div>
+            </section>
+
+            <section id="auditoria" class="view">
+              <div class="content-grid two">
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Fuentes y trazabilidad</h2>
+                    <span>version reproducible</span>
+                  </header>
+                  <div id="sourcePanel" class="source-panel"></div>
+                </section>
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Backend</h2>
+                    <span id="backendStatus">pendiente</span>
+                  </header>
+                  <form class="login-box">
+                    <label>
+                      Usuario
+                      <input type="text" autocomplete="username" placeholder="viewer" disabled />
+                    </label>
+                    <label>
+                      Rol
+                      <input type="text" value="publico" disabled />
+                    </label>
+                    <p>
+                      La vista publica no requiere credenciales. Las acciones de
+                      sincronizacion y administracion quedan restringidas al GAS y
+                      a la hoja operativa.
+                    </p>
+                  </form>
+                </section>
+              </div>
             </section>
           </div>
         </section>
       </main>
 
       <footer class="footer">
-        <span>v0.1.0 · 2026-06-12</span>
+        <span>v0.1.1 · 2026-06-12</span>
         <a href="docs/metodologia_bayesiana.md">metodologia</a>
         <a href="docs/diccionario_datos.md">diccionario</a>
       </footer>
@@ -214,4 +278,3 @@
     <script src="assets/js/app.js"></script>
   </body>
 </html>
-

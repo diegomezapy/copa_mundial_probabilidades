@@ -1,5 +1,113 @@
 # Bitacora Mundial Probabilidades Copa 2026 Appweb
 
+## 2026-06-12 08:05
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: Proyecto academico publico
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.1.1`
+
+### Objetivo de la intervencion
+
+Mejorar radicalmente la experiencia visual y didactica: agregar panel lateral de
+filtros con botones y un tablero estadistico mas atractivo para estudiantes,
+ninos y publico general.
+
+### Diagnostico inicial
+
+* La app publica ya estaba operativa en GitHub Pages.
+* La vista tenia filtros superiores basicos y tablas funcionales, pero faltaba
+  un panel lateral de filtros y graficos mas didacticos.
+* El arbol local estaba sincronizado con `origin/main` en commit `6ecbb55`.
+
+### Acciones realizadas
+
+* Se reemplazo la barra superior de filtros por un panel lateral con:
+  busqueda, botones de grupos, selector de equipo, accesos rapidos a equipos y
+  botones de estado de partido.
+* Se agrego tablero estadistico en la vista Resumen:
+  mapa de avance por grupo, grafico ataque vs defensa, proximos cruces con
+  probabilidades 1-X-2 y tarjetas "Aula Bayes".
+* Se ajusto responsive para desktop y movil.
+* Se actualizo version frontend/cache/datos a `0.1.1`.
+* Se regenero `data/worldcup2026_latest.json`.
+
+### Archivos modificados
+
+* `index.html`
+* `assets/css/styles.css`
+* `assets/js/app.js`
+* `assets/js/config.js`
+* `service-worker.js`
+* `scripts/update_data.py`
+* `data/worldcup2026_latest.json`
+* `data/sources_manifest.json`
+* `gas/Config.gs`
+
+### Comandos o scripts ejecutados
+
+```powershell
+python scripts\update_data.py
+node --check assets\js\config.js
+node --check assets\js\model.js
+node --check assets\js\data.js
+node --check assets\js\app.js
+node --check service-worker.js
+python -m py_compile scripts\update_data.py scripts\make_assets.py
+npx playwright screenshot --full-page --wait-for-selector "#groupHeatmap .heatmap-group" --viewport-size "390,980" http://localhost:8080?v=013 tmp\app-dashboard-mobile-v3.png
+npx playwright screenshot --full-page --wait-for-selector "#attackDefenseChart svg" --viewport-size "1440,1200" http://localhost:8080?v=013 tmp\app-dashboard-desktop-v3.png
+```
+
+### Resultados verificados
+
+* El cache conserva 48 equipos, 1.248 jugadores, 104 partidos y 2 partidos
+  finalizados.
+* La app local responde HTTP 200 en `http://localhost:8080`.
+* Capturas verificadas:
+  `tmp/app-dashboard-desktop-v3.png` y `tmp/app-dashboard-mobile-v3.png`.
+
+### Pruebas realizadas
+
+* `node --check`: correcto.
+* `py_compile`: correcto.
+* `git diff --check`: sin errores.
+* Playwright espero selectores reales de datos antes de capturar.
+
+### Errores o incidentes
+
+* Una captura movil inicial se tomo antes de terminar la carga del JSON; se
+  repitio usando `--wait-for-selector`.
+* Se detecto que los botones de grupos en movil quedaban demasiado altos al
+  pasar a una sola columna; se mantuvo grilla compacta de cuatro columnas.
+
+### Soluciones aplicadas
+
+* Panel lateral operativo con botones persistentes.
+* Dashboard visual con graficos propios sin dependencias externas.
+* Cache PWA actualizado a `mundial-probabilidades-v0-1-1`.
+
+### Pendientes
+
+* Publicar commit y verificar URL publica con cache-busting.
+* Empujar actualizacion GAS de version `0.1.1`.
+* Mantener pendiente la autorizacion anonima real del Web App GAS.
+
+### Riesgos
+
+* GitHub Actions volvera a generar el cache y puede crear un commit automatico
+  posterior a la publicacion manual.
+* La app sigue usando fallback JSON publico mientras GAS responda 403 anonimo.
+
+### Recomendaciones
+
+* Incorporar al manual maestro el patron "panel lateral + mapa de probabilidad +
+  tarjetas didacticas" para apps academicas de modelos estadisticos.
+
 ## 2026-06-12 07:20
 
 ### Proyecto

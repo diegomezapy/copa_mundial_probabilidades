@@ -16,6 +16,12 @@ certeza; muestra probabilidades, supuestos, limitaciones y trazabilidad de datos
 - Base auditable: Google Sheets `1k_zmucPFA9A7pyE7Y6ZZgb-c4K3UTlp6YknpovCv5pQ`.
 - Automatizacion: GitHub Actions cada 6 horas y funcion GAS `syncFromGithub()`.
 
+## Version actual
+
+`0.1.1` agrega panel lateral de filtros con botones, mapa de probabilidades por
+grupo, grafico ataque-defensa, tarjetas de proximos partidos y bloque didactico
+para explicar prior, datos y posterior.
+
 ## Fuentes
 
 - OpenFootball `worldcup.json` para calendario y resultados.
