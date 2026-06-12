@@ -41,6 +41,9 @@ academicos operativos.
 * Se preparo GAS para futura accion `prediction` y pestana
   `PREDICCIONES_USUARIO`.
 * Se actualizo version frontend, cache, GAS y JSON a `0.2.3`.
+* Se publico el commit `365a75c` en GitHub Pages.
+* Se subio GAS con `clasp push -f`, se creo version `6` y se desplego el Web
+  App `AKfycbzG1xeZ4YZpQeiUNGIQpKkz4CE99333t58iRMiodzjrA9k-E9xI-Ysr3OZC_uf_51HHDw`.
 
 ### Archivos modificados
 
@@ -71,6 +74,10 @@ node --check assets\js\app.js
 node --check service-worker.js
 python -m py_compile scripts\update_data.py scripts\make_assets.py
 python scripts\update_data.py
+git push
+clasp push -f
+clasp version "v0.2.3 acierta usuarios autores"
+clasp deploy --versionNumber 6 --description "v0.2.3 acierta usuarios autores"
 ```
 
 ### Resultados verificados
@@ -84,6 +91,12 @@ python scripts\update_data.py
   de 1086 px en escritorio y footer `v0.2.3`.
 * Capturas: `tmp/app-acerta-desktop.png`, `tmp/app-acerta-desktop-v2.png`,
   `tmp/app-acerta-mobile.png` y `tmp/app-acerta-final-desktop.png`.
+* URL publica verificada:
+  `https://diegomezapy.github.io/copa_mundial_probabilidades/?v=365a75c&view=acerta`.
+* JSON publico verificado con `app_version=0.2.3`,
+  `data_version=wc26-20260612T190050z` y 964 partidos historicos.
+* HTML publico verificado con vista `acerta` y `predictionMatches`.
+* Captura publica: `tmp/app-public-acerta-desktop.png`.
 
 ### Pruebas realizadas
 
@@ -92,6 +105,12 @@ python scripts\update_data.py
 * Playwright local desktop: registro, vista `Acertá`, guardado de pronostico,
   autores y grilla de partidos.
 * Playwright local movil: registro, vista `Acertá`, autores y footer.
+* Playwright publico: registro nuevo `public.acerta`, guardado de 1 pronostico,
+  2 autores, 36 partidos y footer `v0.2.3`.
+* GitHub Pages build `built` para commit `365a75c`.
+* Prueba HTTP anonima de GitHub Pages: `200`.
+* Prueba HTTP anonima del Web App GAS v6 para `health` y `prediction`: `403
+  Prohibido`.
 
 ### Errores o incidentes
 
@@ -108,8 +127,6 @@ python scripts\update_data.py
 
 ### Pendientes
 
-* Publicar commit y verificar URL publica con `?view=acerta`.
-* Empujar GAS v0.2.3 y versionar.
 * Resolver `403 Prohibido` del Web App GAS para sincronizar pronosticos en
   Google Sheets.
 * Completar perfiles academicos oficiales de Diego Gomez Apy y Nicolas Vera si
