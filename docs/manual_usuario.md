@@ -17,6 +17,12 @@ partir de datos abiertos y un modelo bayesiano explicable.
 - Referencias: derechos de uso de datos, fuentes y paginas de interes.
 - Auditoria: fuentes, version de datos y estado del backend.
 
+## Lectura visual
+
+La pantalla principal muestra una ruta del modelo que ordena el flujo
+Datos-Prior-Posterior-Pronostico. El balon y los trazos de pase representan el
+movimiento de la informacion cuando se aplican filtros o se recalculan vistas.
+
 ## Registro
 
 La primera entrada solicita usuario, nombre, pais, perfil e institucion. No se

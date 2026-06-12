@@ -37,3 +37,5 @@ modelos multivariados de pronostico y modelos bayesianos.
 - Solicitar registro inicial de cada usuario, permitir ingreso posterior sin
   password, mostrar estadisticas de visitas y mantener una seccion permanente
   de referencias, derechos de uso de datos y paginas de interes.
+- Mejorar orden, modernidad y animaciones; incorporar efectos que emulen el
+  movimiento del balon y hagan la app mas atractiva.

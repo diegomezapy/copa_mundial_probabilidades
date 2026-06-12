@@ -13,7 +13,8 @@
     filtersReady: false,
     user: null,
     visits: null,
-    appStarted: false
+    appStarted: false,
+    motionTimer: null
   };
 
   const $ = (selector) => document.querySelector(selector);
@@ -246,6 +247,14 @@
     `;
   }
 
+  function markRecalculating() {
+    const shell = $("#appShell");
+    if (!shell) return;
+    shell.classList.add("recalculating");
+    clearTimeout(state.motionTimer);
+    state.motionTimer = setTimeout(() => shell.classList.remove("recalculating"), 900);
+  }
+
   function filteredTeams() {
     const query = state.filters.query.toLowerCase();
     return state.data.teams
@@ -334,6 +343,57 @@
     `;
     $("#dataStatus").textContent = `${state.status.source === "gas" ? "GAS" : "JSON publico"} · ${fullDateTime(meta.generated_at)}`;
     $("#backendStatus").textContent = state.status.error ? `Fallback activo: ${state.status.error}` : state.status.backend;
+  }
+
+  function renderModelFlow() {
+    const coverage = state.data.metadata.coverage;
+    const topTeam = [...state.data.teams].sort((a, b) => b.p_advance_group - a.p_advance_group)[0];
+    const bestMatch = filteredMatches()
+      .filter((match) => match.status === "scheduled" && match.prediction)
+      .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`))[0];
+    const historyMatches = coverage.historical_matches || state.data.history?.coverage?.historical_matches || 0;
+    const forecastText = bestMatch
+      ? `${bestMatch.team1} vs ${bestMatch.team2}`
+      : topTeam?.team || "sin cruce";
+    const items = [
+      {
+        label: "Datos",
+        value: `${coverage.completed_matches}/${coverage.matches}`,
+        note: "resultados 2026",
+      },
+      {
+        label: "Prior",
+        value: historyMatches.toLocaleString("es-PY"),
+        note: "partidos historicos",
+      },
+      {
+        label: "Posterior",
+        value: topTeam ? WorldCupBayes.pct(topTeam.p_advance_group, 0) : "s/d",
+        note: topTeam ? `${topTeam.team} avance` : "sin equipo",
+      },
+      {
+        label: "Pronostico",
+        value: forecastText,
+        note: bestMatch?.date ? shortDate(bestMatch.date) : "modelo actual",
+      },
+    ];
+    $("#modelFlow").innerHTML = `
+      <div class="flow-motion" aria-hidden="true">
+        <span class="flow-line"></span>
+        <span class="flow-ball"></span>
+      </div>
+      ${items
+        .map(
+          (item, index) => `
+            <article class="flow-step" style="--i:${index}">
+              <span>${escapeHtml(item.label)}</span>
+              <strong>${escapeHtml(item.value)}</strong>
+              <small>${escapeHtml(item.note)}</small>
+            </article>
+          `
+        )
+        .join("")}
+    `;
   }
 
   function renderContenders() {
@@ -1015,7 +1075,9 @@
   }
 
   function renderAll() {
+    markRecalculating();
     renderKpis();
+    renderModelFlow();
     renderFilters();
     renderGroupHeatmap();
     renderAttackDefenseChart();

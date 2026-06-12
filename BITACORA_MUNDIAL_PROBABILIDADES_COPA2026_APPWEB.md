@@ -1,5 +1,111 @@
 # Bitacora Mundial Probabilidades Copa 2026 Appweb
 
+## 2026-06-12 14:48
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: Proyecto academico publico
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.2.2`
+
+### Objetivo de la intervencion
+
+Mejorar orden, modernidad y dinamismo visual de la app, incorporando efectos
+que emulen el movimiento del balon y ayuden a entender el flujo del modelo.
+
+### Diagnostico inicial
+
+* La app ya tenia evidencia historica, filtros, visitas y referencias, pero la
+  lectura del resumen todavia podia sentirse extensa y poco coreografiada.
+* El hero y el tablero necesitaban una capa de movimiento con sentido
+  estadistico, sin convertir la app en una portada decorativa.
+
+### Acciones realizadas
+
+* Se agrego una capa animada en el hero con balon, trazos de pase y lineas de
+  cancha.
+* Se agrego la seccion `Ruta del modelo` en el resumen para ordenar
+  Datos-Prior-Posterior-Pronostico.
+* Se agregaron transiciones suaves de vistas, entrada de pasos, barras animadas
+  y hover moderno en paneles.
+* Se incorporo soporte `prefers-reduced-motion` para reducir animaciones cuando
+  el usuario lo solicite.
+* Se actualizo version frontend, cache, GAS y JSON a `0.2.2`.
+
+### Archivos modificados
+
+* `index.html`
+* `assets/css/styles.css`
+* `assets/js/app.js`
+* `assets/js/config.js`
+* `service-worker.js`
+* `scripts/update_data.py`
+* `data/worldcup2026_latest.json`
+* `data/sources_manifest.json`
+* `gas/Config.gs`
+* `README.md`
+* `docs/manual_usuario.md`
+* `docs/manual_tecnico.md`
+* `docs/PROMPTS_MUNDIAL_PROBABILIDADES_2026-06-12.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+node --check assets\js\config.js
+node --check assets\js\model.js
+node --check assets\js\data.js
+node --check assets\js\app.js
+node --check service-worker.js
+python -m py_compile scripts\update_data.py scripts\make_assets.py
+python scripts\update_data.py
+```
+
+### Resultados verificados
+
+* JSON local `0.2.2` generado con `data_version=wc26-20260612T184705z`.
+* Cobertura historica conservada: 22 Copas, 964 partidos historicos, 152
+  paises y 536 goleadores.
+* Vista Resumen desktop validada con 4 pasos de ruta del modelo, balon animado
+  y footer `v0.2.2`.
+* Vista Resumen movil validada con 4 pasos, 12 grupos y footer `v0.2.2`.
+* Capturas: `tmp/app-motion-desktop.png` y `tmp/app-motion-mobile.png`.
+
+### Pruebas realizadas
+
+* `node --check`: correcto.
+* `py_compile`: correcto.
+* Playwright local desktop: registro nuevo, ruta del modelo, balon y tablero.
+* Playwright local movil: registro nuevo, ruta del modelo y tablero responsive.
+
+### Errores o incidentes
+
+* La animacion inicial de la pelota de la ruta del modelo se ajusto para usar el
+  ancho real del panel y evitar desbordes en pantallas amplias.
+
+### Soluciones aplicadas
+
+* Movimiento visual orientado a explicar el flujo estadistico, no decoracion sin
+  funcion.
+* Animaciones CSS sin dependencias externas.
+* Fallback de accesibilidad para reducir movimiento.
+
+### Pendientes
+
+* Publicar commit y verificar URL publica con `?view=resumen`.
+* Empujar GAS v0.2.2 y versionar.
+* Mantener pendiente el bloqueo `403 Prohibido` del Web App GAS anonimo.
+
+### Riesgos
+
+* Animaciones excesivas pueden distraer; se mantuvieron concentradas en hero,
+  ruta del modelo y transiciones suaves.
+* En dispositivos de bajo rendimiento, `prefers-reduced-motion` permite una
+  experiencia menos animada.
+
 ## 2026-06-12 14:27
 
 ### Proyecto

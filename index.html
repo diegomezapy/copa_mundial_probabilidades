@@ -82,6 +82,14 @@
 
       <main>
         <section class="summary-band">
+          <div class="ball-motion-layer" aria-hidden="true">
+            <span class="pitch-lane lane-a"></span>
+            <span class="pitch-lane lane-b"></span>
+            <span class="pitch-lane lane-c"></span>
+            <span class="ball-trace trace-a"></span>
+            <span class="ball-trace trace-b"></span>
+            <span class="motion-ball"></span>
+          </div>
           <div class="summary-copy">
             <p class="eyebrow">Modelo vivo con datos abiertos</p>
             <h1>Pronosticos recalculados con cada resultado disponible</h1>
@@ -167,6 +175,14 @@
             <p id="fatalError" class="fatal-error" hidden></p>
 
             <section id="resumen" class="view active">
+              <section class="panel model-flow-panel">
+                <header class="panel-header">
+                  <h2>Ruta del modelo</h2>
+                  <span>datos en movimiento</span>
+                </header>
+                <div id="modelFlow" class="model-flow"></div>
+              </section>
+
               <div class="dashboard-grid">
                 <section class="panel span-2">
                   <header class="panel-header">
@@ -445,7 +461,7 @@
       </main>
 
       <footer class="footer">
-        <span>v0.2.1 · 2026-06-12</span>
+        <span>v0.2.2 · 2026-06-12</span>
         <a href="docs/metodologia_bayesiana.md">metodologia</a>
         <a href="docs/diccionario_datos.md">diccionario</a>
         <a href="?view=referencias">referencias</a>

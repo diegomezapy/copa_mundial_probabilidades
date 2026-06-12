@@ -16,6 +16,13 @@ pronosticos bayesianos de la Copa Mundial 2026.
 | Planilla | Google Sheets | Auditoria, respaldo y consulta operativa |
 | Automatizacion | `.github/workflows/update-data.yml` | Regeneracion cada 6 horas |
 
+## Capa visual
+
+La version `0.2.2` incorpora animaciones CSS sin dependencias externas:
+movimiento del balon en el hero, trazos de pase, transiciones de vistas, barras
+animadas y una ruta visual del modelo. Todas las animaciones respetan
+`prefers-reduced-motion` para usuarios que soliciten reducir movimiento.
+
 ## Flujo de datos
 
 1. `scripts/update_data.py` descarga calendario/resultados desde OpenFootball.

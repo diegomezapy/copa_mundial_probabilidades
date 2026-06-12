@@ -18,12 +18,11 @@ certeza; muestra probabilidades, supuestos, limitaciones y trazabilidad de datos
 
 ## Version actual
 
-`0.2.1` agrega registro inicial sin password, ingreso posterior por perfil
-local, estadisticas de visitas en el navegador y seccion permanente de
-referencias, derechos de uso y paginas de interes. Mantiene la evidencia
-historica 1930-2022, filtros por Copa, pais, jugador y posicion, vista de mano
-a mano, linea de tiempo, ranking historico por pais, partidos historicos
-filtrables y goleadores historicos.
+`0.2.2` agrega una capa visual mas moderna: balon animado en el hero, trazos de
+pase, transiciones de vistas y una ruta del modelo que ordena Datos, Prior,
+Posterior y Pronostico. Mantiene registro inicial sin password, estadisticas de
+visitas, referencias, derechos de uso, evidencia historica 1930-2022 y filtros
+por Copa, pais, jugador y posicion.
 
 ## Fuentes
 
