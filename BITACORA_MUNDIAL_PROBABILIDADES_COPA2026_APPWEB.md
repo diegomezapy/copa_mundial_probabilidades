@@ -90,6 +90,22 @@ clasp deploy --versionNumber 10 --description "v0.2.7 legibilidad movil"
   `tmp/mobile-after-autores-390.png`,
   `tmp/mobile-after-legibility-390.png` y
   `tmp/mobile-after-legibility-360.png`.
+* Commit funcional publicado:
+  `4a65358 fix: mejorar legibilidad movil`.
+* GitHub Pages build `27443911666` finalizado correctamente sobre
+  `4a65358d88d4eeb924812846029056e73fd986c1`.
+* URL publica validada con cache-busting:
+  `https://diegomezapy.github.io/copa_mundial_probabilidades/?view=resumen&v=4a65358`.
+* HTTP publico verificado: CSS, config JS y JSON respondieron `200`.
+* JSON publico `0.2.7`: 48 equipos, 1248 jugadores, 104 partidos y 964
+  partidos historicos.
+* Viewport movil publico `390px`: `scrollWidth=390`, cuerpo `17px`, H1
+  `41.65px`, pestanas `46px`, boton de filtro `48px`, tabla `17px`.
+* Viewport movil publico `360px`: `scrollWidth=360`, cuerpo `17px`, H1
+  `37.4px`, pestanas `46px`, boton de filtro `48px`, tabla `17px`.
+* Capturas publicas:
+  `tmp/mobile-public-after-legibility-390.png` y
+  `tmp/mobile-public-after-legibility-360.png`.
 * Desktop `1440px`: `scrollWidth=1440`, sin desborde horizontal, panel de
   filtros conserva `overflowY=auto`.
 * GAS version `10` desplegada como Web App candidato
@@ -104,6 +120,7 @@ clasp deploy --versionNumber 10 --description "v0.2.7 legibilidad movil"
 * Compilacion Python: correcta.
 * Playwright local movil `390px` y `360px`: correcto.
 * Playwright local desktop `1440px`: correcto.
+* Playwright publico movil `390px` y `360px`: correcto.
 * Prueba anonima GAS version 10: `403 Prohibido`.
 
 ### Errores o incidentes
@@ -111,7 +128,8 @@ clasp deploy --versionNumber 10 --description "v0.2.7 legibilidad movil"
 * No se detectaron desbordes horizontales despues del ajuste.
 * GAS sigue bloqueado anonimamente con `403 Prohibido`; se mantiene la app
   publica consumiendo JSON local/GitHub Pages.
-* Pendiente aun la verificacion publica posterior al commit/push.
+* `git fetch` volvio a fallar por `desktop.ini` dentro de `.git\refs`; se
+  retiraron esos metadatos de Google Drive antes de publicar.
 
 ### Soluciones aplicadas
 
@@ -121,8 +139,6 @@ clasp deploy --versionNumber 10 --description "v0.2.7 legibilidad movil"
 
 ### Pendientes
 
-* Publicar commit, esperar GitHub Pages y validar URL publica con
-  cache-busting.
 * Mantener documentado el bloqueo anonimo GAS `403 Acceso denegado` si se
   despliega nueva version GAS.
 
