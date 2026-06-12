@@ -1,0 +1,23 @@
+{
+  "name": "Copa Mundial 2026 - Probabilidades Bayesianas",
+  "short_name": "Mundial Bayes",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f5f7f6",
+  "theme_color": "#0f5a4a",
+  "description": "App academica publica para explorar modelos bayesianos de pronostico en la Copa Mundial 2026.",
+  "icons": [
+    {
+      "src": "assets/img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

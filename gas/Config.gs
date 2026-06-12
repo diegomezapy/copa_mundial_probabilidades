@@ -1,0 +1,87 @@
+var APP_CONFIG = {
+  APP_NAME: 'Copa Mundial 2026 - Probabilidades Bayesianas',
+  APP_VERSION: '0.1.0',
+  SPREADSHEET_ID: '1k_zmucPFA9A7pyE7Y6ZZgb-c4K3UTlp6YknpovCv5pQ',
+  PUBLIC_DATA_URL: 'https://raw.githubusercontent.com/diegomezapy/copa_mundial_probabilidades/main/data/worldcup2026_latest.json',
+  GITHUB_REPO: 'https://github.com/diegomezapy/copa_mundial_probabilidades',
+  TIMEZONE: 'America/Asuncion',
+  ADMIN_TOKEN_PROPERTY: 'MUNDIAL_ADMIN_TOKEN'
+};
+
+var SHEET_HEADERS = {
+  CONFIG: ['clave', 'valor', 'actualizado_en', 'observacion'],
+  EQUIPOS: [
+    'team_id',
+    'team',
+    'group',
+    'rating',
+    'attack_posterior_mean',
+    'defense_posterior_mean',
+    'matches_observed_2026',
+    'goals_for_observed_2026',
+    'goals_against_observed_2026',
+    'players',
+    'avg_age',
+    'total_caps',
+    'total_international_goals',
+    'p_top2',
+    'p_advance_group',
+    'p_champion_rough'
+  ],
+  JUGADORES: [
+    'team_id',
+    'team',
+    'number',
+    'position',
+    'name',
+    'birth_date',
+    'age',
+    'caps',
+    'goals',
+    'club',
+    'source'
+  ],
+  PARTIDOS: [
+    'match_id',
+    'round',
+    'date',
+    'time',
+    'team1',
+    'team2',
+    'group',
+    'ground',
+    'status',
+    'score_team1',
+    'score_team2'
+  ],
+  PRONOSTICOS: [
+    'match_id',
+    'team1',
+    'team2',
+    'home_win',
+    'draw',
+    'away_win',
+    'expected_goals_home',
+    'expected_goals_away',
+    'data_version'
+  ],
+  RUNS_MODELO: [
+    'run_id',
+    'fecha_hora',
+    'app_version',
+    'data_version',
+    'modelo_usado',
+    'fuente_json',
+    'equipos',
+    'jugadores',
+    'partidos',
+    'partidos_finalizados',
+    'hash_registro',
+    'observacion'
+  ],
+  LOG: ['fecha_hora', 'usuario', 'accion', 'detalle', 'data_version'],
+  ERRORES: ['fecha_hora', 'funcion', 'mensaje', 'stack', 'data_version'],
+  VERSIONES: ['fecha_hora', 'app_version', 'data_version', 'github_repo', 'public_data_url', 'estado'],
+  USUARIOS: ['usuario', 'password_hash', 'nombre', 'correo', 'rol', 'activo', 'fecha_creacion', 'ultimo_acceso', 'observacion']
+};
+

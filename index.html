@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="App academica publica para explorar probabilidades bayesianas de la Copa Mundial FIFA 2026."
+    />
+    <meta name="theme-color" content="#0f5a4a" />
+    <title>Copa Mundial 2026 - Probabilidades Bayesianas</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="assets/img/forecast-pitch.png" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <div id="appShell" class="app-shell loading">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <div>
+            <strong>Copa Mundial 2026</strong>
+            <small>Probabilidades bayesianas · aula estadistica</small>
+          </div>
+        </div>
+        <div class="topbar-status">
+          <span id="onlineStatus" class="pill">online</span>
+          <span id="dataStatus" class="pill">cargando</span>
+          <button id="installButton" class="ghost-button" hidden>Instalar</button>
+        </div>
+      </header>
+
+      <main>
+        <section class="summary-band">
+          <div class="summary-copy">
+            <p class="eyebrow">Modelo vivo con datos abiertos</p>
+            <h1>Pronosticos recalculados con cada resultado disponible</h1>
+            <p>
+              Exploracion publica para estudiantes de estadistica: planteles,
+              partidos, resultados y posterior bayesiano de goles por equipo.
+            </p>
+          </div>
+          <div id="kpiGrid" class="kpi-grid" aria-live="polite"></div>
+        </section>
+
+        <section class="controls-band" aria-label="Filtros">
+          <select id="groupFilter"></select>
+          <select id="teamFilter"></select>
+          <select id="matchStatusFilter">
+            <option value="all">Todos los estados</option>
+            <option value="scheduled">Pendientes</option>
+            <option value="final">Finalizados</option>
+          </select>
+          <input id="searchInput" type="search" placeholder="Buscar equipo, jugador, sede" />
+          <button id="resetFilters" class="secondary-button">Limpiar</button>
+        </section>
+
+        <nav class="tabs" aria-label="Vistas principales">
+          <button class="tab-button active" data-target="resumen">Resumen</button>
+          <button class="tab-button" data-target="equipos">Equipos</button>
+          <button class="tab-button" data-target="jugadores">Jugadores</button>
+          <button class="tab-button" data-target="partidos">Partidos</button>
+          <button class="tab-button" data-target="modelo">Modelo</button>
+          <button class="tab-button" data-target="auditoria">Auditoria</button>
+        </nav>
+
+        <p id="fatalError" class="fatal-error" hidden></p>
+
+        <section id="resumen" class="view active">
+          <div class="content-grid two">
+            <section class="panel">
+              <header class="panel-header">
+                <h2>Favoritos relativos</h2>
+                <span>indice academico</span>
+              </header>
+              <div id="contenders" class="rank-list"></div>
+            </section>
+            <section class="panel">
+              <header class="panel-header">
+                <h2>Tablas por grupo</h2>
+                <span>incluye resultados</span>
+              </header>
+              <div id="standings" class="standings-grid"></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="equipos" class="view">
+          <div id="teamsGrid" class="team-grid"></div>
+        </section>
+
+        <section id="jugadores" class="view">
+          <section class="panel">
+            <header class="panel-header">
+              <h2>Planteles</h2>
+              <span id="playersCount">0 visibles</span>
+            </header>
+            <div class="table-wrap tall">
+              <table>
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>Jugador</th>
+                    <th>Equipo</th>
+                    <th>Pos.</th>
+                    <th>Edad</th>
+                    <th>Caps</th>
+                    <th>Goles</th>
+                  </tr>
+                </thead>
+                <tbody id="playersTable"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section id="partidos" class="view">
+          <section class="panel">
+            <header class="panel-header">
+              <h2>Calendario, resultados y pronostico</h2>
+              <span id="matchesCount">0 partidos</span>
+            </header>
+            <div class="table-wrap tall">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Partido</th>
+                    <th>Fase</th>
+                    <th>Sede</th>
+                    <th>Marcador</th>
+                    <th>Prob. 1 · X · 2</th>
+                  </tr>
+                </thead>
+                <tbody id="matchesTable"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section id="modelo" class="view">
+          <div class="content-grid two">
+            <section class="panel">
+              <header class="panel-header">
+                <h2>Laboratorio bayesiano</h2>
+                <span>Gamma-Poisson</span>
+              </header>
+              <div class="model-controls">
+                <label>
+                  Equipo A
+                  <select id="teamA"></select>
+                </label>
+                <label>
+                  Equipo B
+                  <select id="teamB"></select>
+                </label>
+              </div>
+              <div id="modelResult"></div>
+            </section>
+            <section class="panel">
+              <header class="panel-header">
+                <h2>Metodologia</h2>
+                <span>supuestos y limites</span>
+              </header>
+              <div id="methodology" class="methodology"></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="auditoria" class="view">
+          <div class="content-grid two">
+            <section class="panel">
+              <header class="panel-header">
+                <h2>Fuentes y trazabilidad</h2>
+                <span>version reproducible</span>
+              </header>
+              <div id="sourcePanel" class="source-panel"></div>
+            </section>
+            <section class="panel">
+              <header class="panel-header">
+                <h2>Backend</h2>
+                <span id="backendStatus">pendiente</span>
+              </header>
+              <form class="login-box">
+                <label>
+                  Usuario
+                  <input type="text" autocomplete="username" placeholder="viewer" disabled />
+                </label>
+                <label>
+                  Rol
+                  <input type="text" value="publico" disabled />
+                </label>
+                <p>
+                  La vista publica no requiere credenciales. Las acciones de
+                  sincronizacion y administracion quedan restringidas al GAS y
+                  a la hoja operativa.
+                </p>
+              </form>
+            </section>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>v0.1.0 · 2026-06-12</span>
+        <a href="docs/metodologia_bayesiana.md">metodologia</a>
+        <a href="docs/diccionario_datos.md">diccionario</a>
+      </footer>
+    </div>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/model.js"></script>
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/app.js"></script>
+  </body>
+</html>
+

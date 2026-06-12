@@ -1,0 +1,12 @@
+*.gsheet
+desktop.ini
+.env
+.env.*
+.clasp-token.json
+node_modules/
+data/raw/
+logs/
+tmp/
+tmp_server_pid.txt
+__pycache__/
+.pytest_cache/

@@ -1,0 +1,623 @@
+:root {
+  color-scheme: light;
+  --bg: #f5f7f6;
+  --surface: #ffffff;
+  --surface-2: #eef5f1;
+  --ink: #172422;
+  --muted: #62736e;
+  --line: #d9e3df;
+  --primary: #0f5a4a;
+  --primary-2: #0b3d35;
+  --accent: #d29b2d;
+  --blue: #2e75b6;
+  --red: #b84545;
+  --shadow: 0 18px 48px rgba(20, 42, 36, 0.12);
+  --radius: 8px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.45;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+button,
+select,
+input {
+  font: inherit;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.93);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(16px);
+}
+
+.brand,
+.topbar-status,
+.panel-header,
+.rank-row,
+.team-card header,
+.footer {
+  display: flex;
+  align-items: center;
+}
+
+.brand {
+  gap: 12px;
+}
+
+.brand strong {
+  display: block;
+  font-size: 1rem;
+}
+
+.brand small,
+small,
+.panel-header span,
+.team-card span,
+.muted {
+  color: var(--muted);
+}
+
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 32%, #ffffff 0 10%, transparent 11%),
+    linear-gradient(135deg, var(--accent), var(--primary));
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.65);
+  flex: 0 0 auto;
+}
+
+.topbar-status {
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 10px;
+  background: var(--surface);
+  color: var(--primary-2);
+  font-size: 0.85rem;
+}
+
+.pill.offline {
+  color: var(--red);
+  border-color: rgba(184, 69, 69, 0.35);
+}
+
+main {
+  width: min(1440px, 100%);
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.summary-band {
+  min-height: 300px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+  align-items: end;
+  gap: 28px;
+  padding: 34px;
+  background:
+    linear-gradient(90deg, rgba(8, 34, 31, 0.88), rgba(9, 56, 48, 0.48)),
+    url("../img/forecast-pitch.png") center / cover;
+  color: #ffffff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.summary-copy {
+  max-width: 760px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #f2c96b;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  font-size: 0.78rem;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  max-width: 820px;
+  margin-bottom: 12px;
+  font-size: 4rem;
+  line-height: 0.98;
+  letter-spacing: 0;
+}
+
+.summary-copy p:last-child {
+  max-width: 660px;
+  margin-bottom: 0;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 1.05rem;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.kpi {
+  min-height: 110px;
+  padding: 18px;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.kpi span {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.kpi strong {
+  font-size: 2.35rem;
+  line-height: 1;
+}
+
+.controls-band {
+  display: grid;
+  grid-template-columns: 180px 220px 180px minmax(220px, 1fr) auto;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+select,
+input {
+  min-height: 42px;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0 12px;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+button {
+  min-height: 42px;
+  border: 0;
+  border-radius: var(--radius);
+  padding: 0 14px;
+  background: var(--primary);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(0.96);
+}
+
+.secondary-button,
+.ghost-button {
+  background: var(--surface);
+  color: var(--primary);
+  border: 1px solid var(--line);
+}
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 4px 0 18px;
+}
+
+.tab-button {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.tab-button.active {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+.content-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.content-grid.two {
+  grid-template-columns: minmax(360px, 0.8fr) minmax(0, 1.2fr);
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 28px rgba(18, 38, 34, 0.06);
+  overflow: hidden;
+}
+
+.panel-header {
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.panel-header h2 {
+  margin-bottom: 0;
+  font-size: 1rem;
+}
+
+.rank-list {
+  display: grid;
+}
+
+.rank-row {
+  justify-content: space-between;
+  gap: 18px;
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.rank-row:last-child {
+  border-bottom: 0;
+}
+
+.rank-row > div:last-child {
+  width: 150px;
+  text-align: right;
+}
+
+.rank {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 26px;
+  height: 26px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.bar {
+  height: 8px;
+  margin-top: 6px;
+  border-radius: 999px;
+  background: #e6ece9;
+  overflow: hidden;
+}
+
+.bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+.standings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 12px;
+  padding: 12px;
+}
+
+.table-block {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.table-block h3 {
+  margin: 0;
+  padding: 10px 12px;
+  background: var(--surface-2);
+  font-size: 0.92rem;
+}
+
+.table-wrap {
+  width: 100%;
+  overflow: auto;
+}
+
+.table-wrap.tall {
+  max-height: 68vh;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+th,
+td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #f0f5f3;
+  color: #394945;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+td small {
+  display: block;
+  margin-top: 2px;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.team-card {
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 26px rgba(18, 38, 34, 0.06);
+}
+
+.team-card header {
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.team-card dl {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.team-card dt {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.team-card dd {
+  margin: 0;
+  font-weight: 800;
+  font-size: 1.08rem;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  border-radius: 999px;
+  padding: 3px 9px;
+  background: #eef1f0;
+  color: var(--muted);
+}
+
+.status.final {
+  background: #e7f4ed;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.model-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 16px 18px 0;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+#modelResult {
+  padding: 18px;
+}
+
+.prob-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.prob-grid article {
+  min-height: 96px;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.prob-grid span {
+  display: block;
+  color: var(--muted);
+}
+
+.prob-grid strong {
+  display: block;
+  margin-top: 12px;
+  font-size: 1.45rem;
+}
+
+.score-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.score-grid span {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.methodology,
+.source-panel,
+.login-box {
+  padding: 18px;
+}
+
+.methodology p,
+.methodology li,
+.source-panel p,
+.login-box p {
+  color: #40504c;
+}
+
+.source-panel p {
+  display: grid;
+  gap: 4px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}
+
+.login-box {
+  display: grid;
+  gap: 12px;
+}
+
+.fatal-error {
+  padding: 16px;
+  border-radius: var(--radius);
+  background: #fff1f1;
+  color: var(--red);
+  border: 1px solid rgba(184, 69, 69, 0.25);
+}
+
+.footer {
+  justify-content: center;
+  gap: 18px;
+  padding: 26px 16px 40px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.loading main {
+  opacity: 0.78;
+}
+
+@media (max-width: 980px) {
+  .summary-band,
+  .content-grid.two {
+    grid-template-columns: 1fr;
+  }
+
+  .controls-band {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .topbar {
+    position: static;
+    align-items: flex-start;
+    padding: 12px 14px;
+  }
+
+  main {
+    padding: 14px;
+  }
+
+  .summary-band {
+    min-height: auto;
+    padding: 22px;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  .kpi strong {
+    font-size: 1.8rem;
+  }
+
+  .kpi-grid,
+  .controls-band,
+  .prob-grid,
+  .model-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .rank-row,
+  .topbar,
+  .footer {
+    flex-direction: column;
+  }
+
+  .rank-row {
+    align-items: stretch;
+  }
+
+  .rank-row > div:last-child {
+    width: 100%;
+    text-align: left;
+  }
+}

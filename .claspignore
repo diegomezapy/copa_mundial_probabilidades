@@ -1,0 +1,10 @@
+**/**
+!appsscript.json
+!*.gs
+!gas/appsscript.json
+!gas/*.gs
+desktop.ini
+**/desktop.ini
+.claspignore
+gas/.claspignore
+
