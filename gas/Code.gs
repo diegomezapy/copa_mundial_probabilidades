@@ -15,6 +15,10 @@ function doGet(e) {
       audit_('public', 'bootstrap', 'Public data delivered from GitHub cache', data.metadata.data_version);
       return respond_({ ok: true, data: data }, params.callback);
     }
+    if (action === 'visit') {
+      var visit = recordVisit_(params, e);
+      return respond_({ ok: true, visit: visit }, params.callback);
+    }
     if (action === 'sync') {
       requireAdminToken_(params.token);
       var result = syncFromGithub();
@@ -48,4 +52,3 @@ function loadPublishedData_() {
   }
   return JSON.parse(response.getContentText());
 }
-

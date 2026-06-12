@@ -13,7 +13,19 @@ partir de datos abiertos y un modelo bayesiano explicable.
 - Partidos: calendario, resultados y probabilidades 1-X-2.
 - Evidencia: historia por pais, Copa, partidos, mano a mano y goleadores.
 - Modelo: laboratorio para comparar dos equipos.
+- Visitas: perfil registrado y estadisticas locales de uso.
+- Referencias: derechos de uso de datos, fuentes y paginas de interes.
 - Auditoria: fuentes, version de datos y estado del backend.
+
+## Registro
+
+La primera entrada solicita usuario, nombre, pais, perfil e institucion. No se
+solicita password. El perfil queda guardado en el navegador para que el mismo
+usuario pueda volver a ingresar sin credenciales.
+
+El registro es una puerta educativa de personalizacion y trazabilidad local, no
+un mecanismo de seguridad fuerte. Si se usa otro dispositivo o navegador, se
+debe registrar el usuario nuevamente.
 
 ## Filtros
 
@@ -31,6 +43,13 @@ El panel lateral permite combinar:
 Las probabilidades son estimaciones educativas. Cambian cuando se actualizan
 resultados o planteles. No deben interpretarse como certeza ni como consejo de
 apuestas.
+
+## Referencias y derechos
+
+La vista Referencias enlaza las fuentes consultadas y recuerda que las marcas,
+datos y contenidos de terceros pertenecen a sus titulares. Antes de reutilizar
+datos fuera de actividades academicas se deben revisar las condiciones de uso de
+cada fuente enlazada.
 
 ## Uso offline
 

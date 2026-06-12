@@ -1,5 +1,129 @@
 # Bitacora Mundial Probabilidades Copa 2026 Appweb
 
+## 2026-06-12 14:27
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: Proyecto academico publico
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.2.1`
+
+### Objetivo de la intervencion
+
+Agregar registro inicial de usuario sin password, ingreso posterior con perfil
+local, estadisticas de visitas, referencias permanentes, derechos de uso de
+datos y paginas de interes.
+
+### Diagnostico inicial
+
+* La app era publica y no requeria registro.
+* El Web App GAS v0.2.0 seguia devolviendo `403 Prohibido` anonimamente, por lo
+  que no era prudente hacer depender el acceso del backend.
+* La auditoria mostraba fuentes, pero faltaba una seccion didactica separada de
+  referencias, derechos de datos y enlaces de interes.
+
+### Acciones realizadas
+
+* Se agrego puerta de registro inicial con usuario, nombre, pais, perfil,
+  institucion y aceptacion de referencias/derechos.
+* Se implemento ingreso posterior sin password mediante `localStorage`.
+* Se agrego vista `Visitas` con perfil local, visitas totales, primer ingreso,
+  ultimo ingreso, ultima vista y conteo por seccion.
+* Se agrego vista `Referencias` con derechos de uso, trazabilidad y enlaces a
+  fuentes consultadas.
+* Se preparo GAS para recibir `/exec?action=visit` y registrar eventos en la
+  pestana `VISITAS` cuando el Web App quede anonimamente disponible.
+* Se actualizo version frontend, cache, GAS y JSON a `0.2.1`.
+
+### Archivos modificados
+
+* `index.html`
+* `assets/js/app.js`
+* `assets/css/styles.css`
+* `assets/js/config.js`
+* `service-worker.js`
+* `scripts/update_data.py`
+* `data/worldcup2026_latest.json`
+* `data/sources_manifest.json`
+* `gas/Config.gs`
+* `gas/Code.gs`
+* `gas/Auditoria.gs`
+* `README.md`
+* `docs/manual_usuario.md`
+* `docs/manual_tecnico.md`
+* `docs/diccionario_datos.md`
+* `docs/PROMPTS_MUNDIAL_PROBABILIDADES_2026-06-12.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+node --check assets\js\config.js
+node --check assets\js\model.js
+node --check assets\js\data.js
+node --check assets\js\app.js
+node --check service-worker.js
+python -m py_compile scripts\update_data.py scripts\make_assets.py
+python scripts\update_data.py
+```
+
+### Resultados verificados
+
+* JSON local `0.2.1` generado con `data_version=wc26-20260612T182509z`.
+* Cobertura historica conservada: 22 Copas, 964 partidos historicos, 152
+  paises y 536 goleadores.
+* Registro inicial validado en navegador limpio.
+* Ingreso posterior sin password validado al recargar.
+* Vista `Visitas` validada con perfil `estudiante.demo` y conteos locales.
+* Vista `Referencias` validada con 7 enlaces y panel de derechos de datos.
+* Capturas: `tmp/app-visitas-desktop.png`,
+  `tmp/app-referencias-desktop.png`, `tmp/app-registro-mobile.png` y
+  `tmp/app-resumen-mobile-registered.png`.
+
+### Pruebas realizadas
+
+* `node --check`: correcto.
+* `py_compile`: correcto.
+* Playwright local desktop: registro, visitas, referencias y recarga sin
+  password.
+* Playwright local movil: registro y carga de tablero con 12 grupos.
+
+### Errores o incidentes
+
+* La primera espera Playwright uso un selector incorrecto para un elemento
+  `hidden`; se corrigio la prueba usando estado `hidden`.
+* GAS sigue sin poder usarse como dependencia publica hasta resolver el `403`
+  anonimo del Web App.
+
+### Soluciones aplicadas
+
+* Registro sin password como perfil local, evitando recolectar contrasenas.
+* Conteo de visitas local y preparacion de eventos GAS sin activar dependencia
+  mientras no exista endpoint publico validado.
+* Seccion separada de referencias para respetar derechos de uso y facilitar
+  consulta academica.
+
+### Pendientes
+
+* Publicar commit y verificar URL publica `?view=referencias` y `?view=visitas`.
+* Empujar GAS v0.2.1 y versionar.
+* Resolver permisos del Web App GAS para que `/exec?action=health` y
+  `/exec?action=visit` respondan anonimamente.
+* Ejecutar `setupWorkbook()` o sincronizacion equivalente cuando GAS quede
+  operativo para crear la pestana `VISITAS`.
+
+### Riesgos
+
+* El registro local no es autenticacion fuerte y no debe proteger datos
+  sensibles.
+* Las estadisticas de visitas son locales al navegador mientras GAS no este
+  publicado anonimamente.
+* Los derechos de uso dependen de las condiciones vigentes de cada fuente
+  enlazada; deben revisarse antes de reutilizacion externa.
+
 ## 2026-06-12 09:05
 
 ### Proyecto
@@ -40,9 +164,12 @@ atractivo y util en aula.
   ranking historico por pais y tabla de partidos historicos.
 * Se agregaron goleadores historicos a la vista `Jugadores`.
 * Se agrego soporte de URL directa `?view=evidencia`.
-* Se ampliaron pestañas GAS para historico:
+* Se ampliaron pestanas GAS para historico:
   `HISTORICO_COPAS`, `HISTORICO_PAISES`, `HISTORICO_PARTIDOS`,
   `HISTORICO_GOLEADORES`.
+* Se publico el commit `5e5be71` en GitHub Pages.
+* Se subio GAS con `clasp push -f`, se creo version `3` y se desplego el Web
+  App `AKfycbxwEbxIXzqpNoAFw6whSeWczye90udTIVzTnPQypmK-iQ8P2uIK3te6MbB84uWTpUeqCw`.
 
 ### Archivos modificados
 

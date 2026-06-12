@@ -18,9 +18,12 @@ certeza; muestra probabilidades, supuestos, limitaciones y trazabilidad de datos
 
 ## Version actual
 
-`0.2.0` agrega evidencia historica 1930-2022, filtros por Copa, pais, jugador
-y posicion, vista de mano a mano, linea de tiempo, ranking historico por pais,
-partidos historicos filtrables y goleadores historicos.
+`0.2.1` agrega registro inicial sin password, ingreso posterior por perfil
+local, estadisticas de visitas en el navegador y seccion permanente de
+referencias, derechos de uso y paginas de interes. Mantiene la evidencia
+historica 1930-2022, filtros por Copa, pais, jugador y posicion, vista de mano
+a mano, linea de tiempo, ranking historico por pais, partidos historicos
+filtrables y goleadores historicos.
 
 ## Fuentes
 
@@ -67,6 +70,10 @@ Funciones manuales relevantes desde el editor de Apps Script:
 La sincronizacion `syncFromGithub()` tambien crea pestanas historicas:
 `HISTORICO_COPAS`, `HISTORICO_PAISES`, `HISTORICO_PARTIDOS` y
 `HISTORICO_GOLEADORES`.
+
+El backend queda preparado para registrar visitas en la pestana `VISITAS`
+mediante `/exec?action=visit`, pero el frontend no depende de GAS mientras la
+prueba anonima del Web App siga devolviendo `403 Prohibido`.
 
 El endpoint `/exec?action=bootstrap&callback=...` debe verificarse anonimamente
 antes de escribir su URL en `assets/js/config.js`.

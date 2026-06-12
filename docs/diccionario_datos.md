@@ -85,3 +85,14 @@
 | `goals` | Goles detectados en eventos de gol historicos |
 | `years` | Copas donde aparece el jugador |
 | `opponents` | Rivales a los que marco, limitado para interfaz |
+
+## Perfil local y visitas
+
+Estos campos no forman parte del JSON estadistico; se guardan en el navegador
+del usuario.
+
+| Campo | Descripcion |
+| --- | --- |
+| `mundialProbabilidades.user.v1` | Perfil local sin password: id, usuario, nombre, pais, perfil, institucion y fechas de registro/ultimo acceso |
+| `mundialProbabilidades.visits.v1` | Conteos locales: visitas totales, primer ingreso, ultimo ingreso, ultima vista y conteo por seccion |
+| `VISITAS` | Pestana GAS preparada para eventos anonimos si el Web App queda publicamente disponible |

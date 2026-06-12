@@ -10,11 +10,48 @@
       cup: "all",
       playerPosition: "all"
     },
-    filtersReady: false
+    filtersReady: false,
+    user: null,
+    visits: null,
+    appStarted: false
   };
 
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+  const USER_STORAGE_KEY = "mundialProbabilidades.user.v1";
+  const VISIT_STORAGE_KEY = "mundialProbabilidades.visits.v1";
+
+  function readJsonStorage(key, fallback) {
+    try {
+      const value = localStorage.getItem(key);
+      return value ? JSON.parse(value) : fallback;
+    } catch (error) {
+      console.warn("storage read failed", key, error);
+      return fallback;
+    }
+  }
+
+  function writeJsonStorage(key, value) {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.warn("storage write failed", key, error);
+    }
+  }
+
+  function createId(prefix) {
+    if (window.crypto?.randomUUID) return `${prefix}-${window.crypto.randomUUID()}`;
+    return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+  }
+
+  function cleanUserName(value) {
+    return String(value || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, ".")
+      .replace(/[^a-z0-9._-]/g, "")
+      .slice(0, 40);
+  }
 
   function escapeHtml(value) {
     return String(value ?? "")
@@ -43,6 +80,161 @@
       hour: "2-digit",
       minute: "2-digit"
     });
+  }
+
+  function loadUserProfile() {
+    return readJsonStorage(USER_STORAGE_KEY, null);
+  }
+
+  function saveUserProfile(profile) {
+    state.user = profile;
+    writeJsonStorage(USER_STORAGE_KEY, profile);
+    renderUserButton();
+  }
+
+  function defaultVisitStats(now) {
+    return {
+      total_visits: 0,
+      first_visit_at: now,
+      last_visit_at: now,
+      last_view: "resumen",
+      view_counts: {},
+      sessions: []
+    };
+  }
+
+  function loadVisitStats() {
+    return readJsonStorage(VISIT_STORAGE_KEY, defaultVisitStats(new Date().toISOString()));
+  }
+
+  function saveVisitStats(stats) {
+    state.visits = stats;
+    writeJsonStorage(VISIT_STORAGE_KEY, stats);
+  }
+
+  function sendVisitEvent(action, view) {
+    if (!window.APP_CONFIG.gasExecUrl || !state.user) return;
+    const callback = `visitCb_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    const params = new URLSearchParams({
+      action: "visit",
+      callback,
+      user_id: state.user.id,
+      usuario: state.user.username,
+      perfil: state.user.role,
+      pais: state.user.country || "",
+      institucion: state.user.institution || "",
+      event: action,
+      view: view || "",
+      app_version: window.APP_CONFIG.appVersion,
+      data_version: state.data?.metadata?.data_version || "",
+      user_agent: navigator.userAgent.slice(0, 180)
+    });
+    const script = document.createElement("script");
+    const cleanup = () => {
+      delete window[callback];
+      script.remove();
+    };
+    window[callback] = cleanup;
+    script.onerror = cleanup;
+    script.src = `${window.APP_CONFIG.gasExecUrl}?${params.toString()}`;
+    document.head.appendChild(script);
+  }
+
+  function beginVisitSession() {
+    const now = new Date().toISOString();
+    const stats = loadVisitStats();
+    stats.total_visits = Number(stats.total_visits || 0) + 1;
+    stats.first_visit_at = stats.first_visit_at || now;
+    stats.last_visit_at = now;
+    stats.sessions = Array.isArray(stats.sessions) ? stats.sessions.slice(-19) : [];
+    stats.sessions.push({ at: now, app_version: window.APP_CONFIG.appVersion });
+    saveVisitStats(stats);
+    if (state.user) {
+      state.user.last_seen_at = now;
+      state.user.visit_count = stats.total_visits;
+      saveUserProfile(state.user);
+    }
+    sendVisitEvent("session_start", stats.last_view || "resumen");
+  }
+
+  function trackView(target) {
+    if (!state.visits || !target) return;
+    state.visits.view_counts = state.visits.view_counts || {};
+    state.visits.view_counts[target] = Number(state.visits.view_counts[target] || 0) + 1;
+    state.visits.last_view = target;
+    state.visits.last_visit_at = new Date().toISOString();
+    saveVisitStats(state.visits);
+    sendVisitEvent("view", target);
+    if (state.data) renderVisitStats();
+  }
+
+  function renderUserButton() {
+    const button = $("#userButton");
+    if (!button) return;
+    button.textContent = state.user?.username ? `Usuario: ${state.user.username}` : "Registrarse";
+  }
+
+  function showAuthGate(prefill) {
+    const gate = $("#authGate");
+    const form = $("#registrationForm");
+    const profile = prefill ? state.user || loadUserProfile() : null;
+    if (profile) {
+      form.usuario.value = profile.username || "";
+      form.nombre.value = profile.name || "";
+      form.pais.value = profile.country || "";
+      form.perfil.value = profile.role || "estudiante";
+      form.institucion.value = profile.institution || "";
+      $("#acceptDataRights").checked = true;
+    } else {
+      form.reset();
+      form.perfil.value = "estudiante";
+    }
+    $("#authError").hidden = true;
+    gate.hidden = false;
+    $("#appShell").classList.add("access-locked");
+    setTimeout(() => $("#registerUser").focus(), 0);
+  }
+
+  function hideAuthGate() {
+    $("#authGate").hidden = true;
+    $("#appShell").classList.remove("access-locked");
+  }
+
+  function handleRegistration(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const now = new Date().toISOString();
+    const username = cleanUserName(form.usuario.value);
+    const name = String(form.nombre.value || "").trim();
+    const accepted = $("#acceptDataRights").checked;
+    if (!username || !name || !accepted) {
+      $("#authError").textContent = "Completa usuario, nombre y aceptacion de referencias/derechos.";
+      $("#authError").hidden = false;
+      return;
+    }
+    const previous = state.user || loadUserProfile();
+    const profile = {
+      id: previous?.id || createId("usr"),
+      username,
+      name,
+      country: String(form.pais.value || "").trim(),
+      role: form.perfil.value,
+      institution: String(form.institucion.value || "").trim(),
+      created_at: previous?.created_at || now,
+      last_seen_at: now,
+      accepted_terms_at: previous?.accepted_terms_at || now,
+      accepted_terms_version: window.APP_CONFIG.appVersion,
+      visit_count: state.visits?.total_visits || previous?.visit_count || 0
+    };
+    saveUserProfile(profile);
+    hideAuthGate();
+    if (!state.visits) beginVisitSession();
+    if (state.appStarted) {
+      renderVisitStats();
+      renderUserButton();
+    } else {
+      startApp();
+    }
   }
 
   function bar(value, label) {
@@ -709,11 +901,117 @@
   function renderSourcePanel() {
     const sources = state.data.sources;
     $("#sourcePanel").innerHTML = `
-      <p><strong>OpenFootball</strong><span>${escapeHtml(sources.openfootball_worldcup_json.url)}</span></p>
-      <p><strong>Squads</strong><span>${escapeHtml(sources.wikipedia_squads.url)}</span></p>
-      <p><strong>Referencia oficial</strong><span>${escapeHtml(sources.official_reference.url)}</span></p>
+      <p><strong>OpenFootball</strong><a href="${escapeHtml(sources.openfootball_worldcup_json.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sources.openfootball_worldcup_json.url)}</a></p>
+      <p><strong>Squads</strong><a href="${escapeHtml(sources.wikipedia_squads.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sources.wikipedia_squads.url)}</a></p>
+      <p><strong>Referencia oficial</strong><a href="${escapeHtml(sources.official_reference.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sources.official_reference.url)}</a></p>
+      <p><strong>Archivo FIFA</strong><a href="${escapeHtml(sources.fifa_archive.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sources.fifa_archive.url)}</a></p>
       <p><strong>Hoja operativa</strong><span>${escapeHtml(window.APP_CONFIG.spreadsheetId)}</span></p>
     `;
+  }
+
+  function renderVisitStats() {
+    if (!state.visits) return;
+    const profile = state.user || {};
+    const stats = state.visits;
+    const viewCounts = stats.view_counts || {};
+    const viewLabels = {
+      resumen: "Resumen",
+      equipos: "Equipos",
+      jugadores: "Jugadores",
+      partidos: "Partidos",
+      evidencia: "Evidencia",
+      modelo: "Modelo",
+      visitas: "Visitas",
+      referencias: "Referencias",
+      auditoria: "Auditoria"
+    };
+    $("#visitorStatus").textContent = profile.role ? `${profile.role} · sin password` : "perfil local";
+    $("#visitSummary").textContent = `${stats.total_visits || 0} visitas`;
+    $("#visitorProfile").innerHTML = `
+      <div class="profile-card">
+        <strong>${escapeHtml(profile.name || "Usuario")}</strong>
+        <span>${escapeHtml(profile.username || "sin usuario")}</span>
+        <dl>
+          <div><dt>Perfil</dt><dd>${escapeHtml(profile.role || "s/d")}</dd></div>
+          <div><dt>Pais</dt><dd>${escapeHtml(profile.country || "s/d")}</dd></div>
+          <div><dt>Institucion</dt><dd>${escapeHtml(profile.institution || "s/d")}</dd></div>
+          <div><dt>Registro</dt><dd>${fullDateTime(profile.created_at)}</dd></div>
+        </dl>
+        <div class="profile-actions">
+          <button type="button" id="editRegistration" class="secondary-button">Editar registro</button>
+          <button type="button" id="clearRegistration" class="ghost-button">Nuevo usuario</button>
+        </div>
+      </div>
+    `;
+    $("#visitStats").innerHTML = `
+      <article><span>Visitas</span><strong>${stats.total_visits || 0}</strong></article>
+      <article><span>Primer ingreso</span><strong>${fullDateTime(stats.first_visit_at)}</strong></article>
+      <article><span>Ultimo ingreso</span><strong>${fullDateTime(stats.last_visit_at)}</strong></article>
+      <article><span>Ultima vista</span><strong>${escapeHtml(viewLabels[stats.last_view] || stats.last_view || "Resumen")}</strong></article>
+    `;
+    const rows = Object.entries(viewLabels).map(([key, label]) => ({
+      key,
+      label,
+      count: Number(viewCounts[key] || 0)
+    }));
+    const maxCount = Math.max(1, ...rows.map((row) => row.count));
+    $("#viewStats").innerHTML = rows
+      .map(
+        (row) => `
+          <article class="view-stat">
+            <strong>${escapeHtml(row.label)}</strong>
+            <span>${row.count}</span>
+            <div class="bar"><span style="width:${Math.round((row.count / maxCount) * 100)}%"></span></div>
+          </article>
+        `
+      )
+      .join("");
+  }
+
+  function renderReferences() {
+    const sources = state.data.sources;
+    const historicalCount = Array.isArray(sources.openfootball_historical_worldcups)
+      ? sources.openfootball_historical_worldcups.length
+      : 0;
+    const links = [
+      ["FIFA World Cup 2026", sources.official_reference.url],
+      ["Archivo historico FIFA", sources.fifa_archive.url],
+      ["OpenFootball World Cup JSON", "https://github.com/openfootball/worldcup.json"],
+      ["OpenFootball 2026 JSON", sources.openfootball_worldcup_json.url],
+      ["Wikipedia squads 2026", sources.wikipedia_squads.url],
+      ["Repositorio del proyecto", window.APP_CONFIG.githubRepo],
+      ["Hoja operativa Google Sheets", `https://docs.google.com/spreadsheets/d/${window.APP_CONFIG.spreadsheetId}/edit`]
+    ];
+    $("#rightsPanel").innerHTML = `
+      <div class="rights-list">
+        <article>
+          <strong>Uso academico</strong>
+          <p>La app es un material didactico de estadistica; no es una herramienta de apuestas ni una fuente oficial de resultados.</p>
+        </article>
+        <article>
+          <strong>Trazabilidad</strong>
+          <p>Cada generacion conserva URL, fecha de descarga, bytes y hash SHA-256 en el manifest publico.</p>
+        </article>
+        <article>
+          <strong>Derechos de datos</strong>
+          <p>Las marcas, nombres de torneos y contenidos de terceros pertenecen a sus titulares. Antes de reutilizar datos fuera del aula se deben revisar las condiciones de cada fuente enlazada.</p>
+        </article>
+        <article>
+          <strong>Cobertura historica</strong>
+          <p>Se procesan ${historicalCount} archivos historicos estructurados de OpenFootball y se enlaza el archivo FIFA como referencia oficial de consulta.</p>
+        </article>
+      </div>
+    `;
+    $("#linksPanel").innerHTML = links
+      .map(
+        ([label, url]) => `
+          <a class="link-card" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">
+            <strong>${escapeHtml(label)}</strong>
+            <span>${escapeHtml(url)}</span>
+          </a>
+        `
+      )
+      .join("");
   }
 
   function renderAll() {
@@ -732,11 +1030,14 @@
     renderModelLab();
     renderMethod();
     renderSourcePanel();
+    renderVisitStats();
+    renderReferences();
   }
 
-  function activateView(target) {
+  function activateView(target, options = {}) {
     $$(".tab-button").forEach((item) => item.classList.toggle("active", item.dataset.target === target));
     $$(".view").forEach((view) => view.classList.toggle("active", view.id === target));
+    if (options.track !== false) trackView(target);
   }
 
   function bindNavigation() {
@@ -749,6 +1050,24 @@
         window.history.replaceState({}, "", url);
       });
     });
+    $("#userButton").addEventListener("click", () => showAuthGate(true));
+    document.addEventListener("click", (event) => {
+      if (event.target.closest("#editRegistration")) {
+        showAuthGate(true);
+      }
+      if (event.target.closest("#clearRegistration")) {
+        localStorage.removeItem(USER_STORAGE_KEY);
+        localStorage.removeItem(VISIT_STORAGE_KEY);
+        state.user = null;
+        state.visits = null;
+        renderUserButton();
+        showAuthGate(false);
+      }
+    });
+  }
+
+  function bindAuth() {
+    $("#registrationForm").addEventListener("submit", handleRegistration);
   }
 
   function bindFilters() {
@@ -838,24 +1157,42 @@
     }
   }
 
-  async function init() {
-    bindNavigation();
-    bindFilters();
-    bindInstall();
-    bindOnlineStatus();
-    await registerServiceWorker();
+  async function startApp() {
+    if (state.appStarted) return;
+    state.appStarted = true;
     try {
       const loaded = await window.WorldCupData.loadWorldCupData();
       state.data = loaded.data;
       state.status = loaded.status;
       renderAll();
       const requestedView = new URLSearchParams(window.location.search).get("view");
-      if (requestedView && document.getElementById(requestedView)) activateView(requestedView);
+      const target = requestedView && document.getElementById(requestedView) ? requestedView : state.visits?.last_view || "resumen";
+      if (document.getElementById(target)) activateView(target, { track: false });
+      trackView(target);
       $("#appShell").classList.remove("loading");
     } catch (error) {
       $("#fatalError").hidden = false;
       $("#fatalError").textContent = `No se pudieron cargar los datos publicos: ${error.message}`;
     }
+  }
+
+  async function init() {
+    bindNavigation();
+    bindAuth();
+    bindFilters();
+    bindInstall();
+    bindOnlineStatus();
+    await registerServiceWorker();
+    state.user = loadUserProfile();
+    renderUserButton();
+    if (!state.user) {
+      showAuthGate(false);
+      $("#appShell").classList.remove("loading");
+      return;
+    }
+    beginVisitSession();
+    hideAuthGate();
+    await startApp();
   }
 
   document.addEventListener("DOMContentLoaded", init);

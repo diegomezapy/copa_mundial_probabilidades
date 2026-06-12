@@ -27,6 +27,17 @@ pronosticos bayesianos de la Copa Mundial 2026.
 7. GitHub Pages consume el JSON.
 8. GAS puede ejecutar `syncFromGithub()` para copiar el mismo estado a Sheets.
 
+## Registro y visitas
+
+El frontend usa `localStorage` para guardar un perfil local sin password bajo
+`mundialProbabilidades.user.v1`. El objetivo es personalizacion, conteo de
+visitas y trazabilidad educativa, no autenticacion fuerte.
+
+Las estadisticas locales se guardan en `mundialProbabilidades.visits.v1`:
+visitas totales, primer ingreso, ultimo ingreso y conteo por vista. Si
+`APP_CONFIG.gasExecUrl` se configura con un Web App anonimo realmente operativo,
+el frontend puede enviar eventos JSONP con `action=visit`.
+
 ## Pestañas historicas en Sheets
 
 `syncFromGithub()` crea y actualiza:
@@ -35,6 +46,7 @@ pronosticos bayesianos de la Copa Mundial 2026.
 - `HISTORICO_PAISES`
 - `HISTORICO_PARTIDOS`
 - `HISTORICO_GOLEADORES`
+- `VISITAS`
 
 ## Validaciones minimas
 
@@ -57,3 +69,5 @@ Luego verificar en navegador:
 No se publican tokens ni credenciales en el frontend. La vista publica solo lee
 JSON abierto. Las acciones de sincronizacion sobre Sheets deben ejecutarse desde
 Apps Script autorizado o con token administrativo guardado en Script Properties.
+El registro sin password no debe usarse para proteger datos sensibles; solo
+habilita una experiencia publica personalizada.

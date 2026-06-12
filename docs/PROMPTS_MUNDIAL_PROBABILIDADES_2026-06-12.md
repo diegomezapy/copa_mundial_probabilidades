@@ -28,3 +28,12 @@ modelos multivariados de pronostico y modelos bayesianos.
 - PWA con cache offline para consulta.
 - GAS preparado para sincronizar JSON desde GitHub hacia Sheets.
 
+## Solicitudes posteriores
+
+- Agregar panel lateral de filtros y tablero estadistico mas atractivo y
+  didactico para estudiantes y ninos.
+- Enriquecer la app con evidencia historica, estadisticas filtrables por pais,
+  Copas pasadas, jugadores y otras fuentes de interes.
+- Solicitar registro inicial de cada usuario, permitir ingreso posterior sin
+  password, mostrar estadisticas de visitas y mantener una seccion permanente
+  de referencias, derechos de uso de datos y paginas de interes.

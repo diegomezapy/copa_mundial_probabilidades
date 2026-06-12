@@ -14,6 +14,55 @@
     <link rel="stylesheet" href="assets/css/styles.css" />
   </head>
   <body>
+    <section id="authGate" class="auth-gate" hidden>
+      <div class="auth-panel">
+        <div class="auth-copy">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <p class="eyebrow">Acceso academico</p>
+          <h1>Copa Mundial 2026</h1>
+          <p>
+            Registro inicial para personalizar la experiencia, contar visitas
+            locales y dejar trazabilidad basica de uso.
+          </p>
+        </div>
+        <form id="registrationForm" class="auth-form">
+          <label>
+            Usuario
+            <input id="registerUser" name="usuario" type="text" autocomplete="username" required maxlength="40" placeholder="nombre.apellido" />
+          </label>
+          <label>
+            Nombre
+            <input id="registerName" name="nombre" type="text" autocomplete="name" required maxlength="80" placeholder="Nombre y apellido" />
+          </label>
+          <div class="form-grid">
+            <label>
+              Pais
+              <input id="registerCountry" name="pais" type="text" autocomplete="country-name" maxlength="60" placeholder="Paraguay" />
+            </label>
+            <label>
+              Perfil
+              <select id="registerRole" name="perfil">
+                <option value="estudiante">Estudiante</option>
+                <option value="docente">Docente</option>
+                <option value="visitante">Visitante</option>
+                <option value="investigador">Investigador</option>
+              </select>
+            </label>
+          </div>
+          <label>
+            Institucion
+            <input id="registerInstitution" name="institucion" type="text" maxlength="90" placeholder="Escuela, colegio, universidad" />
+          </label>
+          <label class="check-line">
+            <input id="acceptDataRights" type="checkbox" required />
+            <span>Acepto usar la app con fines academicos y revisar las referencias y derechos de uso de datos.</span>
+          </label>
+          <p id="authError" class="form-error" hidden></p>
+          <button type="submit">Ingresar</button>
+        </form>
+      </div>
+    </section>
+
     <div id="appShell" class="app-shell loading">
       <header class="topbar">
         <div class="brand">
@@ -26,6 +75,7 @@
         <div class="topbar-status">
           <span id="onlineStatus" class="pill">online</span>
           <span id="dataStatus" class="pill">cargando</span>
+          <button id="userButton" class="ghost-button" type="button">Usuario</button>
           <button id="installButton" class="ghost-button" hidden>Instalar</button>
         </div>
       </header>
@@ -109,6 +159,8 @@
               <button class="tab-button" data-target="partidos">Partidos</button>
               <button class="tab-button" data-target="evidencia">Evidencia</button>
               <button class="tab-button" data-target="modelo">Modelo</button>
+              <button class="tab-button" data-target="visitas">Visitas</button>
+              <button class="tab-button" data-target="referencias">Referencias</button>
               <button class="tab-button" data-target="auditoria">Auditoria</button>
             </nav>
 
@@ -343,14 +395,60 @@
                 </section>
               </div>
             </section>
+
+            <section id="visitas" class="view">
+              <div class="content-grid two">
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Mi registro</h2>
+                    <span id="visitorStatus">perfil local</span>
+                  </header>
+                  <div id="visitorProfile" class="visitor-profile"></div>
+                </section>
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Estadisticas de visitas</h2>
+                    <span id="visitSummary">0 visitas</span>
+                  </header>
+                  <div id="visitStats" class="visit-grid"></div>
+                </section>
+                <section class="panel span-2">
+                  <header class="panel-header">
+                    <h2>Vistas exploradas</h2>
+                    <span>conteo local</span>
+                  </header>
+                  <div id="viewStats" class="view-stat-list"></div>
+                </section>
+              </div>
+            </section>
+
+            <section id="referencias" class="view">
+              <div class="content-grid two">
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Referencias y derechos de uso</h2>
+                    <span>datos abiertos y trazabilidad</span>
+                  </header>
+                  <div id="rightsPanel" class="rights-panel"></div>
+                </section>
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Paginas de interes</h2>
+                    <span>enlaces consultados</span>
+                  </header>
+                  <div id="linksPanel" class="links-panel"></div>
+                </section>
+              </div>
+            </section>
           </div>
         </section>
       </main>
 
       <footer class="footer">
-        <span>v0.2.0 · 2026-06-12</span>
+        <span>v0.2.1 · 2026-06-12</span>
         <a href="docs/metodologia_bayesiana.md">metodologia</a>
         <a href="docs/diccionario_datos.md">diccionario</a>
+        <a href="?view=referencias">referencias</a>
       </footer>
     </div>
 
