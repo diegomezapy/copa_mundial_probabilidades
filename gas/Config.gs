@@ -1,6 +1,6 @@
 var APP_CONFIG = {
   APP_NAME: 'Copa Mundial 2026 - Probabilidades Bayesianas',
-  APP_VERSION: '0.2.2',
+  APP_VERSION: '0.2.3',
   SPREADSHEET_ID: '1k_zmucPFA9A7pyE7Y6ZZgb-c4K3UTlp6YknpovCv5pQ',
   PUBLIC_DATA_URL: 'https://raw.githubusercontent.com/diegomezapy/copa_mundial_probabilidades/main/data/worldcup2026_latest.json',
   GITHUB_REPO: 'https://github.com/diegomezapy/copa_mundial_probabilidades',
@@ -110,6 +110,19 @@ var SHEET_HEADERS = {
     'app_version',
     'data_version',
     'user_agent'
+  ],
+  PREDICCIONES_USUARIO: [
+    'fecha_hora',
+    'user_id',
+    'usuario',
+    'match_id',
+    'team1',
+    'team2',
+    'goals_home',
+    'goals_away',
+    'confidence',
+    'app_version',
+    'data_version'
   ],
   ERRORES: ['fecha_hora', 'funcion', 'mensaje', 'stack', 'data_version'],
   VERSIONES: ['fecha_hora', 'app_version', 'data_version', 'github_repo', 'public_data_url', 'estado'],

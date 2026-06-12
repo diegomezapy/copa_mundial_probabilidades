@@ -95,4 +95,6 @@ del usuario.
 | --- | --- |
 | `mundialProbabilidades.user.v1` | Perfil local sin password: id, usuario, nombre, pais, perfil, institucion y fechas de registro/ultimo acceso |
 | `mundialProbabilidades.visits.v1` | Conteos locales: visitas totales, primer ingreso, ultimo ingreso, ultima vista y conteo por seccion |
+| `mundialProbabilidades.predictions.v1.<user_id>` | Pronosticos locales por partido: marcador previsto, confianza, version de datos y fecha de actualizacion |
 | `VISITAS` | Pestana GAS preparada para eventos anonimos si el Web App queda publicamente disponible |
+| `PREDICCIONES_USUARIO` | Pestana GAS preparada para pronosticos de usuarios cuando `action=prediction` quede disponible publicamente |

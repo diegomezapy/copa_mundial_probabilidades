@@ -21,6 +21,21 @@
   const $$ = (selector) => Array.from(document.querySelectorAll(selector));
   const USER_STORAGE_KEY = "mundialProbabilidades.user.v1";
   const VISIT_STORAGE_KEY = "mundialProbabilidades.visits.v1";
+  const PREDICTION_STORAGE_KEY = "mundialProbabilidades.predictions.v1";
+  const AUTHORS = [
+    {
+      name: "Diego Gómez Apy",
+      role: "Autor principal",
+      focus: "Ciencia de datos aplicada, appwebs educativas, automatización y modelos bayesianos para aprendizaje estadístico.",
+      note: "Resumen académico operativo dentro de este proyecto; puede ampliarse con CV, filiación y líneas de investigación formales."
+    },
+    {
+      name: "Nicolás Vera",
+      role: "Colaborador",
+      focus: "Apoyo académico y revisión colaborativa para fortalecer la lectura didáctica de datos, pronósticos y evidencia histórica.",
+      note: "Perfil colaborador incorporado a la vista de autores; pendiente de completar con datos académicos oficiales."
+    }
+  ];
 
   function readJsonStorage(key, fallback) {
     try {
@@ -113,6 +128,19 @@
     writeJsonStorage(VISIT_STORAGE_KEY, stats);
   }
 
+  function predictionStorageKey() {
+    const userId = state.user?.id || "anonimo";
+    return `${PREDICTION_STORAGE_KEY}.${userId}`;
+  }
+
+  function loadPredictions() {
+    return readJsonStorage(predictionStorageKey(), {});
+  }
+
+  function savePredictions(predictions) {
+    writeJsonStorage(predictionStorageKey(), predictions);
+  }
+
   function sendVisitEvent(action, view) {
     if (!window.APP_CONFIG.gasExecUrl || !state.user) return;
     const callback = `visitCb_${Date.now()}_${Math.random().toString(36).slice(2)}`;
@@ -129,6 +157,34 @@
       app_version: window.APP_CONFIG.appVersion,
       data_version: state.data?.metadata?.data_version || "",
       user_agent: navigator.userAgent.slice(0, 180)
+    });
+    const script = document.createElement("script");
+    const cleanup = () => {
+      delete window[callback];
+      script.remove();
+    };
+    window[callback] = cleanup;
+    script.onerror = cleanup;
+    script.src = `${window.APP_CONFIG.gasExecUrl}?${params.toString()}`;
+    document.head.appendChild(script);
+  }
+
+  function sendPredictionEvent(match, prediction) {
+    if (!window.APP_CONFIG.gasExecUrl || !state.user) return;
+    const callback = `predictionCb_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    const params = new URLSearchParams({
+      action: "prediction",
+      callback,
+      user_id: state.user.id,
+      usuario: state.user.username,
+      match_id: match.match_id,
+      team1: match.team1,
+      team2: match.team2,
+      goals_home: prediction.goals_home,
+      goals_away: prediction.goals_away,
+      confidence: prediction.confidence,
+      app_version: window.APP_CONFIG.appVersion,
+      data_version: state.data?.metadata?.data_version || ""
     });
     const script = document.createElement("script");
     const cleanup = () => {
@@ -274,6 +330,67 @@
         if (!query) return true;
         return `${match.team1} ${match.team2} ${match.ground} ${match.round}`.toLowerCase().includes(query);
       });
+  }
+
+  function matchOutcomeFromScore(score) {
+    if (!score) return "";
+    if (Number(score.team1) > Number(score.team2)) return "home";
+    if (Number(score.team2) > Number(score.team1)) return "away";
+    return "draw";
+  }
+
+  function predictionOutcome(prediction) {
+    const home = Number(prediction.goals_home);
+    const away = Number(prediction.goals_away);
+    if (home > away) return "home";
+    if (away > home) return "away";
+    return "draw";
+  }
+
+  function predictionLabel(outcome, match) {
+    if (outcome === "home") return match.team1;
+    if (outcome === "away") return match.team2;
+    if (outcome === "draw") return "Empate";
+    return "s/d";
+  }
+
+  function evaluatePrediction(match, prediction) {
+    if (!prediction) return { status: "missing", points: 0, label: "sin pronóstico" };
+    if (match.status !== "final" || !match.score) {
+      return { status: "pending", points: 0, label: "pendiente" };
+    }
+    const predictedOutcome = predictionOutcome(prediction);
+    const actualOutcome = matchOutcomeFromScore(match.score);
+    const exact =
+      Number(prediction.goals_home) === Number(match.score.team1) &&
+      Number(prediction.goals_away) === Number(match.score.team2);
+    if (exact) return { status: "exact", points: 3, label: "marcador exacto" };
+    if (predictedOutcome === actualOutcome) return { status: "sign", points: 1, label: "signo correcto" };
+    return { status: "miss", points: 0, label: "falla" };
+  }
+
+  function predictionRows() {
+    const predictions = loadPredictions();
+    return state.data.matches
+      .filter((match) => match.group)
+      .map((match) => {
+        const prediction = predictions[match.match_id];
+        const evaluation = evaluatePrediction(match, prediction);
+        return { match, prediction, evaluation };
+      })
+      .sort((a, b) => `${a.match.date} ${a.match.time}`.localeCompare(`${b.match.date} ${b.match.time}`));
+  }
+
+  function predictionStats() {
+    const rows = predictionRows();
+    const saved = rows.filter((row) => row.prediction);
+    const evaluated = saved.filter((row) => row.evaluation.status !== "pending");
+    const points = evaluated.reduce((sum, row) => sum + row.evaluation.points, 0);
+    const exact = evaluated.filter((row) => row.evaluation.status === "exact").length;
+    const signs = evaluated.filter((row) => row.evaluation.status === "sign").length;
+    const misses = evaluated.filter((row) => row.evaluation.status === "miss").length;
+    const accuracy = evaluated.length ? (exact + signs) / evaluated.length : 0;
+    return { rows, saved, evaluated, points, exact, signs, misses, accuracy };
   }
 
   function filteredPlayers() {
@@ -958,6 +1075,128 @@
     `;
   }
 
+  function renderAuthorCards() {
+    $("#authorCards").innerHTML = AUTHORS.map(
+      (author) => `
+        <article class="author-card">
+          <span class="author-orbit" aria-hidden="true"></span>
+          <small>${escapeHtml(author.role)}</small>
+          <strong>${escapeHtml(author.name)}</strong>
+          <p>${escapeHtml(author.focus)}</p>
+          <em>${escapeHtml(author.note)}</em>
+        </article>
+      `
+    ).join("");
+  }
+
+  function renderPredictionStats() {
+    const stats = predictionStats();
+    $("#predictionSummary").textContent = `${stats.saved.length} guardados · ${stats.evaluated.length} evaluados`;
+    $("#predictionStats").innerHTML = `
+      <article><span>Puntos</span><strong>${stats.points}</strong></article>
+      <article><span>Aciertos</span><strong>${stats.exact + stats.signs}</strong></article>
+      <article><span>Exactos</span><strong>${stats.exact}</strong></article>
+      <article><span>Precision</span><strong>${WorldCupBayes.pct(stats.accuracy, 0)}</strong></article>
+    `;
+  }
+
+  function renderPredictionBoard() {
+    const stats = predictionStats();
+    const evaluated = stats.rows.filter((row) => row.prediction && row.evaluation.status !== "pending");
+    let cumulative = 0;
+    const maxPoints = Math.max(3, evaluated.length * 3);
+    const timeline = evaluated.map((row, index) => {
+      cumulative += row.evaluation.points;
+      const left = evaluated.length <= 1 ? 50 : (index / (evaluated.length - 1)) * 100;
+      const bottom = (cumulative / maxPoints) * 76 + 8;
+      return { row, cumulative, left, bottom };
+    });
+    $("#predictionBoard").innerHTML = `
+      <div class="score-ribbon">
+        <article><span>Guardados</span><strong>${stats.saved.length}</strong></article>
+        <article><span>Evaluados</span><strong>${stats.evaluated.length}</strong></article>
+        <article><span>Fallas</span><strong>${stats.misses}</strong></article>
+      </div>
+      <div class="accuracy-field">
+        <span class="field-formula">score = exactos*3 + signos</span>
+        <span class="field-axis"></span>
+        ${
+          timeline.length
+            ? timeline
+                .map(
+                  (item) => `
+                    <span class="accuracy-dot ${item.row.evaluation.status}" style="left:${item.left}%;bottom:${item.bottom}%">
+                      <b>${item.cumulative}</b>
+                      <small>${escapeHtml(item.row.match.team1)} vs ${escapeHtml(item.row.match.team2)}</small>
+                    </span>
+                  `
+                )
+                .join("")
+            : `<p class="empty-note">Guardá pronósticos y volvé cuando haya resultados para ver tu curva.</p>`
+        }
+      </div>
+      <div class="result-legend">
+        <span><b class="exact"></b> marcador exacto</span>
+        <span><b class="sign"></b> signo correcto</span>
+        <span><b class="miss"></b> falla</span>
+      </div>
+    `;
+  }
+
+  function renderPredictionMatches() {
+    const rows = predictionRows().slice(0, 36);
+    $("#predictionMatchCount").textContent = `${rows.length} partidos`;
+    $("#predictionMatches").innerHTML = rows
+      .map(({ match, prediction, evaluation }) => {
+        const disabled = match.status === "final" ? "disabled" : "";
+        const homeGoals = prediction?.goals_home ?? "";
+        const awayGoals = prediction?.goals_away ?? "";
+        const confidence = prediction?.confidence ?? 60;
+        const predOutcome = prediction ? predictionOutcome(prediction) : "";
+        const actual = match.score ? `${match.score.team1}-${match.score.team2}` : "pendiente";
+        return `
+          <article class="prediction-card ${evaluation.status}" data-match-id="${escapeHtml(match.match_id)}">
+            <div class="prediction-meta">
+              <span>${shortDate(match.date)} · ${escapeHtml(match.group || match.round)}</span>
+              <b class="prediction-badge ${evaluation.status}">${escapeHtml(evaluation.label)}</b>
+            </div>
+            <div class="prediction-teams">
+              <strong>${escapeHtml(match.team1)}</strong>
+              <span>vs</span>
+              <strong>${escapeHtml(match.team2)}</strong>
+            </div>
+            <div class="prediction-inputs">
+              <label>
+                ${escapeHtml(match.team1)}
+                <input type="number" min="0" max="12" inputmode="numeric" data-pred-field="goals_home" value="${escapeHtml(homeGoals)}" ${disabled} />
+              </label>
+              <label>
+                ${escapeHtml(match.team2)}
+                <input type="number" min="0" max="12" inputmode="numeric" data-pred-field="goals_away" value="${escapeHtml(awayGoals)}" ${disabled} />
+              </label>
+              <label>
+                Confianza
+                <input type="range" min="10" max="100" step="5" data-pred-field="confidence" value="${escapeHtml(confidence)}" ${disabled} />
+              </label>
+            </div>
+            <div class="prediction-footer">
+              <span>Tu signo: ${prediction ? escapeHtml(predictionLabel(predOutcome, match)) : "sin cargar"}</span>
+              <span>Resultado: ${escapeHtml(actual)}</span>
+              <button type="button" data-save-prediction ${disabled}>Guardar</button>
+            </div>
+          </article>
+        `;
+      })
+      .join("");
+  }
+
+  function renderPredictions() {
+    renderPredictionStats();
+    renderPredictionBoard();
+    renderPredictionMatches();
+    renderAuthorCards();
+  }
+
   function renderSourcePanel() {
     const sources = state.data.sources;
     $("#sourcePanel").innerHTML = `
@@ -981,6 +1220,7 @@
       partidos: "Partidos",
       evidencia: "Evidencia",
       modelo: "Modelo",
+      acerta: "Acertá",
       visitas: "Visitas",
       referencias: "Referencias",
       auditoria: "Auditoria"
@@ -1091,6 +1331,7 @@
     renderEvidence();
     renderModelLab();
     renderMethod();
+    renderPredictions();
     renderSourcePanel();
     renderVisitStats();
     renderReferences();
@@ -1124,6 +1365,38 @@
         state.visits = null;
         renderUserButton();
         showAuthGate(false);
+      }
+      const savePrediction = event.target.closest("[data-save-prediction]");
+      if (savePrediction) {
+        const card = savePrediction.closest(".prediction-card");
+        if (!card || !state.data) return;
+        const matchId = card.dataset.matchId;
+        const match = state.data.matches.find((item) => item.match_id === matchId);
+        if (!match || match.status === "final") return;
+        const homeInput = card.querySelector('[data-pred-field="goals_home"]');
+        const awayInput = card.querySelector('[data-pred-field="goals_away"]');
+        const confidenceInput = card.querySelector('[data-pred-field="confidence"]');
+        const home = Number(homeInput.value);
+        const away = Number(awayInput.value);
+        if (!Number.isInteger(home) || !Number.isInteger(away) || home < 0 || away < 0) {
+          card.classList.add("needs-score");
+          return;
+        }
+        const predictions = loadPredictions();
+        const record = {
+          match_id: matchId,
+          team1: match.team1,
+          team2: match.team2,
+          goals_home: home,
+          goals_away: away,
+          confidence: Number(confidenceInput.value || 60),
+          data_version: state.data.metadata.data_version,
+          updated_at: new Date().toISOString()
+        };
+        predictions[matchId] = record;
+        savePredictions(predictions);
+        sendPredictionEvent(match, record);
+        renderPredictions();
       }
     });
   }

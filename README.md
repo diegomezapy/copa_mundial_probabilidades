@@ -18,11 +18,12 @@ certeza; muestra probabilidades, supuestos, limitaciones y trazabilidad de datos
 
 ## Version actual
 
-`0.2.2` agrega una capa visual mas moderna: balon animado en el hero, trazos de
-pase, transiciones de vistas y una ruta del modelo que ordena Datos, Prior,
-Posterior y Pronostico. Mantiene registro inicial sin password, estadisticas de
-visitas, referencias, derechos de uso, evidencia historica 1930-2022 y filtros
-por Copa, pais, jugador y posicion.
+`0.2.3` agrega la vista `Acerta` para que cada usuario guarde sus propios
+pronosticos, vea aciertos, fallas, marcador exacto, evolucion de puntos y
+perfiles de autores. Mantiene la capa visual moderna con balon animado,
+simbolos estadisticos en movimiento, registro inicial sin password,
+estadisticas de visitas, referencias, derechos de uso, evidencia historica
+1930-2022 y filtros por Copa, pais, jugador y posicion.
 
 ## Fuentes
 

@@ -18,10 +18,22 @@ pronosticos bayesianos de la Copa Mundial 2026.
 
 ## Capa visual
 
-La version `0.2.2` incorpora animaciones CSS sin dependencias externas:
-movimiento del balon en el hero, trazos de pase, transiciones de vistas, barras
-animadas y una ruta visual del modelo. Todas las animaciones respetan
-`prefers-reduced-motion` para usuarios que soliciten reducir movimiento.
+La version `0.2.3` mantiene animaciones CSS sin dependencias externas:
+movimiento del balon en el hero, trazos de pase, simbolos estadisticos en
+movimiento, transiciones de vistas, barras animadas y una ruta visual del
+modelo. Todas las animaciones respetan `prefers-reduced-motion` para usuarios
+que soliciten reducir movimiento.
+
+## Pronosticos de usuarios
+
+La vista `Acertá` guarda pronosticos por usuario en `localStorage` bajo
+`mundialProbabilidades.predictions.v1.<user_id>`. Cada registro conserva
+`match_id`, equipos, marcador previsto, confianza, version de datos y fecha de
+actualizacion. La evaluacion se calcula en cliente cuando el partido queda
+`final`: 3 puntos por marcador exacto, 1 por signo correcto y 0 por falla.
+
+El backend GAS queda preparado para recibir `action=prediction` y escribir en
+`PREDICCIONES_USUARIO` cuando el Web App responda anonimamente.
 
 ## Flujo de datos
 

@@ -1,5 +1,127 @@
 # Bitacora Mundial Probabilidades Copa 2026 Appweb
 
+## 2026-06-12 15:05
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: Proyecto academico publico
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.2.3`
+
+### Objetivo de la intervencion
+
+Agregar una experiencia tipo quiniela academica para que cada usuario anote sus
+pronosticos, vea aciertos/fallas y consulte una seccion de autores con perfiles
+academicos operativos.
+
+### Diagnostico inicial
+
+* La app tenia registro local, visitas, evidencia y animaciones, pero faltaba
+  participacion activa del usuario sobre partidos.
+* No hay backend GAS anonimo operativo; por tanto, los pronosticos debian ser
+  locales hasta resolver el `403 Prohibido`.
+* El repo no contiene CV formal de Diego Gomez Apy ni Nicolas Vera; se debia
+  evitar inventar titulos, cargos o filiaciones.
+
+### Acciones realizadas
+
+* Se agrego la vista `Acertá` en la navegacion principal.
+* Se implementaron pronosticos locales por usuario en `localStorage`.
+* Se agrego evaluacion automatica: 3 puntos por marcador exacto, 1 por signo
+  correcto y 0 por falla.
+* Se agrego tablero de evolucion personal, resumen de puntos, aciertos,
+  exactos, precision y lista de partidos para guardar pronosticos.
+* Se agregaron perfiles de autores: Diego Gomez Apy como autor principal y
+  Nicolas Vera como colaborador, con resumen academico operativo editable.
+* Se agregaron simbolos estadisticos animados en el hero.
+* Se preparo GAS para futura accion `prediction` y pestana
+  `PREDICCIONES_USUARIO`.
+* Se actualizo version frontend, cache, GAS y JSON a `0.2.3`.
+
+### Archivos modificados
+
+* `index.html`
+* `assets/js/app.js`
+* `assets/css/styles.css`
+* `assets/js/config.js`
+* `service-worker.js`
+* `scripts/update_data.py`
+* `data/worldcup2026_latest.json`
+* `data/sources_manifest.json`
+* `gas/Config.gs`
+* `gas/Code.gs`
+* `gas/Auditoria.gs`
+* `README.md`
+* `docs/manual_usuario.md`
+* `docs/manual_tecnico.md`
+* `docs/diccionario_datos.md`
+* `docs/PROMPTS_MUNDIAL_PROBABILIDADES_2026-06-12.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+node --check assets\js\config.js
+node --check assets\js\model.js
+node --check assets\js\data.js
+node --check assets\js\app.js
+node --check service-worker.js
+python -m py_compile scripts\update_data.py scripts\make_assets.py
+python scripts\update_data.py
+```
+
+### Resultados verificados
+
+* JSON local `0.2.3` generado con `data_version=wc26-20260612T190050z`.
+* Cobertura historica conservada: 22 Copas, 964 partidos historicos, 152
+  paises y 536 goleadores.
+* Vista `Acertá` local validada con usuario `acerta.final`.
+* Se guardo 1 pronostico local y el resumen mostro `1 guardados · 0 evaluados`.
+* Se verificaron 2 tarjetas de autores, 36 partidos listados, ancho de grilla
+  de 1086 px en escritorio y footer `v0.2.3`.
+* Capturas: `tmp/app-acerta-desktop.png`, `tmp/app-acerta-desktop-v2.png`,
+  `tmp/app-acerta-mobile.png` y `tmp/app-acerta-final-desktop.png`.
+
+### Pruebas realizadas
+
+* `node --check`: correcto.
+* `py_compile`: correcto.
+* Playwright local desktop: registro, vista `Acertá`, guardado de pronostico,
+  autores y grilla de partidos.
+* Playwright local movil: registro, vista `Acertá`, autores y footer.
+
+### Errores o incidentes
+
+* La primera version de `Mis partidos para acertar` ocupaba solo media columna;
+  se corrigio con `content-grid.two > .span-2` y grilla responsive para
+  tarjetas de pronostico.
+
+### Soluciones aplicadas
+
+* Participacion activa sin backend obligatorio.
+* Persistencia local por usuario registrado.
+* Preparacion de endpoint GAS futuro sin activar dependencia publica.
+* Perfiles academicos prudentes, sin credenciales no verificadas.
+
+### Pendientes
+
+* Publicar commit y verificar URL publica con `?view=acerta`.
+* Empujar GAS v0.2.3 y versionar.
+* Resolver `403 Prohibido` del Web App GAS para sincronizar pronosticos en
+  Google Sheets.
+* Completar perfiles academicos oficiales de Diego Gomez Apy y Nicolas Vera si
+  el usuario provee CV, filiacion o texto formal.
+
+### Riesgos
+
+* Los pronosticos son locales al navegador mientras GAS no este disponible.
+* Si el usuario borra almacenamiento local, pierde su historial.
+* Los perfiles de autores deben revisarse antes de usarse como CV publico
+  formal.
+
 ## 2026-06-12 14:48
 
 ### Proyecto

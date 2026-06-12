@@ -90,6 +90,14 @@
             <span class="ball-trace trace-b"></span>
             <span class="motion-ball"></span>
           </div>
+          <div class="stat-symbol-layer" aria-hidden="true">
+            <span style="--x:8%;--y:18%;--d:0s">P</span>
+            <span style="--x:21%;--y:72%;--d:-2s">λ</span>
+            <span style="--x:41%;--y:22%;--d:-4s">β</span>
+            <span style="--x:58%;--y:70%;--d:-1s">σ</span>
+            <span style="--x:78%;--y:18%;--d:-3s">μ</span>
+            <span style="--x:88%;--y:62%;--d:-5s">95%</span>
+          </div>
           <div class="summary-copy">
             <p class="eyebrow">Modelo vivo con datos abiertos</p>
             <h1>Pronosticos recalculados con cada resultado disponible</h1>
@@ -167,6 +175,7 @@
               <button class="tab-button" data-target="partidos">Partidos</button>
               <button class="tab-button" data-target="evidencia">Evidencia</button>
               <button class="tab-button" data-target="modelo">Modelo</button>
+              <button class="tab-button" data-target="acerta">Acertá</button>
               <button class="tab-button" data-target="visitas">Visitas</button>
               <button class="tab-button" data-target="referencias">Referencias</button>
               <button class="tab-button" data-target="auditoria">Auditoria</button>
@@ -379,6 +388,44 @@
               </div>
             </section>
 
+            <section id="acerta" class="view">
+              <div class="acerta-hero">
+                <div>
+                  <p class="eyebrow">Acertá de los autores</p>
+                  <h2>Tu laboratorio de pronósticos</h2>
+                  <p>
+                    Anotá marcador y confianza antes de cada partido; la app
+                    compara tus aciertos y fallas cuando se publican resultados.
+                  </p>
+                </div>
+                <div id="predictionStats" class="prediction-stats"></div>
+              </div>
+
+              <div class="content-grid two">
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Evolución personal</h2>
+                    <span id="predictionSummary">0 pronósticos</span>
+                  </header>
+                  <div id="predictionBoard" class="prediction-board"></div>
+                </section>
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Autores y colaboración</h2>
+                    <span>equipo académico</span>
+                  </header>
+                  <div id="authorCards" class="author-grid"></div>
+                </section>
+                <section class="panel span-2">
+                  <header class="panel-header">
+                    <h2>Mis partidos para acertar</h2>
+                    <span id="predictionMatchCount">0 partidos</span>
+                  </header>
+                  <div id="predictionMatches" class="prediction-match-list"></div>
+                </section>
+              </div>
+            </section>
+
             <section id="auditoria" class="view">
               <div class="content-grid two">
                 <section class="panel">
@@ -461,7 +508,7 @@
       </main>
 
       <footer class="footer">
-        <span>v0.2.2 · 2026-06-12</span>
+        <span>v0.2.3 · 2026-06-12</span>
         <a href="docs/metodologia_bayesiana.md">metodologia</a>
         <a href="docs/diccionario_datos.md">diccionario</a>
         <a href="?view=referencias">referencias</a>

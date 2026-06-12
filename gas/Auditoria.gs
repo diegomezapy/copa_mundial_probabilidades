@@ -40,6 +40,26 @@ function recordVisit_(params) {
   return { timestamp: now, usuario: row[2], evento: row[6], vista: row[7] };
 }
 
+function recordPrediction_(params) {
+  var now = new Date().toISOString();
+  var row = [
+    now,
+    String(params.user_id || '').slice(0, 90),
+    String(params.usuario || 'anonimo').slice(0, 80),
+    String(params.match_id || '').slice(0, 80),
+    String(params.team1 || '').slice(0, 80),
+    String(params.team2 || '').slice(0, 80),
+    String(params.goals_home || '').slice(0, 8),
+    String(params.goals_away || '').slice(0, 8),
+    String(params.confidence || '').slice(0, 8),
+    String(params.app_version || APP_CONFIG.APP_VERSION).slice(0, 30),
+    String(params.data_version || '').slice(0, 80)
+  ];
+  appendRow_('PREDICCIONES_USUARIO', row);
+  audit_(row[2], 'prediction', row[3] + ' ' + row[6] + '-' + row[7], row[10]);
+  return { timestamp: now, usuario: row[2], match_id: row[3] };
+}
+
 function hashRecord_(text) {
   var digest = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, text, Utilities.Charset.UTF_8);
   return digest.map(function (byte) {

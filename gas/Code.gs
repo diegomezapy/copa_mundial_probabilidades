@@ -19,6 +19,10 @@ function doGet(e) {
       var visit = recordVisit_(params, e);
       return respond_({ ok: true, visit: visit }, params.callback);
     }
+    if (action === 'prediction') {
+      var prediction = recordPrediction_(params);
+      return respond_({ ok: true, prediction: prediction }, params.callback);
+    }
     if (action === 'sync') {
       requireAdminToken_(params.token);
       var result = syncFromGithub();

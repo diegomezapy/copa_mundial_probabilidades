@@ -13,6 +13,7 @@ partir de datos abiertos y un modelo bayesiano explicable.
 - Partidos: calendario, resultados y probabilidades 1-X-2.
 - Evidencia: historia por pais, Copa, partidos, mano a mano y goleadores.
 - Modelo: laboratorio para comparar dos equipos.
+- Acertá: pronosticos propios, aciertos, fallas, evolucion y autores.
 - Visitas: perfil registrado y estadisticas locales de uso.
 - Referencias: derechos de uso de datos, fuentes y paginas de interes.
 - Auditoria: fuentes, version de datos y estado del backend.
@@ -22,6 +23,20 @@ partir de datos abiertos y un modelo bayesiano explicable.
 La pantalla principal muestra una ruta del modelo que ordena el flujo
 Datos-Prior-Posterior-Pronostico. El balon y los trazos de pase representan el
 movimiento de la informacion cuando se aplican filtros o se recalculan vistas.
+
+## Acertá
+
+Cada usuario puede cargar marcadores previstos para partidos pendientes. La app
+guarda esos pronosticos en el navegador y, cuando el partido aparece como
+finalizado en el JSON publico, calcula:
+
+- 3 puntos por marcador exacto;
+- 1 punto por signo correcto;
+- 0 puntos por falla.
+
+La vista muestra evolucion personal, aciertos, fallas y perfiles de autores.
+Mientras el backend GAS no este autorizado anonimamente, estos pronosticos son
+locales al navegador.
 
 ## Registro
 

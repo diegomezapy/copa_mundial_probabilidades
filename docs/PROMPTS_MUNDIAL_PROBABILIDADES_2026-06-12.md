@@ -39,3 +39,6 @@ modelos multivariados de pronostico y modelos bayesianos.
   de referencias, derechos de uso de datos y paginas de interes.
 - Mejorar orden, modernidad y animaciones; incorporar efectos que emulen el
   movimiento del balon y hagan la app mas atractiva.
+- Permitir que los usuarios anoten sus propios aciertos, vean evolucion de
+  aciertos y fallas, agregar vista `Acerta de los autores` con perfiles de
+  Diego Gomez Apy y Nicolas Vera, y sumar simbolos estadisticos animados.
