@@ -1,0 +1,42 @@
+name: Actualizar datos Mundial 2026
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "20 */6 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Dependencias
+        run: pip install -r requirements.txt
+
+      - name: Regenerar cache publico
+        run: |
+          python scripts/update_data.py
+          python scripts/make_assets.py
+
+      - name: Commit si hay cambios
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data assets/img
+          if git diff --cached --quiet; then
+            echo "Sin cambios de datos"
+          else
+            git commit -m "data: actualizar cache mundial 2026"
+            git push
+          fi
+

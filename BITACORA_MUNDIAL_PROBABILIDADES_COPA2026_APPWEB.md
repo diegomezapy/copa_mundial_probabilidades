@@ -36,6 +36,8 @@ generar estimaciones bayesianas para uso academico.
 * Se creo generador reproducible `scripts/update_data.py`.
 * Se preparo plantilla de workflow `docs/github-actions-update-data.yml` cada 6
   horas.
+* Tras recibir un nuevo token con scope `workflow`, se agrego el workflow activo
+  `.github/workflows/update-data.yml`.
 * Se creo backend GAS con `setupWorkbook()`, `syncFromGithub()` y JSONP publico.
 * Se agregaron manual tecnico, manual de usuario, diccionario y metodologia.
 * Se guardo la secuencia de prompts del proyecto.
@@ -123,6 +125,8 @@ clasp deploy --versionNumber 1 --description "v0.1.0 app publica mundial probabi
   porque el script no esta desplegado como API executable.
 * GitHub CLI esta autenticado como `diegomezapy` con scopes `repo`, `gist` y
   `read:org`, sin `workflow`.
+* El token nuevo del portapapeles fue verificado por API con scopes `repo`,
+  `workflow` y `write:packages`; no se imprimio ni se guardo en archivos.
 
 ### Soluciones aplicadas
 
@@ -137,13 +141,14 @@ clasp deploy --versionNumber 1 --description "v0.1.0 app publica mundial probabi
 * El workflow automatico se movio a `docs/github-actions-update-data.yml` para
   permitir publicar el sitio con el token actual; debe copiarse a
   `.github/workflows/update-data.yml` cuando exista scope `workflow`.
+* Luego de contar con token `workflow`, se restauro el archivo activo en
+  `.github/workflows/update-data.yml`.
 
 ### Pendientes
 
 * Publicar commit en GitHub.
 * Activar GitHub Pages en rama `main` raiz.
-* Activar workflow de actualizacion con credenciales GitHub que incluyan scope
-  `workflow`.
+* Verificar primera ejecucion de GitHub Actions una vez publicado el workflow.
 * Autorizar/publicar manualmente el Web App GAS para acceso anonimo real.
 * Ejecutar `syncFromGithub()` desde Apps Script una vez autorizado.
 * Pegar URL `/exec` validada en `assets/js/config.js` solo despues de recibir

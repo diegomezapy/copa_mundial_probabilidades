@@ -14,8 +14,7 @@ certeza; muestra probabilidades, supuestos, limitaciones y trazabilidad de datos
 - Generador reproducible: `scripts/update_data.py`.
 - Backend operativo: Google Apps Script en `gas/`.
 - Base auditable: Google Sheets `1k_zmucPFA9A7pyE7Y6ZZgb-c4K3UTlp6YknpovCv5pQ`.
-- Automatizacion preparada: plantilla GitHub Actions cada 6 horas y funcion GAS
-  `syncFromGithub()`.
+- Automatizacion: GitHub Actions cada 6 horas y funcion GAS `syncFromGithub()`.
 
 ## Fuentes
 
@@ -72,13 +71,11 @@ Estado de la primera intervencion:
 
 ## Automatizacion de datos
 
-La plantilla de workflow esta en `docs/github-actions-update-data.yml`. Para
-activarla, copiarla a `.github/workflows/update-data.yml` con credenciales GitHub
-que tengan scope `workflow`. En la primera publicacion el token disponible tenia
-scopes `repo`, `gist` y `read:org`, por lo que GitHub rechazo crear workflows.
+El workflow activo esta en `.github/workflows/update-data.yml` y se ejecuta cada
+6 horas o manualmente desde GitHub Actions. La copia
+`docs/github-actions-update-data.yml` queda como respaldo documental.
 
-Mientras el workflow no este activo, la actualizacion reproducible se ejecuta
-manualmente con:
+La actualizacion reproducible tambien puede ejecutarse manualmente con:
 
 ```powershell
 python scripts\update_data.py
