@@ -35,6 +35,9 @@ que emulen el movimiento del balon y ayuden a entender el flujo del modelo.
 * Se incorporo soporte `prefers-reduced-motion` para reducir animaciones cuando
   el usuario lo solicite.
 * Se actualizo version frontend, cache, GAS y JSON a `0.2.2`.
+* Se publico el commit `5d86d42` en GitHub Pages.
+* Se subio GAS con `clasp push -f`, se creo version `5` y se desplego el Web
+  App `AKfycbzECqC9jBhu4UPak6nMfsfM3JwGmTq1gAGISmnJ0_McMqfFEN6Nbz_1-YEEyOj4KpNTAw`.
 
 ### Archivos modificados
 
@@ -62,6 +65,10 @@ node --check assets\js\app.js
 node --check service-worker.js
 python -m py_compile scripts\update_data.py scripts\make_assets.py
 python scripts\update_data.py
+git push
+clasp push -f
+clasp version "v0.2.2 movimiento balon ruta visual"
+clasp deploy --versionNumber 5 --description "v0.2.2 movimiento balon ruta visual"
 ```
 
 ### Resultados verificados
@@ -73,6 +80,12 @@ python scripts\update_data.py
   y footer `v0.2.2`.
 * Vista Resumen movil validada con 4 pasos, 12 grupos y footer `v0.2.2`.
 * Capturas: `tmp/app-motion-desktop.png` y `tmp/app-motion-mobile.png`.
+* URL publica verificada:
+  `https://diegomezapy.github.io/copa_mundial_probabilidades/?v=5d86d42&view=resumen`.
+* JSON publico verificado con `app_version=0.2.2`,
+  `data_version=wc26-20260612T184705z` y 964 partidos historicos.
+* HTML publico verificado con `ball-motion-layer` y `modelFlow`.
+* Captura publica: `tmp/app-public-motion-desktop.png`.
 
 ### Pruebas realizadas
 
@@ -80,6 +93,11 @@ python scripts\update_data.py
 * `py_compile`: correcto.
 * Playwright local desktop: registro nuevo, ruta del modelo, balon y tablero.
 * Playwright local movil: registro nuevo, ruta del modelo y tablero responsive.
+* Playwright publico: registro nuevo `public.motion`, 4 pasos de ruta del
+  modelo, balon presente, 12 grupos y footer `v0.2.2`.
+* GitHub Pages build `built` para commit `5d86d42`.
+* Prueba HTTP anonima de GitHub Pages: `200`.
+* Prueba HTTP anonima del Web App GAS v5 para `health`: `403 Prohibido`.
 
 ### Errores o incidentes
 
@@ -95,8 +113,6 @@ python scripts\update_data.py
 
 ### Pendientes
 
-* Publicar commit y verificar URL publica con `?view=resumen`.
-* Empujar GAS v0.2.2 y versionar.
 * Mantener pendiente el bloqueo `403 Prohibido` del Web App GAS anonimo.
 
 ### Riesgos
