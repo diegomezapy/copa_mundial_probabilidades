@@ -64,6 +64,10 @@ node --check assets\js\app.js
 node --check service-worker.js
 python -m py_compile scripts\update_data.py scripts\make_assets.py
 python scripts\update_data.py
+git push
+clasp push -f
+clasp version "v0.2.4 balon canvas rebote"
+clasp deploy --versionNumber 7 --description "v0.2.4 balon canvas rebote"
 ```
 
 ### Resultados verificados
@@ -77,6 +81,23 @@ python scripts\update_data.py
 * Capturas: `tmp/app-ball-canvas-desktop-a.png`,
   `tmp/app-ball-canvas-desktop-b.png`, `tmp/app-ball-canvas-mobile.png` y
   `tmp/app-ball-canvas-mobile-v2.png`.
+* Commit publicado en GitHub: `c7fcd71 feat: reemplazar balon por animacion canvas`.
+* GitHub Pages build `built` para commit
+  `c7fcd713b4284d8ad56784698196c74e3a287718`.
+* JSON publico verificado:
+  `https://diegomezapy.github.io/copa_mundial_probabilidades/data/worldcup2026_latest.json?v=c7fcd71`
+  con `app_version=0.2.4`, 48 equipos, 1248 jugadores, 104 partidos y 964
+  partidos historicos.
+* HTML publico verificado con `heroBallCanvas`, footer `v0.2.4` y sin la clase
+  antigua `motion-ball`.
+* Playwright publico valido movimiento real del canvas en desktop y movil
+  comparando hashes entre frames.
+* Capturas publicas:
+  `tmp/app-public-ball-canvas-desktop.png`,
+  `tmp/app-public-ball-canvas-desktop-movement.png` y
+  `tmp/app-public-ball-canvas-mobile-movement.png`.
+* GAS version `7` desplegada como Web App
+  `AKfycbw_41GWkNQuLNb8w12N0Ke06crIGSOCUVTnIUUmNqk7U5f8Q1YKc-tFng2j_D5t1FTn-g`.
 
 ### Pruebas realizadas
 
@@ -84,11 +105,20 @@ python scripts\update_data.py
 * `py_compile`: correcto.
 * Playwright local desktop: registro, canvas, comparacion de frames y captura.
 * Playwright local movil: registro, canvas, tablero y captura.
+* Prueba publica desktop: registro `public.ball.desk`, canvas `1392x343`,
+  cambio de hash entre frames y footer `v0.2.4`.
+* Prueba publica movil: registro `public.ball.mob`, canvas `362x792`, cambio
+  de hash entre frames y footer `v0.2.4`.
+* Prueba anonima GAS:
+  `https://script.google.com/macros/s/AKfycbw_41GWkNQuLNb8w12N0Ke06crIGSOCUVTnIUUmNqk7U5f8Q1YKc-tFng2j_D5t1FTn-g/exec?action=health`
+  devolvio `403 Acceso denegado`.
 
 ### Errores o incidentes
 
 * El primer ajuste movil dejaba el balon demasiado cerca del titulo; se movio
   mas hacia el lateral y se redujo opacidad.
+* El nuevo Web App GAS quedo creado y versionado, pero no disponible para
+  acceso anonimo: retorna `403 Acceso denegado`.
 
 ### Soluciones aplicadas
 
@@ -96,12 +126,15 @@ python scripts\update_data.py
 * Dibujo del balon como objeto futbolistico, no como boton CSS.
 * Respeto de `prefers-reduced-motion`: el canvas se desactiva junto con las
   capas animadas.
+* Se conserva GitHub Pages como superficie publica funcional con datos JSON
+  abiertos y fallbacks locales, sin depender del endpoint GAS bloqueado.
 
 ### Pendientes
 
-* Publicar commit y verificar URL publica.
-* Empujar GAS v0.2.4 y versionar.
-* Mantener pendiente el `403 Prohibido` anonimo del Web App GAS.
+* Resolver desde la consola/cuenta propietaria de Apps Script el permiso real
+  del Web App GAS para que `action=health` responda anonimamente.
+* Una vez que GAS pase prueba anonima HTTP, habilitar sincronizacion remota de
+  visitas y pronosticos.
 
 ### Riesgos
 
@@ -109,6 +142,8 @@ python scripts\update_data.py
   opacidad y se desplazo al lateral.
 * Canvas agrega trabajo grafico; se mantiene acotado al hero y sin dependencias
   externas.
+* El backend GAS sigue bloqueado para usuarios anonimos; la app publica opera
+  con datos JSON y almacenamiento local hasta corregir permisos del Web App.
 
 ## 2026-06-12 15:05
 
