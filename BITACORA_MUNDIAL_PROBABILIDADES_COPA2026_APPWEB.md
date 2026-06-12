@@ -69,6 +69,8 @@ python -m http.server 8095
 clasp push -f
 clasp version "v0.2.5 separar autores y ordenar vistas"
 clasp deploy --versionNumber 8 --description "v0.2.5 separar autores y ordenar vistas"
+git push
+gh api repos/diegomezapy/copa_mundial_probabilidades/pages/builds/latest
 ```
 
 ### Resultados verificados
@@ -90,6 +92,23 @@ clasp deploy --versionNumber 8 --description "v0.2.5 separar autores y ordenar v
 * Prueba anonima del nuevo Web App:
   `https://script.google.com/macros/s/AKfycbw3Ocimn2emzT6q1M9BT4EkmscVihRLRThNA9dM8tAL3fkjRez_saqRDhpjPxRqgYCM8w/exec?action=health`
   devolvio `403 Acceso denegado`.
+* Commit funcional publicado: `63354e1 feat: separar autores y ordenar acerta`.
+* Commit final de orden movil publicado:
+  `a3c1cbd fix: ordenar vistas moviles`.
+* `origin/main` y GitHub `main` verificados en
+  `a3c1cbd0d4f40bb26bf62477f36a14addf0c309e`.
+* HTML publico verificado con `v0.2.5`, pestana `Autores` y sin el texto
+  antiguo `Acerta de los autores`.
+* JSON publico verificado con `app_version=0.2.5`,
+  `data_version=wc26-20260612T193932z`, 48 equipos, 1248 jugadores, 104
+  partidos y 964 partidos historicos.
+* CSS publico verificado con `?v=a3c1cbd`: contiene orden movil
+  `workspace` antes de filtros y ya no fuerza `flex-wrap: nowrap` en tabs.
+* Playwright publico desktop y movil valido `Acerta`: 18 tarjetas,
+  `18/72 visibles`, autores fuera de `Acerta`, footer `v0.2.5` y sin
+  desborde horizontal.
+* Playwright publico movil valido `Autores`: pestana activa visible, contenido
+  antes de filtros, 2 tarjetas de autores, 4 notas y sin desborde horizontal.
 * Capturas locales:
   `tmp/app-local-acerta-desktop2-v025.png`,
   `tmp/app-local-acerta-mobile-top-v025.png`,
@@ -97,6 +116,12 @@ clasp deploy --versionNumber 8 --description "v0.2.5 separar autores y ordenar v
   `tmp/app-local-autores-desktop-v025.png`,
   `tmp/app-local-autores-mobile-order-v025.png` y
   `tmp/app-local-autores-mobile-tabs-v025.png`.
+* Capturas publicas:
+  `tmp/app-public-acerta-desktop-v025.png`,
+  `tmp/app-public-acerta-mobile-v025.png`,
+  `tmp/app-public-autores-desktop-v025.png`,
+  `tmp/app-public-autores-mobile-v025.png` y
+  `tmp/app-public-autores-mobile-final-v025.png`.
 
 ### Pruebas realizadas
 
@@ -110,6 +135,9 @@ clasp deploy --versionNumber 8 --description "v0.2.5 separar autores y ordenar v
 * Playwright local movil `Autores`: verificacion de contenido antes de filtros,
   pestana activa visible y sin desborde horizontal.
 * Prueba anonima GAS: `403 Acceso denegado`.
+* Playwright publico desktop/movil para `Acerta` y `Autores`.
+* Verificacion HTTP publica de `index.html`, `worldcup2026_latest.json` y
+  `assets/css/styles.css` con cache-busting.
 
 ### Errores o incidentes
 
@@ -126,8 +154,6 @@ clasp deploy --versionNumber 8 --description "v0.2.5 separar autores y ordenar v
 
 ### Pendientes
 
-* Publicar commit, verificar GitHub Pages con cache-busting y registrar
-  evidencia publica.
 * Mantener documentado el bloqueo anonimo GAS `403 Acceso denegado` hasta que
   el propietario republique el Web App con acceso real anonimo.
 
