@@ -1,8 +1,8 @@
 {
   "metadata": {
     "app_version": "0.1.1",
-    "data_version": "wc26-20260612T115313z",
-    "generated_at": "2026-06-12T11:53:13Z",
+    "data_version": "wc26-20260612T133338z",
+    "generated_at": "2026-06-12T13:33:38Z",
     "timezone": "UTC",
     "tournament": "World Cup 2026",
     "coverage": {
@@ -29,17 +29,17 @@
   "sources": {
     "openfootball_worldcup_json": {
       "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json",
-      "downloaded_at": "2026-06-12T11:53:05Z",
+      "downloaded_at": "2026-06-12T13:33:31Z",
       "status_code": 200,
       "bytes": 20398,
       "sha256": "fb7b9dff371e7561f3f15e5d2f67d4b005ea55e66c850de4a09ec236849aea57"
     },
     "wikipedia_squads": {
       "url": "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads",
-      "downloaded_at": "2026-06-12T11:53:05Z",
+      "downloaded_at": "2026-06-12T13:33:31Z",
       "status_code": 200,
-      "bytes": 1905338,
-      "sha256": "a356fe88c63c177dc4cd3dfc240eb276abd46f1bca23169204d5d79dcbf5f6dc",
+      "bytes": 1905349,
+      "sha256": "c3cac713f5df217be6edc91fd370082f6ef1b70d75ba1e6c5f1ef86b72877cdb",
       "rows_extracted": 1248
     },
     "official_reference": {
@@ -143,7 +143,7 @@
         "midfielders": 7,
         "forwards": 7
       },
-      "p_top2": 0.2216,
+      "p_top2": 0.2204,
       "p_advance_group": 0.4404,
       "p_champion_rough": 0.0119
     },
@@ -167,8 +167,8 @@
         "midfielders": 8,
         "forwards": 8
       },
-      "p_top2": 0.8496,
-      "p_advance_group": 0.9604,
+      "p_top2": 0.8508,
+      "p_advance_group": 0.9608,
       "p_champion_rough": 0.0316
     },
     {
@@ -192,7 +192,7 @@
         "forwards": 8
       },
       "p_top2": 0.1608,
-      "p_advance_group": 0.3256,
+      "p_advance_group": 0.3264,
       "p_champion_rough": 0.0087
     },
     {
@@ -239,7 +239,7 @@
         "midfielders": 8,
         "forwards": 7
       },
-      "p_top2": 0.4984,
+      "p_top2": 0.498,
       "p_advance_group": 0.6712,
       "p_champion_rough": 0.0198
     },
@@ -263,7 +263,7 @@
         "midfielders": 7,
         "forwards": 7
       },
-      "p_top2": 0.4728,
+      "p_top2": 0.4736,
       "p_advance_group": 0.6508,
       "p_champion_rough": 0.0174
     },
@@ -311,8 +311,8 @@
         "midfielders": 8,
         "forwards": 7
       },
-      "p_top2": 0.5476,
-      "p_advance_group": 0.7052,
+      "p_top2": 0.5472,
+      "p_advance_group": 0.7056,
       "p_champion_rough": 0.0229
     },
     {
@@ -335,9 +335,9 @@
         "midfielders": 6,
         "forwards": 9
       },
-      "p_top2": 0.6152,
-      "p_advance_group": 0.7604,
-      "p_champion_rough": 0.0322
+      "p_top2": 0.6148,
+      "p_advance_group": 0.7608,
+      "p_champion_rough": 0.0323
     },
     {
       "team": "Haiti",
@@ -359,8 +359,8 @@
         "midfielders": 5,
         "forwards": 9
       },
-      "p_top2": 0.4392,
-      "p_advance_group": 0.6276,
+      "p_top2": 0.44,
+      "p_advance_group": 0.628,
       "p_champion_rough": 0.0186
     },
     {
@@ -383,8 +383,8 @@
         "midfielders": 9,
         "forwards": 5
       },
-      "p_top2": 0.5052,
-      "p_advance_group": 0.6604,
+      "p_top2": 0.5056,
+      "p_advance_group": 0.6616,
       "p_champion_rough": 0.02
     },
     {
@@ -407,8 +407,8 @@
         "midfielders": 6,
         "forwards": 7
       },
-      "p_top2": 0.4404,
-      "p_advance_group": 0.6168,
+      "p_top2": 0.4396,
+      "p_advance_group": 0.616,
       "p_champion_rough": 0.0168
     },
     {
@@ -431,7 +431,7 @@
         "midfielders": 5,
         "forwards": 8
       },
-      "p_top2": 0.464,
+      "p_top2": 0.4648,
       "p_advance_group": 0.6428,
       "p_champion_rough": 0.0162
     },
@@ -456,7 +456,7 @@
         "forwards": 6
       },
       "p_top2": 0.5208,
-      "p_advance_group": 0.6948,
+      "p_advance_group": 0.6956,
       "p_champion_rough": 0.0204
     },
     {
@@ -479,8 +479,8 @@
         "midfielders": 5,
         "forwards": 9
       },
-      "p_top2": 0.5776,
-      "p_advance_group": 0.7284,
+      "p_top2": 0.5768,
+      "p_advance_group": 0.7276,
       "p_champion_rough": 0.023
     },
     {
@@ -497,7 +497,7 @@
         "players": 0
       },
       "p_top2": 0.4376,
-      "p_advance_group": 0.6164,
+      "p_advance_group": 0.6156,
       "p_champion_rough": 0.0128
     },
     {
@@ -520,9 +520,9 @@
         "midfielders": 7,
         "forwards": 8
       },
-      "p_top2": 0.4688,
-      "p_advance_group": 0.6396,
-      "p_champion_rough": 0.0188
+      "p_top2": 0.4668,
+      "p_advance_group": 0.6388,
+      "p_champion_rough": 0.0187
     },
     {
       "team": "Ecuador",
@@ -544,7 +544,7 @@
         "midfielders": 8,
         "forwards": 7
       },
-      "p_top2": 0.47,
+      "p_top2": 0.4704,
       "p_advance_group": 0.6472,
       "p_champion_rough": 0.0196
     },
@@ -568,9 +568,9 @@
         "midfielders": 11,
         "forwards": 4
       },
-      "p_top2": 0.6132,
-      "p_advance_group": 0.7708,
-      "p_champion_rough": 0.0325
+      "p_top2": 0.6136,
+      "p_advance_group": 0.7704,
+      "p_champion_rough": 0.0324
     },
     {
       "team": "Ivory Coast",
@@ -592,8 +592,8 @@
         "midfielders": 6,
         "forwards": 9
       },
-      "p_top2": 0.448,
-      "p_advance_group": 0.6128,
+      "p_top2": 0.4492,
+      "p_advance_group": 0.6124,
       "p_champion_rough": 0.0172
     },
     {
@@ -617,7 +617,7 @@
         "forwards": 5
       },
       "p_top2": 0.4332,
-      "p_advance_group": 0.618,
+      "p_advance_group": 0.6192,
       "p_champion_rough": 0.0171
     },
     {
@@ -641,8 +641,8 @@
         "forwards": 7
       },
       "p_top2": 0.6616,
-      "p_advance_group": 0.8052,
-      "p_champion_rough": 0.0371
+      "p_advance_group": 0.8044,
+      "p_champion_rough": 0.037
     },
     {
       "team": "Sweden",
@@ -665,7 +665,7 @@
         "forwards": 5
       },
       "p_top2": 0.5048,
-      "p_advance_group": 0.6724,
+      "p_advance_group": 0.6728,
       "p_champion_rough": 0.0216
     },
     {
@@ -689,7 +689,7 @@
         "forwards": 5
       },
       "p_top2": 0.4004,
-      "p_advance_group": 0.5752,
+      "p_advance_group": 0.5744,
       "p_champion_rough": 0.0132
     },
     {
@@ -712,8 +712,8 @@
         "midfielders": 8,
         "forwards": 6
       },
-      "p_top2": 0.5844,
-      "p_advance_group": 0.7336,
+      "p_top2": 0.5832,
+      "p_advance_group": 0.7328,
       "p_champion_rough": 0.0272
     },
     {
@@ -736,9 +736,9 @@
         "midfielders": 7,
         "forwards": 7
       },
-      "p_top2": 0.4584,
-      "p_advance_group": 0.6308,
-      "p_champion_rough": 0.0164
+      "p_top2": 0.4588,
+      "p_advance_group": 0.63,
+      "p_champion_rough": 0.0163
     },
     {
       "team": "Iran",
@@ -760,8 +760,8 @@
         "midfielders": 8,
         "forwards": 6
       },
-      "p_top2": 0.4436,
-      "p_advance_group": 0.6064,
+      "p_top2": 0.444,
+      "p_advance_group": 0.6068,
       "p_champion_rough": 0.0151
     },
     {
@@ -784,8 +784,8 @@
         "midfielders": 10,
         "forwards": 4
       },
-      "p_top2": 0.5136,
-      "p_advance_group": 0.6788,
+      "p_top2": 0.514,
+      "p_advance_group": 0.6784,
       "p_champion_rough": 0.0204
     },
     {
@@ -808,8 +808,8 @@
         "midfielders": 12,
         "forwards": 3
       },
-      "p_top2": 0.4832,
-      "p_advance_group": 0.6568,
+      "p_top2": 0.4848,
+      "p_advance_group": 0.6576,
       "p_champion_rough": 0.0194
     },
     {
@@ -832,7 +832,7 @@
         "midfielders": 6,
         "forwards": 7
       },
-      "p_top2": 0.3808,
+      "p_top2": 0.3804,
       "p_advance_group": 0.5604,
       "p_champion_rough": 0.0114
     },
@@ -856,8 +856,8 @@
         "midfielders": 7,
         "forwards": 8
       },
-      "p_top2": 0.5884,
-      "p_advance_group": 0.7472,
+      "p_top2": 0.588,
+      "p_advance_group": 0.7476,
       "p_champion_rough": 0.0274
     },
     {
@@ -880,8 +880,8 @@
         "midfielders": 11,
         "forwards": 5
       },
-      "p_top2": 0.5476,
-      "p_advance_group": 0.7116,
+      "p_top2": 0.5468,
+      "p_advance_group": 0.7108,
       "p_champion_rough": 0.0238
     },
     {
@@ -905,7 +905,7 @@
         "forwards": 7
       },
       "p_top2": 0.6128,
-      "p_advance_group": 0.7612,
+      "p_advance_group": 0.76,
       "p_champion_rough": 0.0337
     },
     {
@@ -929,8 +929,8 @@
         "forwards": 7
       },
       "p_top2": 0.45,
-      "p_advance_group": 0.6352,
-      "p_champion_rough": 0.0188
+      "p_advance_group": 0.6356,
+      "p_champion_rough": 0.0189
     },
     {
       "team": "Norway",
@@ -952,8 +952,8 @@
         "midfielders": 10,
         "forwards": 5
       },
-      "p_top2": 0.4572,
-      "p_advance_group": 0.6212,
+      "p_top2": 0.4564,
+      "p_advance_group": 0.6208,
       "p_champion_rough": 0.0186
     },
     {
@@ -976,33 +976,33 @@
         "midfielders": 7,
         "forwards": 8
       },
-      "p_top2": 0.48,
-      "p_advance_group": 0.652,
+      "p_top2": 0.4808,
+      "p_advance_group": 0.6528,
       "p_champion_rough": 0.0204
     },
     {
       "team": "Algeria",
       "team_id": "algeria",
       "group": "Group J",
-      "rating": 1569.1,
-      "attack_posterior_mean": 1.49,
-      "defense_posterior_mean": 1.205,
+      "rating": 1570.0,
+      "attack_posterior_mean": 1.492,
+      "defense_posterior_mean": 1.203,
       "matches_observed_2026": 0,
       "goals_for_observed_2026": 0,
       "goals_against_observed_2026": 0,
       "squad": {
         "players": 26,
         "avg_age": 26.46,
-        "total_caps": 738,
-        "total_international_goals": 116,
+        "total_caps": 790,
+        "total_international_goals": 124,
         "goalkeepers": 3,
         "defenders": 9,
         "midfielders": 7,
         "forwards": 7
       },
-      "p_top2": 0.4348,
-      "p_advance_group": 0.6092,
-      "p_champion_rough": 0.0172
+      "p_top2": 0.436,
+      "p_advance_group": 0.6124,
+      "p_champion_rough": 0.0173
     },
     {
       "team": "Argentina",
@@ -1024,8 +1024,8 @@
         "midfielders": 8,
         "forwards": 7
       },
-      "p_top2": 0.6224,
-      "p_advance_group": 0.7952,
+      "p_top2": 0.6244,
+      "p_advance_group": 0.7944,
       "p_champion_rough": 0.0328
     },
     {
@@ -1048,9 +1048,9 @@
         "midfielders": 11,
         "forwards": 4
       },
-      "p_top2": 0.4544,
-      "p_advance_group": 0.6232,
-      "p_champion_rough": 0.0181
+      "p_top2": 0.452,
+      "p_advance_group": 0.6216,
+      "p_champion_rough": 0.018
     },
     {
       "team": "Jordan",
@@ -1072,8 +1072,8 @@
         "midfielders": 8,
         "forwards": 6
       },
-      "p_top2": 0.4884,
-      "p_advance_group": 0.6548,
+      "p_top2": 0.4876,
+      "p_advance_group": 0.6544,
       "p_champion_rough": 0.0196
     },
     {
@@ -1096,7 +1096,7 @@
         "midfielders": 8,
         "forwards": 6
       },
-      "p_top2": 0.5016,
+      "p_top2": 0.5008,
       "p_advance_group": 0.6756,
       "p_champion_rough": 0.023
     },
@@ -1121,7 +1121,7 @@
         "forwards": 7
       },
       "p_top2": 0.4872,
-      "p_advance_group": 0.64,
+      "p_advance_group": 0.6388,
       "p_champion_rough": 0.0189
     },
     {
@@ -1144,8 +1144,8 @@
         "midfielders": 6,
         "forwards": 8
       },
-      "p_top2": 0.5324,
-      "p_advance_group": 0.696,
+      "p_top2": 0.5332,
+      "p_advance_group": 0.6968,
       "p_champion_rough": 0.0238
     },
     {
@@ -1169,7 +1169,7 @@
         "forwards": 3
       },
       "p_top2": 0.4788,
-      "p_advance_group": 0.6464,
+      "p_advance_group": 0.6468,
       "p_champion_rough": 0.0193
     },
     {
@@ -1192,8 +1192,8 @@
         "midfielders": 9,
         "forwards": 6
       },
-      "p_top2": 0.5276,
-      "p_advance_group": 0.7112,
+      "p_top2": 0.5288,
+      "p_advance_group": 0.712,
       "p_champion_rough": 0.0246
     },
     {
@@ -1216,7 +1216,7 @@
         "midfielders": 7,
         "forwards": 7
       },
-      "p_top2": 0.582,
+      "p_top2": 0.58,
       "p_advance_group": 0.7264,
       "p_champion_rough": 0.0263
     },
@@ -1241,7 +1241,7 @@
         "forwards": 8
       },
       "p_top2": 0.4476,
-      "p_advance_group": 0.6148,
+      "p_advance_group": 0.6144,
       "p_champion_rough": 0.0165
     },
     {
@@ -1264,8 +1264,8 @@
         "midfielders": 8,
         "forwards": 4
       },
-      "p_top2": 0.4428,
-      "p_advance_group": 0.6172,
+      "p_top2": 0.4436,
+      "p_advance_group": 0.6176,
       "p_champion_rough": 0.016
     }
   ],
@@ -1278,7 +1278,7 @@
       "name": "Melvin Mastil",
       "birth_date": null,
       "age": 26,
-      "caps": 1,
+      "caps": 3,
       "goals": 0,
       "club": "Stade Nyonnais",
       "source": "wikipedia_2026_squads"
@@ -1291,8 +1291,8 @@
       "name": "Aïssa Mandi",
       "birth_date": null,
       "age": 34,
-      "caps": 117,
-      "goals": 7,
+      "caps": 120,
+      "goals": 9,
       "club": "Lille",
       "source": "wikipedia_2026_squads"
     },
@@ -1304,7 +1304,7 @@
       "name": "Achref Abada",
       "birth_date": null,
       "age": 26,
-      "caps": 7,
+      "caps": 9,
       "goals": 1,
       "club": "USM Alger",
       "source": "wikipedia_2026_squads"
@@ -1317,7 +1317,7 @@
       "name": "Mohamed Amine Tougai",
       "birth_date": null,
       "age": 26,
-      "caps": 29,
+      "caps": 31,
       "goals": 2,
       "club": "Espérance de Tunis",
       "source": "wikipedia_2026_squads"
@@ -1330,7 +1330,7 @@
       "name": "Zineddine Belaïd",
       "birth_date": null,
       "age": 27,
-      "caps": 10,
+      "caps": 13,
       "goals": 1,
       "club": "JS Kabylie",
       "source": "wikipedia_2026_squads"
@@ -1343,7 +1343,7 @@
       "name": "Ramiz Zerrouki",
       "birth_date": null,
       "age": 28,
-      "caps": 52,
+      "caps": 54,
       "goals": 3,
       "club": "Twente",
       "source": "wikipedia_2026_squads"
@@ -1356,7 +1356,7 @@
       "name": "Riyad Mahrez (captain)",
       "birth_date": null,
       "age": 35,
-      "caps": 114,
+      "caps": 117,
       "goals": 38,
       "club": "Al-Ahli",
       "source": "wikipedia_2026_squads"
@@ -1369,7 +1369,7 @@
       "name": "Houssem Aouar",
       "birth_date": null,
       "age": 27,
-      "caps": 20,
+      "caps": 23,
       "goals": 6,
       "club": "Al-Ittihad",
       "source": "wikipedia_2026_squads"
@@ -1382,8 +1382,8 @@
       "name": "Amine Gouiri",
       "birth_date": null,
       "age": 26,
-      "caps": 22,
-      "goals": 8,
+      "caps": 24,
+      "goals": 12,
       "club": "Marseille",
       "source": "wikipedia_2026_squads"
     },
@@ -1395,7 +1395,7 @@
       "name": "Farès Chaïbi",
       "birth_date": null,
       "age": 23,
-      "caps": 29,
+      "caps": 32,
       "goals": 3,
       "club": "Eintracht Frankfurt",
       "source": "wikipedia_2026_squads"
@@ -1408,8 +1408,8 @@
       "name": "Anis Hadj Moussa",
       "birth_date": null,
       "age": 24,
-      "caps": 14,
-      "goals": 1,
+      "caps": 16,
+      "goals": 3,
       "club": "Feyenoord",
       "source": "wikipedia_2026_squads"
     },
@@ -1421,7 +1421,7 @@
       "name": "Nadhir Benbouali",
       "birth_date": null,
       "age": 26,
-      "caps": 3,
+      "caps": 5,
       "goals": 1,
       "club": "Győri ETO",
       "source": "wikipedia_2026_squads"
@@ -1434,7 +1434,7 @@
       "name": "Jaouen Hadjam",
       "birth_date": null,
       "age": 23,
-      "caps": 17,
+      "caps": 19,
       "goals": 3,
       "club": "Young Boys",
       "source": "wikipedia_2026_squads"
@@ -1447,7 +1447,7 @@
       "name": "Hicham Boudaoui",
       "birth_date": null,
       "age": 26,
-      "caps": 32,
+      "caps": 35,
       "goals": 0,
       "club": "Nice",
       "source": "wikipedia_2026_squads"
@@ -1460,7 +1460,7 @@
       "name": "Rayan Aït-Nouri",
       "birth_date": null,
       "age": 25,
-      "caps": 28,
+      "caps": 31,
       "goals": 0,
       "club": "Manchester City",
       "source": "wikipedia_2026_squads"
@@ -1473,7 +1473,7 @@
       "name": "Oussama Benbot",
       "birth_date": null,
       "age": 31,
-      "caps": 2,
+      "caps": 4,
       "goals": 0,
       "club": "USM Alger",
       "source": "wikipedia_2026_squads"
@@ -1486,7 +1486,7 @@
       "name": "Rafik Belghali",
       "birth_date": null,
       "age": 24,
-      "caps": 12,
+      "caps": 14,
       "goals": 1,
       "club": "Hellas Verona",
       "source": "wikipedia_2026_squads"
@@ -1499,7 +1499,7 @@
       "name": "Mohamed Amoura",
       "birth_date": null,
       "age": 26,
-      "caps": 45,
+      "caps": 48,
       "goals": 19,
       "club": "VfL Wolfsburg",
       "source": "wikipedia_2026_squads"
@@ -1512,7 +1512,7 @@
       "name": "Nabil Bentaleb",
       "birth_date": null,
       "age": 31,
-      "caps": 59,
+      "caps": 62,
       "goals": 6,
       "club": "Lille",
       "source": "wikipedia_2026_squads"
@@ -1526,7 +1526,7 @@
       "birth_date": null,
       "age": 23,
       "caps": 11,
-      "goals": 6,
+      "goals": 4,
       "club": "Al-Duhail",
       "source": "wikipedia_2026_squads"
     },
@@ -1538,8 +1538,8 @@
       "name": "Ramy Bensebaini",
       "birth_date": null,
       "age": 31,
-      "caps": 81,
-      "goals": 7,
+      "caps": 82,
+      "goals": 9,
       "club": "Borussia Dortmund",
       "source": "wikipedia_2026_squads"
     },
@@ -1551,7 +1551,7 @@
       "name": "Ibrahim Maza",
       "birth_date": null,
       "age": 20,
-      "caps": 16,
+      "caps": 18,
       "goals": 2,
       "club": "Bayer Leverkusen",
       "source": "wikipedia_2026_squads"
@@ -1603,7 +1603,7 @@
       "name": "Samir Chergui",
       "birth_date": null,
       "age": 27,
-      "caps": 4,
+      "caps": 6,
       "goals": 0,
       "club": "Paris FC",
       "source": "wikipedia_2026_squads"
@@ -18783,11 +18783,11 @@
       "goals1": [],
       "goals2": [],
       "prediction": {
-        "home_win": 0.4425,
+        "home_win": 0.442,
         "draw": 0.2549,
-        "away_win": 0.3026,
-        "expected_goals_home": 1.501,
-        "expected_goals_away": 1.196
+        "away_win": 0.3031,
+        "expected_goals_home": 1.5,
+        "expected_goals_away": 1.197
       }
     },
     {
@@ -18852,11 +18852,11 @@
       "goals1": [],
       "goals2": [],
       "prediction": {
-        "home_win": 0.3792,
+        "home_win": 0.3788,
         "draw": 0.2592,
-        "away_win": 0.3615,
-        "expected_goals_home": 1.359,
-        "expected_goals_away": 1.321
+        "away_win": 0.362,
+        "expected_goals_home": 1.358,
+        "expected_goals_away": 1.322
       }
     },
     {
@@ -18875,11 +18875,11 @@
       "goals1": [],
       "goals2": [],
       "prediction": {
-        "home_win": 0.3664,
+        "home_win": 0.3668,
         "draw": 0.2593,
-        "away_win": 0.3743,
-        "expected_goals_home": 1.331,
-        "expected_goals_away": 1.349
+        "away_win": 0.3739,
+        "expected_goals_home": 1.332,
+        "expected_goals_away": 1.348
       }
     },
     {
