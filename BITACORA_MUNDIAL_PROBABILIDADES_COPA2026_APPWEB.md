@@ -70,6 +70,16 @@ npx playwright screenshot --full-page --wait-for-selector "#attackDefenseChart s
 * La app local responde HTTP 200 en `http://localhost:8080`.
 * Capturas verificadas:
   `tmp/app-dashboard-desktop-v3.png` y `tmp/app-dashboard-mobile-v3.png`.
+* Commit publicado: `9cc2218 feat: mejorar tablero didactico y filtros laterales`.
+* URL publica verificada con cache-busting:
+  `https://diegomezapy.github.io/copa_mundial_probabilidades/?v=9cc2218`
+  respondio HTTP 200 con HTML de 10.771 bytes.
+* GitHub Pages API reporto estado `built`.
+* Captura publica verificada:
+  `tmp/app-public-dashboard.png`, esperando selector `#groupHeatmap .heatmap-group`.
+* GAS recibio `clasp push -f` y creo version `2`.
+* Deployment GAS v0.1.1 candidato:
+  `AKfycbx2vDDgNbCRhpaZV3ouT1Tk2gbEg6zSXxjR9JQzIV8e2cgxKq-Z62b4v31g7JBcVuq_UQ`.
 
 ### Pruebas realizadas
 
@@ -77,6 +87,8 @@ npx playwright screenshot --full-page --wait-for-selector "#attackDefenseChart s
 * `py_compile`: correcto.
 * `git diff --check`: sin errores.
 * Playwright espero selectores reales de datos antes de capturar.
+* `Invoke-WebRequest` a Pages publica: HTTP 200.
+* Prueba anonima GAS v0.1.1 `/exec?action=health`: `403 Prohibido`.
 
 ### Errores o incidentes
 
@@ -84,6 +96,7 @@ npx playwright screenshot --full-page --wait-for-selector "#attackDefenseChart s
   repitio usando `--wait-for-selector`.
 * Se detecto que los botones de grupos en movil quedaban demasiado altos al
   pasar a una sola columna; se mantuvo grilla compacta de cuatro columnas.
+* El nuevo deployment GAS sigue sin acceso anonimo real, igual que v0.1.0.
 
 ### Soluciones aplicadas
 
@@ -93,8 +106,6 @@ npx playwright screenshot --full-page --wait-for-selector "#attackDefenseChart s
 
 ### Pendientes
 
-* Publicar commit y verificar URL publica con cache-busting.
-* Empujar actualizacion GAS de version `0.1.1`.
 * Mantener pendiente la autorizacion anonima real del Web App GAS.
 
 ### Riesgos
