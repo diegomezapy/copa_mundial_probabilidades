@@ -10,6 +10,11 @@
   --primary-2: #0b3d35;
   --accent: #d29b2d;
   --blue: #2e75b6;
+  --violet: #7c3aed;
+  --orange: #ea580c;
+  --cyan: #0891b2;
+  --rose: #be123c;
+  --slate: #64748b;
   --red: #b84545;
   --shadow: 0 18px 48px rgba(20, 42, 36, 0.12);
   --radius: 8px;
@@ -26,8 +31,9 @@
 body {
   margin: 0;
   background:
-    linear-gradient(180deg, rgba(245, 247, 246, 0.96), rgba(237, 244, 241, 0.96)),
-    radial-gradient(circle at 14% 8%, rgba(210, 155, 45, 0.1), transparent 28%),
+    linear-gradient(135deg, rgba(46, 117, 182, 0.08), transparent 34%),
+    linear-gradient(225deg, rgba(234, 88, 12, 0.07), transparent 32%),
+    linear-gradient(180deg, rgba(245, 247, 246, 0.98), rgba(237, 244, 241, 0.96)),
     var(--bg);
   color: var(--ink);
   font-family:
@@ -477,6 +483,10 @@ button:hover {
 .filter-panel {
   position: sticky;
   top: 82px;
+  max-height: calc(100vh - 98px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
   display: grid;
   gap: 16px;
   padding: 16px;
@@ -486,6 +496,20 @@ button:hover {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: 0 12px 34px rgba(18, 38, 34, 0.08);
+}
+
+.filter-panel::-webkit-scrollbar {
+  width: 9px;
+}
+
+.filter-panel::-webkit-scrollbar-track {
+  background: rgba(217, 227, 223, 0.45);
+  border-radius: 999px;
+}
+
+.filter-panel::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--blue), var(--accent));
+  border-radius: 999px;
 }
 
 .filter-title {
@@ -531,6 +555,7 @@ button:hover {
 .chip-grid button,
 .segmented-buttons button,
 .quick-team-grid button {
+  --group-color: var(--primary);
   min-height: 36px;
   padding: 6px 8px;
   background: var(--surface);
@@ -542,9 +567,14 @@ button:hover {
 .chip-grid button.active,
 .segmented-buttons button.active,
 .quick-team-grid button.active {
-  background: var(--primary);
+  background: var(--group-color, var(--primary));
   color: #ffffff;
-  border-color: var(--primary);
+  border-color: var(--group-color, var(--primary));
+}
+
+.chip-grid button:not([data-group="all"]) {
+  border-color: color-mix(in srgb, var(--group-color) 34%, var(--line));
+  box-shadow: inset 3px 0 0 var(--group-color);
 }
 
 .segmented-buttons {
@@ -566,6 +596,8 @@ button:hover {
   display: flex;
   justify-content: space-between;
   gap: 8px;
+  border-color: color-mix(in srgb, var(--group-color) 30%, var(--line));
+  box-shadow: inset 3px 0 0 var(--group-color);
 }
 
 .quick-team-grid b {
@@ -632,7 +664,7 @@ button:hover {
   .panel:hover,
   .team-card:hover {
     transform: translateY(-2px);
-    border-color: rgba(15, 90, 74, 0.32);
+    border-color: color-mix(in srgb, var(--group-color, var(--primary)) 40%, var(--line));
     box-shadow: 0 16px 38px rgba(18, 38, 34, 0.1);
   }
 }
@@ -698,6 +730,7 @@ button:hover {
 }
 
 .flow-step {
+  --flow-color: var(--blue);
   position: relative;
   z-index: 1;
   min-height: 130px;
@@ -708,10 +741,27 @@ button:hover {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(241, 247, 244, 0.94)),
+    linear-gradient(145deg, color-mix(in srgb, var(--flow-color) 10%, white), rgba(255, 255, 255, 0.96)),
     var(--surface);
+  border-top: 4px solid var(--flow-color);
   animation: stepIn 0.5s ease both;
   animation-delay: calc(var(--i) * 0.08s);
+}
+
+.flow-step:nth-of-type(2) {
+  --flow-color: var(--violet);
+}
+
+.flow-step:nth-of-type(3) {
+  --flow-color: var(--orange);
+}
+
+.flow-step:nth-of-type(4) {
+  --flow-color: var(--cyan);
+}
+
+.flow-step:nth-of-type(5) {
+  --flow-color: var(--rose);
 }
 
 .flow-step span {
@@ -753,10 +803,15 @@ button:hover {
 }
 
 .rank-row {
+  --group-color: var(--primary);
   justify-content: space-between;
   gap: 18px;
   padding: 13px 18px;
   border-bottom: 1px solid var(--line);
+  border-left: 4px solid color-mix(in srgb, var(--group-color) 72%, white);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
 }
 
 .rank-row:last-child {
@@ -776,8 +831,8 @@ button:hover {
   height: 26px;
   margin-right: 8px;
   border-radius: 50%;
-  background: var(--surface-2);
-  color: var(--primary);
+  background: color-mix(in srgb, var(--group-color, var(--primary)) 14%, white);
+  color: var(--group-color, var(--primary));
   font-weight: 700;
 }
 
@@ -793,9 +848,14 @@ button:hover {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--primary), var(--accent));
+  background: linear-gradient(90deg, var(--group-color, var(--primary)), var(--accent));
   transform-origin: left;
   animation: barGrow 0.7s ease both;
+}
+
+.rank-row:hover {
+  transform: translateX(4px);
+  background: color-mix(in srgb, var(--group-color) 7%, transparent);
 }
 
 .standings-grid {
@@ -813,15 +873,17 @@ button:hover {
 }
 
 .heatmap-group {
+  --group-color: var(--primary);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   overflow: hidden;
   background: #fbfdfc;
+  animation: cardFloatIn 0.42s ease both;
 }
 
 .heatmap-group.active {
-  border-color: rgba(15, 90, 74, 0.7);
-  box-shadow: inset 0 0 0 1px rgba(15, 90, 74, 0.25);
+  border-color: var(--group-color);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--group-color) 35%, transparent);
 }
 
 .heatmap-group > button {
@@ -829,8 +891,8 @@ button:hover {
   display: flex;
   justify-content: flex-start;
   text-align: left;
-  background: #edf5f1;
-  color: var(--primary-2);
+  background: color-mix(in srgb, var(--group-color) 14%, white);
+  color: color-mix(in srgb, var(--group-color) 72%, #10221f);
   border-radius: 0;
   font-weight: 800;
 }
@@ -842,6 +904,9 @@ button:hover {
 }
 
 .heat-team {
+  --group-color: var(--accent);
+  position: relative;
+  overflow: hidden;
   min-height: 34px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -851,11 +916,22 @@ button:hover {
   border-radius: 7px;
   color: #10221f;
   background:
-    linear-gradient(90deg, rgba(210, 155, 45, 0.34) calc(var(--p) * 1%), transparent 0),
+    linear-gradient(90deg, color-mix(in srgb, var(--group-color) 34%, transparent) calc(var(--p) * 1%), transparent 0),
     #f4f7f6;
   transition:
     transform 0.18s ease,
     box-shadow 0.18s ease;
+}
+
+.heat-team::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  transform: translateX(-120%);
+  animation: tableSweep 5.8s ease-in-out infinite;
+  animation-delay: calc(var(--p) * -0.025s);
+  pointer-events: none;
 }
 
 .heat-team b {
@@ -866,7 +942,7 @@ button:hover {
 
 .heat-team:hover {
   transform: translateX(3px);
-  box-shadow: inset 0 0 0 1px rgba(15, 90, 74, 0.24);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--group-color) 36%, transparent);
 }
 
 .chart-box {
@@ -895,14 +971,17 @@ button:hover {
 }
 
 .chart-point circle {
-  fill: rgba(46, 117, 182, 0.42);
-  stroke: rgba(15, 90, 74, 0.85);
+  fill: color-mix(in srgb, var(--group-color, var(--blue)) 40%, white);
+  stroke: var(--group-color, var(--primary));
   stroke-width: 1.4;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: chartPulse 3.8s ease-in-out infinite;
 }
 
 .chart-point.labeled circle {
-  fill: rgba(210, 155, 45, 0.48);
-  stroke: var(--primary);
+  fill: color-mix(in srgb, var(--group-color, var(--accent)) 58%, white);
+  stroke: color-mix(in srgb, var(--group-color, var(--primary)) 80%, #10221f);
   stroke-width: 2;
 }
 
@@ -983,25 +1062,38 @@ button:hover {
 }
 
 .classroom-grid article {
+  position: relative;
+  overflow: hidden;
   min-height: 128px;
   display: grid;
   align-content: space-between;
   padding: 14px;
   border-radius: var(--radius);
   color: #ffffff;
-  background: linear-gradient(135deg, var(--primary), var(--blue));
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  animation: cardFloatIn 0.5s ease both;
 }
 
 .classroom-grid article:nth-child(2) {
-  background: linear-gradient(135deg, #7a4f9a, var(--blue));
+  background: linear-gradient(135deg, var(--violet), var(--blue));
 }
 
 .classroom-grid article:nth-child(3) {
-  background: linear-gradient(135deg, var(--accent), #b84545);
+  background: linear-gradient(135deg, var(--orange), var(--accent));
 }
 
 .classroom-grid article:nth-child(4) {
-  background: linear-gradient(135deg, var(--primary-2), var(--accent));
+  background: linear-gradient(135deg, var(--rose), var(--violet));
+}
+
+.classroom-grid article::after {
+  content: "";
+  position: absolute;
+  inset: auto -20% 8px 34%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.34);
+  transform: rotate(-8deg);
+  animation: signalLine 4.6s ease-in-out infinite;
 }
 
 .classroom-grid span,
@@ -1491,6 +1583,51 @@ button:hover {
   font-size: 0.84rem;
 }
 
+.author-details {
+  display: grid;
+  gap: 8px;
+  margin: 4px 0;
+}
+
+.author-details div {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.45fr) minmax(0, 1fr);
+  gap: 10px;
+  padding: 8px 0;
+  border-top: 1px solid rgba(217, 227, 223, 0.82);
+}
+
+.author-details dt {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.author-details dd {
+  margin: 0;
+  color: #263b37;
+  overflow-wrap: anywhere;
+}
+
+.author-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.author-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--blue);
+  font-weight: 800;
+  font-size: 0.84rem;
+}
+
 .author-orbit {
   position: absolute;
   right: -32px;
@@ -1654,6 +1791,7 @@ button:hover {
 }
 
 .table-block {
+  --group-color: var(--primary);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   overflow: hidden;
@@ -1662,7 +1800,8 @@ button:hover {
 .table-block h3 {
   margin: 0;
   padding: 10px 12px;
-  background: var(--surface-2);
+  background: color-mix(in srgb, var(--group-color) 14%, white);
+  color: color-mix(in srgb, var(--group-color) 76%, #10221f);
   font-size: 0.92rem;
 }
 
@@ -1700,6 +1839,19 @@ th {
   letter-spacing: 0;
 }
 
+tbody tr {
+  --group-color: var(--primary);
+  animation: cardFloatIn 0.34s ease both;
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+tbody tr:hover {
+  background: color-mix(in srgb, var(--group-color) 7%, #f8fbfa);
+  transform: translateX(2px);
+}
+
 td small {
   display: block;
   margin-top: 2px;
@@ -1712,13 +1864,15 @@ td small {
 }
 
 .team-card {
+  --group-color: var(--primary);
   min-height: 230px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 16px;
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, var(--group-color) 26%, var(--line));
+  border-top: 5px solid var(--group-color);
   border-radius: var(--radius);
   box-shadow: 0 10px 26px rgba(18, 38, 34, 0.06);
   transition:
@@ -2131,6 +2285,49 @@ label {
   }
 }
 
+@keyframes cardFloatIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes tableSweep {
+  0%,
+  70% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes chartPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes signalLine {
+  0%,
+  100% {
+    transform: translateX(-8px) rotate(-8deg);
+    opacity: 0.24;
+  }
+  50% {
+    transform: translateX(18px) rotate(-8deg);
+    opacity: 0.5;
+  }
+}
+
 @media (max-width: 980px) {
   .summary-band,
   .workbench,
@@ -2161,6 +2358,8 @@ label {
 
   .filter-panel {
     position: static;
+    max-height: none;
+    overflow: visible;
   }
 }
 
@@ -2222,6 +2421,11 @@ label {
 
   .prediction-match-list {
     grid-template-columns: 1fr;
+  }
+
+  .author-details div {
+    grid-template-columns: 1fr;
+    gap: 3px;
   }
 
   .summary-copy p:last-child {

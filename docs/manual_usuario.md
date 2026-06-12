@@ -26,6 +26,10 @@ Datos-Prior-Posterior-Pronostico. El balon del hero rebota y rota dentro de la
 cancha visual para representar informacion en movimiento; los trazos de pase y
 simbolos estadisticos acompanan esa lectura.
 
+Las tarjetas, tablas y graficos usan colores por grupo para reducir la
+dominancia de un solo color y facilitar comparaciones visuales. La tarjeta
+`Senal` responde a los filtros activos: equipo, grupo o busqueda.
+
 ## Acertá
 
 Cada usuario puede cargar marcadores previstos para partidos pendientes. La app
@@ -45,9 +49,10 @@ locales al navegador.
 ## Autores
 
 La pestana Autores separa los perfiles academicos del espacio de pronosticos.
-Incluye el resumen operativo de Diego Gomez Apy y Nicolas Vera, mas notas sobre
-colaboracion, revision y datos verificables pendientes de completar con CV,
-filiacion, ORCID o publicaciones cuando esten disponibles.
+Incluye el perfil de Diego Bernardo Meza Bogado, su afiliacion en FACEN-UNA,
+ORCID y correo, ademas de un resumen academico de Nicolas Vera Ramos como
+colaborador en matematica pura, analisis de datos, Python, SQL, machine
+learning y visualizacion.
 
 ## Registro
 
@@ -69,6 +74,10 @@ El panel lateral permite combinar:
 - Copa historica;
 - posicion de jugadores;
 - busqueda por texto para paises, jugadores, sedes o rondas.
+
+En escritorio, el panel lateral tiene desplazamiento interno para acceder a
+todos los filtros sin cambiar el zoom del navegador. En movil, los filtros
+quedan debajo del contenido principal.
 
 ## Lectura prudente
 

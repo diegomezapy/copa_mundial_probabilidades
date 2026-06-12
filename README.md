@@ -18,13 +18,13 @@ certeza; muestra probabilidades, supuestos, limitaciones y trazabilidad de datos
 
 ## Version actual
 
-`0.2.5` separa `Autores` en una pestana propia y reorganiza `Acerta` para
-reducir saturacion visual: puntaje, evolucion personal y partidos filtrados
-quedan en bloques distintos. Mantiene el balon canvas con rebote, rotacion,
-sombra y estela, pronosticos propios, simbolos estadisticos en movimiento,
-registro inicial sin password, estadisticas de visitas, referencias, derechos
-de uso, evidencia historica 1930-2022 y filtros por Copa, pais, jugador y
-posicion.
+`0.2.6` corrige la tarjeta `Senal` para que responda a filtros, mejora el
+scroll del panel lateral, incorpora colores por grupo, agrega microanimaciones
+en tablas y figuras, y actualiza los perfiles academicos de autores. Mantiene
+`Autores` en pestana propia, `Acerta` reorganizada, balon canvas con rebote,
+pronosticos propios, registro inicial sin password, estadisticas de visitas,
+referencias, derechos de uso, evidencia historica 1930-2022 y filtros por Copa,
+pais, jugador y posicion.
 
 ## Fuentes
 

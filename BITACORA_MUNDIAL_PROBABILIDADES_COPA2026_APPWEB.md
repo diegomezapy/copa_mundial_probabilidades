@@ -1,5 +1,149 @@
 # Bitacora Mundial Probabilidades Copa 2026 Appweb
 
+## 2026-06-12 16:31
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: Proyecto academico publico
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.2.6`
+
+### Objetivo de la intervencion
+
+Corregir la tarjeta `Senal` para que responda a filtros, habilitar navegacion
+del panel lateral sin usar zoom, diversificar colores por grupo, sumar
+movimientos didacticos a tablas y figuras, y actualizar perfiles academicos de
+autores.
+
+### Diagnostico inicial
+
+* `renderClassroomCards()` usaba `filteredTeams()` para el promedio posterior,
+  pero calculaba `Senal` con `state.data.teams`; por eso Mexico quedaba fijo.
+* El panel lateral en escritorio podia quedar mas alto que la ventana y no tenia
+  scroll interno.
+* La interfaz seguia muy dominada por verdes, aunque ya tenia algunos acentos.
+* Los perfiles de autores eran placeholders operativos y debian reemplazarse
+  con datos academicos proporcionados por el usuario.
+
+### Acciones realizadas
+
+* `Senal` ahora usa el conjunto filtrado y cambia por grupo, equipo o busqueda.
+* Al seleccionar un equipo, el filtro de grupo se sincroniza con el grupo real
+  del equipo para evitar combinaciones imposibles.
+* Se agrego paleta de 12 colores por grupo y variables `--group-color`.
+* Se aplicaron colores de grupo a botones, accesos rapidos, heatmap, ranking,
+  puntos del grafico, tablas, filas y tarjetas de equipos.
+* El panel lateral tiene `max-height`, `overflow-y:auto` y scrollbar propio en
+  escritorio; en movil vuelve a ser bloque normal debajo del contenido.
+* Se agregaron microanimaciones a heatmaps, tablas, tarjetas didacticas y
+  puntos del grafico, respetando `prefers-reduced-motion`.
+* Se actualizo el perfil de Diego Bernardo Meza Bogado con afiliacion FACEN-UNA,
+  Departamento de Estadistica, pais, ORCID y correo.
+* Se resumio el perfil de Nicolas Vera Ramos con formacion en Matematica Pura,
+  electronica, Python, SQL, analisis de datos, machine learning, redes
+  neuronales y visualizacion.
+* Se actualizo version frontend, cache, GAS y JSON a `0.2.6`.
+
+### Archivos modificados
+
+* `index.html`
+* `assets/js/app.js`
+* `assets/css/styles.css`
+* `assets/js/config.js`
+* `service-worker.js`
+* `scripts/update_data.py`
+* `data/worldcup2026_latest.json`
+* `data/sources_manifest.json`
+* `gas/Config.gs`
+* `README.md`
+* `docs/manual_usuario.md`
+* `docs/manual_tecnico.md`
+* `docs/PROMPTS_MUNDIAL_PROBABILIDADES_2026-06-12.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+node --check assets\js\config.js
+node --check assets\js\app.js
+node --check service-worker.js
+python -m py_compile scripts\update_data.py scripts\make_assets.py
+python scripts\update_data.py
+python -m http.server 8096
+clasp push -f
+clasp version "v0.2.6 filtros colores autores"
+clasp deploy --versionNumber 9 --description "v0.2.6 filtros colores autores"
+```
+
+### Resultados verificados
+
+* JSON local `0.2.6` generado con `data_version=wc26-20260612T202618z`.
+* Cobertura conservada: 48 equipos, 1248 jugadores, 104 partidos y 964
+  partidos historicos.
+* `Senal` por defecto: `Mexico`.
+* Al filtrar `Group B`, `Senal` cambia a `Switzerland`.
+* Al seleccionar `Brazil`, el grupo activo pasa a `C` y `Senal` cambia a
+  `Brazil`.
+* Panel lateral desktop: `clientHeight=880`, `scrollHeight=1331`,
+  `overflowY=auto` y `scrollTop` avanza hasta 451.
+* Primeros colores de grupo verificados: `#0f766e`, `#2563eb`, `#7c3aed`,
+  `#dc2626`.
+* Autores verificados: `Diego Bernardo Meza Bogado` y `Nicolas Vera Ramos`.
+* Enlaces verificados: ORCID `0000-0002-3469-6689` y correo
+  `mailto:dmeza.py@gmail.com`.
+* Sin desborde horizontal en la vista `Autores`.
+* GAS version `9` desplegada como Web App
+  `AKfycbw6GZlQk00ZoNf1aeseouHv_y-0ONCgXNYvcIhzPDNx2HQ5UpE-ewcXROWDKXGWv8vZYw`.
+* Prueba anonima GAS:
+  `https://script.google.com/macros/s/AKfycbw6GZlQk00ZoNf1aeseouHv_y-0ONCgXNYvcIhzPDNx2HQ5UpE-ewcXROWDKXGWv8vZYw/exec?action=health`
+  devolvio `403 Acceso denegado`.
+* Capturas locales:
+  `tmp/app-local-resumen-v026-desktop.png`,
+  `tmp/app-local-resumen-v026-mobile.png`,
+  `tmp/app-local-autores-v026-desktop.png`,
+  `tmp/app-local-autores-v026-mobile.png`,
+  `tmp/app-local-resumen-filtros-colores-v026.png` y
+  `tmp/app-local-autores-datos-v026.png`.
+
+### Pruebas realizadas
+
+* `node --check`: correcto.
+* `py_compile`: correcto.
+* Playwright local desktop: senal filtrable, scroll de filtros, colores por
+  grupo y autores.
+* Playwright local movil: capturas de resumen y autores.
+* Prueba anonima GAS: `403 Acceso denegado`.
+
+### Errores o incidentes
+
+* La prueba inicial mostro que `Group B + Brazil` producia `Sin datos`; se
+  resolvio sincronizando automaticamente el grupo al equipo elegido.
+
+### Soluciones aplicadas
+
+* `renderClassroomCards()` usa `filteredTeams()` tambien para `Senal`.
+* `teamFilter` y accesos rapidos actualizan `state.filters.group` con el grupo
+  real del equipo seleccionado.
+* CSS con variables de grupo y scroll interno del panel lateral.
+* Tarjetas de autores con `details` y `links` estructurados.
+
+### Pendientes
+
+* Publicar commit, verificar GitHub Pages con cache-busting y registrar
+  evidencia publica.
+* Mantener documentado el bloqueo anonimo GAS `403 Acceso denegado` hasta que
+  el propietario republique el Web App con acceso real anonimo.
+
+### Riesgos
+
+* `color-mix()` requiere navegadores modernos; se mantiene estructura legible
+  aun si algun color avanzado no se aplica.
+* Las animaciones deben permanecer sutiles para no distraer ni saturar la
+  lectura academica.
+
 ## 2026-06-12 15:44
 
 ### Proyecto

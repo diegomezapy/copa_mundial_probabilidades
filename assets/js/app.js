@@ -23,18 +23,52 @@
   const VISIT_STORAGE_KEY = "mundialProbabilidades.visits.v1";
   const PREDICTION_STORAGE_KEY = "mundialProbabilidades.predictions.v1";
   const MAX_PREDICTION_CARDS = 18;
+  const GROUP_PALETTE = [
+    "#0f766e",
+    "#2563eb",
+    "#7c3aed",
+    "#dc2626",
+    "#ea580c",
+    "#ca8a04",
+    "#16a34a",
+    "#0891b2",
+    "#c026d3",
+    "#be123c",
+    "#4f46e5",
+    "#64748b"
+  ];
   const AUTHORS = [
     {
-      name: "Diego Gómez Apy",
+      name: "Diego Bernardo Meza Bogado",
       role: "Autor principal",
-      focus: "Ciencia de datos aplicada, appwebs educativas, automatización y modelos bayesianos para aprendizaje estadístico.",
-      note: "Resumen académico operativo dentro de este proyecto; puede ampliarse con CV, filiación y líneas de investigación formales."
+      focus: "Departamento de Estadística, Facultad de Ciencias Exactas y Naturales, Universidad Nacional de Asunción.",
+      note: "Autor principal del proyecto académico público para aprendizaje estadístico, ciencia de datos aplicada y modelos bayesianos explicables.",
+      details: [
+        ["Afiliación", "Facultad de Ciencias Exactas y Naturales, Universidad Nacional de Asunción, San Lorenzo, Paraguay"],
+        ["Unidad académica", "Departamento de Estadística, FACEN-UNA"],
+        ["País", "Paraguay"],
+        ["ORCID", "0000-0002-3469-6689"],
+        ["Correo", "dmeza.py@gmail.com"]
+      ],
+      links: [
+        ["ORCID", "https://orcid.org/0000-0002-3469-6689"],
+        ["Correo", "mailto:dmeza.py@gmail.com"]
+      ]
     },
     {
-      name: "Nicolás Vera",
+      name: "Nicolas Vera Ramos",
       role: "Colaborador",
-      focus: "Apoyo académico y revisión colaborativa para fortalecer la lectura didáctica de datos, pronósticos y evidencia histórica.",
-      note: "Perfil colaborador incorporado a la vista de autores; pendiente de completar con datos académicos oficiales."
+      focus: "Estudiante de Licenciatura en Ciencias mención Matemática Pura en FACEN, con formación complementaria en análisis de datos, Python, SQL, machine learning y visualización.",
+      note: "Colabora en la lectura didáctica de evidencia, pronósticos y explicaciones para estudiantes.",
+      details: [
+        ["Nombre bibliográfico", "Nicolas Vera Ramos Sr"],
+        ["Área", "Ciencias Naturales, Matemáticas, Matemática Pura"],
+        ["Formación", "Licenciatura en Ciencias mención Matemática Pura, en marcha desde 2024"],
+        ["Técnico", "Bachiller Técnico Industrial en Electrónica, Colegio Técnico Nacional, 2017"],
+        ["Cursos", "Data Scientist con Python, Data Analyst con Python, Python para análisis de datos, SQL, machine learning, redes neuronales y visualización de insights"],
+        ["País", "Paraguay"]
+      ],
+      links: []
     }
   ];
 
@@ -442,6 +476,23 @@
     return match ? match[0].charCodeAt(0) : 99;
   }
 
+  function groupIndex(group) {
+    const match = String(group || "").match(/[A-L]$/);
+    return match ? match[0].charCodeAt(0) - 65 : 0;
+  }
+
+  function groupColor(group) {
+    return GROUP_PALETTE[groupIndex(group) % GROUP_PALETTE.length];
+  }
+
+  function groupStyle(group) {
+    return `--group-color:${groupColor(group)}`;
+  }
+
+  function teamRecord(name) {
+    return state.data?.teams?.find((team) => team.team === name) || null;
+  }
+
   function renderKpis() {
     const meta = state.data.metadata;
     const coverage = meta.coverage;
@@ -524,7 +575,7 @@
     $("#contenders").innerHTML = rows
       .map(
         (team, index) => `
-        <article class="rank-row">
+        <article class="rank-row" style="${groupStyle(team.group)}">
           <div>
             <span class="rank">${index + 1}</span>
             <strong>${escapeHtml(team.team)}</strong>
@@ -551,7 +602,7 @@
     $("#groupButtons").innerHTML = [{ label: "Todos", value: "all" }, ...groups.map((group) => ({ label: group.replace("Group ", ""), value: group }))]
       .map(
         (item) => `
-          <button type="button" class="${state.filters.group === item.value ? "active" : ""}" data-group="${escapeHtml(item.value)}">
+          <button type="button" class="${state.filters.group === item.value ? "active" : ""}" data-group="${escapeHtml(item.value)}" ${item.value === "all" ? "" : `style="${groupStyle(item.value)}"`}>
             ${escapeHtml(item.label)}
           </button>
         `
@@ -573,7 +624,7 @@
     $("#teamQuickButtons").innerHTML = quickTeams
       .map(
         (team) => `
-          <button type="button" class="${state.filters.team === team.team ? "active" : ""}" data-team="${escapeHtml(team.team)}">
+          <button type="button" class="${state.filters.team === team.team ? "active" : ""}" data-team="${escapeHtml(team.team)}" style="${groupStyle(team.group)}">
             <span>${escapeHtml(team.team)}</span>
             <b>${WorldCupBayes.pct(team.p_advance_group, 0)}</b>
           </button>
@@ -600,14 +651,14 @@
           .filter(Boolean)
           .sort((a, b) => b.p_advance_group - a.p_advance_group);
         return `
-          <article class="heatmap-group ${state.filters.group === group ? "active" : ""}">
+          <article class="heatmap-group ${state.filters.group === group ? "active" : ""}" style="${groupStyle(group)}">
             <button type="button" data-group="${escapeHtml(group)}">${escapeHtml(group.replace("Group ", "Grupo "))}</button>
             <div>
               ${teams
                 .map((team) => {
                   const p = Math.round(team.p_advance_group * 100);
                   return `
-                    <span class="heat-team" style="--p:${p}">
+                    <span class="heat-team" style="--p:${p};${groupStyle(team.group)}">
                       <b>${escapeHtml(team.team)}</b>
                       <small>${p}%</small>
                     </span>
@@ -651,7 +702,7 @@
             const r = 5 + team.p_advance_group * 10;
             const top = labelTeams.includes(team.team);
             return `
-              <g class="chart-point ${top ? "labeled" : ""}">
+              <g class="chart-point ${top ? "labeled" : ""}" style="${groupStyle(team.group)}">
                 <circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r.toFixed(1)}"></circle>
                 ${top ? `<text x="${(cx + r + 4).toFixed(1)}" y="${(cy + 4).toFixed(1)}">${escapeHtml(team.team)}</text>` : ""}
               </g>
@@ -694,7 +745,16 @@
     const visible = filteredTeams();
     const avgAdvance =
       visible.reduce((sum, team) => sum + Number(team.p_advance_group || 0), 0) / Math.max(1, visible.length);
-    const top = [...state.data.teams].sort((a, b) => b.p_advance_group - a.p_advance_group)[0];
+    const top = [...visible].sort((a, b) => b.p_advance_group - a.p_advance_group)[0];
+    const signalLabel = top?.team || "Sin datos";
+    const signalNote =
+      state.filters.team !== "all"
+        ? "Equipo seleccionado en los filtros."
+        : state.filters.group !== "all"
+          ? "Mayor probabilidad dentro del grupo filtrado."
+          : state.filters.query
+            ? "Mayor probabilidad dentro de la busqueda."
+            : "Mayor probabilidad actual de avanzar de grupo.";
     $("#classroomCards").innerHTML = `
       <article>
         <span>Prior</span>
@@ -713,8 +773,8 @@
       </article>
       <article>
         <span>Señal</span>
-        <strong>${escapeHtml(top.team)}</strong>
-        <p>Mayor probabilidad actual de avanzar de grupo.</p>
+        <strong>${escapeHtml(signalLabel)}</strong>
+        <p>${escapeHtml(signalNote)}</p>
       </article>
     `;
   }
@@ -726,7 +786,7 @@
       .map((group) => {
         const rows = state.data.standings[group] || [];
         return `
-          <section class="table-block">
+          <section class="table-block" style="${groupStyle(group)}">
             <h3>${escapeHtml(group)}</h3>
             <div class="table-wrap">
               <table>
@@ -738,9 +798,9 @@
                 <tbody>
                   ${rows
                     .map((row) => {
-                      const team = state.data.teams.find((item) => item.team === row.team);
+                      const team = teamRecord(row.team);
                       return `
-                        <tr>
+                        <tr style="${groupStyle(team?.group || group)}">
                           <td><strong>${escapeHtml(row.team)}</strong></td>
                           <td>${row.points}</td>
                           <td>${row.played}</td>
@@ -770,7 +830,7 @@
         const pred = match.prediction;
         const score = match.score ? `${match.score.team1}-${match.score.team2}` : "pendiente";
         return `
-          <tr>
+          <tr style="${match.group ? groupStyle(match.group) : ""}">
             <td>${shortDate(match.date)}<small>${escapeHtml(match.time)}</small></td>
             <td><strong>${escapeHtml(match.team1)}</strong><small>${escapeHtml(match.team2)}</small></td>
             <td>${escapeHtml(match.group || match.round)}</td>
@@ -795,7 +855,7 @@
     $("#teamsGrid").innerHTML = rows
       .map(
         (team) => `
-        <article class="team-card">
+        <article class="team-card" style="${groupStyle(team.group)}">
           <header>
             <strong>${escapeHtml(team.team)}</strong>
             <span>${escapeHtml(team.group)}</span>
@@ -822,8 +882,10 @@
     $("#playersCount").textContent = `${rows.length} visibles`;
     $("#playersTable").innerHTML = rows
       .map(
-        (player) => `
-        <tr>
+        (player) => {
+          const team = teamRecord(player.team);
+          return `
+        <tr style="${team ? groupStyle(team.group) : ""}">
           <td>${player.number ?? ""}</td>
           <td><strong>${escapeHtml(player.name)}</strong><small>${escapeHtml(player.club)}</small></td>
           <td>${escapeHtml(player.team)}</td>
@@ -832,7 +894,8 @@
           <td>${player.caps}</td>
           <td>${player.goals}</td>
         </tr>
-      `
+      `;
+        }
       )
       .join("");
     renderScorers();
@@ -1091,6 +1154,30 @@
           <small>${escapeHtml(author.role)}</small>
           <strong>${escapeHtml(author.name)}</strong>
           <p>${escapeHtml(author.focus)}</p>
+          <dl class="author-details">
+            ${(author.details || [])
+              .map(
+                ([label, value]) => `
+                  <div>
+                    <dt>${escapeHtml(label)}</dt>
+                    <dd>${escapeHtml(value)}</dd>
+                  </div>
+                `
+              )
+              .join("")}
+          </dl>
+          ${
+            author.links?.length
+              ? `<div class="author-links">
+                  ${author.links
+                    .map(
+                      ([label, url]) =>
+                        `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`
+                    )
+                    .join("")}
+                </div>`
+              : ""
+          }
           <em>${escapeHtml(author.note)}</em>
         </article>
       `
@@ -1442,6 +1529,8 @@
     });
     $("#teamFilter").addEventListener("change", (event) => {
       state.filters.team = event.target.value;
+      const selectedTeam = teamRecord(state.filters.team);
+      if (selectedTeam) state.filters.group = selectedTeam.group;
       renderAll();
     });
     $("#cupFilter").addEventListener("change", (event) => {
@@ -1452,6 +1541,8 @@
       const button = event.target.closest("button[data-team]");
       if (!button) return;
       state.filters.team = button.dataset.team;
+      const selectedTeam = teamRecord(state.filters.team);
+      if (selectedTeam) state.filters.group = selectedTeam.group;
       renderAll();
     });
     $("#statusButtons").addEventListener("click", (event) => {

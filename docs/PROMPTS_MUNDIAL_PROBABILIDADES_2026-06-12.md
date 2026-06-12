@@ -46,3 +46,8 @@ modelos multivariados de pronostico y modelos bayesianos.
   por una animacion inspirada en una pelota con velocidad, rebote y repintado.
 - Separar autores y colaboracion en otra pestana, mejorar el orden de los
   elementos y evitar solapamientos o vistas demasiado cargadas o apretadas.
+- Corregir la tarjeta `Senal` porque quedaba fija en Mexico y no respondia a
+  filtros; hacer navegable el panel lateral de filtros; reducir hegemonia del
+  verde con colores por grupo; agregar mas efectos de movimiento en tablas y
+  figuras; actualizar los datos academicos de Diego Bernardo Meza Bogado y
+  resumir el perfil de Nicolas Vera Ramos.
