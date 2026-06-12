@@ -1,5 +1,134 @@
 # Bitacora Mundial Probabilidades Copa 2026 Appweb
 
+## 2026-06-12 15:44
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: Proyecto academico publico
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.2.5`
+
+### Objetivo de la intervencion
+
+Separar autores y colaboracion en una pestana propia, mejorar el orden de los
+elementos y reducir vistas cargadas o apretadas, especialmente en `Acerta`.
+
+### Diagnostico inicial
+
+* La vista `Acerta` mezclaba hero, metricas, evolucion, autores y 36 tarjetas
+  de partidos en una misma pantalla.
+* La informacion de autoria competia con el flujo operativo de pronosticos.
+* En pantallas pequenas habia riesgo de vistas largas y pesadas para
+  estudiantes o ninos.
+
+### Acciones realizadas
+
+* Se agrego la pestana `Autores`.
+* Se movio `Autores y colaboracion` fuera de `Acerta`.
+* Se reorganizo `Acerta` en tres bloques: resumen de pronosticos, evolucion y
+  puntaje, mas partidos filtrados.
+* Se limito la primera carga visual de partidos a 18 tarjetas y se agrego una
+  nota cuando hay mas partidos disponibles bajo los filtros actuales.
+* Se hizo que los partidos de `Acerta` respeten grupo, equipo, estado y
+  busqueda del panel lateral.
+* Se ajustaron estilos para reducir densidad, evitar anchos fijos en tarjetas y
+  prevenir desbordes horizontales.
+* Se actualizo version frontend, cache, GAS y JSON a `0.2.5`.
+
+### Archivos modificados
+
+* `index.html`
+* `assets/js/app.js`
+* `assets/css/styles.css`
+* `assets/js/config.js`
+* `service-worker.js`
+* `scripts/update_data.py`
+* `data/worldcup2026_latest.json`
+* `data/sources_manifest.json`
+* `gas/Config.gs`
+* `README.md`
+* `docs/manual_usuario.md`
+* `docs/manual_tecnico.md`
+* `docs/PROMPTS_MUNDIAL_PROBABILIDADES_2026-06-12.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+node --check assets\js\config.js
+node --check assets\js\app.js
+node --check service-worker.js
+python -m py_compile scripts\update_data.py scripts\make_assets.py
+python scripts\update_data.py
+python -m http.server 8095
+clasp push -f
+clasp version "v0.2.5 separar autores y ordenar vistas"
+clasp deploy --versionNumber 8 --description "v0.2.5 separar autores y ordenar vistas"
+```
+
+### Resultados verificados
+
+* JSON local `0.2.5` generado con 48 equipos, 1248 jugadores, 104 partidos y
+  964 partidos historicos.
+* `Acerta` ya no contiene el bloque `authorCards`.
+* La pestana `Autores` muestra 2 tarjetas de perfiles y 4 notas de
+  colaboracion/actualizacion.
+* `Acerta` muestra 18 tarjetas iniciales y `18/72 visibles` con filtros
+  generales.
+* Sin desborde horizontal en desktop `1440px` ni movil `390px`.
+* El mensaje vacio del panel de evolucion queda debajo de la formula y no se
+  superpone.
+* GAS version `8` desplegada como Web App
+  `AKfycbw3Ocimn2emzT6q1M9BT4EkmscVihRLRThNA9dM8tAL3fkjRez_saqRDhpjPxRqgYCM8w`.
+* Prueba anonima del nuevo Web App:
+  `https://script.google.com/macros/s/AKfycbw3Ocimn2emzT6q1M9BT4EkmscVihRLRThNA9dM8tAL3fkjRez_saqRDhpjPxRqgYCM8w/exec?action=health`
+  devolvio `403 Acceso denegado`.
+* Capturas locales:
+  `tmp/app-local-acerta-desktop2-v025.png`,
+  `tmp/app-local-acerta-mobile-top-v025.png`,
+  `tmp/app-local-acerta-mobile-focus-v025.png` y
+  `tmp/app-local-autores-desktop-v025.png`.
+
+### Pruebas realizadas
+
+* `node --check`: correcto.
+* `py_compile`: correcto.
+* Playwright local desktop: registro, vista `Acerta`, pestana `Autores`,
+  conteo de tarjetas, ausencia de autores dentro de `Acerta` y control de
+  desborde horizontal.
+* Playwright local movil: registro, vista `Acerta`, tarjetas, inicio de vista y
+  control de desborde horizontal.
+* Prueba anonima GAS: `403 Acceso denegado`.
+
+### Errores o incidentes
+
+* Se detecto que el mensaje vacio de evolucion se cruzaba visualmente con la
+  formula del tablero; se agrego una regla especifica para centrarlo debajo de
+  la formula.
+
+### Soluciones aplicadas
+
+* Separacion de responsabilidades por pestanas.
+* Render de autores independiente de `renderPredictions()`.
+* Lista de pronosticos filtrable y acotada para evitar saturacion inicial.
+* CSS responsive para `Acerta`, `Autores`, tarjetas de pronostico y tabs.
+
+### Pendientes
+
+* Publicar commit, verificar GitHub Pages con cache-busting y registrar
+  evidencia publica.
+* Mantener documentado el bloqueo anonimo GAS `403 Acceso denegado` hasta que
+  el propietario republique el Web App con acceso real anonimo.
+
+### Riesgos
+
+* Si el usuario espera ver todos los partidos simultaneamente en `Acerta`, debe
+  usar filtros para enfocar la lista; esto se prioriza para mejorar legibilidad.
+* El backend GAS sigue pendiente de prueba anonima exitosa.
+
 ## 2026-06-12 15:23
 
 ### Proyecto

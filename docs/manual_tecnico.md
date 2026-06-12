@@ -18,11 +18,14 @@ pronosticos bayesianos de la Copa Mundial 2026.
 
 ## Capa visual
 
-La version `0.2.4` usa un canvas para el balon del hero: posicion, velocidad,
+La version `0.2.5` conserva el canvas del balon del hero: posicion, velocidad,
 rebote contra limites, rotacion, sombra y estela con `requestAnimationFrame`.
-Se mantienen trazos de pase, simbolos estadisticos en movimiento, transiciones
-de vistas, barras animadas y ruta visual del modelo. Las animaciones respetan
-`prefers-reduced-motion` para usuarios que soliciten reducir movimiento.
+Ademas separa `Autores` como vista independiente y compacta `Acerta` para
+reducir carga visual: las tarjetas de pronostico respetan filtros activos y se
+limitan a una primera pagina visual. Se mantienen trazos de pase, simbolos
+estadisticos en movimiento, transiciones de vistas, barras animadas y ruta
+visual del modelo. Las animaciones respetan `prefers-reduced-motion` para
+usuarios que soliciten reducir movimiento.
 
 ## Pronosticos de usuarios
 
@@ -34,6 +37,9 @@ actualizacion. La evaluacion se calcula en cliente cuando el partido queda
 
 El backend GAS queda preparado para recibir `action=prediction` y escribir en
 `PREDICCIONES_USUARIO` cuando el Web App responda anonimamente.
+
+La vista `Autores` renderiza `authorCards` de forma separada para no mezclar
+perfiles academicos con el flujo de pronosticos de usuarios.
 
 ## Flujo de datos
 

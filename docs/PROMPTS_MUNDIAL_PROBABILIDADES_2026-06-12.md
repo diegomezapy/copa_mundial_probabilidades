@@ -44,3 +44,5 @@ modelos multivariados de pronostico y modelos bayesianos.
   Diego Gomez Apy y Nicolas Vera, y sumar simbolos estadisticos animados.
 - Corregir el efecto del balon porque parecia un boton moviendose y reemplazarlo
   por una animacion inspirada en una pelota con velocidad, rebote y repintado.
+- Separar autores y colaboracion en otra pestana, mejorar el orden de los
+  elementos y evitar solapamientos o vistas demasiado cargadas o apretadas.

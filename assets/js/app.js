@@ -22,6 +22,7 @@
   const USER_STORAGE_KEY = "mundialProbabilidades.user.v1";
   const VISIT_STORAGE_KEY = "mundialProbabilidades.visits.v1";
   const PREDICTION_STORAGE_KEY = "mundialProbabilidades.predictions.v1";
+  const MAX_PREDICTION_CARDS = 18;
   const AUTHORS = [
     {
       name: "Diego Gómez Apy",
@@ -379,6 +380,11 @@
         return { match, prediction, evaluation };
       })
       .sort((a, b) => `${a.match.date} ${a.match.time}`.localeCompare(`${b.match.date} ${b.match.time}`));
+  }
+
+  function filteredPredictionRows() {
+    const visibleMatchIds = new Set(filteredMatches().map((match) => match.match_id));
+    return predictionRows().filter((row) => visibleMatchIds.has(row.match.match_id));
   }
 
   function predictionStats() {
@@ -1076,7 +1082,9 @@
   }
 
   function renderAuthorCards() {
-    $("#authorCards").innerHTML = AUTHORS.map(
+    const container = $("#authorCards");
+    if (!container) return;
+    container.innerHTML = AUTHORS.map(
       (author) => `
         <article class="author-card">
           <span class="author-orbit" aria-hidden="true"></span>
@@ -1144,8 +1152,16 @@
   }
 
   function renderPredictionMatches() {
-    const rows = predictionRows().slice(0, 36);
-    $("#predictionMatchCount").textContent = `${rows.length} partidos`;
+    const allRows = filteredPredictionRows();
+    const rows = allRows.slice(0, MAX_PREDICTION_CARDS);
+    const hiddenRows = Math.max(0, allRows.length - rows.length);
+    $("#predictionMatchCount").textContent = hiddenRows
+      ? `${rows.length}/${allRows.length} visibles`
+      : `${rows.length} partidos`;
+    if (!rows.length) {
+      $("#predictionMatches").innerHTML = `<p class="empty-note">No hay partidos con los filtros actuales.</p>`;
+      return;
+    }
     $("#predictionMatches").innerHTML = rows
       .map(({ match, prediction, evaluation }) => {
         const disabled = match.status === "final" ? "disabled" : "";
@@ -1187,14 +1203,16 @@
           </article>
         `;
       })
-      .join("");
+      .join("") +
+      (hiddenRows
+        ? `<p class="prediction-more-note">Hay ${hiddenRows} partidos mas. Ajusta grupo, equipo, estado o busqueda para enfocar la lista.</p>`
+        : "");
   }
 
   function renderPredictions() {
     renderPredictionStats();
     renderPredictionBoard();
     renderPredictionMatches();
-    renderAuthorCards();
   }
 
   function renderSourcePanel() {
@@ -1221,6 +1239,7 @@
       evidencia: "Evidencia",
       modelo: "Modelo",
       acerta: "Acertá",
+      autores: "Autores",
       visitas: "Visitas",
       referencias: "Referencias",
       auditoria: "Auditoria"
@@ -1332,6 +1351,7 @@
     renderModelLab();
     renderMethod();
     renderPredictions();
+    renderAuthorCards();
     renderSourcePanel();
     renderVisitStats();
     renderReferences();

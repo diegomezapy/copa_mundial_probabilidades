@@ -13,7 +13,8 @@ partir de datos abiertos y un modelo bayesiano explicable.
 - Partidos: calendario, resultados y probabilidades 1-X-2.
 - Evidencia: historia por pais, Copa, partidos, mano a mano y goleadores.
 - Modelo: laboratorio para comparar dos equipos.
-- Acertá: pronosticos propios, aciertos, fallas, evolucion y autores.
+- Acertá: pronosticos propios, puntaje, aciertos, fallas y evolucion.
+- Autores: autoria, colaboracion y perfiles academicos editables.
 - Visitas: perfil registrado y estadisticas locales de uso.
 - Referencias: derechos de uso de datos, fuentes y paginas de interes.
 - Auditoria: fuentes, version de datos y estado del backend.
@@ -35,9 +36,18 @@ finalizado en el JSON publico, calcula:
 - 1 punto por signo correcto;
 - 0 puntos por falla.
 
-La vista muestra evolucion personal, aciertos, fallas y perfiles de autores.
+La vista muestra evolucion personal, aciertos, fallas, reglas de puntaje y una
+lista acotada de partidos que respeta los filtros activos. La informacion de
+autoria y colaboracion queda en la pestana Autores.
 Mientras el backend GAS no este autorizado anonimamente, estos pronosticos son
 locales al navegador.
+
+## Autores
+
+La pestana Autores separa los perfiles academicos del espacio de pronosticos.
+Incluye el resumen operativo de Diego Gomez Apy y Nicolas Vera, mas notas sobre
+colaboracion, revision y datos verificables pendientes de completar con CV,
+filiacion, ORCID o publicaciones cuando esten disponibles.
 
 ## Registro
 

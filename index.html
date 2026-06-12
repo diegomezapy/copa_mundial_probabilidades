@@ -176,6 +176,7 @@
               <button class="tab-button" data-target="evidencia">Evidencia</button>
               <button class="tab-button" data-target="modelo">Modelo</button>
               <button class="tab-button" data-target="acerta">Acertá</button>
+              <button class="tab-button" data-target="autores">Autores</button>
               <button class="tab-button" data-target="visitas">Visitas</button>
               <button class="tab-button" data-target="referencias">Referencias</button>
               <button class="tab-button" data-target="auditoria">Auditoria</button>
@@ -391,7 +392,7 @@
             <section id="acerta" class="view">
               <div class="acerta-hero">
                 <div>
-                  <p class="eyebrow">Acertá de los autores</p>
+                  <p class="eyebrow">Acertá</p>
                   <h2>Tu laboratorio de pronósticos</h2>
                   <p>
                     Anotá marcador y confianza antes de cada partido; la app
@@ -401,7 +402,7 @@
                 <div id="predictionStats" class="prediction-stats"></div>
               </div>
 
-              <div class="content-grid two">
+              <div class="content-grid two acerta-grid">
                 <section class="panel">
                   <header class="panel-header">
                     <h2>Evolución personal</h2>
@@ -409,12 +410,17 @@
                   </header>
                   <div id="predictionBoard" class="prediction-board"></div>
                 </section>
-                <section class="panel">
+                <section class="panel prediction-rules-panel">
                   <header class="panel-header">
-                    <h2>Autores y colaboración</h2>
-                    <span>equipo académico</span>
+                    <h2>Puntaje</h2>
+                    <span>reglas simples</span>
                   </header>
-                  <div id="authorCards" class="author-grid"></div>
+                  <div class="prediction-guide">
+                    <article><strong>3</strong><span>marcador exacto</span></article>
+                    <article><strong>1</strong><span>signo correcto</span></article>
+                    <article><strong>0</strong><span>falla</span></article>
+                    <p>Los partidos visibles respetan los filtros activos para trabajar por grupo, equipo o estado.</p>
+                  </div>
                 </section>
                 <section class="panel span-2">
                   <header class="panel-header">
@@ -422,6 +428,61 @@
                     <span id="predictionMatchCount">0 partidos</span>
                   </header>
                   <div id="predictionMatches" class="prediction-match-list"></div>
+                </section>
+              </div>
+            </section>
+
+            <section id="autores" class="view">
+              <div class="authors-hero">
+                <div>
+                  <p class="eyebrow">Autores y colaboración</p>
+                  <h2>Equipo académico del proyecto</h2>
+                  <p>
+                    Espacio para reconocer autoría, colaboración, criterios de
+                    actualización y responsabilidades académicas del tablero.
+                  </p>
+                </div>
+              </div>
+
+              <div class="content-grid two">
+                <section class="panel span-2">
+                  <header class="panel-header">
+                    <h2>Perfiles</h2>
+                    <span>resumen editable</span>
+                  </header>
+                  <div id="authorCards" class="author-grid author-grid-wide"></div>
+                </section>
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Colaboración</h2>
+                    <span>método de trabajo</span>
+                  </header>
+                  <div class="author-notes">
+                    <article>
+                      <strong>Rol docente</strong>
+                      <p>Convertir datos abiertos, supuestos y resultados en material comprensible para estudiantes.</p>
+                    </article>
+                    <article>
+                      <strong>Revisión</strong>
+                      <p>Mejorar explicaciones, filtros, trazabilidad y lectura de evidencia histórica.</p>
+                    </article>
+                  </div>
+                </section>
+                <section class="panel">
+                  <header class="panel-header">
+                    <h2>Actualización de perfiles</h2>
+                    <span>pendiente documental</span>
+                  </header>
+                  <div class="author-notes">
+                    <article>
+                      <strong>Datos verificables</strong>
+                      <p>Los perfiles pueden ampliarse con CV, filiación institucional, ORCID, publicaciones y líneas formales de investigación.</p>
+                    </article>
+                    <article>
+                      <strong>Derechos</strong>
+                      <p>Los créditos y fuentes deben mantenerse separados de pronósticos, resultados y datos de terceros.</p>
+                    </article>
+                  </div>
                 </section>
               </div>
             </section>
@@ -508,7 +569,7 @@
       </main>
 
       <footer class="footer">
-        <span>v0.2.4 · 2026-06-12</span>
+        <span>v0.2.5 · 2026-06-12</span>
         <a href="docs/metodologia_bayesiana.md">metodologia</a>
         <a href="docs/diccionario_datos.md">diccionario</a>
         <a href="?view=referencias">referencias</a>
