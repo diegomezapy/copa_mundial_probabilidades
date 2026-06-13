@@ -1,5 +1,163 @@
 # Bitacora Mundial Probabilidades Copa 2026 Appweb
 
+## 2026-06-13 09:38
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: Proyecto academico publico
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.2.12`
+
+### Objetivo de la intervencion
+
+Mostrar siempre la estimacion de probabilidades bajo `Ruta del modelo`, agregar
+una figura didactica del calculo bayesiano, crear una vista metodologica
+completa, convertir tablas/figuras/nodos en multifiltros globales, mejorar el
+ajuste horizontal del mural y actualizar el deploy GAS para revisar la
+vinculacion con la planilla en linea.
+
+### Diagnostico inicial
+
+* La vista `Resumen` mostraba pasos del modelo, pero no dejaba siempre visible
+  el triplete de probabilidades 1-X-2 bajo la ruta.
+* La metodologia existia como panel breve en `Modelo`, pero faltaba una vista
+  completa para docencia.
+* Muchas tablas y graficos respondian a filtros globales, pero no todos los
+  elementos visibles actuaban como filtros al seleccionarlos.
+* El mural del torneo era amplio y necesitaba controles de zoom/foco para modo
+  ordenador.
+* El frontend conservaba `gasExecUrl: ""`; la hoja podia usar CSV publicos,
+  pero el Web App GAS requeria nueva verificacion.
+
+### Acciones realizadas
+
+* Se agrego `modelFlowForecast` bajo `Ruta del modelo` con partido estimado,
+  probabilidades 1-X-2, goles esperados y figura bayesiana.
+* Se creo la vista `Metodologia` con resumen de datos, formula conceptual,
+  pipeline, ejemplo activo, supuestos, limitaciones, validacion y sensibilidad.
+* Se implemento `applyGlobalFilter()` y delegacion de clic/teclado para
+  multifiltros globales.
+* Se agregaron atributos `data-filter-*` a KPIs, heatmap, puntos del grafico,
+  proximos partidos, rankings, tablas, jugadores, goleadores, linea historica,
+  partidos historicos, nodos del mural y mapa de grupos.
+* Se agregaron controles `Completo`, `Grupos A-F`, `Llave`, `Grupos G-L` y
+  slider `Zoom` para el mural del torneo.
+* Se amplio el ancho util de escritorio a `1920px`.
+* Se actualizo version/cache/frontend/GAS/generador a `0.2.12`.
+* Se regeneraron JSON y CSV publicos con `app_version=0.2.12`.
+* Se actualizo README, manual tecnico y secuencia de prompts.
+* Se ejecuto `clasp push -f`, se creo version GAS `15` y se redepleo sobre el
+  deployment existente `AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g`.
+
+### Archivos modificados
+
+* `index.html`
+* `assets/js/app.js`
+* `assets/css/styles.css`
+* `assets/js/config.js`
+* `service-worker.js`
+* `gas/Config.gs`
+* `scripts/update_data.py`
+* `scripts/create_social_gif.py`
+* `data/worldcup2026_latest.json`
+* `data/sources_manifest.json`
+* `data/sheets/*.csv`
+* `README.md`
+* `docs/manual_tecnico.md`
+* `docs/PROMPTS_MUNDIAL_PROBABILIDADES_2026-06-12.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+python scripts\update_data.py
+node --check assets\js\app.js
+node --check assets\js\config.js
+node --check service-worker.js
+python -m py_compile scripts\update_data.py scripts\make_assets.py scripts\create_social_gif.py
+python -m http.server 8792
+clasp show-authorized-user
+clasp status
+clasp deployments
+clasp push -f
+clasp version "v0.2.12 metodologia multifiltros mural zoom"
+clasp deploy --deploymentId AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g --versionNumber 15 --description "v0.2.12 metodologia multifiltros mural zoom"
+git commit -m "feat: ampliar metodologia y multifiltros"
+git push origin main
+```
+
+### Resultados verificados
+
+* JSON local `app_version=0.2.12`, 104 partidos y 4 resultados finalizados.
+* GitHub Pages sirve `assets/js/config.js` con `0.2.12`.
+* GitHub Pages sirve `assets/js/app.js` con `renderMethodologyDeep` y
+  `modelFlowForecast`.
+* GitHub Pages sirve `data/worldcup2026_latest.json` con `app_version=0.2.12`.
+* GAS fue redeplegado como `@15` sobre el deployment existente.
+* CSV publicos verificados:
+  `equipos.csv` 50 lineas, `jugadores.csv` 1250 lineas, `partidos.csv` 106
+  lineas, `pronosticos.csv` 74 lineas, `historico_partidos.csv` 966 lineas.
+
+### Pruebas realizadas
+
+* Validacion local Playwright desktop: version `0.2.12`, 3 barras de
+  probabilidad bajo ruta del modelo, figura bayesiana visible, pestaña
+  `Metodologia` presente, `bodyOverflow=0`.
+* Validacion local `Metodologia`: 5 secciones, formula visible y 12 items de
+  limites/supuestos.
+* Validacion local multifiltro: clic en `Mexico` desde heatmap actualiza
+  `teamFilter=Mexico`, resumen de filtros y mantiene probabilidades visibles.
+* Validacion local mural: zoom `0.65`, foco `bracket`, sin desborde global.
+* Validacion publica Playwright desktop: version `0.2.12`, 3 barras,
+  metodologia con 5 secciones, multifiltro activo y mural con zoom/foco.
+* Validacion publica movil 390x860: version `0.2.12`, 3 barras y
+  `bodyOverflow=0`.
+
+### Errores o incidentes
+
+* La primera prueba GAS con PowerShell fallo por interpolacion de `?`; se
+  corrigio usando `${gas}`.
+* El Web App GAS actualizado responde `403 Prohibido` en
+  `/exec?action=health`, aun despues de redeploy `@15`.
+* `clasp run syncFromGithub` no esta disponible porque el proyecto no esta
+  desplegado como API executable.
+
+### Soluciones aplicadas
+
+* Se mantuvo `assets/js/config.js` con `gasExecUrl: ""` para no conectar el
+  frontend publico a un endpoint que responde 403.
+* Se verifico que los CSV publicos de `data/sheets/` responden `200`; este es
+  el camino operativo para la planilla mediante `IMPORTDATA` mientras se corrige
+  el acceso anonimo del Web App.
+* Se documento en README y manual tecnico que GAS esta actualizado a version 15,
+  pero bloqueado anonimamente.
+
+### Pendientes
+
+* Corregir en Apps Script/Google Drive la accesibilidad anonima del Web App para
+  que `/exec?action=health` devuelva JSON y no `403 Prohibido`.
+* Si se desea sincronizacion directa desde Web App, habilitar o validar permisos
+  del despliegue y luego configurar `gasExecUrl` en `assets/js/config.js`.
+* Revisar en la hoja online que `IMPORTDATA` este autorizado con
+  `importFunctionsExternalUrlAccessAllowed=true`.
+
+### Riesgos
+
+* Si se apunta el frontend a un GAS con 403, la app publica podria mostrar
+  fallback o errores innecesarios; por eso se conserva JSON/CSV publico.
+* Los multifiltros globales son potentes, pero deben mantenerse claros para no
+  confundir a usuarios nuevos.
+
+### Recomendaciones
+
+* Mantener la arquitectura dual: GitHub Pages + JSON/CSV publico como superficie
+  estable; GAS/Sheets como backend auditable cuando permisos esten resueltos.
+* Agregar una variante futura de `Metodologia` con ejemplos de sensibilidad de
+  priors cuando haya mas resultados 2026.
+
 ## 2026-06-13 07:46
 
 ### Proyecto

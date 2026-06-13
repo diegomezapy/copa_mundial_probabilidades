@@ -108,6 +108,15 @@ los CSV publicos con formulas `IMPORTDATA` apuntando a GitHub Pages. En la hoja
 importacion y formatear explicitamente fechas/marcadores historicos para evitar
 que Google Sheets muestre numeros seriales en columnas como `date` o `score`.
 
+En la intervencion `0.2.12`, GAS fue actualizado con `clasp push`, version GAS
+`15` y redeploy sobre
+`AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g`.
+La URL `/exec?action=health` sigue devolviendo `403 Prohibido`; por tanto el
+frontend mantiene `gasExecUrl: ""` hasta que el Web App quede accesible
+anonimamente. Los CSV publicos en `data/sheets/` fueron verificados con estado
+`200` y siguen siendo el camino operativo para la planilla mediante
+`IMPORTDATA`.
+
 ## Validaciones minimas
 
 ```powershell

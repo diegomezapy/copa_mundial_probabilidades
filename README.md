@@ -68,8 +68,8 @@ Comandos operativos:
 
 ```powershell
 clasp push -f
-clasp version "v0.1.0 app publica mundial probabilidades"
-clasp deploy --description "v0.1.0 app publica mundial probabilidades"
+clasp version "v0.2.12 metodologia multifiltros mural zoom"
+clasp deploy --deploymentId AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g --versionNumber 15 --description "v0.2.12 metodologia multifiltros mural zoom"
 ```
 
 Funciones manuales relevantes desde el editor de Apps Script:
@@ -92,14 +92,18 @@ prueba anonima del Web App siga devolviendo `403 Prohibido`.
 El endpoint `/exec?action=bootstrap&callback=...` debe verificarse anonimamente
 antes de escribir su URL en `assets/js/config.js`.
 
-Estado de la primera intervencion:
+Estado operativo reciente:
 
-- `clasp push`, `clasp version` y `clasp deploy` fueron ejecutados correctamente.
-- Deployment candidato:
-  `AKfycbzk3i63t8l7aYjBTnoIXHDAnaa91_1TmjLaxaVaVkN-0mWrGriML54Spssg7gEDZXy0QA`.
-- La prueba anonima de `/exec?action=health` devolvio `403 Prohibido`; por eso
-  el frontend conserva fallback JSON local hasta que el propietario autorice la
-  publicacion real del Web App.
+- `clasp push`, `clasp version` y `clasp deploy --deploymentId` fueron
+  ejecutados correctamente para `0.2.12`.
+- Deployment actualizado:
+  `AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g`
+  en version GAS `15`.
+- La prueba anonima de `/exec?action=health` sigue devolviendo `403 Prohibido`;
+  por eso `assets/js/config.js` conserva `gasExecUrl: ""` y el frontend sigue
+  usando JSON/CSV publicos. Los CSV de `data/sheets/` si responden por GitHub
+  Pages y son el camino recomendado para `IMPORTDATA` mientras se corrige el
+  acceso anonimo del Web App.
 
 ## Automatizacion de datos
 
