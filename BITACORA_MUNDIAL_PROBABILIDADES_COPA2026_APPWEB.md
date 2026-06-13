@@ -75,6 +75,11 @@ node --check assets\js\app.js
 node --check service-worker.js
 python -m py_compile scripts\update_data.py scripts\make_assets.py
 npm install --prefix $env:TEMP\mundial-pw-playwright --no-save playwright@1.60.0
+git push origin main
+gh run watch 27449703314 --exit-status --interval 10
+clasp push -f
+clasp version "v0.2.8 banderas fotos commons"
+clasp deploy --versionNumber 11 --description "v0.2.8 banderas fotos commons"
 ```
 
 ### Resultados verificados
@@ -94,6 +99,35 @@ npm install --prefix $env:TEMP\mundial-pw-playwright --no-save playwright@1.60.0
 * Capturas locales:
   `tmp/media-local-flags-svg-desktop.png` y
   `tmp/media-local-flags-svg-mobile.png`.
+* Commit publicado:
+  `295c987 feat: agregar banderas fotos y tooltips`.
+* GitHub Pages build `27449703314` finalizado correctamente sobre
+  `295c9877dc9059ff8e054f940dc08833bae442c6`.
+* URL publica validada con cache-busting:
+  `https://diegomezapy.github.io/copa_mundial_probabilidades/?public-media=295c987`.
+* HTTP publico verificado: `index.html`, `assets/js/config.js`,
+  `assets/js/app.js`, `data/worldcup2026_latest.json` y
+  `data/sources_manifest.json` respondieron `200`.
+* JSON publico `0.2.8`: `data_version=wc26-20260613T004224z`, 48 equipos,
+  1248 jugadores, 104 partidos, 3 partidos completados y 964 partidos
+  historicos.
+* Manifest publico incluye `flag_icons`, `wikimedia_commons` y
+  `wikidata_licensing`.
+* Validacion publica en Chromium desktop:
+  48 banderas SVG encontradas y 48 cargadas; Mexico usa `mx.svg`; tooltip de
+  Mexico cargado; app version `0.2.8`.
+* Validacion publica de jugadores: Lionel Messi con foto cargada
+  (`naturalWidth=250`) y bandera Argentina `ar.svg`.
+* Validacion publica movil `390px`: 48 banderas presentes, primera bandera
+  visible cargada, `bodyOverflow=0` y botones con fuente minima `16.32px`.
+* Capturas publicas:
+  `tmp/media-public-flags-svg-desktop.png` y
+  `tmp/media-public-flags-svg-mobile.png`.
+* GAS version `11` desplegada como Web App candidato
+  `AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g`.
+* Prueba anonima GAS:
+  `https://script.google.com/macros/s/AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g/exec?action=health`
+  devolvio `403 Prohibido`.
 
 ### Pruebas realizadas
 
@@ -101,6 +135,10 @@ npm install --prefix $env:TEMP\mundial-pw-playwright --no-save playwright@1.60.0
 * Compilacion Python: correcta.
 * Prueba local Chromium desktop: correcta.
 * Prueba local Chromium movil `390px`: correcta.
+* Prueba publica HTTP GitHub Pages: correcta.
+* Prueba publica Chromium desktop: correcta.
+* Prueba publica Chromium movil `390px`: correcta.
+* Prueba anonima GAS version 11: `403 Prohibido`.
 
 ### Errores o incidentes
 
@@ -109,6 +147,8 @@ npm install --prefix $env:TEMP\mundial-pw-playwright --no-save playwright@1.60.0
 * La instalacion temporal de Playwright dentro del repo genero errores por la
   carpeta sincronizada; se elimino `node_modules` del repo y se ejecuto la
   prueba desde una carpeta temporal local de Windows.
+* GAS sigue bloqueado anonimamente con `403 Prohibido`; se mantiene la app
+  publica consumiendo JSON/GitHub Pages.
 
 ### Soluciones aplicadas
 
@@ -119,9 +159,9 @@ npm install --prefix $env:TEMP\mundial-pw-playwright --no-save playwright@1.60.0
 
 ### Pendientes
 
-* Publicar `0.2.8` en GitHub Pages y validar la URL publica con cache-busting.
-* Desplegar GAS candidato `0.2.8` si las credenciales de `clasp` lo permiten y
-  volver a registrar el estado de acceso anonimo.
+* Si se desea usar GAS como backend publico de visitas/predicciones, revisar la
+  configuracion de implementacion y permisos anonimos del Web App para resolver
+  el `403 Prohibido`.
 
 ### Riesgos
 
