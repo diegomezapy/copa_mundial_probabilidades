@@ -18,14 +18,15 @@ certeza; muestra probabilidades, supuestos, limitaciones y trazabilidad de datos
 
 ## Version actual
 
-`0.2.10` incorpora el set de imagenes generadas en `assets/img/generated/`,
-actualiza el hero, iconos PWA, pelota animada y visuales de apoyo para Mapa,
-Modelo, Equipos, Jugadores, Acerta, Autores y Referencias. Mantiene las
-definiciones emergentes `(i)`, `Probabilidad 1 / X / 2`, nodos rectangulares de
-grupos/etapas, CSV publicos en `data/sheets/`, banderas SVG, fotos curadas con
-fuente/licencia verificable, legibilidad movil, `Senal` filtrable, colores por
-grupo, microanimaciones, registro inicial, visitas, referencias, evidencia
-historica 1930-2022 y filtros por Copa, pais, jugador y posicion.
+`0.2.11` incorpora un mural completo tipo poster para seguir grupos y llave
+eliminatoria en una sola vista, con scroll interno responsive y atenuacion segun
+filtros para no perder contexto. Mantiene el set de imagenes generadas en
+`assets/img/generated/`, definiciones emergentes `(i)`, `Probabilidad 1 / X /
+2`, nodos rectangulares de grupos/etapas, CSV publicos en `data/sheets/`,
+banderas SVG, fotos curadas con fuente/licencia verificable, legibilidad movil,
+`Senal` filtrable, colores por grupo, microanimaciones, registro inicial,
+visitas, referencias, evidencia historica 1930-2022 y filtros por Copa, pais,
+jugador y posicion.
 
 ## Fuentes
 

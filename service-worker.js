@@ -1,4 +1,4 @@
-const CACHE_NAME = "mundial-probabilidades-v0-2-10";
+const CACHE_NAME = "mundial-probabilidades-v0-2-11";
 const APP_SHELL = [
   "./",
   "./index.html",

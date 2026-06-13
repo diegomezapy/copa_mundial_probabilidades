@@ -66,3 +66,6 @@ modelos multivariados de pronostico y modelos bayesianos.
 - Usar las imagenes guardadas en
   `G:\Mi unidad\MUNDIAL_PROBABILIDADES\imagenes` e incluirlas convenientemente
   en la app.
+- Incorporar un mapa o diagrama de seguimiento de resultados inspirado en una
+  lamina de torneo: grupos a ambos lados, llave eliminatoria central y nodos
+  rectangulares que permitan seguir partidos, resultados y cruces por completar.

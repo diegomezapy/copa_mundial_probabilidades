@@ -198,6 +198,12 @@
         "Es una forma corta de leer un partido: 1 significa que gana el primer equipo listado, X significa empate y 2 significa que gana el segundo equipo listado. No es una apuesta ni una certeza; es una estimacion del modelo con los datos disponibles.",
       bullets: ["1 = gana el equipo de la primera linea.", "X = empate.", "2 = gana el equipo de la segunda linea."]
     },
+    tournament_wall: {
+      title: "Mural completo del torneo",
+      body:
+        "Es una vista tipo poster: grupos a los lados y llave eliminatoria al centro. Los filtros no destruyen el mapa completo; atenuan los partidos que no coinciden para conservar el contexto del torneo.",
+      bullets: ["Cada rectangulo es un partido o cruce por completar.", "Finalizado muestra marcador.", "Pendiente muestra fecha o la mayor senal del modelo."]
+    },
     group_map: {
       title: "Mapa de grupos",
       body:
@@ -1125,6 +1131,218 @@
     `;
   }
 
+  function groupLetter(group) {
+    const match = String(group || "").match(/([A-L])$/);
+    return match ? match[1] : "?";
+  }
+
+  function groupLabel(group) {
+    return String(group || "Grupo").replace("Group ", "Grupo ");
+  }
+
+  function roundLabel(round) {
+    const labels = {
+      "Round of 32": "Ronda de 32",
+      "Round of 16": "Octavos",
+      "Quarter-final": "Cuartos",
+      "Semi-final": "Semifinal",
+      "Match for third place": "Tercer puesto",
+      Final: "Final"
+    };
+    return labels[round] || round || "Fase";
+  }
+
+  function matchDateKey(match) {
+    return `${match.date || ""} ${match.time || ""} ${match.match_id || ""}`;
+  }
+
+  function isSlotName(name) {
+    const value = String(name || "").trim();
+    return /^[123][A-L](?:\/[A-L])*$/.test(value) || /^[WL]\d+$/.test(value);
+  }
+
+  function slotHelp(name) {
+    const value = String(name || "").trim();
+    if (/^[WL]\d+$/.test(value)) {
+      return `${value.startsWith("W") ? "Ganador" : "Perdedor"} partido ${value.slice(1)}`;
+    }
+    if (/^[123][A-L]/.test(value)) {
+      const place = value[0] === "1" ? "1ro" : value[0] === "2" ? "2do" : "3ro";
+      return `${place} grupo ${value.slice(1)}`;
+    }
+    return value;
+  }
+
+  function wallTeamPill(name) {
+    if (isSlotName(name)) {
+      return `<span class="wall-team-pill wall-slot" title="${escapeHtml(slotHelp(name))}"><span>${escapeHtml(name)}</span><b>${escapeHtml(slotHelp(name))}</b></span>`;
+    }
+    return `<span class="wall-team-pill">${flagMarkup(name, "flag-badge small")}<b>${escapeHtml(name)}</b></span>`;
+  }
+
+  function signalSummary(match) {
+    const signal = leadingPrediction(match);
+    if (!signal) return "";
+    const label = signal.code === "X" ? "empate" : signal.label;
+    return `senal: ${label} ${WorldCupBayes.pct(signal.value, 0)}`;
+  }
+
+  function wallMatchMatchesFilters(match) {
+    const query = state.filters.query.toLowerCase();
+    const activeGroupLetter = groupLetter(state.filters.group);
+    const slotText = `${match.team1 || ""} ${match.team2 || ""}`;
+    const groupOk =
+      state.filters.group === "all" ||
+      match.group === state.filters.group ||
+      (!match.group && activeGroupLetter !== "?" && new RegExp(`(^|[^A-L])([123]${activeGroupLetter})(/|$|[^A-L])`).test(slotText));
+    const teamOk = state.filters.team === "all" || match.team1 === state.filters.team || match.team2 === state.filters.team;
+    const statusOk = state.filters.matchStatus === "all" || match.status === state.filters.matchStatus;
+    const queryOk =
+      !query ||
+      `${match.team1 || ""} ${match.team2 || ""} ${match.ground || ""} ${match.round || ""} ${match.group || ""}`.toLowerCase().includes(query);
+    return groupOk && teamOk && statusOk && queryOk;
+  }
+
+  function wallStatusClass(match) {
+    if (match.status === "final") return "is-done";
+    if (match.prediction) return "is-estimated";
+    return "is-pending";
+  }
+
+  function wallMatchMeta(match) {
+    if (match.status === "final" && match.score) return scoreLabel(match);
+    return signalSummary(match) || shortDate(match.date) || "por definir";
+  }
+
+  function wallGroupMatch(match) {
+    const muted = wallMatchMatchesFilters(match) ? "" : " is-muted";
+    return `
+      <article class="wall-match-row ${wallStatusClass(match)}${muted}" style="${groupStyle(match.group)}">
+        <span class="wall-match-date">${escapeHtml(shortDate(match.date))}</span>
+        <span class="wall-match-teams">
+          ${wallTeamPill(match.team1)}
+          <i>vs</i>
+          ${wallTeamPill(match.team2)}
+        </span>
+        <span class="wall-match-meta">${escapeHtml(wallMatchMeta(match))}</span>
+      </article>
+    `;
+  }
+
+  function wallKnockoutNode(match) {
+    const muted = wallMatchMatchesFilters(match) ? "" : " is-muted";
+    return `
+      <article class="wall-ko-node ${wallStatusClass(match)}${muted}">
+        <header>
+          <span>${escapeHtml(shortDate(match.date))}</span>
+          <b>${escapeHtml(wallMatchMeta(match))}</b>
+        </header>
+        <div class="wall-ko-team">${wallTeamPill(match.team1)}</div>
+        <div class="wall-ko-team">${wallTeamPill(match.team2)}</div>
+      </article>
+    `;
+  }
+
+  function renderWallGroups(groupNames, sideLabel) {
+    return groupNames
+      .map((group) => {
+        const rows = state.data.matches
+          .filter((match) => match.group === group)
+          .sort((a, b) => matchDateKey(a).localeCompare(matchDateKey(b)));
+        const completed = rows.filter((match) => match.status === "final").length;
+        const muted = rows.length && rows.every((match) => !wallMatchMatchesFilters(match)) ? " is-muted" : "";
+        return `
+          <section class="wall-group${muted}" style="${groupStyle(group)}">
+            <header>
+              <span>${escapeHtml(groupLetter(group))}</span>
+              <div>
+                <h3>${escapeHtml(groupLabel(group))}</h3>
+                <small>${completed}/${rows.length} finalizados - ${escapeHtml(sideLabel)}</small>
+              </div>
+            </header>
+            <div class="wall-group-matches">${rows.map(wallGroupMatch).join("")}</div>
+          </section>
+        `;
+      })
+      .join("");
+  }
+
+  function splitRound(rows) {
+    const pivot = Math.ceil(rows.length / 2);
+    return [rows.slice(0, pivot), rows.slice(pivot)];
+  }
+
+  function renderWallRound(round, rows, extraClass = "") {
+    return `
+      <section class="wall-round ${extraClass}">
+        <h3>${escapeHtml(roundLabel(round))}</h3>
+        <div class="wall-round-nodes">
+          ${rows.length ? rows.map(wallKnockoutNode).join("") : `<p class="wall-empty">Por completar</p>`}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderTournamentWall() {
+    const wall = $("#tournamentWall");
+    if (!wall) return;
+    const matches = state.data.matches || [];
+    const groupNames = [...new Set(matches.filter((match) => match.group).map((match) => match.group))].sort(
+      (a, b) => groupSortValue(a) - groupSortValue(b)
+    );
+    const leftGroups = groupNames.slice(0, 6);
+    const rightGroups = groupNames.slice(6);
+    const knockoutByRound = matches
+      .filter((match) => !match.group)
+      .sort((a, b) => matchDateKey(a).localeCompare(matchDateKey(b)))
+      .reduce((acc, match) => {
+        if (!acc[match.round]) acc[match.round] = [];
+        acc[match.round].push(match);
+        return acc;
+      }, {});
+    const [r32Left, r32Right] = splitRound(knockoutByRound["Round of 32"] || []);
+    const [r16Left, r16Right] = splitRound(knockoutByRound["Round of 16"] || []);
+    const [qfLeft, qfRight] = splitRound(knockoutByRound["Quarter-final"] || []);
+    const semis = knockoutByRound["Semi-final"] || [];
+    const finals = knockoutByRound.Final || [];
+    const thirdPlace = knockoutByRound["Match for third place"] || [];
+
+    wall.innerHTML = `
+      <div class="tournament-wall">
+        <aside class="wall-groups wall-groups-left" aria-label="Grupos A a F">
+          ${renderWallGroups(leftGroups, "lado izquierdo")}
+        </aside>
+        <section class="wall-bracket" aria-label="Llave central de eliminacion">
+          <div class="wall-bracket-side wall-bracket-left">
+            ${renderWallRound("Round of 32", r32Left)}
+            ${renderWallRound("Round of 16", r16Left)}
+            ${renderWallRound("Quarter-final", qfLeft)}
+          </div>
+          <div class="wall-bracket-core">
+            <figure class="wall-cup">
+              <img src="assets/img/generated/app-icon-1024.png" alt="" loading="lazy" />
+              <figcaption>
+                <strong>Copa 2026</strong>
+                <span>seguimiento academico</span>
+              </figcaption>
+            </figure>
+            ${renderWallRound("Semi-final", semis, "wall-round-semis")}
+            ${renderWallRound("Final", finals, "wall-round-finals")}
+            ${renderWallRound("Match for third place", thirdPlace, "wall-round-third")}
+          </div>
+          <div class="wall-bracket-side wall-bracket-right">
+            ${renderWallRound("Quarter-final", qfRight)}
+            ${renderWallRound("Round of 16", r16Right)}
+            ${renderWallRound("Round of 32", r32Right)}
+          </div>
+        </section>
+        <aside class="wall-groups wall-groups-right" aria-label="Grupos G a L">
+          ${renderWallGroups(rightGroups, "lado derecho")}
+        </aside>
+      </div>
+    `;
+  }
+
   function renderTournamentMap() {
     const matches = filteredMatches().filter((match) => match.group);
     const grouped = groupMatchesByRound(matches);
@@ -1187,6 +1405,7 @@
   }
 
   function renderTournamentViews() {
+    renderTournamentWall();
     renderTournamentMap();
     renderKnockoutMap();
   }
