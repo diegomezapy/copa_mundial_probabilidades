@@ -59,12 +59,15 @@ python scripts\create_social_gif.py
 * GIF local generado correctamente.
 * Ruta local:
   `G:\Mi unidad\MUNDIAL_PROBABILIDADES\assets\social\mundial_probabilidades_demo_10s_4fps.gif`
+* URL publica:
+  `https://diegomezapy.github.io/copa_mundial_probabilidades/assets/social/mundial_probabilidades_demo_10s_4fps.gif`
 * Dimensiones: 960 x 540 px.
 * Cuadros: 40.
 * Duracion total: 10.000 ms.
 * Duracion por cuadro: 250 ms.
 * Velocidad: 4 fps.
 * Peso: 2.54 MB.
+* GitHub Pages sirve el GIF con estado `200` y `2.662.959` bytes.
 
 ### Pruebas realizadas
 
@@ -89,8 +92,8 @@ python scripts\create_social_gif.py
 
 ### Pendientes
 
-* Publicar el commit en GitHub Pages y verificar que el GIF sea accesible por
-  URL publica.
+* Generar una variante vertical 9:16 si se requiere publicar en historias o
+  reels.
 
 ### Riesgos
 

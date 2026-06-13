@@ -14,6 +14,12 @@ Caracteristicas:
 * Peso aproximado: 2.54 MB.
 * Fuente visual: app publica en GitHub Pages.
 
+URL publica:
+
+```text
+https://diegomezapy.github.io/copa_mundial_probabilidades/assets/social/mundial_probabilidades_demo_10s_4fps.gif
+```
+
 Regeneracion:
 
 ```powershell
