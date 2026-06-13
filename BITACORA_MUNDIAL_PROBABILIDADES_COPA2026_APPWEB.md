@@ -3162,3 +3162,84 @@ clasp deploy --deploymentId AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxM
 * Mantener controles de accesibilidad visual visibles en la barra superior.
 * Para apps con tablas densas, ofrecer siempre modo de lectura ampliado antes de
   reducir informacion o forzar zoom del navegador.
+
+## 2026-06-13 19:07
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas.
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`.
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`.
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`.
+* Responsable: Codex.
+* Version: `0.2.15`.
+
+### Objetivo de la intervencion
+
+Registrar la publicacion y validacion publica del modo de lectura ajustable.
+
+### Diagnostico inicial
+
+* Tras el primer push, GitHub Pages seguia sirviendo temporalmente `0.2.14`.
+* Luego de esperar aproximadamente 20 segundos, GitHub Pages publico `0.2.15`.
+
+### Acciones realizadas
+
+* Se verifico HTML publico con cache-busting.
+* Se verifico `assets/js/config.js`, `service-worker.js` y
+  `data/worldcup2026_latest.json` publicos.
+* Se ejecuto Playwright publico en viewport movil de 390 x 900 px.
+
+### Archivos modificados
+
+* `BITACORA_MUNDIAL_PROBABILIDADES_COPA2026_APPWEB.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+Invoke-WebRequest https://diegomezapy.github.io/copa_mundial_probabilidades/index.html?v=0.2.15
+Invoke-WebRequest https://diegomezapy.github.io/copa_mundial_probabilidades/assets/js/config.js?v=0.2.15
+Invoke-RestMethod https://diegomezapy.github.io/copa_mundial_probabilidades/data/worldcup2026_latest.json?v=0.2.15
+```
+
+### Resultados verificados
+
+* GitHub Pages sirve `index.html` con `viewScaleButton`,
+  `mundialProbabilidades.viewScale.v1` y `v0.2.15`.
+* `assets/js/config.js` publico contiene `0.2.15`.
+* `service-worker.js` publico contiene cache `mundial-probabilidades-v0-2-15`.
+* `data/worldcup2026_latest.json` publico contiene `app_version` `0.2.15` y
+  5 resultados 2026.
+* Playwright publico movil confirmo:
+  `Vista: normal` = 17 px, `Vista: comoda` = 19 px,
+  `Vista: grande` = 21 px.
+* El modo elegido queda guardado en `localStorage` y el overflow horizontal se
+  mantiene en `0`.
+
+### Pruebas realizadas
+
+* HTTP publico de HTML, config, service worker y JSON: `200`.
+* Playwright publico movil:
+  `tmp/ui-0215-public-mobile-large.png`.
+
+### Errores o incidentes
+
+* GitHub Pages tardo unos segundos en servir el ultimo commit; la primera
+  lectura publica todavia devolvio `0.2.14`.
+
+### Soluciones aplicadas
+
+* Validacion publica con cache-busting y espera breve de publicacion.
+
+### Pendientes
+
+* Resolver permisos del Web App GAS si se requiere sincronizacion remota.
+
+### Riesgos
+
+* Usuarios con service worker viejo pueden necesitar recargar una vez para tomar
+  el cache `0.2.15`.
+
+### Recomendaciones
+
+* Mantener versionado de cache en cada cambio de UI visible.
