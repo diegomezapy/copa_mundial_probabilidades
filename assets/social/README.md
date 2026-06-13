@@ -8,14 +8,17 @@ GIF promocional de 10 segundos para compartir la novedad de la app publica
 Caracteristicas:
 
 * Duracion: 10 segundos.
-* Velocidad: 4 cuadros por segundo.
-* Total: 40 cuadros.
+* Version storyboard actual: 10 escenas de 1 segundo, optimizadas para redes.
+* Fallback por captura: 40 cuadros a 4 cuadros por segundo.
 * Tamano: 960 x 540 px.
-* Peso aproximado: 2.98 MB.
+* Peso aproximado: 2.21 MB.
 * Fuente visual: app publica en GitHub Pages.
 * Narrativa: portada, datos, filtros, fichas, probabilidades, mapa, evidencia,
   metodologia, pronosticos de usuarios y cierre con enlace.
-* Incluye barra de progreso, pelota en movimiento y rotulos breves para redes.
+* La version actual fue regenerada desde el storyboard local
+  `imagenes/NUEVAS/`, inspirado en las ideas visuales nuevas.
+* Incluye barra de progreso, pelota en movimiento y rotulos breves para redes
+  dentro de las escenas fuente.
 
 Vista previa estatica:
 
@@ -41,5 +44,7 @@ Regeneracion:
 python scripts\create_social_gif.py
 ```
 
-El script usa Playwright para capturar la app publica y Pillow para componer el
-GIF con rotulos breves de funcionalidades.
+Si existe `imagenes/NUEVAS/`, el script usa esas 10 imagenes como storyboard y
+genera 40 cuadros con movimiento suave. Si esa carpeta no existe, usa
+Playwright para capturar la app publica y Pillow para componer el GIF con
+rotulos breves de funcionalidades.

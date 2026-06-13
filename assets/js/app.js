@@ -195,10 +195,10 @@
   ];
   const GLOSSARY = {
     prob_1x2: {
-      title: "Probabilidad 1 / X / 2",
+      title: "Probabilidad 1 / Empate / 2",
       body:
-        "Es una forma corta de leer un partido: 1 significa que gana el primer equipo listado, X significa empate y 2 significa que gana el segundo equipo listado. No es una apuesta ni una certeza; es una estimacion del modelo con los datos disponibles.",
-      bullets: ["1 = gana el equipo de la primera linea.", "X = empate.", "2 = gana el equipo de la segunda linea."]
+        "Es una forma corta de leer un partido: 1 significa que gana el primer equipo listado, Empate significa que ambos terminan igualados y 2 significa que gana el segundo equipo listado. No es una apuesta ni una certeza; es una estimacion academica del modelo con los datos disponibles.",
+      bullets: ["1 = gana el primer equipo que aparece en el partido.", "Empate = terminan igualados.", "2 = gana el segundo equipo que aparece en el partido."]
     },
     tournament_wall: {
       title: "Mural completo del torneo",
@@ -620,7 +620,7 @@
   }
 
   function evaluatePrediction(match, prediction) {
-    if (!prediction) return { status: "missing", points: 0, label: "sin pronóstico" };
+    if (!prediction) return { status: "missing", points: 0, label: "sin pronostico" };
     if (match.status !== "final" || !match.score) {
       return { status: "pending", points: 0, label: "pendiente" };
     }
@@ -779,19 +779,19 @@
     const versionDate = meta.generated_at ? meta.generated_at.slice(0, 10) : meta.data_version;
     $("#kpiGrid").innerHTML = `
       <article class="kpi" data-filter-group="all">
-        <span>Equipos</span>
+        <span>Equipos en tablero</span>
         <strong>${coverage.teams}</strong>
       </article>
       <article class="kpi" data-filter-position="all">
-        <span>Jugadores</span>
+        <span>Jugadores registrados</span>
         <strong>${coverage.players.toLocaleString("es-PY")}</strong>
       </article>
       <article class="kpi" data-filter-status="final">
-        <span>Partidos</span>
+        <span>Resultados 2026</span>
         <strong>${coverage.completed_matches}/${coverage.matches}</strong>
       </article>
       <article class="kpi">
-        <span>Version de datos</span>
+        <span>Datos actualizados</span>
         <strong>${escapeHtml(versionDate)}</strong>
       </article>
     `;
@@ -811,22 +811,22 @@
       {
         label: "Datos",
         value: `${coverage.completed_matches}/${coverage.matches}`,
-        note: "resultados 2026",
+        note: "resultados observados",
       },
       {
         label: "Prior",
         value: historyMatches.toLocaleString("es-PY"),
-        note: "partidos historicos",
+        note: "evidencia historica",
       },
       {
         label: "Posterior",
         value: topTeam ? WorldCupBayes.pct(topTeam.p_advance_group, 0) : "s/d",
-        note: topTeam ? `${topTeam.team} avance` : "sin equipo",
+        note: topTeam ? `${topTeam.team}: senal de avance` : "sin equipo",
       },
       {
         label: "Pronostico",
         value: forecastText,
-        note: bestMatch?.date ? shortDate(bestMatch.date) : "modelo actual",
+        note: bestMatch?.date ? shortDate(bestMatch.date) : "partido destacado",
       },
     ];
     $("#modelFlow").innerHTML = `
@@ -944,10 +944,11 @@
     container.innerHTML = `
       <section class="flow-forecast-card" data-filter-match="${escapeHtml(match.match_id)}" data-filter-team="${escapeHtml(match.team1)}" tabindex="0">
         <div>
-          <p class="eyebrow">Estimacion visible del modelo</p>
+          <p class="eyebrow">Probabilidades visibles del modelo</p>
           <h3>${flagMarkup(match.team1)}${escapeHtml(match.team1)} vs ${flagMarkup(match.team2)}${escapeHtml(match.team2)}</h3>
           <p>
-            La mayor senal actual es <strong>${escapeHtml(top.label)}</strong>
+            El modelo suma muchos marcadores posibles y, con los datos actuales,
+            la senal mas alta es <strong>${escapeHtml(top.label)}</strong>
             (${WorldCupBayes.pct(top.value, 1)}). Goles esperados:
             ${escapeHtml(match.team1)} ${WorldCupBayes.number(p.expected_goals_home)} y
             ${escapeHtml(match.team2)} ${WorldCupBayes.number(p.expected_goals_away)}.
@@ -2120,7 +2121,7 @@
                   `
                 )
                 .join("")
-            : `<p class="empty-note">Guardá pronósticos y volvé cuando haya resultados para ver tu curva.</p>`
+            : `<p class="empty-note">Guarda pronosticos y volve cuando haya resultados para ver tu curva.</p>`
         }
       </div>
       <div class="result-legend">
@@ -2223,7 +2224,7 @@
       evidencia: "Evidencia",
       modelo: "Modelo",
       metodologia: "Metodologia",
-      acerta: "Acertá",
+      acerta: "Acerta",
       autores: "Autores",
       visitas: "Visitas",
       referencias: "Referencias",

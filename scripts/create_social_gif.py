@@ -12,6 +12,7 @@ import argparse
 import io
 import json
 import math
+import re
 import shutil
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -27,6 +28,7 @@ OUTPUT_PATH = ROOT / "assets" / "social" / "mundial_probabilidades_demo_10s_4fps
 PREVIEW_PATH = ROOT / "assets" / "social" / "mundial_probabilidades_demo_10s_4fps_preview.jpg"
 FRAME_DIR = ROOT / "tmp" / "social_gif_frames"
 CONTACT_SHEET_PATH = ROOT / "tmp" / "social_gif_contact_sheet.jpg"
+DEFAULT_STORYBOARD_DIR = ROOT / "imagenes" / "NUEVAS"
 HERO_IMAGE = ROOT / "assets" / "img" / "generated" / "hero-bayes-football-1920x1080.jpg"
 CLASSROOM_IMAGE = ROOT / "assets" / "img" / "generated" / "classroom-football-statistics-1600x900.jpg"
 BALL_IMAGE = ROOT / "assets" / "img" / "generated" / "ball-realistic-transparent-1024.png"
@@ -37,7 +39,7 @@ FRAME_DURATION_MS = int(1000 / FPS)
 CAPTURE_SIZE = (1280, 720)
 OUTPUT_SIZE = (960, 540)
 URL_TEXT = "diegomezapy.github.io/copa_mundial_probabilidades"
-APP_VERSION = "0.2.13"
+APP_VERSION = "0.2.14"
 
 
 @dataclass(frozen=True)
@@ -91,6 +93,43 @@ def make_user() -> dict[str, object]:
 
 def app_url(base_url: str, view: str, index: int) -> str:
     return f"{base_url.rstrip('/')}/?view={view}&social_gif={index:02d}&v={APP_VERSION}"
+
+
+def storyboard_sort_key(path: Path) -> tuple[int, str]:
+    match = re.search(r"\((\d+)\)", path.name)
+    if match:
+        return int(match.group(1)), path.name.lower()
+    numbers = re.findall(r"\d+", path.stem)
+    return (int(numbers[-1]) if numbers else 999), path.name.lower()
+
+
+def storyboard_images(storyboard_dir: Path | None) -> list[Path]:
+    if not storyboard_dir or not storyboard_dir.exists():
+        return []
+    allowed = {".png", ".jpg", ".jpeg", ".webp"}
+    images = [path for path in storyboard_dir.iterdir() if path.suffix.lower() in allowed]
+    return sorted(images, key=storyboard_sort_key)
+
+
+def crop_to_output(image: Image.Image, zoom: float = 1.0, pan_x: float = 0.5, pan_y: float = 0.5) -> Image.Image:
+    target_w, target_h = OUTPUT_SIZE
+    scale = max(target_w / image.width, target_h / image.height) * zoom
+    resized = image.resize((int(image.width * scale), int(image.height * scale)), Image.Resampling.LANCZOS)
+    max_x = max(0, resized.width - target_w)
+    max_y = max(0, resized.height - target_h)
+    left = int(max_x * min(1, max(0, pan_x)))
+    top = int(max_y * min(1, max(0, pan_y)))
+    return resized.crop((left, top, left + target_w, top + target_h))
+
+
+def storyboard_frame(image_path: Path, scene_index: int, frame_in_scene: int) -> Image.Image:
+    image = Image.open(image_path).convert("RGB")
+    pan_x = 0.46 + 0.08 * math.sin(scene_index * 0.9)
+    pan_y = 0.48 + 0.04 * math.cos(scene_index * 0.7)
+    frame = crop_to_output(image, zoom=1.0, pan_x=pan_x, pan_y=pan_y)
+    frame = ImageEnhance.Sharpness(frame).enhance(1.04)
+    frame = ImageEnhance.Contrast(frame).enhance(1.02)
+    return frame.convert("P", palette=Image.Palette.ADAPTIVE, colors=96)
 
 
 def load_cover_image(path: Path) -> Image.Image:
@@ -425,7 +464,7 @@ def shots_for_frames() -> list[Shot]:
 
 
 def write_contact_sheet(frames: list[Image.Image]) -> None:
-    sample_indexes = list(range(0, FRAME_COUNT, FPS))
+    sample_indexes = list(range(0, FRAME_COUNT, FPS)) if len(frames) >= FRAME_COUNT else list(range(len(frames)))
     thumb_w, thumb_h = 240, 135
     cols = 2
     rows = math.ceil(len(sample_indexes) / cols)
@@ -444,8 +483,27 @@ def write_contact_sheet(frames: list[Image.Image]) -> None:
 
 
 def build_gif(base_url: str, output_path: Path) -> None:
+    build_gif_with_storyboard(base_url, output_path, DEFAULT_STORYBOARD_DIR)
+
+
+def build_gif_with_storyboard(base_url: str, output_path: Path, storyboard_dir: Path | None) -> str:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     FRAME_DIR.mkdir(parents=True, exist_ok=True)
+    storyboard = storyboard_images(storyboard_dir)[:TOTAL_SECONDS]
+    if storyboard:
+        frames = [storyboard_frame(image_path, scene_index, 0) for scene_index, image_path in enumerate(storyboard)]
+        frames[0].save(
+            output_path,
+            save_all=True,
+            append_images=frames[1:],
+            duration=int(1000 * TOTAL_SECONDS / len(frames)),
+            loop=0,
+            optimize=True,
+            disposal=2,
+        )
+        write_contact_sheet(frames)
+        return "storyboard"
+
     shots = shots_for_frames()
     frames: list[Image.Image] = []
     cache: dict[tuple[str, str, str], Image.Image] = {}
@@ -480,26 +538,35 @@ def build_gif(base_url: str, output_path: Path) -> None:
         disposal=2,
     )
     write_contact_sheet(frames)
+    return "capture"
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Create the social media GIF for the Mundial Probabilidades app.")
     parser.add_argument("--base-url", default=DEFAULT_BASE_URL, help="Public or local app URL.")
     parser.add_argument("--output", default=str(OUTPUT_PATH), help="GIF output path.")
+    parser.add_argument(
+        "--storyboard-dir",
+        default=str(DEFAULT_STORYBOARD_DIR),
+        help="Optional folder with 10 storyboard images. If present, it is used before live captures.",
+    )
     args = parser.parse_args()
     output = Path(args.output)
-    build_gif(args.base_url, output)
+    mode = build_gif_with_storyboard(args.base_url, output, Path(args.storyboard_dir) if args.storyboard_dir else None)
     size_mb = output.stat().st_size / (1024 * 1024)
     with Image.open(output) as gif:
+        effective_fps = round(gif.n_frames / TOTAL_SECONDS, 2)
         print(
             json.dumps(
                 {
                     "output": str(output),
                     "preview": str(PREVIEW_PATH),
                     "frames": gif.n_frames,
-                    "fps": FPS,
+                    "effective_fps": effective_fps,
+                    "fallback_capture_fps": FPS,
                     "seconds": TOTAL_SECONDS,
                     "size_mb": round(size_mb, 2),
+                    "mode": mode,
                 },
                 indent=2,
             )

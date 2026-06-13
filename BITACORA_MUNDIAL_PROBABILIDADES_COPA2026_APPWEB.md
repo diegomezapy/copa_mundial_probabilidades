@@ -2780,3 +2780,157 @@ clasp deploy --versionNumber 1 --description "v0.1.0 app publica mundial probabi
   eventos, alineaciones o estadisticas jugador-partido.
 * Evolucionar el modelo a simulacion completa de llave eliminatoria.
 * Registrar cada cambio de fuente o modelo en `RUNS_MODELO` y `VERSIONES`.
+
+## 2026-06-13 17:50
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas.
+* Cliente o institucion: proyecto academico publico FACEN/UNA.
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`.
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`.
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`.
+* Responsable: Codex.
+* Version: `0.2.14`.
+
+### Objetivo de la intervencion
+
+Redisenar la app web usando como referencia visual las propuestas guardadas en
+`imagenes/NUEVAS`, trasladando sus formas, jerarquia, textos guia y aspecto
+didactico a la interfaz real.
+
+### Diagnostico inicial
+
+* El repo estaba sincronizado con `origin/main`.
+* Existian cambios locales previos del GIF social generados desde
+  `imagenes/NUEVAS`.
+* La app `0.2.13` ya tenia boton visible para limpiar filtros, pero el usuario
+  pidio que la app web adoptara el estilo y textos de las nuevas imagenes.
+* El mapa completo del torneo seguia siendo muy alto y podia saturar la vista
+  al navegar como pagina completa.
+
+### Acciones realizadas
+
+* Se agrego una barra de recorrido didactico con pelota: Datos, Filtros,
+  Equipos, Partidos, Mapa, Bayes y Acerta.
+* Se redisenio el hero con frase educativa, acciones visibles y etiqueta
+  `Datos en movimiento, no certezas magicas`.
+* Se agregaron etiquetas oscuras de lectura en resumen, equipos, jugadores,
+  partidos, mapa, evidencia, metodologia, acerta y autores.
+* Se reemplazo la abreviatura `prob. 1-X-2` por
+  `Probabilidad 1 / Empate / 2` y se amplio la definicion emergente.
+* Se reforzaron tarjetas KPI, panel de filtros, paneles del dashboard y heroes
+  de seccion con acentos multicolor, evitando hegemonia verde.
+* Se contuvo el mural completo del torneo en una ventana con scroll propio y
+  controles de foco/zoom para aprovechar mejor pantalla de escritorio.
+* Se actualizo la version de app/cache/datos a `0.2.14`.
+* Se regenero el cache publico y el GIF social de apoyo desde `imagenes/NUEVAS`.
+
+### Archivos modificados
+
+* `index.html`
+* `assets/css/styles.css`
+* `assets/js/app.js`
+* `assets/js/config.js`
+* `service-worker.js`
+* `gas/Config.gs`
+* `scripts/update_data.py`
+* `scripts/create_social_gif.py`
+* `data/worldcup2026_latest.json`
+* `data/sources_manifest.json`
+* `data/sheets/*.csv`
+* `assets/social/*`
+* `README.md`
+* `docs/manual_tecnico.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+git status --branch --short
+python scripts\update_data.py
+python -m py_compile scripts\update_data.py scripts\make_assets.py scripts\create_social_gif.py
+python scripts\create_social_gif.py
+node --check assets\js\config.js
+node --check assets\js\model.js
+node --check assets\js\data.js
+node --check assets\js\app.js
+node --check service-worker.js
+git diff --check
+clasp push -f
+clasp version "v0.2.14 redisenio visual storyboard app"
+clasp deploy --deploymentId AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g --versionNumber 17 --description "v0.2.14 redisenio visual storyboard app"
+```
+
+### Resultados verificados
+
+* Cache publico `data/worldcup2026_latest.json` generado con `app_version`
+  `0.2.14`.
+* Datos actuales: 48 equipos, 1.248 jugadores, 104 partidos, 4 resultados 2026,
+  22 Copas historicas, 964 partidos historicos y 536 goleadores historicos.
+* GIF social regenerado en modo `storyboard` desde `imagenes/NUEVAS`, peso
+  aproximado 2.21 MB.
+* App local verificada en `http://localhost:8080/?view=...` con version
+  `0.2.14`, boton `Limpiar filtros`, barra de recorrido y KPIs nuevos.
+* Playwright local confirmo `overflow` horizontal `0` en escritorio y movil.
+* Mural de torneo verificado con scroll propio: ancho cliente 1231 px,
+  ancho contenido 1559 px, alto cliente 759 px y alto contenido 1845 px en
+  escritorio.
+* GAS actualizado con `clasp push -f`, version `17` y redeploy del deployment
+  `AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g`
+  a `0.2.14`.
+
+### Pruebas realizadas
+
+* `py_compile` de scripts Python: correcto.
+* `node --check` de `config.js`, `model.js`, `data.js`, `app.js` y
+  `service-worker.js`: correcto.
+* Capturas Playwright locales generadas:
+  `tmp/ui-0214-desktop-resumen.png`,
+  `tmp/ui-0214-desktop-partidos.png`,
+  `tmp/ui-0214-desktop-mapa-contained.png`,
+  `tmp/ui-0214-mobile-resumen.png` y
+  `tmp/ui-0214-mobile-metodologia.png`.
+* `git diff --check`: sin errores; solo advertencias de normalizacion CRLF/LF
+  en JSON regenerados.
+
+### Errores o incidentes
+
+* Dos mediciones Playwright fallaron por escapes incorrectos en una expresion
+  JavaScript de prueba; se repitio la medicion leyendo nodos de la barra de
+  recorrido sin expresiones regulares.
+* La verificacion GAS anonima posterior al redeploy `@17` sigue devolviendo
+  `403 Prohibido`, por lo que no se configuro `gasExecUrl` en frontend.
+
+### Soluciones aplicadas
+
+* Se uso el lenguaje visual de las imagenes nuevas sin incrustar capturas como
+  interfaz, manteniendo HTML/CSS/JS real, responsivo y accesible.
+* Se mantuvo la primera pantalla como app usable, no como landing page.
+* Se contuvo el mural del torneo dentro de un area desplazable para evitar
+  vistas excesivamente largas.
+* Se incremento el cache del service worker para forzar refresco publico.
+
+### Pendientes
+
+* Publicar commit en GitHub y verificar GitHub Pages.
+* Corregir permisos del Web App GAS desde Apps Script si se requiere registro
+  remoto de visitas/predicciones; hasta entonces el frontend debe seguir con
+  `gasExecUrl: ""`.
+
+### Riesgos
+
+* La app depende de cache publico y fuentes abiertas; la frescura de resultados
+  depende de OpenFootball y del workflow.
+* El Web App GAS puede seguir sin acceso anonimo aunque el codigo este
+  desplegado, por permisos de Apps Script.
+* El mural completo conserva mucha informacion; aunque ahora tiene scroll
+  propio, requiere trabajo didactico con foco/zoom.
+
+### Recomendaciones
+
+* Mantener las imagenes `imagenes/NUEVAS` como referencia visual, no como UI
+  final incrustada.
+* Continuar iterando textos didacticos breves en etiquetas negras, porque
+  ayudan a entender rapidamente cada vista.
+* Documentar en la carpeta maestra este patron de redisenio: storyboard visual
+  externo convertido a componentes reales HTML/CSS/JS.

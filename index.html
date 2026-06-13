@@ -81,6 +81,17 @@
         </div>
       </header>
 
+      <div class="story-rail" aria-label="Recorrido didactico de la app">
+        <span class="story-rail-ball" aria-hidden="true"></span>
+        <span>Datos</span>
+        <span>Filtros</span>
+        <span>Equipos</span>
+        <span>Partidos</span>
+        <span>Mapa</span>
+        <span>Bayes</span>
+        <span>Acerta</span>
+      </div>
+
       <main>
         <section class="summary-band">
           <div class="ball-motion-layer" aria-hidden="true">
@@ -101,11 +112,17 @@
           </div>
           <div class="summary-copy">
             <p class="eyebrow">Modelo vivo con datos abiertos</p>
+            <p class="hero-kicker">El Mundial tambien puede ensenar estadistica</p>
             <h1>Pronosticos recalculados con cada resultado disponible</h1>
             <p>
               Exploracion publica para estudiantes de estadistica: planteles,
               partidos, resultados y posterior bayesiano de goles por equipo.
             </p>
+            <div class="hero-story-actions">
+              <a class="hero-action primary" href="?view=resumen">Explorar datos</a>
+              <a class="hero-action" href="?view=metodologia">Ver metodologia</a>
+            </div>
+            <p class="story-label hero-label">Datos en movimiento, no certezas magicas</p>
           </div>
           <div id="kpiGrid" class="kpi-grid" aria-live="polite"></div>
         </section>
@@ -178,7 +195,7 @@
               <button class="tab-button" data-target="evidencia">Evidencia</button>
               <button class="tab-button" data-target="modelo">Modelo</button>
               <button class="tab-button" data-target="metodologia">Metodologia</button>
-              <button class="tab-button" data-target="acerta">Acertá</button>
+              <button class="tab-button" data-target="acerta">Acerta</button>
               <button class="tab-button" data-target="autores">Autores</button>
               <button class="tab-button" data-target="visitas">Visitas</button>
               <button class="tab-button" data-target="referencias">Referencias</button>
@@ -195,6 +212,7 @@
                 </header>
                 <div id="modelFlow" class="model-flow"></div>
                 <div id="modelFlowForecast" class="model-flow-forecast"></div>
+                <p class="story-label story-label-wide">Bayes visible: prior, posterior y simulacion</p>
               </section>
 
               <div class="dashboard-grid">
@@ -215,7 +233,7 @@
                 <section class="panel">
                   <header class="panel-header">
                     <h2>Proximos cruces</h2>
-                    <span>prob. 1-X-2 <button type="button" class="info-tip has-rich-popover" data-kind="glossary" data-glossary="prob_1x2" aria-label="Que significa probabilidad 1 X 2">i</button></span>
+                    <span>Probabilidad 1 / Empate / 2 <button type="button" class="info-tip has-rich-popover" data-kind="glossary" data-glossary="prob_1x2" aria-label="Que significa probabilidad 1 X 2">i</button></span>
                   </header>
                   <div id="nextMatches" class="match-card-list"></div>
                 </section>
@@ -247,6 +265,7 @@
             </section>
 
             <section id="equipos" class="view">
+              <p class="story-label section-story-label">Equipos y jugadores con fichas didacticas</p>
               <figure class="section-visual teams-visual">
                 <img
                   src="assets/img/generated/player-country-cards-1600x900.jpg"
@@ -258,6 +277,7 @@
             </section>
 
             <section id="jugadores" class="view">
+              <p class="story-label section-story-label">Explora planteles, posiciones y evidencia individual</p>
               <figure class="section-visual soft-visual">
                 <img
                   src="assets/img/generated/section-soft-ball-data-1200x800.jpg"
@@ -299,9 +319,10 @@
             </section>
 
             <section id="partidos" class="view">
+              <p class="story-label section-story-label">1, X y 2 explicado sin lenguaje de apuestas</p>
               <section class="panel">
                 <header class="panel-header">
-                  <h2>Calendario, resultados y pronostico</h2>
+                  <h2>Calendario, resultados y probabilidades explicadas</h2>
                   <span id="matchesCount">0 partidos</span>
                 </header>
                 <div class="table-wrap tall">
@@ -332,6 +353,7 @@
                     resultados. Verde indica partido finalizado; blanco indica
                     partido pendiente o etapa por completarse.
                   </p>
+                  <p class="story-label">Mapa vivo de grupos y etapas</p>
                 </div>
                 <figure class="hero-image map-image">
                   <img
@@ -389,6 +411,7 @@
                   <p class="eyebrow">Evidencia historica</p>
                   <h2 id="evidenceTitle">Historia mundialista</h2>
                   <p id="evidenceSubtitle">Resumen interactivo por pais, copa y jugador.</p>
+                  <p class="story-label">La intuicion se conecta con la historia</p>
                 </div>
                 <div class="hero-side-stack">
                   <figure class="hero-image">
@@ -494,6 +517,7 @@
                     posterior, simulacion y lectura prudente de los
                     pronosticos.
                   </p>
+                  <p class="story-label">Bayes visible: prior, posterior y simulacion</p>
                 </div>
                 <figure class="hero-image">
                   <img
@@ -509,12 +533,13 @@
             <section id="acerta" class="view">
               <div class="acerta-hero">
                 <div>
-                  <p class="eyebrow">Acertá</p>
-                  <h2>Tu laboratorio de pronósticos</h2>
+                  <p class="eyebrow">Acerta</p>
+                  <h2>Tu laboratorio de pronosticos</h2>
                   <p>
-                    Anotá marcador y confianza antes de cada partido; la app
+                    Anota marcador y confianza antes de cada partido; la app
                     compara tus aciertos y fallas cuando se publican resultados.
                   </p>
+                  <p class="story-label">Acerta tus pronosticos y aprende del error</p>
                 </div>
                 <div class="hero-side-stack">
                   <figure class="hero-image">
@@ -531,8 +556,8 @@
               <div class="content-grid two acerta-grid">
                 <section class="panel">
                   <header class="panel-header">
-                    <h2>Evolución personal</h2>
-                    <span id="predictionSummary">0 pronósticos</span>
+                    <h2>Evolucion personal</h2>
+                    <span id="predictionSummary">0 pronosticos</span>
                   </header>
                   <div id="predictionBoard" class="prediction-board"></div>
                 </section>
@@ -561,12 +586,13 @@
             <section id="autores" class="view">
               <div class="authors-hero">
                 <div>
-                  <p class="eyebrow">Autores y colaboración</p>
-                  <h2>Equipo académico del proyecto</h2>
+                  <p class="eyebrow">Autores y colaboracion</p>
+                  <h2>Equipo academico del proyecto</h2>
                   <p>
-                    Espacio para reconocer autoría, colaboración, criterios de
-                    actualización y responsabilidades académicas del tablero.
+                    Espacio para reconocer autoria, colaboracion, criterios de
+                    actualizacion y responsabilidades academicas del tablero.
                   </p>
+                  <p class="story-label">Abrilo, compartilo, llevalo al aula</p>
                 </div>
                 <figure class="hero-image">
                   <img
@@ -587,8 +613,8 @@
                 </section>
                 <section class="panel">
                   <header class="panel-header">
-                    <h2>Colaboración</h2>
-                    <span>método de trabajo</span>
+                    <h2>Colaboracion</h2>
+                    <span>metodo de trabajo</span>
                   </header>
                   <div class="author-notes">
                     <article>
@@ -596,24 +622,24 @@
                       <p>Convertir datos abiertos, supuestos y resultados en material comprensible para estudiantes.</p>
                     </article>
                     <article>
-                      <strong>Revisión</strong>
-                      <p>Mejorar explicaciones, filtros, trazabilidad y lectura de evidencia histórica.</p>
+                      <strong>Revision</strong>
+                      <p>Mejorar explicaciones, filtros, trazabilidad y lectura de evidencia historica.</p>
                     </article>
                   </div>
                 </section>
                 <section class="panel">
                   <header class="panel-header">
-                    <h2>Actualización de perfiles</h2>
+                    <h2>Actualizacion de perfiles</h2>
                     <span>pendiente documental</span>
                   </header>
                   <div class="author-notes">
                     <article>
                       <strong>Datos verificables</strong>
-                      <p>Los perfiles pueden ampliarse con CV, filiación institucional, ORCID, publicaciones y líneas formales de investigación.</p>
+                      <p>Los perfiles pueden ampliarse con CV, filiacion institucional, ORCID, publicaciones y lineas formales de investigacion.</p>
                     </article>
                     <article>
                       <strong>Derechos</strong>
-                      <p>Los créditos y fuentes deben mantenerse separados de pronósticos, resultados y datos de terceros.</p>
+                      <p>Los creditos y fuentes deben mantenerse separados de pronosticos, resultados y datos de terceros.</p>
                     </article>
                   </div>
                 </section>
@@ -711,7 +737,7 @@
       <div id="richTooltip" class="rich-tooltip" role="tooltip" hidden></div>
 
       <footer class="footer">
-        <span>v0.2.13 · 2026-06-13</span>
+        <span>v0.2.14 · 2026-06-13</span>
         <a href="docs/metodologia_bayesiana.md">metodologia</a>
         <a href="docs/diccionario_datos.md">diccionario</a>
         <a href="?view=referencias">referencias</a>
