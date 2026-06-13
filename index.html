@@ -176,6 +176,7 @@
               <button class="tab-button" data-target="mapa">Mapa</button>
               <button class="tab-button" data-target="evidencia">Evidencia</button>
               <button class="tab-button" data-target="modelo">Modelo</button>
+              <button class="tab-button" data-target="metodologia">Metodologia</button>
               <button class="tab-button" data-target="acerta">Acertá</button>
               <button class="tab-button" data-target="autores">Autores</button>
               <button class="tab-button" data-target="visitas">Visitas</button>
@@ -192,6 +193,7 @@
                   <span>datos en movimiento</span>
                 </header>
                 <div id="modelFlow" class="model-flow"></div>
+                <div id="modelFlowForecast" class="model-flow-forecast"></div>
               </section>
 
               <div class="dashboard-grid">
@@ -349,6 +351,18 @@
                     <h2>Mural completo del torneo</h2>
                     <span>grupos y llave central <button type="button" class="info-tip has-rich-popover" data-kind="glossary" data-glossary="tournament_wall" aria-label="Como leer el mural completo">i</button></span>
                   </header>
+                  <div class="wall-toolbar" aria-label="Controles del mural">
+                    <div class="segmented-buttons compact" id="wallFocusButtons">
+                      <button type="button" data-wall-focus="full">Completo</button>
+                      <button type="button" data-wall-focus="left">Grupos A-F</button>
+                      <button type="button" data-wall-focus="bracket">Llave</button>
+                      <button type="button" data-wall-focus="right">Grupos G-L</button>
+                    </div>
+                    <label class="wall-zoom-control">
+                      Zoom
+                      <input id="wallZoom" type="range" min="58" max="118" value="86" />
+                    </label>
+                  </div>
                   <div id="tournamentWall" class="tournament-wall-scroll" aria-label="Mural completo de grupos y etapas eliminatorias"></div>
                 </section>
                 <section class="panel span-2">
@@ -467,6 +481,28 @@
                   <div id="methodology" class="methodology"></div>
                 </section>
               </div>
+            </section>
+
+            <section id="metodologia" class="view">
+              <div class="method-hero">
+                <div>
+                  <p class="eyebrow">Metodologia bayesiana</p>
+                  <h2>Como se calculan las probabilidades</h2>
+                  <p>
+                    Guia didactica y auditable para entender datos, supuestos,
+                    posterior, simulacion y lectura prudente de los
+                    pronosticos.
+                  </p>
+                </div>
+                <figure class="hero-image">
+                  <img
+                    src="assets/img/generated/bayes-model-flow-1600x900.jpg"
+                    alt="Flujo conceptual del modelo bayesiano"
+                    loading="lazy"
+                  />
+                </figure>
+              </div>
+              <div id="methodologyDeep" class="methodology-deep"></div>
             </section>
 
             <section id="acerta" class="view">
@@ -674,7 +710,7 @@
       <div id="richTooltip" class="rich-tooltip" role="tooltip" hidden></div>
 
       <footer class="footer">
-        <span>v0.2.11 · 2026-06-13</span>
+        <span>v0.2.12 · 2026-06-13</span>
         <a href="docs/metodologia_bayesiana.md">metodologia</a>
         <a href="docs/diccionario_datos.md">diccionario</a>
         <a href="?view=referencias">referencias</a>

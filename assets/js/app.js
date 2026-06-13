@@ -14,7 +14,9 @@
     user: null,
     visits: null,
     appStarted: false,
-    motionTimer: null
+    motionTimer: null,
+    wallZoom: 0.86,
+    wallFocus: "full"
   };
 
   const $ = (selector) => document.querySelector(selector);
@@ -721,20 +723,54 @@
     return state.data?.teams?.find((team) => team.team === name) || null;
   }
 
+  function applyGlobalFilter(filters, options = {}) {
+    if (!state.data) return;
+    if (Object.prototype.hasOwnProperty.call(filters, "group")) {
+      state.filters.group = filters.group || "all";
+      if (options.clearTeam !== false && filters.group !== undefined) state.filters.team = "all";
+    }
+    if (Object.prototype.hasOwnProperty.call(filters, "team")) {
+      state.filters.team = filters.team || "all";
+      const selectedTeam = teamRecord(state.filters.team);
+      if (selectedTeam) state.filters.group = selectedTeam.group;
+    }
+    if (Object.prototype.hasOwnProperty.call(filters, "cup")) state.filters.cup = filters.cup || "all";
+    if (Object.prototype.hasOwnProperty.call(filters, "status")) state.filters.matchStatus = filters.status || "all";
+    if (Object.prototype.hasOwnProperty.call(filters, "position")) state.filters.playerPosition = filters.position || "all";
+    if (Object.prototype.hasOwnProperty.call(filters, "query")) {
+      state.filters.query = filters.query || "";
+      const search = $("#searchInput");
+      if (search) search.value = state.filters.query;
+    }
+    renderAll();
+  }
+
+  function applyMatchFilter(matchId) {
+    const match = state.data?.matches?.find((item) => item.match_id === matchId);
+    if (!match) return false;
+    const filters = {
+      status: match.status || "all",
+      query: `${match.team1} ${match.team2}`
+    };
+    if (match.group) filters.group = match.group;
+    applyGlobalFilter(filters, { clearTeam: false });
+    return true;
+  }
+
   function renderKpis() {
     const meta = state.data.metadata;
     const coverage = meta.coverage;
     const versionDate = meta.generated_at ? meta.generated_at.slice(0, 10) : meta.data_version;
     $("#kpiGrid").innerHTML = `
-      <article class="kpi">
+      <article class="kpi" data-filter-group="all">
         <span>Equipos</span>
         <strong>${coverage.teams}</strong>
       </article>
-      <article class="kpi">
+      <article class="kpi" data-filter-position="all">
         <span>Jugadores</span>
         <strong>${coverage.players.toLocaleString("es-PY")}</strong>
       </article>
-      <article class="kpi">
+      <article class="kpi" data-filter-status="final">
         <span>Partidos</span>
         <strong>${coverage.completed_matches}/${coverage.matches}</strong>
       </article>
@@ -750,9 +786,7 @@
   function renderModelFlow() {
     const coverage = state.data.metadata.coverage;
     const topTeam = [...state.data.teams].sort((a, b) => b.p_advance_group - a.p_advance_group)[0];
-    const bestMatch = filteredMatches()
-      .filter((match) => match.status === "scheduled" && match.prediction)
-      .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`))[0];
+    const bestMatch = featuredPredictionMatch();
     const historyMatches = coverage.historical_matches || state.data.history?.coverage?.historical_matches || 0;
     const forecastText = bestMatch
       ? `${bestMatch.team1} vs ${bestMatch.team2}`
@@ -798,12 +832,125 @@
     `;
   }
 
+  function featuredPredictionMatch() {
+    const byDate = (a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`);
+    return (
+      filteredMatches()
+        .filter((match) => match.status === "scheduled" && match.prediction)
+        .sort(byDate)[0] ||
+      state.data.matches
+        .filter((match) => match.status === "scheduled" && match.prediction)
+        .sort(byDate)[0] ||
+      state.data.matches.find((match) => match.prediction) ||
+      null
+    );
+  }
+
+  function probabilityBars(match) {
+    if (!match?.prediction) return "";
+    const p = match.prediction;
+    return `
+      <div class="probability-bars">
+        <article style="--p:${Math.round(p.home_win * 100)}">
+          <span>1 gana ${escapeHtml(match.team1)}</span>
+          <strong>${WorldCupBayes.pct(p.home_win, 1)}</strong>
+        </article>
+        <article style="--p:${Math.round(p.draw * 100)}">
+          <span>X empate</span>
+          <strong>${WorldCupBayes.pct(p.draw, 1)}</strong>
+        </article>
+        <article style="--p:${Math.round(p.away_win * 100)}">
+          <span>2 gana ${escapeHtml(match.team2)}</span>
+          <strong>${WorldCupBayes.pct(p.away_win, 1)}</strong>
+        </article>
+      </div>
+    `;
+  }
+
+  function bayesMiniFigure(match) {
+    const p = match?.prediction;
+    const home = p ? Math.round(p.home_win * 100) : 0;
+    const draw = p ? Math.round(p.draw * 100) : 0;
+    const away = p ? Math.round(p.away_win * 100) : 0;
+    return `
+      <svg class="bayes-mini-figure" viewBox="0 0 720 260" role="img" aria-label="Esquema del calculo bayesiano de probabilidades">
+        <defs>
+          <linearGradient id="bayesGrad" x1="0" x2="1">
+            <stop offset="0" stop-color="#2563eb" />
+            <stop offset="0.52" stop-color="#d29b2d" />
+            <stop offset="1" stop-color="#0f766e" />
+          </linearGradient>
+        </defs>
+        <rect width="720" height="260" rx="18" class="bayes-figure-bg"></rect>
+        <g class="bayes-node">
+          <rect x="28" y="48" width="150" height="86" rx="14"></rect>
+          <text x="103" y="82" text-anchor="middle">Prior</text>
+          <text x="103" y="108" text-anchor="middle">historia + rating</text>
+        </g>
+        <g class="bayes-node">
+          <rect x="28" y="154" width="150" height="66" rx="14"></rect>
+          <text x="103" y="183" text-anchor="middle">Datos 2026</text>
+          <text x="103" y="203" text-anchor="middle">goles observados</text>
+        </g>
+        <path class="bayes-arrow" d="M190 88 C248 88 250 126 302 126"></path>
+        <path class="bayes-arrow" d="M190 188 C248 188 250 134 302 134"></path>
+        <g class="bayes-posterior">
+          <rect x="304" y="64" width="168" height="134" rx="16"></rect>
+          <path d="M326 162 C350 112 378 104 402 138 C430 178 452 126 456 96"></path>
+          <text x="388" y="92" text-anchor="middle">Posterior</text>
+          <text x="388" y="184" text-anchor="middle">ataque y defensa</text>
+        </g>
+        <path class="bayes-arrow" d="M486 130 C528 130 530 130 568 130"></path>
+        <g class="bayes-output">
+          <rect x="570" y="44" width="122" height="172" rx="16"></rect>
+          <text x="631" y="75" text-anchor="middle">Pronostico</text>
+          <rect x="594" y="96" width="${Math.max(8, home)}" height="16" rx="8"></rect>
+          <rect x="594" y="128" width="${Math.max(8, draw)}" height="16" rx="8"></rect>
+          <rect x="594" y="160" width="${Math.max(8, away)}" height="16" rx="8"></rect>
+          <text x="586" y="109" text-anchor="end">1</text>
+          <text x="586" y="141" text-anchor="end">X</text>
+          <text x="586" y="173" text-anchor="end">2</text>
+        </g>
+      </svg>
+    `;
+  }
+
+  function renderModelFlowForecast() {
+    const match = featuredPredictionMatch();
+    const container = $("#modelFlowForecast");
+    if (!container) return;
+    if (!match?.prediction) {
+      container.innerHTML = `<p class="empty-state">No hay pronosticos disponibles con los datos actuales.</p>`;
+      return;
+    }
+    const p = match.prediction;
+    const top = leadingPrediction(match);
+    container.innerHTML = `
+      <section class="flow-forecast-card" data-filter-match="${escapeHtml(match.match_id)}" data-filter-team="${escapeHtml(match.team1)}" tabindex="0">
+        <div>
+          <p class="eyebrow">Estimacion visible del modelo</p>
+          <h3>${flagMarkup(match.team1)}${escapeHtml(match.team1)} vs ${flagMarkup(match.team2)}${escapeHtml(match.team2)}</h3>
+          <p>
+            La mayor senal actual es <strong>${escapeHtml(top.label)}</strong>
+            (${WorldCupBayes.pct(top.value, 1)}). Goles esperados:
+            ${escapeHtml(match.team1)} ${WorldCupBayes.number(p.expected_goals_home)} y
+            ${escapeHtml(match.team2)} ${WorldCupBayes.number(p.expected_goals_away)}.
+          </p>
+          ${probabilityBars(match)}
+        </div>
+        <div class="flow-forecast-figure">
+          ${bayesMiniFigure(match)}
+        </div>
+      </section>
+    `;
+  }
+
   function renderContenders() {
     const rows = [...state.data.teams].sort((a, b) => b.p_champion_rough - a.p_champion_rough).slice(0, 10);
     $("#contenders").innerHTML = rows
       .map(
         (team, index) => `
-        <article class="rank-row has-rich-popover" style="${groupStyle(team.group)}" data-kind="team" data-team="${escapeHtml(team.team)}" tabindex="0">
+        <article class="rank-row has-rich-popover" style="${groupStyle(team.group)}" data-kind="team" data-team="${escapeHtml(team.team)}" data-filter-team="${escapeHtml(team.team)}" tabindex="0">
           <div>
             <span class="rank">${index + 1}</span>
             ${flagMarkup(team.team)}
@@ -887,7 +1034,7 @@
                 .map((team) => {
                   const p = Math.round(team.p_advance_group * 100);
                   return `
-                    <span class="heat-team has-rich-popover" style="--p:${p};${groupStyle(team.group)}" data-kind="team" data-team="${escapeHtml(team.team)}" tabindex="0">
+                    <span class="heat-team has-rich-popover" style="--p:${p};${groupStyle(team.group)}" data-kind="team" data-team="${escapeHtml(team.team)}" data-filter-team="${escapeHtml(team.team)}" tabindex="0">
                       <b>${flagMarkup(team.team)}${escapeHtml(team.team)}</b>
                       <small>${p}%</small>
                     </span>
@@ -931,7 +1078,7 @@
             const r = 5 + team.p_advance_group * 10;
             const top = labelTeams.includes(team.team);
             return `
-              <g class="chart-point ${top ? "labeled" : ""}" style="${groupStyle(team.group)}">
+              <g class="chart-point ${top ? "labeled" : ""}" style="${groupStyle(team.group)}" data-filter-team="${escapeHtml(team.team)}" tabindex="0">
                 <circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r.toFixed(1)}"></circle>
                 ${top ? `<text x="${(cx + r + 4).toFixed(1)}" y="${(cy + 4).toFixed(1)}">${escapeHtml(team.team)}</text>` : ""}
               </g>
@@ -951,7 +1098,7 @@
       .map((match) => {
         const p = match.prediction;
         return `
-          <article class="match-card">
+          <article class="match-card" data-filter-match="${escapeHtml(match.match_id)}" tabindex="0">
             <header>
               <span>${shortDate(match.date)}</span>
               <b>${escapeHtml(match.group || match.round)}</b>
@@ -1029,7 +1176,7 @@
                     .map((row) => {
                       const team = teamRecord(row.team);
                       return `
-                        <tr class="has-rich-popover" style="${groupStyle(team?.group || group)}" data-kind="team" data-team="${escapeHtml(row.team)}" tabindex="0">
+                        <tr class="has-rich-popover" style="${groupStyle(team?.group || group)}" data-kind="team" data-team="${escapeHtml(row.team)}" data-filter-team="${escapeHtml(row.team)}" tabindex="0">
                           <td><strong>${flagMarkup(row.team)}${escapeHtml(row.team)}</strong></td>
                           <td>${row.points}</td>
                           <td>${row.played}</td>
@@ -1059,7 +1206,7 @@
         const pred = match.prediction;
         const score = match.score ? `${match.score.team1}-${match.score.team2}` : "pendiente";
         return `
-          <tr style="${match.group ? groupStyle(match.group) : ""}">
+          <tr style="${match.group ? groupStyle(match.group) : ""}" data-filter-match="${escapeHtml(match.match_id)}" tabindex="0">
             <td>${shortDate(match.date)}<small>${escapeHtml(match.time)}</small></td>
             <td><strong>${flagMarkup(match.team1)}${escapeHtml(match.team1)}</strong><small>${flagMarkup(match.team2)}${escapeHtml(match.team2)}</small></td>
             <td>${escapeHtml(match.group || match.round)}</td>
@@ -1112,7 +1259,7 @@
     const done = match.status === "final";
     const statusClass = done ? "is-completed" : signal ? "is-estimated" : "is-pending";
     return `
-      <article class="map-node ${done ? "done" : "pending"} ${statusClass}" style="${match.group ? groupStyle(match.group) : ""}">
+      <article class="map-node ${done ? "done" : "pending"} ${statusClass}" style="${match.group ? groupStyle(match.group) : ""}" data-filter-match="${escapeHtml(match.match_id)}" tabindex="0">
         <header>
           <span>${shortDate(match.date)}</span>
           <b>${escapeHtml(match.round)}</b>
@@ -1217,7 +1364,7 @@
   function wallGroupMatch(match) {
     const muted = wallMatchMatchesFilters(match) ? "" : " is-muted";
     return `
-      <article class="wall-match-row ${wallStatusClass(match)}${muted}" style="${groupStyle(match.group)}">
+      <article class="wall-match-row ${wallStatusClass(match)}${muted}" style="${groupStyle(match.group)}" data-filter-match="${escapeHtml(match.match_id)}" tabindex="0">
         <span class="wall-match-date">${escapeHtml(shortDate(match.date))}</span>
         <span class="wall-match-teams">
           ${wallTeamPill(match.team1)}
@@ -1232,7 +1379,7 @@
   function wallKnockoutNode(match) {
     const muted = wallMatchMatchesFilters(match) ? "" : " is-muted";
     return `
-      <article class="wall-ko-node ${wallStatusClass(match)}${muted}">
+      <article class="wall-ko-node ${wallStatusClass(match)}${muted}" data-filter-match="${escapeHtml(match.match_id)}" tabindex="0">
         <header>
           <span>${escapeHtml(shortDate(match.date))}</span>
           <b>${escapeHtml(wallMatchMeta(match))}</b>
@@ -1252,7 +1399,7 @@
         const completed = rows.filter((match) => match.status === "final").length;
         const muted = rows.length && rows.every((match) => !wallMatchMatchesFilters(match)) ? " is-muted" : "";
         return `
-          <section class="wall-group${muted}" style="${groupStyle(group)}">
+          <section class="wall-group${muted}" style="${groupStyle(group)}" data-filter-group="${escapeHtml(group)}" tabindex="0">
             <header>
               <span>${escapeHtml(groupLetter(group))}</span>
               <div>
@@ -1341,6 +1488,29 @@
         </aside>
       </div>
     `;
+    updateWallViewport(false);
+  }
+
+  function updateWallViewport(animate = true) {
+    const wall = $("#tournamentWall");
+    if (!wall) return;
+    wall.style.setProperty("--wall-zoom", String(state.wallZoom));
+    wall.dataset.wallFocus = state.wallFocus;
+    const zoom = $("#wallZoom");
+    if (zoom) zoom.value = Math.round(state.wallZoom * 100);
+    $$("#wallFocusButtons button").forEach((button) => {
+      button.classList.toggle("active", button.dataset.wallFocus === state.wallFocus);
+    });
+    requestAnimationFrame(() => {
+      const max = Math.max(0, wall.scrollWidth - wall.clientWidth);
+      const target = {
+        full: 0,
+        left: 0,
+        bracket: max * 0.48,
+        right: max
+      }[state.wallFocus] ?? 0;
+      wall.scrollTo({ left: target, behavior: animate ? "smooth" : "auto" });
+    });
   }
 
   function renderTournamentMap() {
@@ -1354,7 +1524,7 @@
             const standings = state.data.standings[group] || [];
             const completed = rows.filter((match) => match.status === "final").length;
             return `
-              <section class="group-map-card" style="${groupStyle(group)}">
+              <section class="group-map-card" style="${groupStyle(group)}" data-filter-group="${escapeHtml(group)}" tabindex="0">
                 <header>
                   <div>
                     <h3>${escapeHtml(group)}</h3>
@@ -1365,7 +1535,7 @@
                 <div class="group-team-strip">
                   ${standings
                     .slice(0, 4)
-                    .map((row) => `<span>${flagMarkup(row.team)}${escapeHtml(row.team)} <b>${row.points} pts</b></span>`)
+                    .map((row) => `<span data-filter-team="${escapeHtml(row.team)}" tabindex="0">${flagMarkup(row.team)}${escapeHtml(row.team)} <b>${row.points} pts</b></span>`)
                     .join("")}
                 </div>
                 <div class="map-node-grid">${rows.map(matchNode).join("")}</div>
@@ -1416,7 +1586,7 @@
     $("#teamsGrid").innerHTML = rows
       .map(
         (team) => `
-        <article class="team-card has-rich-popover" style="${groupStyle(team.group)}" data-kind="team" data-team="${escapeHtml(team.team)}" tabindex="0">
+        <article class="team-card has-rich-popover" style="${groupStyle(team.group)}" data-kind="team" data-team="${escapeHtml(team.team)}" data-filter-team="${escapeHtml(team.team)}" tabindex="0">
           <header>
             <strong class="team-heading">${flagMarkup(team.team, "flag-badge large")}${escapeHtml(team.team)}</strong>
             <span>${escapeHtml(team.group)}</span>
@@ -1446,7 +1616,7 @@
         (player) => {
           const team = teamRecord(player.team);
           return `
-        <tr class="has-rich-popover" style="${team ? groupStyle(team.group) : ""}" data-kind="player" data-player-key="${escapeHtml(playerKey(player))}" tabindex="0">
+        <tr class="has-rich-popover" style="${team ? groupStyle(team.group) : ""}" data-kind="player" data-player-key="${escapeHtml(playerKey(player))}" data-filter-team="${escapeHtml(player.team)}" data-filter-position="${escapeHtml(player.position)}" tabindex="0">
           <td>${player.number ?? ""}</td>
           <td>
             <div class="player-cell">
@@ -1473,7 +1643,7 @@
     $("#scorersList").innerHTML = rows
       .map(
         (row, index) => `
-          <article class="scorer-card">
+          <article class="scorer-card" data-filter-team="${escapeHtml(row.team)}" data-filter-query="${escapeHtml(row.player)}" tabindex="0">
             <span class="rank">${index + 1}</span>
             <div>
               <strong>${escapeHtml(row.player)}</strong>
@@ -1556,7 +1726,7 @@
             const h = (barItem.value / maxValue) * (height - pad * 2);
             const y = height - pad - h;
             return `
-              <g class="timeline-bar ${barItem.active ? "active" : ""}">
+              <g class="timeline-bar ${barItem.active ? "active" : ""}" data-filter-cup="${escapeHtml(String(barItem.year))}" tabindex="0">
                 <rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${Math.max(6, step * 0.58).toFixed(1)}" height="${h.toFixed(1)}" rx="5"></rect>
                 <title>${barItem.year}: ${escapeHtml(barItem.label)}</title>
                 ${index % 3 === 0 ? `<text x="${(x + step * 0.3).toFixed(1)}" y="${height - 10}" text-anchor="middle">${barItem.year}</text>` : ""}
@@ -1625,7 +1795,7 @@
         const titleValue = state.filters.cup === "all" ? row.titles : row.champion ? "si" : "no";
         const appearanceValue = state.filters.cup === "all" ? row.appearances : row.year;
         return `
-          <article class="history-row">
+          <article class="history-row" data-filter-team="${escapeHtml(row.team)}" ${row.year ? `data-filter-cup="${escapeHtml(String(row.year))}"` : ""} tabindex="0">
             <span class="rank">${index + 1}</span>
             <strong>${escapeHtml(row.team)}</strong>
             <span>${appearanceValue}</span>
@@ -1645,7 +1815,7 @@
     $("#historicalMatchesTable").innerHTML = rows
       .map(
         (match) => `
-          <tr>
+          <tr data-filter-cup="${escapeHtml(String(match.year))}" data-filter-team="${escapeHtml(match.team1)}" tabindex="0">
             <td>${match.year}</td>
             <td>${escapeHtml(match.round)}</td>
             <td><strong>${escapeHtml(match.team1)}</strong><small>${escapeHtml(match.team2)}</small></td>
@@ -1707,6 +1877,138 @@
       <ul>
         ${model.limitations.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
       </ul>
+    `;
+  }
+
+  function renderMethodologyDeep() {
+    const container = $("#methodologyDeep");
+    if (!container) return;
+    const meta = state.data.metadata;
+    const model = meta.model;
+    const coverage = meta.coverage;
+    const match = featuredPredictionMatch();
+    const p = match?.prediction;
+    const top = match ? leadingPrediction(match) : null;
+    const historyCoverage = state.data.history?.coverage || {};
+    container.innerHTML = `
+      <section class="method-section method-summary">
+        <article>
+          <span>Datos 2026</span>
+          <strong>${coverage.completed_matches}/${coverage.matches}</strong>
+          <p>Resultados observados que actualizan parametros del torneo actual.</p>
+        </article>
+        <article>
+          <span>Archivo historico</span>
+          <strong>${(coverage.historical_matches || historyCoverage.historical_matches || 0).toLocaleString("es-PY")}</strong>
+          <p>Partidos 1930-2022 usados para contexto, evidencia y priors.</p>
+        </article>
+        <article>
+          <span>Modelo</span>
+          <strong>Gamma-Poisson</strong>
+          <p>Combina tasas de gol, ataque, defensa y simulacion de marcadores.</p>
+        </article>
+        <article>
+          <span>Lectura</span>
+          <strong>Probabilidades</strong>
+          <p>No son certezas ni recomendaciones de apuesta: son senales con supuestos.</p>
+        </article>
+      </section>
+
+      <section class="method-section method-equation-panel">
+        <div>
+          <p class="eyebrow">Formula conceptual</p>
+          <h3>Prior + datos observados = posterior actualizado</h3>
+          <p>
+            Para cada equipo se parte de una tasa previa de goles. Cuando entran
+            resultados, el modelo actualiza las tasas de ataque y defensa. Luego
+            se proyectan goles esperados y se suman las probabilidades de todos
+            los marcadores posibles.
+          </p>
+          <dl class="method-definitions">
+            <div><dt>Prior</dt><dd>Conocimiento antes del nuevo partido: historia, rating y desempeno esperado.</dd></div>
+            <div><dt>Likelihood</dt><dd>Que tan compatibles son los goles observados con una tasa de gol.</dd></div>
+            <div><dt>Posterior</dt><dd>Nueva distribucion despues de combinar prior y datos.</dd></div>
+            <div><dt>Pronostico 1-X-2</dt><dd>Suma de probabilidades de marcadores donde gana A, empatan o gana B.</dd></div>
+          </dl>
+        </div>
+        <div class="method-equation">
+          ${bayesMiniFigure(match)}
+          <div class="formula-strip">
+            <span>lambda A = sqrt(ataque A x defensa B)</span>
+            <span>P(goles=k) = Poisson(lambda)</span>
+            <span>P(1), P(X), P(2) = suma de marcadores</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="method-section method-pipeline">
+        ${[
+          ["1", "Ingesta", "Calendario, resultados, planteles y evidencia historica se normalizan con scripts reproducibles."],
+          ["2", "Calidad", "Se registran fuente, fecha, bytes y hash para trazabilidad de datos."],
+          ["3", "Posterior", "Las tasas de ataque y defensa se recalculan cuando hay resultados nuevos."],
+          ["4", "Simulacion", "Se evalua una grilla de marcadores y se estiman senales 1-X-2 y avance."],
+          ["5", "Interpretacion", "La app muestra supuestos, limites y referencias para lectura academica."]
+        ]
+          .map(
+            ([step, title, body]) => `
+              <article>
+                <span>${step}</span>
+                <strong>${escapeHtml(title)}</strong>
+                <p>${escapeHtml(body)}</p>
+              </article>
+            `
+          )
+          .join("")}
+      </section>
+
+      <section class="method-section method-current-example">
+        <div>
+          <h3>Ejemplo con el proximo partido estimado</h3>
+          ${
+            match && p
+              ? `<p>
+                  Partido: <strong>${flagMarkup(match.team1)}${escapeHtml(match.team1)} vs ${flagMarkup(match.team2)}${escapeHtml(match.team2)}</strong>.
+                  Senal mayor: <strong>${escapeHtml(top.label)} ${WorldCupBayes.pct(top.value, 1)}</strong>.
+                </p>
+                ${probabilityBars(match)}
+                <p class="muted">Goles esperados: ${escapeHtml(match.team1)} ${WorldCupBayes.number(p.expected_goals_home)}; ${escapeHtml(match.team2)} ${WorldCupBayes.number(p.expected_goals_away)}.</p>`
+              : `<p>No hay un partido con pronostico disponible en este estado de datos.</p>`
+          }
+        </div>
+        <div class="score-grid">
+          ${(p?.scoreGrid || [])
+            .map((item) => `<span><b>${escapeHtml(item.score)}</b>${WorldCupBayes.pct(item.probability)}</span>`)
+            .join("")}
+        </div>
+      </section>
+
+      <section class="method-section method-limits">
+        <article>
+          <h3>Supuestos principales</h3>
+          <ul>
+            <li>Los goles se aproximan con una distribucion Poisson.</li>
+            <li>Los equipos tienen parametros de ataque y defensa actualizables.</li>
+            <li>El posterior cambia cuando se incorporan resultados nuevos.</li>
+            <li>La simulacion resume incertidumbre, no elimina incertidumbre.</li>
+          </ul>
+        </article>
+        <article>
+          <h3>Limitaciones</h3>
+          <ul>
+            ${model.limitations.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+            <li>No debe leerse como certeza, causalidad ni recomendacion de apuesta.</li>
+          </ul>
+        </article>
+        <article>
+          <h3>Validacion y sensibilidad</h3>
+          <ul>
+            <li>Comparar pronosticos previos con resultados observados cuando haya partidos finalizados.</li>
+            <li>Revisar cambios de probabilidad despues de cada fecha.</li>
+            <li>Contrastar rankings con evidencia historica y datos de planteles.</li>
+            <li>Documentar fuentes, fecha de generacion y version del modelo.</li>
+          </ul>
+        </article>
+      </section>
     `;
   }
 
@@ -1895,6 +2197,7 @@
       mapa: "Mapa",
       evidencia: "Evidencia",
       modelo: "Modelo",
+      metodologia: "Metodologia",
       acerta: "Acertá",
       autores: "Autores",
       visitas: "Visitas",
@@ -2139,6 +2442,7 @@
     markRecalculating();
     renderKpis();
     renderModelFlow();
+    renderModelFlowForecast();
     renderFilters();
     renderGroupHeatmap();
     renderAttackDefenseChart();
@@ -2153,6 +2457,7 @@
     renderEvidence();
     renderModelLab();
     renderMethod();
+    renderMethodologyDeep();
     renderPredictions();
     renderAuthorCards();
     renderSourcePanel();
@@ -2281,6 +2586,46 @@
       state.filters = { group: "all", team: "all", query: "", matchStatus: "all", cup: "all", playerPosition: "all" };
       $("#searchInput").value = "";
       renderAll();
+    });
+
+    $("#wallFocusButtons")?.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-wall-focus]");
+      if (!button) return;
+      state.wallFocus = button.dataset.wallFocus;
+      updateWallViewport(true);
+    });
+
+    $("#wallZoom")?.addEventListener("input", (event) => {
+      state.wallZoom = Number(event.target.value || 86) / 100;
+      updateWallViewport(false);
+    });
+
+    document.addEventListener("click", (event) => {
+      if (event.target.closest("a, input, select, textarea, .info-tip, [data-save-prediction]")) return;
+      const target = event.target.closest("[data-filter-team], [data-filter-group], [data-filter-cup], [data-filter-status], [data-filter-position], [data-filter-query], [data-filter-match]");
+      if (!target) return;
+      if (target.dataset.filterMatch && applyMatchFilter(target.dataset.filterMatch)) {
+        event.preventDefault();
+        return;
+      }
+      const filters = {};
+      if (target.dataset.filterTeam) filters.team = target.dataset.filterTeam;
+      if (target.dataset.filterGroup) filters.group = target.dataset.filterGroup;
+      if (target.dataset.filterCup) filters.cup = target.dataset.filterCup;
+      if (target.dataset.filterStatus) filters.status = target.dataset.filterStatus;
+      if (target.dataset.filterPosition) filters.position = target.dataset.filterPosition;
+      if (target.dataset.filterQuery !== undefined) filters.query = target.dataset.filterQuery;
+      if (!Object.keys(filters).length) return;
+      event.preventDefault();
+      applyGlobalFilter(filters);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (!["Enter", " "].includes(event.key)) return;
+      const target = event.target.closest?.("[data-filter-team], [data-filter-group], [data-filter-cup], [data-filter-status], [data-filter-position], [data-filter-query], [data-filter-match]");
+      if (!target) return;
+      target.click();
+      event.preventDefault();
     });
   }
 

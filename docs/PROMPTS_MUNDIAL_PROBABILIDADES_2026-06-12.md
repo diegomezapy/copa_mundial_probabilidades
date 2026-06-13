@@ -71,3 +71,8 @@ modelos multivariados de pronostico y modelos bayesianos.
   rectangulares que permitan seguir partidos, resultados y cruces por completar.
 - Generar un archivo `.GIF` de 10 segundos, con 4 imagenes por segundo, para
   mostrar la app, sus funcionalidades y caracteristicas en redes sociales.
+- Debajo de `Ruta del modelo`, mostrar siempre la estimacion de probabilidades
+  y una figura que explique como el modelo bayesiano calcula. Agregar una vista
+  metodologica completa, convertir tablas/figuras en multifiltros globales,
+  mejorar el ajuste horizontal del mural con zoom/foco y actualizar el deploy
+  para revisar vinculacion con la planilla en linea.
