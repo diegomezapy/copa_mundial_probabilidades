@@ -1103,8 +1103,9 @@
   function matchNode(match) {
     const signal = leadingPrediction(match);
     const done = match.status === "final";
+    const statusClass = done ? "is-completed" : signal ? "is-estimated" : "is-pending";
     return `
-      <article class="map-node ${done ? "done" : "pending"}" style="${match.group ? groupStyle(match.group) : ""}">
+      <article class="map-node ${done ? "done" : "pending"} ${statusClass}" style="${match.group ? groupStyle(match.group) : ""}">
         <header>
           <span>${shortDate(match.date)}</span>
           <b>${escapeHtml(match.round)}</b>
