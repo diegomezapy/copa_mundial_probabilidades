@@ -18,7 +18,13 @@ pronosticos bayesianos de la Copa Mundial 2026.
 
 ## Capa visual
 
-La version `0.2.8` agrega banderas SVG reales mediante `flag-icons@7.5.0`
+La version `0.2.9` agrega definiciones emergentes `(i)` para conceptos
+estadisticos, una vista `Mapa` con nodos rectangulares de grupos/partidos/
+etapas y exportaciones CSV publicas bajo `data/sheets/` para alimentar Google
+Sheets mediante `IMPORTDATA`. Cada CSV queda registrado en
+`data/sources_manifest.json` con filas, columnas, bytes y hash SHA-256.
+
+La version conserva las banderas SVG reales mediante `flag-icons@7.5.0`
 con licencia MIT y un manifest curado `PLAYER_MEDIA` para fotos de jugadores
 desde Wikimedia Commons, siempre con autor, licencia y enlace de fuente. Si no
 hay foto libre verificada, la interfaz muestra un avatar. La funcion
@@ -60,7 +66,9 @@ academicos verificables.
 5. Se calculan parametros posteriores Gamma-Poisson por equipo.
 6. Se simula el avance de grupos y se genera `worldcup2026_latest.json`.
 7. GitHub Pages consume el JSON.
-8. GAS puede ejecutar `syncFromGithub()` para copiar el mismo estado a Sheets.
+8. Se publican CSV en `data/sheets/` para lectura desde Google Sheets.
+9. GAS puede ejecutar `syncFromGithub()` para copiar el mismo estado a Sheets
+   cuando el token administrativo y permisos del Web App esten configurados.
 
 ## Registro y visitas
 
@@ -82,6 +90,9 @@ el frontend puede enviar eventos JSONP con `action=visit`.
 - `HISTORICO_PARTIDOS`
 - `HISTORICO_GOLEADORES`
 - `VISITAS`
+
+Mientras el token administrativo GAS no este configurado, la hoja puede leer
+los CSV publicos con formulas `IMPORTDATA` apuntando a GitHub Pages.
 
 ## Validaciones minimas
 

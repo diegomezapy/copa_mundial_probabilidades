@@ -190,6 +190,32 @@
       links: []
     }
   ];
+  const GLOSSARY = {
+    prob_1x2: {
+      title: "Probabilidad 1 / X / 2",
+      body:
+        "Es una forma corta de leer un partido: 1 significa que gana el primer equipo listado, X significa empate y 2 significa que gana el segundo equipo listado. No es una apuesta ni una certeza; es una estimacion del modelo con los datos disponibles.",
+      bullets: ["1 = gana el equipo de la primera linea.", "X = empate.", "2 = gana el equipo de la segunda linea."]
+    },
+    group_map: {
+      title: "Mapa de grupos",
+      body:
+        "Cada grupo muestra sus equipos y partidos como nodos. Los partidos finalizados se pintan como completados y muestran marcador; los pendientes muestran fecha y la mayor señal probabilistica actual.",
+      bullets: ["Los filtros de grupo/equipo reducen el mapa.", "Las probabilidades cambian cuando se actualiza el JSON publico."]
+    },
+    knockout_map: {
+      title: "Camino de eliminacion",
+      body:
+        "Resume las etapas posteriores a grupos. Antes de que se conozcan los clasificados, los nodos se muestran como espacios por completar. Cuando haya resultados, se iran completando con partidos reales.",
+      bullets: ["Ronda de 32, octavos, cuartos, semifinales y finales.", "La app diferencia resultado observado de estimacion."]
+    },
+    posterior: {
+      title: "Posterior bayesiano",
+      body:
+        "Es la estimacion actual despues de combinar supuestos iniciales con resultados observados. Si entran nuevos partidos, el posterior se recalcula.",
+      bullets: ["Prior: informacion antes de observar resultados.", "Datos: goles/resultados disponibles.", "Posterior: estimacion actualizada."]
+    }
+  };
 
   function readJsonStorage(key, fallback) {
     try {
@@ -270,6 +296,12 @@
       <img src="${FLAG_ICON_BASE}/${escapeHtml(code)}.svg" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.hidden=true;this.nextElementSibling.hidden=false" />
       <span class="flag-fallback" hidden>${escapeHtml(fallback)}</span>
     </span>`;
+  }
+
+  function helpTip(key, label = "i") {
+    const item = GLOSSARY[key];
+    if (!item) return "";
+    return `<button type="button" class="info-tip has-rich-popover" data-kind="glossary" data-glossary="${escapeHtml(key)}" aria-label="${escapeHtml(item.title)}">${escapeHtml(label)}</button>`;
   }
 
   function playerKey(player) {
@@ -920,9 +952,9 @@
             <strong>${flagMarkup(match.team1)}${escapeHtml(match.team1)} <em>vs</em> ${flagMarkup(match.team2)}${escapeHtml(match.team2)}</strong>
             <small>${escapeHtml(match.ground)}</small>
             <div class="triplet">
-              <span style="--w:${Math.round(p.home_win * 100)}"><b>1</b>${WorldCupBayes.pct(p.home_win, 0)}</span>
-              <span style="--w:${Math.round(p.draw * 100)}"><b>X</b>${WorldCupBayes.pct(p.draw, 0)}</span>
-              <span style="--w:${Math.round(p.away_win * 100)}"><b>2</b>${WorldCupBayes.pct(p.away_win, 0)}</span>
+              <span style="--w:${Math.round(p.home_win * 100)}"><b>1</b><small>gana ${escapeHtml(match.team1)}</small><strong>${WorldCupBayes.pct(p.home_win, 0)}</strong></span>
+              <span style="--w:${Math.round(p.draw * 100)}"><b>X</b><small>empate</small><strong>${WorldCupBayes.pct(p.draw, 0)}</strong></span>
+              <span style="--w:${Math.round(p.away_win * 100)}"><b>2</b><small>gana ${escapeHtml(match.team2)}</small><strong>${WorldCupBayes.pct(p.away_win, 0)}</strong></span>
             </div>
           </article>
         `;
@@ -1029,7 +1061,11 @@
             <td>
               ${
                 pred
-                  ? `<span>${WorldCupBayes.pct(pred.home_win)} · ${WorldCupBayes.pct(pred.draw)} · ${WorldCupBayes.pct(pred.away_win)}</span>`
+                  ? `<div class="prob-triplet-cell" aria-label="Probabilidad 1 X 2">
+                      <span><b>1</b><small>${escapeHtml(match.team1)}</small><strong>${WorldCupBayes.pct(pred.home_win)}</strong></span>
+                      <span><b>X</b><small>Empate</small><strong>${WorldCupBayes.pct(pred.draw)}</strong></span>
+                      <span><b>2</b><small>${escapeHtml(match.team2)}</small><strong>${WorldCupBayes.pct(pred.away_win)}</strong></span>
+                    </div>`
                   : "s/d"
               }
             </td>
@@ -1037,6 +1073,120 @@
         `;
       })
       .join("");
+  }
+
+  function scoreLabel(match) {
+    if (match.score) return `${match.score.team1}-${match.score.team2}`;
+    return "pendiente";
+  }
+
+  function leadingPrediction(match) {
+    const pred = match.prediction;
+    if (!pred) return null;
+    const options = [
+      { code: "1", label: match.team1, value: pred.home_win },
+      { code: "X", label: "Empate", value: pred.draw },
+      { code: "2", label: match.team2, value: pred.away_win }
+    ];
+    return options.sort((a, b) => b.value - a.value)[0];
+  }
+
+  function groupMatchesByRound(matches) {
+    return matches.reduce((acc, match) => {
+      const key = match.group || match.round || "Sin fase";
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(match);
+      return acc;
+    }, {});
+  }
+
+  function matchNode(match) {
+    const signal = leadingPrediction(match);
+    const done = match.status === "final";
+    return `
+      <article class="map-node ${done ? "done" : "pending"}" style="${match.group ? groupStyle(match.group) : ""}">
+        <header>
+          <span>${shortDate(match.date)}</span>
+          <b>${escapeHtml(match.round)}</b>
+        </header>
+        <strong>${flagMarkup(match.team1)}${escapeHtml(match.team1)}</strong>
+        <strong>${flagMarkup(match.team2)}${escapeHtml(match.team2)}</strong>
+        <footer>
+          <span class="status ${match.status}">${escapeHtml(scoreLabel(match))}</span>
+          ${
+            signal
+              ? `<small><b>${escapeHtml(signal.code)}</b> ${escapeHtml(signal.label)} · ${WorldCupBayes.pct(signal.value, 0)}</small>`
+              : `<small>Clasificacion por completar</small>`
+          }
+        </footer>
+      </article>
+    `;
+  }
+
+  function renderTournamentMap() {
+    const matches = filteredMatches().filter((match) => match.group);
+    const grouped = groupMatchesByRound(matches);
+    const groupNames = Object.keys(grouped).sort((a, b) => groupSortValue(a) - groupSortValue(b));
+    $("#tournamentMap").innerHTML = groupNames.length
+      ? groupNames
+          .map((group) => {
+            const rows = grouped[group].sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+            const standings = state.data.standings[group] || [];
+            const completed = rows.filter((match) => match.status === "final").length;
+            return `
+              <section class="group-map-card" style="${groupStyle(group)}">
+                <header>
+                  <div>
+                    <h3>${escapeHtml(group)}</h3>
+                    <span>${completed}/${rows.length} partidos finalizados</span>
+                  </div>
+                  ${bar(rows.length ? completed / rows.length : 0, `avance ${group}`)}
+                </header>
+                <div class="group-team-strip">
+                  ${standings
+                    .slice(0, 4)
+                    .map((row) => `<span>${flagMarkup(row.team)}${escapeHtml(row.team)} <b>${row.points} pts</b></span>`)
+                    .join("")}
+                </div>
+                <div class="map-node-grid">${rows.map(matchNode).join("")}</div>
+              </section>
+            `;
+          })
+          .join("")
+      : `<p class="empty-state">No hay partidos de grupo con los filtros actuales.</p>`;
+  }
+
+  function renderKnockoutMap() {
+    const order = ["Round of 32", "Round of 16", "Quarter-final", "Semi-final", "Match for third place", "Final"];
+    const rows = filteredMatches().filter((match) => !match.group);
+    const byRound = rows.reduce((acc, match) => {
+      if (!acc[match.round]) acc[match.round] = [];
+      acc[match.round].push(match);
+      return acc;
+    }, {});
+    const rounds = order.filter((round) => byRound[round]?.length);
+    $("#knockoutMap").innerHTML = rounds.length
+      ? rounds
+          .map(
+            (round) => `
+              <section class="knockout-column">
+                <h3>${escapeHtml(round)}</h3>
+                <div class="knockout-nodes">
+                  ${byRound[round]
+                    .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`))
+                    .map(matchNode)
+                    .join("")}
+                </div>
+              </section>
+            `
+          )
+          .join("")
+      : `<p class="empty-state">Las etapas eliminatorias no coinciden con los filtros actuales o aun no tienen equipos definidos.</p>`;
+  }
+
+  function renderTournamentViews() {
+    renderTournamentMap();
+    renderKnockoutMap();
   }
 
   function renderTeams() {
@@ -1504,6 +1654,9 @@
       <p><strong>Squads</strong><a href="${escapeHtml(sources.wikipedia_squads.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sources.wikipedia_squads.url)}</a></p>
       <p><strong>Referencia oficial</strong><a href="${escapeHtml(sources.official_reference.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sources.official_reference.url)}</a></p>
       <p><strong>Archivo FIFA</strong><a href="${escapeHtml(sources.fifa_archive.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sources.fifa_archive.url)}</a></p>
+      <p><strong>Eventos historicos candidatos</strong><a href="${escapeHtml(sources.statsbomb_open_data?.url || "https://github.com/statsbomb/open-data")}" target="_blank" rel="noopener noreferrer">StatsBomb Open Data</a></p>
+      <p><strong>Wyscout/Figshare</strong><a href="${escapeHtml(sources.wyscout_figshare_events?.url || "https://figshare.com/collections/Soccer_match_event_dataset/4415000")}" target="_blank" rel="noopener noreferrer">dataset academico de eventos</a></p>
+      <p><strong>API 2026 candidata</strong><a href="${escapeHtml(sources.api_football_fixture_statistics?.url || "https://api-sports.io/documentation/football/v3")}" target="_blank" rel="noopener noreferrer">API-Football fixture statistics</a></p>
       <p><strong>Hoja operativa</strong><span>${escapeHtml(window.APP_CONFIG.spreadsheetId)}</span></p>
     `;
   }
@@ -1518,6 +1671,7 @@
       equipos: "Equipos",
       jugadores: "Jugadores",
       partidos: "Partidos",
+      mapa: "Mapa",
       evidencia: "Evidencia",
       modelo: "Modelo",
       acerta: "Acertá",
@@ -1583,6 +1737,10 @@
       ["flag-icons - banderas SVG MIT", "https://github.com/lipis/flag-icons"],
       ["Wikimedia Commons - imagenes libres", "https://commons.wikimedia.org/"],
       ["Wikidata - datos estructurados CC0", "https://www.wikidata.org/wiki/Wikidata:Licensing"],
+      ["StatsBomb Open Data - eventos historicos", "https://github.com/statsbomb/open-data"],
+      ["Wyscout/Figshare - soccer match event dataset", "https://figshare.com/collections/Soccer_match_event_dataset/4415000"],
+      ["API-Football - estadisticas por fixture", "https://api-sports.io/documentation/football/v3"],
+      ["football-data.org - API de partidos y competiciones", "https://www.football-data.org/documentation/api"],
       ["Repositorio del proyecto", window.APP_CONFIG.githubRepo],
       ["Hoja operativa Google Sheets", `https://docs.google.com/spreadsheets/d/${window.APP_CONFIG.spreadsheetId}/edit`]
     ];
@@ -1607,6 +1765,10 @@
         <article>
           <strong>Cobertura historica</strong>
           <p>Se procesan ${historicalCount} archivos historicos estructurados de OpenFootball y se enlaza el archivo FIFA como referencia oficial de consulta.</p>
+        </article>
+        <article>
+          <strong>Datos finos de partido</strong>
+          <p>StatsBomb Open Data y Wyscout/Figshare son utiles para estudiar eventos historicos como pases, tiros, ubicacion y acciones. Para 2026 en vivo, APIs como API-Football pueden ofrecer estadisticas por fixture, pero requieren revisar plan, token, licencia y permiso de redistribucion antes de integrarlas.</p>
         </article>
       </div>
     `;
@@ -1642,6 +1804,26 @@
     `;
   }
 
+  function glossaryTooltip(key) {
+    const item = GLOSSARY[key];
+    if (!item) return "";
+    return `
+      <div class="tooltip-head glossary">
+        <span class="tooltip-icon">i</span>
+        <div>
+          <strong>${escapeHtml(item.title)}</strong>
+          <small>definicion didactica</small>
+        </div>
+      </div>
+      <p>${escapeHtml(item.body)}</p>
+      ${
+        item.bullets?.length
+          ? `<ul class="tooltip-list">${item.bullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join("")}</ul>`
+          : ""
+      }
+    `;
+  }
+
   function playerTooltip(player) {
     const media = playerMedia(player);
     const photo = playerPortraitMarkup(player, "large");
@@ -1668,6 +1850,9 @@
   }
 
   function tooltipContent(target) {
+    if (target.dataset.kind === "glossary") {
+      return glossaryTooltip(target.dataset.glossary);
+    }
     if (!state.data) return "";
     if (target.dataset.kind === "team") {
       const team = teamRecord(target.dataset.team);
@@ -1741,6 +1926,7 @@
     renderContenders();
     renderStandings();
     renderMatches();
+    renderTournamentViews();
     renderTeams();
     renderPlayers();
     renderEvidence();

@@ -8,6 +8,7 @@ metadata in the generated JSON. It does not require API keys.
 from __future__ import annotations
 
 import hashlib
+import csv
 import json
 import math
 import random
@@ -25,10 +26,11 @@ import requests
 from bs4 import BeautifulSoup
 
 
-APP_VERSION = "0.2.8"
+APP_VERSION = "0.2.9"
 DATA_VERSION_PREFIX = "wc26"
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
+SHEETS_DIR = DATA_DIR / "sheets"
 WORLD_CUP_YEARS = [
     1930,
     1934,
@@ -993,6 +995,26 @@ def build_payload() -> dict[str, Any]:
                 "url": "https://www.wikidata.org/wiki/Wikidata:Licensing",
                 "note": "Reference for reusable structured metadata and rights context.",
             },
+            "statsbomb_open_data": {
+                "name": "StatsBomb Open Data",
+                "url": "https://github.com/statsbomb/open-data",
+                "note": "Candidate source for historical event data such as passes, shots and lineups. Terms require attribution and license review before model integration.",
+            },
+            "wyscout_figshare_events": {
+                "name": "Soccer match event dataset",
+                "url": "https://figshare.com/collections/Soccer_match_event_dataset/4415000",
+                "note": "Open academic event dataset including FIFA World Cup 2018, with passes, shots, fouls, positions and player/action metadata.",
+            },
+            "api_football_fixture_statistics": {
+                "name": "API-Football fixture statistics",
+                "url": "https://api-sports.io/documentation/football/v3",
+                "note": "Candidate API for 2026 fixture statistics such as shots on goal, shots off goal and related live match metrics. Requires API key and redistribution review.",
+            },
+            "football_data_org_api": {
+                "name": "football-data.org API",
+                "url": "https://www.football-data.org/documentation/api",
+                "note": "Candidate API for fixtures, teams, standings, scorers and related competition data. Coverage and license must be checked before integration.",
+            },
             "openfootball_historical_worldcups": historical_metas,
         },
         "groups": groups,
@@ -1011,9 +1033,269 @@ def write_json(path: Path, data: Any) -> None:
     path.write_text(text + "\n", encoding="utf-8")
 
 
+def write_csv(path: Path, headers: list[str], rows: list[list[Any]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.writer(fh)
+        writer.writerow(headers)
+        writer.writerows(rows)
+
+
+def write_sheet_exports(payload: dict[str, Any]) -> list[dict[str, Any]]:
+    version = payload["metadata"]["data_version"]
+    history = payload.get("history", {})
+    exports: list[tuple[str, list[str], list[list[Any]]]] = []
+
+    exports.append(
+        (
+            "equipos.csv",
+            [
+                "team_id",
+                "team",
+                "group",
+                "rating",
+                "attack_posterior_mean",
+                "defense_posterior_mean",
+                "matches_observed_2026",
+                "goals_for_observed_2026",
+                "goals_against_observed_2026",
+                "players",
+                "avg_age",
+                "total_caps",
+                "total_international_goals",
+                "p_top2",
+                "p_advance_group",
+                "p_champion_rough",
+                "data_version",
+            ],
+            [
+                [
+                    team["team_id"],
+                    team["team"],
+                    team["group"],
+                    team["rating"],
+                    team["attack_posterior_mean"],
+                    team["defense_posterior_mean"],
+                    team["matches_observed_2026"],
+                    team["goals_for_observed_2026"],
+                    team["goals_against_observed_2026"],
+                    (team.get("squad") or {}).get("players", 0),
+                    (team.get("squad") or {}).get("avg_age", ""),
+                    (team.get("squad") or {}).get("total_caps", 0),
+                    (team.get("squad") or {}).get("total_international_goals", 0),
+                    team["p_top2"],
+                    team["p_advance_group"],
+                    team["p_champion_rough"],
+                    version,
+                ]
+                for team in payload["teams"]
+            ],
+        )
+    )
+
+    exports.append(
+        (
+            "jugadores.csv",
+            ["team_id", "team", "number", "position", "name", "birth_date", "age", "caps", "goals", "club", "source", "data_version"],
+            [
+                [
+                    player["team_id"],
+                    player["team"],
+                    player.get("number", ""),
+                    player.get("position", ""),
+                    player["name"],
+                    player.get("birth_date", ""),
+                    player.get("age", ""),
+                    player.get("caps", 0),
+                    player.get("goals", 0),
+                    player.get("club", ""),
+                    player.get("source", ""),
+                    version,
+                ]
+                for player in payload["players"]
+            ],
+        )
+    )
+
+    exports.append(
+        (
+            "partidos.csv",
+            ["match_id", "round", "date", "time", "team1", "team2", "group", "ground", "status", "score_team1", "score_team2", "data_version"],
+            [
+                [
+                    match["match_id"],
+                    match["round"],
+                    match["date"],
+                    match["time"],
+                    match["team1"],
+                    match["team2"],
+                    match.get("group", ""),
+                    match.get("ground", ""),
+                    match["status"],
+                    (match.get("score") or {}).get("team1", ""),
+                    (match.get("score") or {}).get("team2", ""),
+                    version,
+                ]
+                for match in payload["matches"]
+            ],
+        )
+    )
+
+    exports.append(
+        (
+            "pronosticos.csv",
+            [
+                "match_id",
+                "team1",
+                "team2",
+                "home_win",
+                "draw",
+                "away_win",
+                "expected_goals_home",
+                "expected_goals_away",
+                "data_version",
+            ],
+            [
+                [
+                    match["match_id"],
+                    match["team1"],
+                    match["team2"],
+                    match["prediction"]["home_win"],
+                    match["prediction"]["draw"],
+                    match["prediction"]["away_win"],
+                    match["prediction"]["expected_goals_home"],
+                    match["prediction"]["expected_goals_away"],
+                    version,
+                ]
+                for match in payload["matches"]
+                if match.get("prediction")
+            ],
+        )
+    )
+
+    exports.append(
+        (
+            "historico_copas.csv",
+            ["year", "name", "matches", "teams", "goals", "avg_goals", "champion", "source", "data_version"],
+            [
+                [
+                    cup["year"],
+                    cup["name"],
+                    cup["matches"],
+                    cup["teams"],
+                    cup["goals"],
+                    cup["avg_goals"],
+                    cup.get("champion", ""),
+                    cup.get("source", ""),
+                    version,
+                ]
+                for cup in history.get("tournaments", [])
+            ],
+        )
+    )
+
+    exports.append(
+        (
+            "historico_paises.csv",
+            [
+                "team_id",
+                "team",
+                "appearances",
+                "matches",
+                "wins",
+                "draws",
+                "losses",
+                "goals_for",
+                "goals_against",
+                "goal_difference",
+                "titles",
+                "finals",
+                "win_rate",
+                "data_version",
+            ],
+            [
+                [
+                    row["team_id"],
+                    row["team"],
+                    row["appearances"],
+                    row["matches"],
+                    row["wins"],
+                    row["draws"],
+                    row["losses"],
+                    row["goals_for"],
+                    row["goals_against"],
+                    row["goal_difference"],
+                    row["titles"],
+                    row["finals"],
+                    row["win_rate"],
+                    version,
+                ]
+                for row in history.get("countries", [])
+            ],
+        )
+    )
+
+    exports.append(
+        (
+            "historico_partidos.csv",
+            ["historical_match_id", "year", "round", "date", "team1", "team2", "score", "winner", "ground", "data_version"],
+            [
+                [
+                    row["historical_match_id"],
+                    row["year"],
+                    row["round"],
+                    row["date"],
+                    row["team1"],
+                    row["team2"],
+                    row["score"],
+                    row["winner"],
+                    row["ground"],
+                    version,
+                ]
+                for row in history.get("historical_matches", [])
+            ],
+        )
+    )
+
+    exports.append(
+        (
+            "historico_goleadores.csv",
+            ["team_id", "team", "player", "goals", "years", "opponents", "data_version"],
+            [
+                [
+                    row["team_id"],
+                    row["team"],
+                    row["player"],
+                    row["goals"],
+                    ", ".join(str(item) for item in row.get("years", [])),
+                    ", ".join(str(item) for item in row.get("opponents", [])),
+                    version,
+                ]
+                for row in history.get("scorers", [])
+            ],
+        )
+    )
+
+    written: list[dict[str, Any]] = []
+    for filename, headers, rows in exports:
+        path = SHEETS_DIR / filename
+        write_csv(path, headers, rows)
+        written.append(
+            {
+                "path": str(path.relative_to(ROOT)).replace("\\", "/"),
+                "rows": len(rows),
+                "columns": len(headers),
+                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                "bytes": path.stat().st_size,
+            }
+        )
+    return written
+
+
 def main() -> None:
     payload = build_payload()
     write_json(DATA_DIR / "worldcup2026_latest.json", payload)
+    csv_exports = write_sheet_exports(payload)
     manifest = {
         "generated_at": payload["metadata"]["generated_at"],
         "app_version": APP_VERSION,
@@ -1026,7 +1308,8 @@ def main() -> None:
                 ).hexdigest(),
                 "bytes": (DATA_DIR / "worldcup2026_latest.json").stat().st_size,
             }
-        ],
+        ]
+        + csv_exports,
         "sources": payload["sources"],
     }
     write_json(DATA_DIR / "sources_manifest.json", manifest)

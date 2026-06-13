@@ -1,6 +1,6 @@
 # Secuencia de prompts - Mundial Probabilidades
 
-Ultima edicion: 2026-06-12
+Ultima edicion: 2026-06-13
 
 ## Prompt inicial del proyecto
 
@@ -56,3 +56,7 @@ modelos multivariados de pronostico y modelos bayesianos.
 - Corregir la ausencia visible de banderas y fotos: usar banderas reales,
   agregar fotos solo con licencia/fuente verificable y mantener referencias de
   derechos de uso.
+- Aclarar conceptos como `Prob. 1 · X · 2` con notas emergentes, agregar una
+  vista tipo mapa/diagrama de grupos, etapas y partidos con nodos que se
+  completen segun resultados, revisar por que la hoja online no mostraba datos
+  y buscar fuentes de estadisticas mas detalladas de partidos.

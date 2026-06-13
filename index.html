@@ -173,6 +173,7 @@
               <button class="tab-button" data-target="equipos">Equipos</button>
               <button class="tab-button" data-target="jugadores">Jugadores</button>
               <button class="tab-button" data-target="partidos">Partidos</button>
+              <button class="tab-button" data-target="mapa">Mapa</button>
               <button class="tab-button" data-target="evidencia">Evidencia</button>
               <button class="tab-button" data-target="modelo">Modelo</button>
               <button class="tab-button" data-target="acerta">Acertá</button>
@@ -211,7 +212,7 @@
                 <section class="panel">
                   <header class="panel-header">
                     <h2>Proximos cruces</h2>
-                    <span>prob. 1-X-2</span>
+                    <span>prob. 1-X-2 <button type="button" class="info-tip has-rich-popover" data-kind="glossary" data-glossary="prob_1x2" aria-label="Que significa probabilidad 1 X 2">i</button></span>
                   </header>
                   <div id="nextMatches" class="match-card-list"></div>
                 </section>
@@ -295,13 +296,48 @@
                         <th>Fase</th>
                         <th>Sede</th>
                         <th>Marcador</th>
-                        <th>Prob. 1 · X · 2</th>
+                        <th>Probabilidad 1 / X / 2 <button type="button" class="info-tip has-rich-popover" data-kind="glossary" data-glossary="prob_1x2" aria-label="Definicion de probabilidad 1 X 2">i</button></th>
                       </tr>
                     </thead>
                     <tbody id="matchesTable"></tbody>
                   </table>
                 </div>
               </section>
+            </section>
+
+            <section id="mapa" class="view">
+              <div class="tournament-hero">
+                <div>
+                  <p class="eyebrow">Mapa del torneo</p>
+                  <h2>Grupos, partidos y etapas</h2>
+                  <p>
+                    Los nodos se completan a medida que el JSON publico trae
+                    resultados. Verde indica partido finalizado; blanco indica
+                    partido pendiente o etapa por completarse.
+                  </p>
+                </div>
+                <div class="map-legend">
+                  <span><b class="legend-dot done"></b>Finalizado</span>
+                  <span><b class="legend-dot pending"></b>Pendiente</span>
+                  <span><b class="legend-dot model"></b>Estimacion</span>
+                </div>
+              </div>
+              <div class="content-grid two">
+                <section class="panel span-2">
+                  <header class="panel-header">
+                    <h2>Mapa de grupos</h2>
+                    <span>12 grupos · 72 partidos <button type="button" class="info-tip has-rich-popover" data-kind="glossary" data-glossary="group_map" aria-label="Como leer el mapa de grupos">i</button></span>
+                  </header>
+                  <div id="tournamentMap" class="tournament-map"></div>
+                </section>
+                <section class="panel span-2">
+                  <header class="panel-header">
+                    <h2>Camino de eliminacion</h2>
+                    <span>se actualiza con resultados <button type="button" class="info-tip has-rich-popover" data-kind="glossary" data-glossary="knockout_map" aria-label="Como leer las etapas eliminatorias">i</button></span>
+                  </header>
+                  <div id="knockoutMap" class="knockout-map"></div>
+                </section>
+              </div>
             </section>
 
             <section id="evidencia" class="view">
@@ -571,7 +607,7 @@
       <div id="richTooltip" class="rich-tooltip" role="tooltip" hidden></div>
 
       <footer class="footer">
-        <span>v0.2.8 · 2026-06-12</span>
+        <span>v0.2.9 · 2026-06-13</span>
         <a href="docs/metodologia_bayesiana.md">metodologia</a>
         <a href="docs/diccionario_datos.md">diccionario</a>
         <a href="?view=referencias">referencias</a>

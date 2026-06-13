@@ -18,14 +18,14 @@ certeza; muestra probabilidades, supuestos, limitaciones y trazabilidad de datos
 
 ## Version actual
 
-`0.2.8` agrega banderas SVG reales para los 48 equipos, fotos curadas de
-jugadores desde Wikimedia Commons cuando existe fuente/licencia verificable y
-tarjetas emergentes al posar el cursor sobre equipos o jugadores. Mantiene la
-legibilidad movil de `0.2.7`, la correccion de `Senal` filtrable, colores por
-grupo, microanimaciones, `Autores` en pestana propia, `Acerta` reorganizada,
-balon canvas con rebote, pronosticos propios, registro inicial sin password,
-estadisticas de visitas, referencias, derechos de uso, evidencia historica
-1930-2022 y filtros por Copa, pais, jugador y posicion.
+`0.2.9` agrega definiciones emergentes `(i)` para conceptos como
+`Probabilidad 1 / X / 2`, una vista `Mapa` con nodos rectangulares de grupos,
+partidos y etapas eliminatorias, y exportaciones CSV publicas en
+`data/sheets/` para alimentar Google Sheets con `IMPORTDATA`. Mantiene las
+banderas SVG, fotos curadas con fuente/licencia verificable, legibilidad movil,
+`Senal` filtrable, colores por grupo, microanimaciones, `Autores`, `Acerta`,
+registro inicial sin password, visitas, referencias, derechos de uso, evidencia
+historica 1930-2022 y filtros por Copa, pais, jugador y posicion.
 
 ## Fuentes
 
@@ -36,6 +36,10 @@ estadisticas de visitas, referencias, derechos de uso, evidencia historica
 
 Cada generacion guarda URL, fecha de descarga, bytes y hash SHA256 en
 `data/sources_manifest.json`.
+
+El generador tambien publica CSV normalizados para la hoja operativa:
+`equipos.csv`, `jugadores.csv`, `partidos.csv`, `pronosticos.csv` y tablas
+historicas bajo `data/sheets/`.
 
 ## Ejecucion local
 

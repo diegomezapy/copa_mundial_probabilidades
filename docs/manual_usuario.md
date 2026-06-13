@@ -11,6 +11,7 @@ partir de datos abiertos y un modelo bayesiano explicable.
 - Equipos: rating, ataque, defensa, plantel y probabilidad de avance.
 - Jugadores: planteles con posicion, edad, caps, goles y club.
 - Partidos: calendario, resultados y probabilidades 1-X-2.
+- Mapa: grupos, partidos y etapas del torneo como nodos rectangulares.
 - Evidencia: historia por pais, Copa, partidos, mano a mano y goleadores.
 - Modelo: laboratorio para comparar dos equipos.
 - Acertá: pronosticos propios, puntaje, aciertos, fallas y evolucion.
@@ -36,6 +37,22 @@ Jugadores, algunas figuras destacadas tienen foto libre verificada; al posar el
 cursor o enfocar una fila aparece una tarjeta con datos personales, estadisticas
 basicas y la atribucion de la imagen. Cuando no hay una foto libre clara, la app
 muestra un avatar para respetar derechos de uso.
+
+En partidos, `Probabilidad 1 / X / 2` significa:
+
+- 1: gana el primer equipo listado en la fila;
+- X: empate;
+- 2: gana el segundo equipo listado.
+
+Los botones `(i)` abren definiciones emergentes para evitar dudas durante la
+lectura de tablas, mapas y resultados.
+
+## Mapa
+
+La vista Mapa muestra grupos, partidos y eliminatorias como nodos. Un nodo verde
+indica partido finalizado y muestra marcador; un nodo pendiente muestra fecha,
+equipos y, cuando existe, la senal probabilistica actual. La vista responde a
+los filtros activos de grupo, equipo, estado y busqueda.
 
 ## Acertá
 

@@ -1,5 +1,153 @@
 # Bitacora Mundial Probabilidades Copa 2026 Appweb
 
+## 2026-06-13 05:39
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: Proyecto academico publico
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.2.9`
+
+### Objetivo de la intervencion
+
+Aclarar conceptos de pronostico como `Probabilidad 1 / X / 2`, agregar una
+vista tipo mapa/diagrama del torneo y resolver que la planilla online no
+mostraba datos visibles.
+
+### Diagnostico inicial
+
+* La tabla de partidos mostraba `Prob. 1 · X · 2`, pero el significado no era
+  evidente para estudiantes o usuarios nuevos.
+* El libro online `FUTBOL_PROBABILIDADES` tenia 16 pestanas creadas, pero
+  `EQUIPOS`, `JUGADORES`, `PARTIDOS` y `PRONOSTICOS` contenian solo encabezados.
+* `LOG` solo registraba `setupWorkbook`; no habia ejecucion de `syncFromGithub`.
+* `clasp run syncFromGithub` devolvio: `Script function not found. Please make
+  sure script is deployed as API executable`.
+* El Web App actual respondio `health` con `200`, pero `action=sync` devolvio
+  `Token administrativo no configurado en Script Properties`.
+* La API directa de Google Sheets con credenciales `clasp` no se pudo usar:
+  `Google Sheets API has not been used in project 1072944905499 before or it is disabled`.
+
+### Acciones realizadas
+
+* Se agrego glosario emergente `(i)` con definiciones didacticas para
+  `Probabilidad 1 / X / 2`, mapa de grupos, eliminatorias y posterior.
+* Se cambio la tabla de partidos para mostrar explicitamente:
+  `1 = gana primer equipo`, `X = empate`, `2 = gana segundo equipo`.
+* Se agrego la vista `Mapa` con nodos rectangulares para grupos, partidos y
+  eliminatorias.
+* Se agregaron estilos responsive para nodos, leyendas, tooltips y celdas 1/X/2.
+* Se agregaron exportaciones CSV reproducibles bajo `data/sheets/`:
+  `equipos.csv`, `jugadores.csv`, `partidos.csv`, `pronosticos.csv`,
+  `historico_copas.csv`, `historico_paises.csv`, `historico_partidos.csv` y
+  `historico_goleadores.csv`.
+* Se agrego el registro de los CSV al manifest con filas, columnas, bytes y hash
+  SHA-256.
+* Se agregaron fuentes candidatas para estadisticas finas de partidos:
+  StatsBomb Open Data, Wyscout/Figshare, API-Football y football-data.org.
+* Se actualizo version/cache/frontend/GAS/JSON a `0.2.9`.
+* Se actualizaron README, manual tecnico, manual de usuario y secuencia de
+  prompts.
+
+### Archivos modificados
+
+* `index.html`
+* `assets/js/app.js`
+* `assets/css/styles.css`
+* `assets/js/config.js`
+* `service-worker.js`
+* `scripts/update_data.py`
+* `gas/Config.gs`
+* `data/worldcup2026_latest.json`
+* `data/sources_manifest.json`
+* `data/sheets/*.csv`
+* `README.md`
+* `docs/manual_usuario.md`
+* `docs/manual_tecnico.md`
+* `docs/PROMPTS_MUNDIAL_PROBABILIDADES_2026-06-12.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+python scripts\update_data.py
+node --check assets\js\app.js
+node --check assets\js\config.js
+node --check service-worker.js
+python -m py_compile scripts\update_data.py scripts\make_assets.py
+clasp run syncFromGithub
+```
+
+### Resultados verificados
+
+* JSON local `0.2.9` generado con `data_version=wc26-20260613T093532z`.
+* Cobertura local: 48 equipos, 1248 jugadores, 104 partidos, 4 partidos
+  completados, 12 grupos, 964 partidos historicos y 536 goleadores historicos.
+* CSV generados:
+  `equipos.csv` 49 filas incluyendo encabezado,
+  `jugadores.csv` 1249,
+  `partidos.csv` 105,
+  `pronosticos.csv` 73,
+  `historico_copas.csv` 23,
+  `historico_paises.csv` 153,
+  `historico_partidos.csv` 965,
+  `historico_goleadores.csv` 251.
+* Prueba local Chromium desktop:
+  app `0.2.9`, 72 celdas `prob-triplet-cell`, tooltip de `Probabilidad 1 / X / 2`
+  con definicion y bullets, 12 tarjetas de grupo, 72 nodos de grupo, 6 columnas
+  de eliminatorias y 32 nodos de eliminatorias.
+* Prueba local Chromium movil `390px`:
+  `bodyOverflow=0`, `infoFont=15.3px`, `infoHeight=28px`, mapa visible.
+* Capturas locales:
+  `tmp/didactica-local-partidos-tooltip.png`,
+  `tmp/didactica-local-mapa-desktop.png`,
+  `tmp/didactica-local-mapa-mobile.png`.
+
+### Pruebas realizadas
+
+* Sintaxis JS: correcta.
+* Compilacion Python: correcta.
+* Generacion JSON/CSV: correcta.
+* Prueba local desktop: correcta.
+* Prueba local movil: correcta.
+* Diagnostico de Google Sheets por conector: estructura creada, datos ausentes
+  antes de aplicar formulas/importacion.
+
+### Errores o incidentes
+
+* `clasp run syncFromGithub` no pudo ejecutar por falta de despliegue como API
+  executable.
+* `action=sync` del Web App requiere token administrativo, pero el token no esta
+  configurado en Script Properties.
+* El acceso directo a Sheets API con token de `clasp` fallo porque la API de
+  Sheets no esta habilitada en el proyecto OAuth de clasp.
+
+### Soluciones aplicadas
+
+* Enfoque didactico: definiciones emergentes y etiquetas visibles en lugar de
+  siglas aisladas.
+* Enfoque operativo para la hoja: CSV publicos versionados y auditablemente
+  importables por `IMPORTDATA`.
+* Fuentes de datos finos agregadas como candidatas, sin integrarlas al modelo
+  hasta revisar licencia, token y permisos de redistribucion.
+
+### Pendientes
+
+* Publicar `0.2.9` en GitHub Pages.
+* Configurar formulas `IMPORTDATA` en la hoja online cuando los CSV esten
+  disponibles publicamente.
+* Desplegar GAS `0.2.9` y mantener registrado que `sync` requiere token.
+
+### Riesgos
+
+* `IMPORTDATA` depende de conectividad y politicas de importacion de Google
+  Sheets; si se requiere copia congelada, usar `syncFromGithub()` con token GAS.
+* StatsBomb/Wyscout son excelentes para estudio historico, pero no reemplazan
+  una fuente oficial/licenciada de eventos 2026 en vivo.
+
 ## 2026-06-12 20:38
 
 ### Proyecto
