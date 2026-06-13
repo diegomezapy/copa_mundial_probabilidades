@@ -11,13 +11,28 @@ Caracteristicas:
 * Velocidad: 4 cuadros por segundo.
 * Total: 40 cuadros.
 * Tamano: 960 x 540 px.
-* Peso aproximado: 2.54 MB.
+* Peso aproximado: 2.98 MB.
 * Fuente visual: app publica en GitHub Pages.
+* Narrativa: portada, datos, filtros, fichas, probabilidades, mapa, evidencia,
+  metodologia, pronosticos de usuarios y cierre con enlace.
+* Incluye barra de progreso, pelota en movimiento y rotulos breves para redes.
+
+Vista previa estatica:
+
+```text
+assets/social/mundial_probabilidades_demo_10s_4fps_preview.jpg
+```
 
 URL publica:
 
 ```text
 https://diegomezapy.github.io/copa_mundial_probabilidades/assets/social/mundial_probabilidades_demo_10s_4fps.gif
+```
+
+Texto sugerido para publicar:
+
+```text
+assets/social/TEXTO_DIFUSION_MUNDIAL_PROBABILIDADES.md
 ```
 
 Regeneracion:

@@ -1,5 +1,102 @@
 # Bitacora Mundial Probabilidades Copa 2026 Appweb
 
+## 2026-06-13 15:13
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: Proyecto academico publico
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.2.13`
+
+### Objetivo de la intervencion
+
+Mejorar el GIF de reproduccion del experimento para difusion publica y preparar
+textos de publicacion para redes, grupos de clase y publico general.
+
+### Diagnostico inicial
+
+* El GIF existente mostraba capturas utiles, pero con una narrativa visual
+  limitada.
+* Faltaba una portada de impacto, cierre con enlace y un guion mas claro para
+  redes.
+* No existia un archivo central con textos listos para compartir la app.
+
+### Acciones realizadas
+
+* Se reescribio `scripts/create_social_gif.py` para agregar portada, cierre con
+  enlace, barra de progreso, pelota en movimiento, foco visual por seccion y
+  rotulos narrativos.
+* Se regenero `assets/social/mundial_probabilidades_demo_10s_4fps.gif`.
+* Se genero la vista previa
+  `assets/social/mundial_probabilidades_demo_10s_4fps_preview.jpg`.
+* Se creo `assets/social/TEXTO_DIFUSION_MUNDIAL_PROBABILIDADES.md` con textos
+  para publicacion larga, redes, WhatsApp y frases cortas.
+* Se actualizo `assets/social/README.md`.
+
+### Archivos modificados
+
+* `scripts/create_social_gif.py`
+* `assets/social/mundial_probabilidades_demo_10s_4fps.gif`
+* `assets/social/mundial_probabilidades_demo_10s_4fps_preview.jpg`
+* `assets/social/TEXTO_DIFUSION_MUNDIAL_PROBABILIDADES.md`
+* `assets/social/README.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+git status --branch --short
+python -m py_compile scripts\create_social_gif.py
+python scripts\create_social_gif.py
+```
+
+### Resultados verificados
+
+* GIF regenerado con 40 frames, 4 fps, 10 segundos, 960 x 540 px y 2.98 MB.
+* Vista previa generada en formato JPG.
+* El GIF usa capturas de la app publica y no muestra la puerta de registro.
+* La narrativa visual recorre: portada, datos, filtros, fichas, probabilidades,
+  mapa, evidencia historica, metodologia, pronosticos de usuario y cierre con
+  enlace.
+
+### Pruebas realizadas
+
+* `py_compile` de `scripts/create_social_gif.py`: correcto.
+* Verificacion PIL: 40 frames, tamano 960 x 540, duracion de frame 250 ms y loop
+  `0`.
+* Revision visual de `assets/social/mundial_probabilidades_demo_10s_4fps_preview.jpg`.
+
+### Errores o incidentes
+
+* Un comando de verificacion se escribio inicialmente con heredoc Bash y fallo
+  en PowerShell; se repitio con here-string de PowerShell.
+
+### Soluciones aplicadas
+
+* Guion visual compacto de 10 segundos con portada y cierre.
+* Generacion automatica de preview para revisar rapidamente el GIF sin abrir la
+  animacion completa.
+* Archivo de textos de difusion separado del codigo.
+
+### Pendientes
+
+* Publicar commit en GitHub y verificar la URL publica del GIF con cache-busting.
+
+### Riesgos
+
+* GIF sigue siendo un formato pesado frente a video MP4; para redes que lo
+  recomprimen, conviene conservar tambien la vista previa JPG.
+
+### Recomendaciones
+
+* Para proximas appwebs, producir junto con el GIF un archivo de texto social y
+  una vista previa estatica.
+* Mantener el GIF por debajo de 3 a 5 MB para facilitar envio por redes y
+  mensajeria.
+
 ## 2026-06-13 14:46
 
 ### Proyecto
