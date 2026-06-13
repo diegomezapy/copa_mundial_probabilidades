@@ -61,6 +61,10 @@ python scripts\create_social_gif.py
 * La narrativa visual recorre: portada, datos, filtros, fichas, probabilidades,
   mapa, evidencia historica, metodologia, pronosticos de usuario y cierre con
   enlace.
+* URL publica del GIF verificada:
+  `https://diegomezapy.github.io/copa_mundial_probabilidades/assets/social/mundial_probabilidades_demo_10s_4fps.gif`.
+* URL publica de la preview verificada:
+  `https://diegomezapy.github.io/copa_mundial_probabilidades/assets/social/mundial_probabilidades_demo_10s_4fps_preview.jpg`.
 
 ### Pruebas realizadas
 
@@ -68,6 +72,8 @@ python scripts\create_social_gif.py
 * Verificacion PIL: 40 frames, tamano 960 x 540, duracion de frame 250 ms y loop
   `0`.
 * Revision visual de `assets/social/mundial_probabilidades_demo_10s_4fps_preview.jpg`.
+* Descarga publica con cache-busting desde GitHub Pages: GIF 3.126.592 bytes,
+  preview 117.291 bytes y README social actualizado.
 
 ### Errores o incidentes
 
@@ -83,7 +89,8 @@ python scripts\create_social_gif.py
 
 ### Pendientes
 
-* Publicar commit en GitHub y verificar la URL publica del GIF con cache-busting.
+* Evaluar si conviene exportar tambien una version MP4 para redes que recomprimen
+  GIF automaticamente.
 
 ### Riesgos
 
