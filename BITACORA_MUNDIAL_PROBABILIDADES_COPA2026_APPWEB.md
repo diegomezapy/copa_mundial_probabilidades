@@ -78,6 +78,8 @@ node --check service-worker.js
 python -m py_compile scripts\update_data.py scripts\make_assets.py
 python -m http.server 8789
 python -m http.server 8790
+git commit -m "feat: integrar imagenes generadas en la app"
+git push origin main
 ```
 
 ### Resultados verificados
@@ -94,10 +96,21 @@ python -m http.server 8790
   `Referencias` cargan su imagen generada con dimensiones naturales correctas.
 * Prueba local movil `390px` en vista `Mapa`:
   `overflow=0`, imagen del mapa visible y footer `v0.2.10`.
+* GitHub Pages sirve `0.2.10`, CSS actualizado, JSON
+  `data_version=wc26-20260613T110806z` y
+  `hero-bayes-football-1920x1080.jpg` con HTTP 200.
+* Prueba publica Playwright desktop:
+  `version=0.2.10`, hero generado activo, imagen de Mapa con ancho natural
+  `1600`, 8 imagenes generadas en DOM y `overflow=0`.
+* Prueba publica Playwright movil `390px` en `Referencias`:
+  imagen generada con ancho natural `1200`, footer `v0.2.10`, fuente base
+  `17px` y `overflow=0`.
 * Capturas:
   `tmp/visual-assets-desktop.png`,
   `tmp/visual-assets-mobile-mapa.png`,
-  `tmp/visual-hero-after-ball-clip.png`.
+  `tmp/visual-hero-after-ball-clip.png`,
+  `tmp/public-visual-assets-desktop-mapa.png`,
+  `tmp/public-visual-assets-mobile-referencias.png`.
 
 ### Pruebas realizadas
 
@@ -122,7 +135,6 @@ python -m http.server 8790
 
 ### Pendientes
 
-* Publicar cambios en GitHub Pages y validar URL publica con cache busting.
 * Si se desea menor peso, convertir JPEG a WebP con herramienta externa.
 * Revisar en celular real si el hero y las imagenes mantienen buena lectura en
   redes lentas.
