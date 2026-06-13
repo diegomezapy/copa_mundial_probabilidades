@@ -1,5 +1,109 @@
 # Bitacora Mundial Probabilidades Copa 2026 Appweb
 
+## 2026-06-13 07:46
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: Proyecto academico publico
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.2.11`
+
+### Objetivo de la intervencion
+
+Generar un archivo `.GIF` de 10 segundos, a 4 cuadros por segundo, para mostrar
+la app, sus funcionalidades y caracteristicas en redes sociales.
+
+### Diagnostico inicial
+
+* La app publica ya estaba validada en GitHub Pages con version `0.2.11`.
+* No existia una pieza animada breve para compartir la novedad en redes.
+* El entorno tenia Playwright Python y Pillow disponibles; no tenia `imageio`.
+
+### Acciones realizadas
+
+* Se creo `scripts/create_social_gif.py` para generar el GIF de forma
+  reproducible.
+* El script captura la app publica con un usuario de demostracion en
+  `localStorage`, evitando que el registro inicial cubra la interfaz.
+* Se capturaron vistas de resumen, filtros, equipos, jugadores, partidos,
+  mural, evidencia historica, modelo bayesiano, aciertos, autores y
+  referencias.
+* Se agregaron rotulos breves sobre cada cuadro para comunicar la funcionalidad
+  mostrada.
+* Se genero el archivo
+  `assets/social/mundial_probabilidades_demo_10s_4fps.gif`.
+* Se documento el artefacto en `assets/social/README.md`.
+* Se actualizo la secuencia de prompts del proyecto.
+
+### Archivos modificados
+
+* `scripts/create_social_gif.py`
+* `assets/social/mundial_probabilidades_demo_10s_4fps.gif`
+* `assets/social/README.md`
+* `docs/PROMPTS_MUNDIAL_PROBABILIDADES_2026-06-12.md`
+* `BITACORA_MUNDIAL_PROBABILIDADES_COPA2026_APPWEB.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+python -m py_compile scripts\create_social_gif.py
+python scripts\create_social_gif.py
+```
+
+### Resultados verificados
+
+* GIF local generado correctamente.
+* Ruta local:
+  `G:\Mi unidad\MUNDIAL_PROBABILIDADES\assets\social\mundial_probabilidades_demo_10s_4fps.gif`
+* Dimensiones: 960 x 540 px.
+* Cuadros: 40.
+* Duracion total: 10.000 ms.
+* Duracion por cuadro: 250 ms.
+* Velocidad: 4 fps.
+* Peso: 2.54 MB.
+
+### Pruebas realizadas
+
+* Validacion de metadatos con Pillow: `frames=40`, `durations_unique=[250]`,
+  `total_ms=10000`.
+* Hoja de control visual generada en `tmp/social_gif_contact_sheet.jpg` para
+  revisar frames representativos.
+
+### Errores o incidentes
+
+* El primer intento de captura uso selectores de hover demasiado generales y
+  encontro elementos ocultos; se ajustaron a selectores visibles de las vistas
+  `Equipos` y `Partidos`.
+
+### Soluciones aplicadas
+
+* Se usaron selectores especificos por vista activa:
+  `.team-card.has-rich-popover[data-kind="team"]`,
+  `tr.has-rich-popover[data-kind="player"]` y
+  `#partidos [data-glossary="prob_1x2"]`.
+* Se mantuvo el GIF liviano con 960 x 540 px, 128 colores y 4 fps.
+
+### Pendientes
+
+* Publicar el commit en GitHub Pages y verificar que el GIF sea accesible por
+  URL publica.
+
+### Riesgos
+
+* Si cambia mucho la estructura visual de la app, el script puede requerir
+  ajustes de selectores.
+* Algunas redes convierten GIF a video automaticamente; conservar tambien el
+  script permite regenerar variantes.
+
+### Recomendaciones
+
+* Para futuras piezas de difusion, generar tambien una version vertical 9:16 si
+  se publicara en historias o reels.
+
 ## 2026-06-13 07:35
 
 ### Proyecto

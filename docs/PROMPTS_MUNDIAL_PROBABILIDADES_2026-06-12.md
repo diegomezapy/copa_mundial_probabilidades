@@ -69,3 +69,5 @@ modelos multivariados de pronostico y modelos bayesianos.
 - Incorporar un mapa o diagrama de seguimiento de resultados inspirado en una
   lamina de torneo: grupos a ambos lados, llave eliminatoria central y nodos
   rectangulares que permitan seguir partidos, resultados y cruces por completar.
+- Generar un archivo `.GIF` de 10 segundos, con 4 imagenes por segundo, para
+  mostrar la app, sus funcionalidades y caracteristicas en redes sociales.
