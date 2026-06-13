@@ -2912,7 +2912,6 @@ clasp deploy --deploymentId AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxM
 
 ### Pendientes
 
-* Publicar commit en GitHub y verificar GitHub Pages.
 * Corregir permisos del Web App GAS desde Apps Script si se requiere registro
   remoto de visitas/predicciones; hasta entonces el frontend debe seguir con
   `gasExecUrl: ""`.
@@ -2934,3 +2933,109 @@ clasp deploy --deploymentId AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxM
   ayudan a entender rapidamente cada vista.
 * Documentar en la carpeta maestra este patron de redisenio: storyboard visual
   externo convertido a componentes reales HTML/CSS/JS.
+
+## 2026-06-13 18:05
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas.
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`.
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`.
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`.
+* Responsable: Codex.
+* Version: `0.2.14`.
+
+### Objetivo de la intervencion
+
+Registrar la publicacion y validacion publica del redisenio visual inspirado en
+`imagenes/NUEVAS`.
+
+### Diagnostico inicial
+
+* El primer `git push` fue rechazado porque `origin/main` habia avanzado con un
+  commit automatico de datos.
+* `git fetch` fallo inicialmente por archivos `desktop.ini` dentro de
+  `.git\refs`, generados por sincronizacion de Google Drive.
+* La rama local `main` conservaba un commit previo, por lo que se uso una rama
+  temporal de publicacion basada en `origin/main`.
+
+### Acciones realizadas
+
+* Se eliminaron 10 archivos `desktop.ini` solo dentro de `.git\refs`.
+* Se creo la rama temporal `publish-redisenio-0214` desde `origin/main`.
+* Se aplico el redisenio mediante `cherry-pick` y se resolvieron conflictos de
+  `data/` regenerando el cache con `python scripts\update_data.py`.
+* Se publico el commit final `a8dfdff` en `origin/main`.
+* Se verifico GitHub Pages con cache-busting y Playwright publico.
+
+### Archivos modificados
+
+* `BITACORA_MUNDIAL_PROBABILIDADES_COPA2026_APPWEB.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+git fetch origin
+git switch -c publish-redisenio-0214 origin/main
+git cherry-pick 77dda08
+python scripts\update_data.py
+git cherry-pick --continue
+git push origin HEAD:main
+Invoke-WebRequest https://diegomezapy.github.io/copa_mundial_probabilidades/index.html?v=0.2.14
+Invoke-RestMethod https://diegomezapy.github.io/copa_mundial_probabilidades/data/worldcup2026_latest.json?v=0.2.14
+```
+
+### Resultados verificados
+
+* GitHub Pages sirve `index.html` con `story-rail`, `v0.2.14` y
+  `Probabilidad 1 / Empate / 2`.
+* `assets/js/config.js` publico contiene `0.2.14` y cache
+  `mundial-probabilidades-v0-2-14`.
+* `service-worker.js` publico contiene cache `mundial-probabilidades-v0-2-14`.
+* `data/worldcup2026_latest.json` publico contiene `app_version` `0.2.14`,
+  `data_version` `wc26-20260613T220007z`, 48 equipos, 1.248 jugadores y 4
+  resultados 2026.
+* Playwright publico confirmo en desktop y movil: `overflow` horizontal `0`,
+  boton `Limpiar filtros`, barra de recorrido y KPIs nuevos.
+* En vista publica `mapa`, el mural quedo contenido con ancho cliente 1231 px,
+  ancho contenido 1559 px, alto cliente 759 px y alto contenido 1845 px.
+
+### Pruebas realizadas
+
+* HTTP publico de HTML, config, service worker y JSON: `200`.
+* Playwright publico:
+  `tmp/ui-0214-public-desktop-resumen.png`,
+  `tmp/ui-0214-public-desktop-mapa.png` y
+  `tmp/ui-0214-public-mobile-resumen.png`.
+
+### Errores o incidentes
+
+* `git fetch` fallo por `bad object refs/.../desktop.ini`; se resolvio
+  eliminando unicamente esos archivos de `.git\refs`.
+* El intento de rebase interactivo no fue estable en la carpeta sincronizada,
+  por lo que se uso rama temporal desde `origin/main` + `cherry-pick`.
+* El Web App GAS `@17` sigue devolviendo `403 Prohibido` anonimamente.
+
+### Soluciones aplicadas
+
+* Integracion no destructiva mediante rama temporal y `cherry-pick`.
+* Regeneracion reproducible de datos para resolver conflictos CSV/JSON.
+* Validacion publica con cache-busting y Playwright.
+
+### Pendientes
+
+* Resolver permisos del Web App GAS si se desea activar sincronizacion remota
+  de visitas y pronosticos.
+
+### Riesgos
+
+* La rama local `main` conserva historial previo divergente; el estado publicado
+  correcto es `origin/main` en commit `a8dfdff` y la rama temporal
+  `publish-redisenio-0214` queda alineada con `origin/main`.
+
+### Recomendaciones
+
+* Evitar operaciones Git interactivas dentro de carpetas sincronizadas por
+  Drive; preferir ramas temporales y comandos no interactivos.
+* Si reaparece `bad object refs/.../desktop.ini`, limpiar solo esos archivos
+  bajo `.git\refs` verificando la ruta absoluta.
