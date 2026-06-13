@@ -23,6 +23,7 @@
   const VISIT_STORAGE_KEY = "mundialProbabilidades.visits.v1";
   const PREDICTION_STORAGE_KEY = "mundialProbabilidades.predictions.v1";
   const MAX_PREDICTION_CARDS = 18;
+  const GENERATED_BALL_IMAGE_SRC = "assets/img/generated/ball-realistic-transparent-1024.png";
   const GROUP_PALETTE = [
     "#0f766e",
     "#2563eb",
@@ -2102,11 +2103,21 @@
     ctx.closePath();
   }
 
-  function drawSoccerBall(ctx, ball) {
+  function drawSoccerBall(ctx, ball, image) {
     const { x, y, radius, angle } = ball;
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(angle);
+
+    if (image?.complete && image.naturalWidth) {
+      ctx.beginPath();
+      ctx.arc(0, 0, radius * 1.08, 0, Math.PI * 2);
+      ctx.clip();
+      const size = radius * 3.05;
+      ctx.drawImage(image, -size / 2, -size / 2, size, size);
+      ctx.restore();
+      return;
+    }
 
     const body = ctx.createRadialGradient(-radius * 0.35, -radius * 0.38, radius * 0.08, 0, 0, radius);
     body.addColorStop(0, "#ffffff");
@@ -2173,6 +2184,11 @@
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     canvas.dataset.ready = "true";
+
+    const ballImage = new Image();
+    ballImage.decoding = "async";
+    ballImage.src = GENERATED_BALL_IMAGE_SRC;
+    ballImage.addEventListener("load", () => restart(), { once: true });
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     let frame = null;
@@ -2259,7 +2275,7 @@
       ctx.restore();
       ctx.filter = "none";
 
-      drawSoccerBall(ctx, ball);
+      drawSoccerBall(ctx, ball, ballImage);
       frame = reduced.matches ? null : requestAnimationFrame(drawFrame);
     }
 

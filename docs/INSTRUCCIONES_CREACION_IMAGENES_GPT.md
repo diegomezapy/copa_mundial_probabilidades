@@ -11,6 +11,36 @@ Estas instrucciones estan pensadas para pegarlas en GPT online con herramienta
 de creacion de imagenes. Generar las imagenes una por una, revisar cada salida y
 descargar solo las versiones que cumplan los criterios de aceptacion.
 
+## Integracion realizada en la app
+
+En la version `0.2.10`, las imagenes generadas desde
+`G:\Mi unidad\MUNDIAL_PROBABILIDADES\imagenes` fueron normalizadas e integradas
+en `assets/img/generated/`. Como el entorno local no tenia conversor WebP, los
+fondos e ilustraciones se publicaron como JPEG optimizados y la pelota/icono se
+mantuvieron en PNG.
+
+Archivos publicados:
+
+```text
+assets/img/generated/hero-bayes-football-1920x1080.jpg
+assets/img/generated/ball-realistic-transparent-1024.png
+assets/img/generated/stat-symbols-motion-1600x900.jpg
+assets/img/generated/bayes-model-flow-1600x900.jpg
+assets/img/generated/tournament-nodes-map-1600x900.jpg
+assets/img/generated/player-country-cards-1600x900.jpg
+assets/img/generated/classroom-football-statistics-1600x900.jpg
+assets/img/generated/open-data-references-1200x800.jpg
+assets/img/generated/empty-state-data-loading-1200x800.jpg
+assets/img/generated/section-soft-ball-data-1200x800.jpg
+assets/img/generated/app-icon-1024.png
+```
+
+Los metadatos de origen y uso quedaron registrados en:
+
+```text
+assets/img/generated/GENERATED_IMAGES_MANIFEST.md
+```
+
 ## Reglas de derechos y uso
 
 - No usar logos oficiales de FIFA, Copa Mundial, federaciones, clubes, marcas

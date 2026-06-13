@@ -18,11 +18,17 @@ pronosticos bayesianos de la Copa Mundial 2026.
 
 ## Capa visual
 
-La version `0.2.9` agrega definiciones emergentes `(i)` para conceptos
-estadisticos, una vista `Mapa` con nodos rectangulares de grupos/partidos/
-etapas y exportaciones CSV publicas bajo `data/sheets/` para alimentar Google
-Sheets mediante `IMPORTDATA`. Cada CSV queda registrado en
-`data/sources_manifest.json` con filas, columnas, bytes y hash SHA-256.
+La version `0.2.10` integra el set de imagenes generadas en
+`assets/img/generated/`, actualiza hero, iconos PWA, pelota animada y visuales
+de apoyo por vista. Mantiene las definiciones emergentes `(i)`, la vista `Mapa`
+con nodos rectangulares de grupos/partidos/etapas y exportaciones CSV publicas
+bajo `data/sheets/` para alimentar Google Sheets mediante `IMPORTDATA`. Cada CSV
+queda registrado en `data/sources_manifest.json` con filas, columnas, bytes y
+hash SHA-256.
+
+El origen local `imagenes/` se mantiene fuera de Git; la app solo publica la
+copia normalizada en `assets/img/generated/`. Los metadatos de integracion se
+documentan en `assets/img/generated/GENERATED_IMAGES_MANIFEST.md`.
 
 La version conserva las banderas SVG reales mediante `flag-icons@7.5.0`
 con licencia MIT y un manifest curado `PLAYER_MEDIA` para fotos de jugadores

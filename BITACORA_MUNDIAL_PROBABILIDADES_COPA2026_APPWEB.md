@@ -1,5 +1,145 @@
 # Bitacora Mundial Probabilidades Copa 2026 Appweb
 
+## 2026-06-13 07:12
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: Proyecto academico publico
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.2.10`
+
+### Objetivo de la intervencion
+
+Usar las imagenes guardadas en `G:\Mi unidad\MUNDIAL_PROBABILIDADES\imagenes` e
+integrarlas convenientemente en la app publica.
+
+### Diagnostico inicial
+
+* La carpeta `imagenes/` contenia 11 PNG generados por GPT online y un
+  `desktop.ini`.
+* Las imagenes estaban fuera de la carpeta publicada por GitHub Pages.
+* El entorno no tenia `magick`, `cwebp` ni `pngquant`, por lo que no era posible
+  convertir localmente a WebP.
+* La pelota generada simulaba transparencia con un patron visual, pero no tenia
+  transparencia real.
+
+### Acciones realizadas
+
+* Se creo `assets/img/generated/` y se normalizaron las imagenes con nombres
+  estables.
+* Fondos e ilustraciones se exportaron como JPEG optimizados; pelota e icono se
+  mantuvieron como PNG.
+* Se derivaron nuevos iconos PWA `assets/img/icon-192.png` y
+  `assets/img/icon-512.png` desde `app-icon-1024.png`.
+* Se integro el hero generado como fondo principal y fondo del acceso inicial.
+* Se incorporaron visuales en las vistas `Equipos`, `Jugadores`, `Mapa`,
+  `Evidencia`, `Modelo`, `Acerta`, `Autores` y `Referencias`.
+* Se actualizo el canvas de la pelota para usar la imagen generada con recorte
+  circular y fallback procedural.
+* Se actualizo version/cache/frontend/GAS/generador a `0.2.10`.
+* Se agrego `imagenes/` a `.gitignore` para no publicar fuentes pesadas o
+  archivos locales innecesarios.
+* Se creo `assets/img/generated/GENERATED_IMAGES_MANIFEST.md`.
+* Se actualizo README, manual tecnico, secuencia de prompts e instructivo de
+  creacion de imagenes.
+
+### Archivos modificados
+
+* `.gitignore`
+* `index.html`
+* `assets/css/styles.css`
+* `assets/js/app.js`
+* `assets/js/config.js`
+* `assets/img/icon-192.png`
+* `assets/img/icon-512.png`
+* `assets/img/generated/*`
+* `service-worker.js`
+* `gas/Config.gs`
+* `scripts/update_data.py`
+* `data/worldcup2026_latest.json`
+* `data/sources_manifest.json`
+* `data/sheets/*.csv`
+* `README.md`
+* `docs/manual_tecnico.md`
+* `docs/PROMPTS_MUNDIAL_PROBABILIDADES_2026-06-12.md`
+* `docs/INSTRUCCIONES_CREACION_IMAGENES_GPT.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+python scripts\update_data.py
+node --check assets\js\app.js
+node --check assets\js\config.js
+node --check service-worker.js
+python -m py_compile scripts\update_data.py scripts\make_assets.py
+python -m http.server 8789
+python -m http.server 8790
+```
+
+### Resultados verificados
+
+* JSON local `app_version=0.2.10` y `data_version=wc26-20260613T110806z`.
+* Cobertura: 48 equipos, 1248 jugadores, 104 partidos y 4 partidos
+  finalizados.
+* Prueba local desktop:
+  version `0.2.10`, footer `v0.2.10`, hero usando
+  `hero-bayes-football-1920x1080.jpg`, canvas con pixeles no vacios y cero
+  overflow horizontal.
+* Prueba por vistas:
+  `Equipos`, `Jugadores`, `Mapa`, `Evidencia`, `Modelo`, `Acerta`, `Autores` y
+  `Referencias` cargan su imagen generada con dimensiones naturales correctas.
+* Prueba local movil `390px` en vista `Mapa`:
+  `overflow=0`, imagen del mapa visible y footer `v0.2.10`.
+* Capturas:
+  `tmp/visual-assets-desktop.png`,
+  `tmp/visual-assets-mobile-mapa.png`,
+  `tmp/visual-hero-after-ball-clip.png`.
+
+### Pruebas realizadas
+
+* Sintaxis JS: correcta.
+* Compilacion Python: correcta.
+* Validacion local con Playwright desktop y movil: correcta.
+* Revision visual de capturas: correcta luego de corregir recorte de pelota.
+
+### Errores o incidentes
+
+* La primera prueba local no cargo datos porque el flujo requiere usuario local
+  antes de iniciar la app; se corrigio la prueba con `addInitScript`.
+* La pelota PNG mostraba un patron tipo transparencia como cuadrado; se corrigio
+  en canvas con recorte circular.
+
+### Soluciones aplicadas
+
+* Publicar solo assets normalizados en `assets/img/generated/`.
+* Mantener fuentes locales generadas en `imagenes/` ignoradas por Git.
+* Usar imagenes como apoyo visual, sin reemplazar tablas, filtros ni graficos
+  funcionales.
+
+### Pendientes
+
+* Publicar cambios en GitHub Pages y validar URL publica con cache busting.
+* Si se desea menor peso, convertir JPEG a WebP con herramienta externa.
+* Revisar en celular real si el hero y las imagenes mantienen buena lectura en
+  redes lentas.
+
+### Riesgos
+
+* Las imagenes generadas no deben presentarse como oficiales ni vinculadas a
+  FIFA, federaciones, clubes o jugadores reales.
+* La pelota original no tenia alpha real; el recorte canvas depende de mantener
+  el dibujo centrado.
+
+### Recomendaciones
+
+* Mantener `GENERATED_IMAGES_MANIFEST.md` actualizado si se reemplaza cualquier
+  asset.
+* Antes de agregar nuevas imagenes, revisar peso, derechos y legibilidad movil.
+
 ## 2026-06-13 06:14
 
 ### Proyecto

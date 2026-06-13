@@ -18,13 +18,13 @@ certeza; muestra probabilidades, supuestos, limitaciones y trazabilidad de datos
 
 ## Version actual
 
-`0.2.9` agrega definiciones emergentes `(i)` para conceptos como
-`Probabilidad 1 / X / 2`, una vista `Mapa` con nodos rectangulares de grupos,
-partidos y etapas eliminatorias, y exportaciones CSV publicas en
-`data/sheets/` para alimentar Google Sheets con `IMPORTDATA`. Mantiene las
-banderas SVG, fotos curadas con fuente/licencia verificable, legibilidad movil,
-`Senal` filtrable, colores por grupo, microanimaciones, `Autores`, `Acerta`,
-registro inicial sin password, visitas, referencias, derechos de uso, evidencia
+`0.2.10` incorpora el set de imagenes generadas en `assets/img/generated/`,
+actualiza el hero, iconos PWA, pelota animada y visuales de apoyo para Mapa,
+Modelo, Equipos, Jugadores, Acerta, Autores y Referencias. Mantiene las
+definiciones emergentes `(i)`, `Probabilidad 1 / X / 2`, nodos rectangulares de
+grupos/etapas, CSV publicos en `data/sheets/`, banderas SVG, fotos curadas con
+fuente/licencia verificable, legibilidad movil, `Senal` filtrable, colores por
+grupo, microanimaciones, registro inicial, visitas, referencias, evidencia
 historica 1930-2022 y filtros por Copa, pais, jugador y posicion.
 
 ## Fuentes

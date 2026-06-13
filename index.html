@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#0f5a4a" />
     <title>Copa Mundial 2026 - Probabilidades Bayesianas</title>
     <link rel="manifest" href="manifest.webmanifest" />
-    <link rel="icon" href="assets/img/forecast-pitch.png" />
+    <link rel="icon" href="assets/img/icon-192.png" />
     <link rel="stylesheet" href="assets/css/styles.css" />
   </head>
   <body>
@@ -244,10 +244,24 @@
             </section>
 
             <section id="equipos" class="view">
+              <figure class="section-visual teams-visual">
+                <img
+                  src="assets/img/generated/player-country-cards-1600x900.jpg"
+                  alt="Panel visual de paises, jugadores y estadisticas del torneo"
+                  loading="lazy"
+                />
+              </figure>
               <div id="teamsGrid" class="team-grid"></div>
             </section>
 
             <section id="jugadores" class="view">
+              <figure class="section-visual soft-visual">
+                <img
+                  src="assets/img/generated/section-soft-ball-data-1200x800.jpg"
+                  alt="Pelota y graficos estadisticos en una escena clara de datos"
+                  loading="lazy"
+                />
+              </figure>
               <div class="content-grid two">
                 <section class="panel">
                   <header class="panel-header">
@@ -316,6 +330,13 @@
                     partido pendiente o etapa por completarse.
                   </p>
                 </div>
+                <figure class="hero-image map-image">
+                  <img
+                    src="assets/img/generated/tournament-nodes-map-1600x900.jpg"
+                    alt="Mapa visual de nodos de grupos, partidos y etapas"
+                    loading="lazy"
+                  />
+                </figure>
                 <div class="map-legend">
                   <span><b class="legend-dot done"></b>Finalizado</span>
                   <span><b class="legend-dot pending"></b>Pendiente</span>
@@ -347,7 +368,16 @@
                   <h2 id="evidenceTitle">Historia mundialista</h2>
                   <p id="evidenceSubtitle">Resumen interactivo por pais, copa y jugador.</p>
                 </div>
-                <div id="evidenceBadges" class="evidence-badges"></div>
+                <div class="hero-side-stack">
+                  <figure class="hero-image">
+                    <img
+                      src="assets/img/generated/stat-symbols-motion-1600x900.jpg"
+                      alt="Cancha con pelota, curvas y puntos de simulacion"
+                      loading="lazy"
+                    />
+                  </figure>
+                  <div id="evidenceBadges" class="evidence-badges"></div>
+                </div>
               </div>
 
               <div class="dashboard-grid">
@@ -398,6 +428,13 @@
 
             <section id="modelo" class="view">
               <div class="content-grid two">
+                <section class="visual-feature span-2">
+                  <img
+                    src="assets/img/generated/bayes-model-flow-1600x900.jpg"
+                    alt="Flujo visual de datos, distribuciones y posterior bayesiano"
+                    loading="lazy"
+                  />
+                </section>
                 <section class="panel">
                   <header class="panel-header">
                     <h2>Laboratorio bayesiano</h2>
@@ -435,7 +472,16 @@
                     compara tus aciertos y fallas cuando se publican resultados.
                   </p>
                 </div>
-                <div id="predictionStats" class="prediction-stats"></div>
+                <div class="hero-side-stack">
+                  <figure class="hero-image">
+                    <img
+                      src="assets/img/generated/empty-state-data-loading-1200x800.jpg"
+                      alt="Pelota y graficos suaves para seguimiento de pronosticos"
+                      loading="lazy"
+                    />
+                  </figure>
+                  <div id="predictionStats" class="prediction-stats"></div>
+                </div>
               </div>
 
               <div class="content-grid two acerta-grid">
@@ -478,6 +524,13 @@
                     actualización y responsabilidades académicas del tablero.
                   </p>
                 </div>
+                <figure class="hero-image">
+                  <img
+                    src="assets/img/generated/classroom-football-statistics-1600x900.jpg"
+                    alt="Aula con estudiantes revisando datos y tablero de futbol"
+                    loading="lazy"
+                  />
+                </figure>
               </div>
 
               <div class="content-grid two">
@@ -583,6 +636,13 @@
             </section>
 
             <section id="referencias" class="view">
+              <figure class="section-visual references-visual">
+                <img
+                  src="assets/img/generated/open-data-references-1200x800.jpg"
+                  alt="Datos abiertos, referencias y trazabilidad documental"
+                  loading="lazy"
+                />
+              </figure>
               <div class="content-grid two">
                 <section class="panel">
                   <header class="panel-header">
@@ -607,7 +667,7 @@
       <div id="richTooltip" class="rich-tooltip" role="tooltip" hidden></div>
 
       <footer class="footer">
-        <span>v0.2.9 · 2026-06-13</span>
+        <span>v0.2.10 · 2026-06-13</span>
         <a href="docs/metodologia_bayesiana.md">metodologia</a>
         <a href="docs/diccionario_datos.md">diccionario</a>
         <a href="?view=referencias">referencias</a>

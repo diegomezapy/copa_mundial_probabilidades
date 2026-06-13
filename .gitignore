@@ -5,6 +5,7 @@ desktop.ini
 .clasp-token.json
 node_modules/
 data/raw/
+imagenes/
 logs/
 tmp/
 tmp_server_pid.txt

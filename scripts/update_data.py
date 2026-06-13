@@ -26,7 +26,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-APP_VERSION = "0.2.9"
+APP_VERSION = "0.2.10"
 DATA_VERSION_PREFIX = "wc26"
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"

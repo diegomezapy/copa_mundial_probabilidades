@@ -63,3 +63,6 @@ modelos multivariados de pronostico y modelos bayesianos.
 - Crear instrucciones para que GPT online con herramienta de creacion de
   imagenes genere un set visual atractivo, didactico, coherente y respetuoso de
   derechos para usar en la app.
+- Usar las imagenes guardadas en
+  `G:\Mi unidad\MUNDIAL_PROBABILIDADES\imagenes` e incluirlas convenientemente
+  en la app.

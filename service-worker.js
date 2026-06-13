@@ -1,4 +1,4 @@
-const CACHE_NAME = "mundial-probabilidades-v0-2-9";
+const CACHE_NAME = "mundial-probabilidades-v0-2-10";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -10,6 +10,17 @@ const APP_SHELL = [
   "./assets/img/forecast-pitch.png",
   "./assets/img/icon-192.png",
   "./assets/img/icon-512.png",
+  "./assets/img/generated/hero-bayes-football-1920x1080.jpg",
+  "./assets/img/generated/ball-realistic-transparent-1024.png",
+  "./assets/img/generated/stat-symbols-motion-1600x900.jpg",
+  "./assets/img/generated/bayes-model-flow-1600x900.jpg",
+  "./assets/img/generated/tournament-nodes-map-1600x900.jpg",
+  "./assets/img/generated/player-country-cards-1600x900.jpg",
+  "./assets/img/generated/classroom-football-statistics-1600x900.jpg",
+  "./assets/img/generated/open-data-references-1200x800.jpg",
+  "./assets/img/generated/empty-state-data-loading-1200x800.jpg",
+  "./assets/img/generated/section-soft-ball-data-1200x800.jpg",
+  "./assets/img/generated/app-icon-1024.png",
   "./data/worldcup2026_latest.json",
   "./data/sources_manifest.json",
   "./manifest.webmanifest"
