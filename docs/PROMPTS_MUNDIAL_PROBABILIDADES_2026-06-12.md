@@ -60,3 +60,6 @@ modelos multivariados de pronostico y modelos bayesianos.
   vista tipo mapa/diagrama de grupos, etapas y partidos con nodos que se
   completen segun resultados, revisar por que la hoja online no mostraba datos
   y buscar fuentes de estadisticas mas detalladas de partidos.
+- Crear instrucciones para que GPT online con herramienta de creacion de
+  imagenes genere un set visual atractivo, didactico, coherente y respetuoso de
+  derechos para usar en la app.

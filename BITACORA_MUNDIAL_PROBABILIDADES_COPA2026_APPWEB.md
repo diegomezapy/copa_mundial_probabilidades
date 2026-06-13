@@ -1,5 +1,98 @@
 # Bitacora Mundial Probabilidades Copa 2026 Appweb
 
+## 2026-06-13 06:14
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: Proyecto academico publico
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.2.9`
+
+### Objetivo de la intervencion
+
+Crear instrucciones operativas para que GPT online con herramienta de creacion
+de imagenes genere un set visual coherente, atractivo, didactico y reutilizable
+para la app.
+
+### Diagnostico inicial
+
+* La app ya cuenta con datos, mapa, tooltips y visuales funcionales, pero aun
+  necesita un set de imagenes generado de forma coherente.
+* Debe evitarse el uso de marcas oficiales, logos, escudos, sponsors, rostros de
+  jugadores reales o imagenes que puedan infringir derechos.
+* Las imagenes deben reforzar el enfoque academico y no parecer una app de
+  apuestas.
+
+### Acciones realizadas
+
+* Se creo un instructivo completo para GPT online con prompt maestro, reglas de
+  derechos, estilo visual, prompts por imagen y checklist de aceptacion.
+* Se definio un set de 10 imagenes: hero, pelota transparente, fondo
+  estadistico, flujo bayesiano, mapa de torneo, fichas de pais/jugador, aula,
+  referencias, estado vacio e icono PWA.
+* Se propuso estructura de nombres bajo `assets/img/generated/`.
+* Se agrego recomendacion de manifest de imagenes generadas con fecha,
+  herramienta, prompt usado, uso previsto y observaciones.
+
+### Archivos modificados
+
+* `docs/INSTRUCCIONES_CREACION_IMAGENES_GPT.md`
+* `BITACORA_MUNDIAL_PROBABILIDADES_COPA2026_APPWEB.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+git status --branch --short
+```
+
+### Resultados verificados
+
+* El instructivo existe en `docs/INSTRUCCIONES_CREACION_IMAGENES_GPT.md`.
+* Incluye prompts listos para copiar en GPT online.
+* Incluye criterios de aceptacion para derechos, legibilidad, movil y coherencia
+  visual.
+
+### Pruebas realizadas
+
+* Revision estructural del documento.
+* Verificacion de estado Git previo a la edicion.
+
+### Errores o incidentes
+
+* No se generaron imagenes todavia; esta intervencion crea el brief para que la
+  generacion se haga de forma controlada.
+
+### Soluciones aplicadas
+
+* Se separo la fase de direccion de arte/prompts de la fase de integracion en la
+  app, para poder revisar derechos y calidad antes de colocar archivos en
+  produccion.
+
+### Pendientes
+
+* Usar GPT online para generar las imagenes.
+* Guardar archivos finales en `assets/img/generated/`.
+* Crear `assets/img/generated/GENERATED_IMAGES_MANIFEST.md`.
+* Optimizar pesos WebP/PNG antes de integrar.
+* Actualizar CSS/HTML para usar los assets aprobados.
+
+### Riesgos
+
+* GPT puede generar texto ilegible, logos parecidos a marcas o personas
+  demasiado reconocibles; cada salida debe revisarse contra el checklist.
+* Las imagenes grandes pueden afectar rendimiento movil si no se optimizan.
+
+### Recomendaciones
+
+* Generar una imagen por vez y rechazar cualquier salida con marcas, texto
+  visible o apariencia de apuestas.
+* Mantener la pelota como PNG transparente separado para poder animarla con
+  CSS/canvas sin depender del fondo.
+
 ## 2026-06-13 06:08
 
 ### Proyecto
