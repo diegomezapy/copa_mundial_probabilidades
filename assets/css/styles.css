@@ -32,6 +32,18 @@
   display: none !important;
 }
 
+html {
+  font-size: 16px;
+}
+
+html[data-view-scale="comfortable"] {
+  font-size: 17.5px;
+}
+
+html[data-view-scale="large"] {
+  font-size: 19px;
+}
+
 body {
   margin: 0;
   background:
@@ -728,6 +740,37 @@ button:hover {
   opacity: 0.72;
   cursor: not-allowed;
   box-shadow: none;
+}
+
+.view-scale-button {
+  border-color: rgba(37, 99, 235, 0.32);
+  color: #1d4ed8;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.view-scale-button.is-comfortable {
+  background: #eff6ff;
+  border-color: rgba(37, 99, 235, 0.52);
+}
+
+.view-scale-button.is-large {
+  background: #f5f3ff;
+  border-color: rgba(124, 58, 237, 0.58);
+  color: #5b21b6;
+  box-shadow: 0 10px 24px rgba(124, 58, 237, 0.14);
+}
+
+html[data-view-scale="comfortable"] .table-wrap,
+html[data-view-scale="large"] .table-wrap {
+  font-size: 1.03rem;
+}
+
+html[data-view-scale="large"] .story-rail span:not(.story-rail-ball),
+html[data-view-scale="large"] .chip-grid button,
+html[data-view-scale="large"] .segmented-buttons button,
+html[data-view-scale="large"] .quick-team-grid button {
+  font-size: 0.95rem;
 }
 
 .full-button {
@@ -3901,6 +3944,14 @@ label {
     font-size: 17px;
   }
 
+  html[data-view-scale="comfortable"] {
+    font-size: 19px;
+  }
+
+  html[data-view-scale="large"] {
+    font-size: 21px;
+  }
+
   body {
     line-height: 1.55;
   }
@@ -3938,7 +3989,7 @@ label {
   .story-rail {
     position: sticky;
     top: 0;
-    grid-template-columns: repeat(7, minmax(82px, auto));
+    display: flex;
     justify-content: start;
     gap: 8px;
     overflow-x: auto;
@@ -3952,6 +4003,7 @@ label {
 
   .story-rail span:not(.story-rail-ball) {
     justify-self: start;
+    flex: 0 0 auto;
     white-space: nowrap;
   }
 
@@ -3960,6 +4012,16 @@ label {
   .secondary-button {
     min-height: 42px;
     font-size: 0.96rem;
+  }
+
+  .view-scale-button {
+    min-width: 142px;
+  }
+
+  html[data-view-scale="large"] .wall-match-row,
+  html[data-view-scale="large"] .match-card,
+  html[data-view-scale="large"] .prediction-card {
+    font-size: 1.05rem;
   }
 
   main {

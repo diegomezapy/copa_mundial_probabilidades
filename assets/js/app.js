@@ -15,6 +15,7 @@
     visits: null,
     appStarted: false,
     motionTimer: null,
+    viewScale: "normal",
     wallZoom: 0.86,
     wallFocus: "full"
   };
@@ -24,8 +25,26 @@
   const USER_STORAGE_KEY = "mundialProbabilidades.user.v1";
   const VISIT_STORAGE_KEY = "mundialProbabilidades.visits.v1";
   const PREDICTION_STORAGE_KEY = "mundialProbabilidades.predictions.v1";
+  const VIEW_SCALE_STORAGE_KEY = "mundialProbabilidades.viewScale.v1";
   const MAX_PREDICTION_CARDS = 18;
   const GENERATED_BALL_IMAGE_SRC = "assets/img/generated/ball-realistic-transparent-1024.png";
+  const VIEW_SCALE_OPTIONS = [
+    {
+      id: "normal",
+      label: "Vista: normal",
+      help: "Tamano estandar para pantallas con buena legibilidad."
+    },
+    {
+      id: "comfortable",
+      label: "Vista: comoda",
+      help: "Texto y controles un poco mas grandes."
+    },
+    {
+      id: "large",
+      label: "Vista: grande",
+      help: "Texto mas grande para telefonos o proyectores."
+    }
+  ];
   const GROUP_PALETTE = [
     "#0f766e",
     "#2563eb",
@@ -242,6 +261,51 @@
     } catch (error) {
       console.warn("storage write failed", key, error);
     }
+  }
+
+  function viewScaleOption(value) {
+    return VIEW_SCALE_OPTIONS.find((item) => item.id === value) || VIEW_SCALE_OPTIONS[0];
+  }
+
+  function loadViewScale() {
+    try {
+      return viewScaleOption(localStorage.getItem(VIEW_SCALE_STORAGE_KEY) || document.documentElement.dataset.viewScale).id;
+    } catch (error) {
+      return "normal";
+    }
+  }
+
+  function saveViewScale(value) {
+    try {
+      localStorage.setItem(VIEW_SCALE_STORAGE_KEY, value);
+    } catch (error) {
+      console.warn("storage write failed", VIEW_SCALE_STORAGE_KEY, error);
+    }
+  }
+
+  function renderViewScaleButton() {
+    const button = $("#viewScaleButton");
+    if (!button) return;
+    const option = viewScaleOption(state.viewScale);
+    button.textContent = option.label;
+    button.title = `${option.help} Toque para cambiar el modo de lectura.`;
+    button.setAttribute("aria-label", `${option.help} Toque para cambiar a otro tamano de lectura.`);
+    button.classList.toggle("is-comfortable", option.id === "comfortable");
+    button.classList.toggle("is-large", option.id === "large");
+  }
+
+  function applyViewScale(value, options = {}) {
+    const option = viewScaleOption(value);
+    state.viewScale = option.id;
+    document.documentElement.dataset.viewScale = option.id;
+    if (options.persist) saveViewScale(option.id);
+    renderViewScaleButton();
+  }
+
+  function cycleViewScale() {
+    const currentIndex = VIEW_SCALE_OPTIONS.findIndex((item) => item.id === state.viewScale);
+    const next = VIEW_SCALE_OPTIONS[(currentIndex + 1) % VIEW_SCALE_OPTIONS.length];
+    applyViewScale(next.id, { persist: true });
   }
 
   function createId(prefix) {
@@ -2508,6 +2572,7 @@
       });
     });
     $("#userButton").addEventListener("click", () => showAuthGate(true));
+    $("#viewScaleButton")?.addEventListener("click", cycleViewScale);
     document.addEventListener("click", (event) => {
       if (event.target.closest("#editRegistration")) {
         showAuthGate(true);
@@ -2911,6 +2976,7 @@
   }
 
   async function init() {
+    applyViewScale(loadViewScale());
     bindNavigation();
     bindAuth();
     bindFilters();

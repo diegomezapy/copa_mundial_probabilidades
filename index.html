@@ -11,6 +11,14 @@
     <title>Copa Mundial 2026 - Probabilidades Bayesianas</title>
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="icon" href="assets/img/icon-192.png" />
+    <script>
+      try {
+        document.documentElement.dataset.viewScale =
+          localStorage.getItem("mundialProbabilidades.viewScale.v1") || "normal";
+      } catch (error) {
+        document.documentElement.dataset.viewScale = "normal";
+      }
+    </script>
     <link rel="stylesheet" href="assets/css/styles.css" />
   </head>
   <body>
@@ -75,6 +83,7 @@
         <div class="topbar-status">
           <span id="onlineStatus" class="pill">online</span>
           <span id="dataStatus" class="pill">cargando</span>
+          <button id="viewScaleButton" class="ghost-button view-scale-button" type="button">Vista: normal</button>
           <button id="globalResetFilters" class="ghost-button reset-visible" type="button">Limpiar filtros</button>
           <button id="userButton" class="ghost-button" type="button">Usuario</button>
           <button id="installButton" class="ghost-button" hidden>Instalar</button>
@@ -737,7 +746,7 @@
       <div id="richTooltip" class="rich-tooltip" role="tooltip" hidden></div>
 
       <footer class="footer">
-        <span>v0.2.14 · 2026-06-13</span>
+        <span>v0.2.15 · 2026-06-13</span>
         <a href="docs/metodologia_bayesiana.md">metodologia</a>
         <a href="docs/diccionario_datos.md">diccionario</a>
         <a href="?view=referencias">referencias</a>

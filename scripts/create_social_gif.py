@@ -39,7 +39,7 @@ FRAME_DURATION_MS = int(1000 / FPS)
 CAPTURE_SIZE = (1280, 720)
 OUTPUT_SIZE = (960, 540)
 URL_TEXT = "diegomezapy.github.io/copa_mundial_probabilidades"
-APP_VERSION = "0.2.14"
+APP_VERSION = "0.2.15"
 
 
 @dataclass(frozen=True)

@@ -18,20 +18,22 @@ pronosticos bayesianos de la Copa Mundial 2026.
 
 ## Capa visual
 
-La version `0.2.14` redisenia la app web con el lenguaje visual propuesto en
-`imagenes/NUEVAS`: barra superior de recorrido con pelota, hero didactico,
-etiquetas oscuras de lectura, tarjetas con acentos por color, textos mas
-directos y explicacion visible de `Probabilidad 1 / Empate / 2`. Mantiene el
-boton visible para limpiar todos los filtros activos desde cualquier vista, la
-estimacion permanente bajo `Ruta del modelo`, la figura didactica del flujo
-bayesiano, la vista `Metodologia` completa, multifiltros globales desde
-tablas/figuras/nodos y controles de zoom/foco para el mural del torneo en
-escritorio. Mantiene el set de imagenes generadas en `assets/img/generated/`,
-hero, iconos PWA, pelota animada, definiciones emergentes `(i)`, nodos
-rectangulares de grupos/partidos/etapas y exportaciones CSV publicas bajo
-`data/sheets/` para alimentar Google Sheets mediante `IMPORTDATA`. Cada CSV
-queda registrado en `data/sources_manifest.json` con filas, columnas, bytes y
-hash SHA-256.
+La version `0.2.15` agrega un control visible `Vista` para ajustar el modo de
+lectura entre `Normal`, `Comoda` y `Grande`. La preferencia se guarda en
+`localStorage` bajo `mundialProbabilidades.viewScale.v1` y se aplica desde el
+`head` antes de cargar CSS para reducir parpadeos. Este control mejora la
+legibilidad en moviles con alta densidad de pixeles o navegadores que muestran
+la app demasiado pequena. Mantiene el redisenio visual propuesto en
+`imagenes/NUEVAS`, el boton visible para limpiar todos los filtros activos
+desde cualquier vista, la estimacion permanente bajo `Ruta del modelo`, la
+figura didactica del flujo bayesiano, la vista `Metodologia` completa,
+multifiltros globales desde tablas/figuras/nodos y controles de zoom/foco para
+el mural del torneo en escritorio. Mantiene el set de imagenes generadas en
+`assets/img/generated/`, hero, iconos PWA, pelota animada, definiciones
+emergentes `(i)`, nodos rectangulares de grupos/partidos/etapas y
+exportaciones CSV publicas bajo `data/sheets/` para alimentar Google Sheets
+mediante `IMPORTDATA`. Cada CSV queda registrado en `data/sources_manifest.json`
+con filas, columnas, bytes y hash SHA-256.
 
 El origen local `imagenes/` se mantiene fuera de Git; la app solo publica la
 copia normalizada en `assets/img/generated/`. Los metadatos de integracion se
@@ -113,8 +115,8 @@ los CSV publicos con formulas `IMPORTDATA` apuntando a GitHub Pages. En la hoja
 importacion y formatear explicitamente fechas/marcadores historicos para evitar
 que Google Sheets muestre numeros seriales en columnas como `date` o `score`.
 
-En la intervencion `0.2.14`, GAS fue actualizado con `clasp push`, version GAS
-`17` y redeploy sobre
+En la intervencion `0.2.15`, GAS fue actualizado con `clasp push`, version GAS
+`18` y redeploy sobre
 `AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g`.
 La URL `/exec?action=health` sigue devolviendo `403 Prohibido`; por tanto el
 frontend mantiene `gasExecUrl: ""` hasta que el Web App quede accesible

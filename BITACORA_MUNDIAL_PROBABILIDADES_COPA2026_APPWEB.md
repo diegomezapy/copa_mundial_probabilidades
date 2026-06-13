@@ -3039,3 +3039,126 @@ Invoke-RestMethod https://diegomezapy.github.io/copa_mundial_probabilidades/data
   Drive; preferir ramas temporales y comandos no interactivos.
 * Si reaparece `bad object refs/.../desktop.ini`, limpiar solo esos archivos
   bajo `.git\refs` verificando la ruta absoluta.
+
+## 2026-06-13 19:01
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas.
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`.
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`.
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`.
+* Responsable: Codex.
+* Version: `0.2.15`.
+
+### Objetivo de la intervencion
+
+Agregar un control visible para ajustar el modo de lectura/zoom de la app,
+especialmente en telefonos donde las letras se ven demasiado pequenas.
+
+### Diagnostico inicial
+
+* Algunos telefonos renderizan la app con letras pequenas por densidad de
+  pixeles, configuracion de zoom del navegador, escala de viewport y cantidad
+  de informacion en tablas/tableros.
+* La app ya tenia mejoras de legibilidad movil, pero no ofrecia un control
+  propio para que cada usuario ajuste el tamano de lectura.
+
+### Acciones realizadas
+
+* Se agrego el boton `Vista` en la barra superior.
+* Se implementaron tres modos persistentes: `Normal`, `Comoda` y `Grande`.
+* La preferencia se guarda en `localStorage` bajo
+  `mundialProbabilidades.viewScale.v1`.
+* Se aplica el modo desde el `head` antes de cargar CSS para evitar parpadeos.
+* Se ajusto la barra de recorrido movil para que sea una fila horizontal con
+  scroll propio cuando el texto crece.
+* Se actualizo la version de app/cache/datos a `0.2.15`.
+
+### Archivos modificados
+
+* `index.html`
+* `assets/css/styles.css`
+* `assets/js/app.js`
+* `assets/js/config.js`
+* `service-worker.js`
+* `gas/Config.gs`
+* `scripts/update_data.py`
+* `scripts/create_social_gif.py`
+* `data/worldcup2026_latest.json`
+* `data/sources_manifest.json`
+* `data/sheets/*.csv`
+* `README.md`
+* `docs/manual_tecnico.md`
+* `docs/manual_usuario.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+python scripts\update_data.py
+node --check assets\js\config.js
+node --check assets\js\model.js
+node --check assets\js\data.js
+node --check assets\js\app.js
+node --check service-worker.js
+python -m py_compile scripts\update_data.py scripts\make_assets.py scripts\create_social_gif.py
+clasp push -f
+clasp version "v0.2.15 control modo lectura movil"
+clasp deploy --deploymentId AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g --versionNumber 18 --description "v0.2.15 control modo lectura movil"
+```
+
+### Resultados verificados
+
+* Cache publico local generado con `app_version` `0.2.15`.
+* Datos actuales: 48 equipos, 1.248 jugadores, 104 partidos, 5 resultados 2026,
+  22 Copas historicas, 964 partidos historicos y 536 goleadores historicos.
+* En Playwright local movil: `Normal` usa 17 px, `Comoda` 19 px y `Grande`
+  21 px como tamano base.
+* El boton cicla correctamente: `Vista: normal`, `Vista: comoda` y
+  `Vista: grande`.
+* Playwright local confirmo `overflow` horizontal `0` en resumen movil,
+  resumen escritorio y mapa movil con modo `Grande`.
+* GAS actualizado con `clasp push -f`, version `18` y redeploy del deployment
+  `AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g`
+  a `0.2.15`.
+
+### Pruebas realizadas
+
+* `node --check` de JS y service worker: correcto.
+* `py_compile` de scripts Python: correcto.
+* Capturas locales:
+  `tmp/ui-0215-mobile-normal.png`,
+  `tmp/ui-0215-mobile-large.png`,
+  `tmp/ui-0215-mobile-large-rail.png`,
+  `tmp/ui-0215-desktop-large.png` y
+  `tmp/ui-0215-mobile-mapa-large.png`.
+
+### Errores o incidentes
+
+* En la primera prueba de `Vista: grande`, la barra de recorrido quedaba muy
+  apretada en movil; se cambio a `display:flex` con scroll horizontal propio.
+* La verificacion GAS anonima posterior al redeploy `@18` sigue devolviendo
+  `403 Prohibido`.
+
+### Soluciones aplicadas
+
+* Control de escala propio de la app, independiente del zoom del navegador.
+* Persistencia local para que cada telefono conserve su modo de lectura.
+* Bump de cache del service worker a `mundial-probabilidades-v0-2-15`.
+
+### Pendientes
+
+* Publicar commit en GitHub y validar GitHub Pages.
+* Resolver permisos del Web App GAS si se desea activar sincronizacion remota
+  de visitas/predicciones.
+
+### Riesgos
+
+* En modo `Grande`, algunos tableros densos requieren mas scroll vertical, pero
+  se evita el desborde horizontal de pagina.
+
+### Recomendaciones
+
+* Mantener controles de accesibilidad visual visibles en la barra superior.
+* Para apps con tablas densas, ofrecer siempre modo de lectura ampliado antes de
+  reducir informacion o forzar zoom del navegador.

@@ -20,6 +20,13 @@ partir de datos abiertos y un modelo bayesiano explicable.
 - Referencias: derechos de uso de datos, fuentes y paginas de interes.
 - Auditoria: fuentes, version de datos y estado del backend.
 
+## Modo de lectura
+
+El boton `Vista` de la barra superior cambia el tamano de lectura entre
+`Normal`, `Comoda` y `Grande`. La opcion elegida queda guardada en el navegador
+para que la app vuelva a abrir con el mismo tamano en ese telefono o equipo.
+Use `Vista: grande` si las letras se ven demasiado pequenas en un celular.
+
 ## Lectura visual
 
 La pantalla principal muestra una ruta del modelo que ordena el flujo
@@ -38,10 +45,10 @@ cursor o enfocar una fila aparece una tarjeta con datos personales, estadisticas
 basicas y la atribucion de la imagen. Cuando no hay una foto libre clara, la app
 muestra un avatar para respetar derechos de uso.
 
-En partidos, `Probabilidad 1 / X / 2` significa:
+En partidos, `Probabilidad 1 / Empate / 2` significa:
 
 - 1: gana el primer equipo listado en la fila;
-- X: empate;
+- Empate: ambos equipos terminan igualados;
 - 2: gana el segundo equipo listado.
 
 Los botones `(i)` abren definiciones emergentes para evitar dudas durante la

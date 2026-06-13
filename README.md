@@ -18,16 +18,17 @@ certeza; muestra probabilidades, supuestos, limitaciones y trazabilidad de datos
 
 ## Version actual
 
-`0.2.14` aplica un redisenio visual de la app web inspirado en las propuestas de
-`imagenes/NUEVAS`: barra de recorrido con pelota, hero didactico, etiquetas
-oscuras de lectura, tarjetas con acentos de color, textos mas claros y una
-explicacion visible de `Probabilidad 1 / Empate / 2`. Mantiene el boton visible
-para limpiar todos los filtros, la estimacion permanente bajo `Ruta del modelo`,
-la figura didactica bayesiana, la vista `Metodologia`, multifiltros globales,
-controles de zoom/foco para el mural, imagenes generadas, definiciones `(i)`,
-CSV publicos, banderas SVG, fotos curadas con fuente/licencia, legibilidad
-movil, registro inicial, visitas, referencias, evidencia historica 1930-2022 y
-filtros por Copa, pais, jugador y posicion.
+`0.2.15` agrega un boton visible `Vista` para que cada usuario ajuste el modo de
+lectura entre `Normal`, `Comoda` y `Grande`. La preferencia se guarda en el
+telefono o navegador y aumenta la legibilidad en moviles con alta densidad de
+pixeles o navegadores que renderizan la app demasiado pequena. Mantiene el
+redisenio visual inspirado en `imagenes/NUEVAS`, el boton visible para limpiar
+todos los filtros, la estimacion permanente bajo `Ruta del modelo`, la figura
+didactica bayesiana, la vista `Metodologia`, multifiltros globales, controles
+de zoom/foco para el mural, imagenes generadas, definiciones `(i)`, CSV
+publicos, banderas SVG, fotos curadas con fuente/licencia, registro inicial,
+visitas, referencias, evidencia historica 1930-2022 y filtros por Copa, pais,
+jugador y posicion.
 
 ## Fuentes
 
@@ -70,8 +71,8 @@ Comandos operativos:
 
 ```powershell
 clasp push -f
-clasp version "v0.2.14 redisenio visual storyboard app"
-clasp deploy --deploymentId AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g --versionNumber 17 --description "v0.2.14 redisenio visual storyboard app"
+clasp version "v0.2.15 control modo lectura movil"
+clasp deploy --deploymentId AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g --versionNumber 18 --description "v0.2.15 control modo lectura movil"
 ```
 
 Funciones manuales relevantes desde el editor de Apps Script:
@@ -97,10 +98,10 @@ antes de escribir su URL en `assets/js/config.js`.
 Estado operativo reciente:
 
 - `clasp push`, `clasp version` y `clasp deploy --deploymentId` fueron
-  ejecutados correctamente para `0.2.14`.
+  ejecutados correctamente para `0.2.15`.
 - Deployment actualizado:
   `AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g`
-  en version GAS `17`.
+  en version GAS `18`.
 - La prueba anonima de `/exec?action=health` sigue devolviendo `403 Prohibido`;
   por eso `assets/js/config.js` conserva `gasExecUrl: ""` y el frontend sigue
   usando JSON/CSV publicos. Los CSV de `data/sheets/` si responden por GitHub
