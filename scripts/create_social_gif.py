@@ -70,7 +70,7 @@ def make_user() -> dict[str, object]:
         "created_at": now,
         "last_seen_at": now,
         "accepted_terms_at": now,
-        "accepted_terms_version": "0.2.12",
+        "accepted_terms_version": "0.2.13",
         "visit_count": 1,
     }
 

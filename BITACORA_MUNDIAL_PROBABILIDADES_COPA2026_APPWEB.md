@@ -1,5 +1,134 @@
 # Bitacora Mundial Probabilidades Copa 2026 Appweb
 
+## 2026-06-13 14:46
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: Proyecto academico publico
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.2.13`
+
+### Objetivo de la intervencion
+
+Agregar un boton claramente visible para limpiar todos los filtros, accesible
+sin depender del scroll del panel lateral.
+
+### Diagnostico inicial
+
+* La accion `Limpiar filtros` existia solo al final del panel lateral.
+* En pantallas pequenas o con el panel desplazado, el usuario podia no verla.
+* La barra superior ya era fija, por lo que era el lugar mas estable para un
+  reseteo global.
+
+### Acciones realizadas
+
+* Se agrego `globalResetFilters` en la barra superior fija.
+* Se centralizo el reseteo en `resetAllFilters()` y se agregaron
+  `defaultFilters()` y `hasActiveFilters()`.
+* Se sincronizo el estado visual de `resetFilters` y `globalResetFilters`.
+* Se agrego estilo `.reset-visible` con estado destacado cuando hay filtros
+  activos.
+* Se actualizo la version de app, cache, datos, README, manual tecnico y GAS a
+  `0.2.13`.
+* Se ejecuto `clasp push`, se creo la version GAS `16` y se redeployo el Web App
+  existente.
+
+### Archivos modificados
+
+* `index.html`
+* `assets/css/styles.css`
+* `assets/js/app.js`
+* `assets/js/config.js`
+* `service-worker.js`
+* `gas/Config.gs`
+* `scripts/update_data.py`
+* `scripts/create_social_gif.py`
+* `data/worldcup2026_latest.json`
+* `data/sources_manifest.json`
+* `data/sheets/*.csv`
+* `README.md`
+* `docs/manual_tecnico.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+git status --branch --short
+python scripts\update_data.py
+node --check assets\js\app.js
+node --check assets\js\config.js
+node --check service-worker.js
+python -m py_compile scripts\update_data.py scripts\make_assets.py scripts\create_social_gif.py
+python -m http.server 8793
+clasp show-authorized-user
+clasp status
+clasp push -f
+clasp version "v0.2.13 boton limpiar filtros visible"
+clasp deploy --deploymentId AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g --versionNumber 16 --description "v0.2.13 boton limpiar filtros visible"
+```
+
+### Resultados verificados
+
+* `scripts/update_data.py` genero 48 equipos, 1.248 jugadores, 104 partidos,
+  4 resultados 2026 y 964 partidos historicos.
+* El boton superior `Limpiar filtros` es visible en desktop y movil.
+* Al seleccionar `Group D`, el boton se activa y muestra estado destacado.
+* Al usar el boton superior, se restablecen grupo, equipo, copa, busqueda,
+  estado de partido y posicion de jugador.
+* No se detecto overflow horizontal en desktop ni movil.
+* Capturas locales: `tmp/v0_2_13_reset_desktop.png` y
+  `tmp/v0_2_13_reset_mobile.png`.
+* GAS quedo redeployado como
+  `AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g`
+  version `16`.
+
+### Pruebas realizadas
+
+* `node --check` de JavaScript y service worker: correcto.
+* `py_compile` de scripts Python principales: correcto.
+* `Invoke-WebRequest http://localhost:8793/index.html`: HTTP 200.
+* Playwright Python local: boton visible, estado activo con filtro y reseteo
+  completo de filtros.
+* Prueba anonima GAS `/exec?action=health`: `403 Prohibido`.
+
+### Errores o incidentes
+
+* El modulo Node `playwright` no estaba instalado; se uso Playwright Python,
+  disponible en el entorno.
+* `gas/desktop.ini` aparece como no rastreado por Google Drive y se dejo fuera
+  de Git.
+* El Web App GAS sigue sin acceso anonimo y conserva el bloqueo `403`.
+
+### Soluciones aplicadas
+
+* Duplicacion controlada de la accion en una zona fija, sin duplicar logica.
+* Estado deshabilitado cuando no hay filtros activos y destacado cuando hay
+  filtros aplicados.
+* Nuevo cache `mundial-probabilidades-v0-2-13` para forzar refresh de GitHub
+  Pages/service worker.
+
+### Pendientes
+
+* Publicar commit en GitHub y verificar la URL publica con cache-busting.
+* Corregir permisos anonimos del Web App GAS desde Apps Script si se desea usar
+  `gasExecUrl` en frontend.
+
+### Riesgos
+
+* El boton superior ocupa espacio adicional en la barra fija; fue probado sin
+  overflow horizontal en 1440 px y 390 px.
+* La actualizacion de datos puede cambiar al regenerarse por fuentes abiertas.
+
+### Recomendaciones
+
+* Mantener siempre un reseteo global visible en barras fijas cuando existan
+  filtros laterales largos o scroll interno.
+* Verificar el comportamiento de filtros en desktop y movil antes de publicar
+  cualquier vista nueva con multifiltros.
+
 ## 2026-06-13 09:38
 
 ### Proyecto

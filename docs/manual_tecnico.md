@@ -18,10 +18,11 @@ pronosticos bayesianos de la Copa Mundial 2026.
 
 ## Capa visual
 
-La version `0.2.12` agrega una estimacion 1-X-2 permanente bajo `Ruta del
-modelo`, una figura didactica del flujo bayesiano, una vista `Metodologia`
-completa, multifiltros globales desde tablas/figuras/nodos y controles de
-zoom/foco para el mural del torneo en escritorio. Mantiene el set de imagenes
+La version `0.2.13` agrega un boton visible en la barra superior para limpiar
+todos los filtros activos desde cualquier vista. Mantiene la estimacion 1-X-2
+permanente bajo `Ruta del modelo`, una figura didactica del flujo bayesiano,
+una vista `Metodologia` completa, multifiltros globales desde tablas/figuras/nodos
+y controles de zoom/foco para el mural del torneo en escritorio. Mantiene el set de imagenes
 generadas en `assets/img/generated/`, hero, iconos PWA, pelota animada,
 definiciones emergentes `(i)`, nodos rectangulares de grupos/partidos/etapas y
 exportaciones CSV publicas bajo `data/sheets/` para alimentar Google Sheets
@@ -108,8 +109,8 @@ los CSV publicos con formulas `IMPORTDATA` apuntando a GitHub Pages. En la hoja
 importacion y formatear explicitamente fechas/marcadores historicos para evitar
 que Google Sheets muestre numeros seriales en columnas como `date` o `score`.
 
-En la intervencion `0.2.12`, GAS fue actualizado con `clasp push`, version GAS
-`15` y redeploy sobre
+En la intervencion `0.2.13`, GAS fue actualizado con `clasp push`, version GAS
+`16` y redeploy sobre
 `AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g`.
 La URL `/exec?action=health` sigue devolviendo `403 Prohibido`; por tanto el
 frontend mantiene `gasExecUrl: ""` hasta que el Web App quede accesible

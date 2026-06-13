@@ -723,6 +723,22 @@
     return state.data?.teams?.find((team) => team.team === name) || null;
   }
 
+  function defaultFilters() {
+    return { group: "all", team: "all", query: "", matchStatus: "all", cup: "all", playerPosition: "all" };
+  }
+
+  function hasActiveFilters() {
+    const defaults = defaultFilters();
+    return Object.keys(defaults).some((key) => state.filters[key] !== defaults[key]);
+  }
+
+  function resetAllFilters() {
+    state.filters = defaultFilters();
+    const search = $("#searchInput");
+    if (search) search.value = "";
+    renderAll();
+  }
+
   function applyGlobalFilter(filters, options = {}) {
     if (!state.data) return;
     if (Object.prototype.hasOwnProperty.call(filters, "group")) {
@@ -1016,6 +1032,15 @@
     }[state.filters.matchStatus];
     const cupLabel = state.filters.cup === "all" ? "todas las Copas" : `Copa ${state.filters.cup}`;
     $("#filterSummary").textContent = `${groupLabel} · ${teamLabel} · ${cupLabel} · ${statusLabel}`;
+    const activeFilters = hasActiveFilters();
+    ["#resetFilters", "#globalResetFilters"].forEach((selector) => {
+      const button = $(selector);
+      if (!button) return;
+      button.classList.toggle("is-active", activeFilters);
+      button.disabled = !activeFilters;
+      button.setAttribute("aria-disabled", String(!activeFilters));
+      button.title = activeFilters ? "Quitar todos los filtros activos" : "No hay filtros activos";
+    });
   }
 
   function renderGroupHeatmap() {
@@ -2582,10 +2607,8 @@
       state.filters.query = event.target.value;
       renderAll();
     });
-    $("#resetFilters").addEventListener("click", () => {
-      state.filters = { group: "all", team: "all", query: "", matchStatus: "all", cup: "all", playerPosition: "all" };
-      $("#searchInput").value = "";
-      renderAll();
+    ["#resetFilters", "#globalResetFilters"].forEach((selector) => {
+      $(selector)?.addEventListener("click", resetAllFilters);
     });
 
     $("#wallFocusButtons")?.addEventListener("click", (event) => {
