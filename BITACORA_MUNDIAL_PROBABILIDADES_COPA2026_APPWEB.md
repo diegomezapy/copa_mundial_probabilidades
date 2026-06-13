@@ -81,6 +81,12 @@ clasp deploy --deploymentId AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxM
 * No se detecto overflow horizontal en desktop ni movil.
 * Capturas locales: `tmp/v0_2_13_reset_desktop.png` y
   `tmp/v0_2_13_reset_mobile.png`.
+* URL publica verificada con cache-busting:
+  `https://diegomezapy.github.io/copa_mundial_probabilidades/`.
+* Prueba publica Playwright: version `0.2.13`, boton visible, activacion con
+  `Group D`, reseteo completo de filtros y sin overflow horizontal.
+* Capturas publicas: `tmp/v0_2_13_public_reset_desktop.png` y
+  `tmp/v0_2_13_public_reset_mobile.png`.
 * GAS quedo redeployado como
   `AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g`
   version `16`.
@@ -92,6 +98,10 @@ clasp deploy --deploymentId AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxM
 * `Invoke-WebRequest http://localhost:8793/index.html`: HTTP 200.
 * Playwright Python local: boton visible, estado activo con filtro y reseteo
   completo de filtros.
+* `Invoke-WebRequest` contra GitHub Pages: HTML, `app.js`, `config.js`,
+  `service-worker.js` y `data/worldcup2026_latest.json` sirven `0.2.13`.
+* Playwright Python publico: boton superior visible y funcional en desktop y
+  movil.
 * Prueba anonima GAS `/exec?action=health`: `403 Prohibido`.
 
 ### Errores o incidentes
@@ -112,7 +122,6 @@ clasp deploy --deploymentId AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxM
 
 ### Pendientes
 
-* Publicar commit en GitHub y verificar la URL publica con cache-busting.
 * Corregir permisos anonimos del Web App GAS desde Apps Script si se desea usar
   `gasExecUrl` en frontend.
 
