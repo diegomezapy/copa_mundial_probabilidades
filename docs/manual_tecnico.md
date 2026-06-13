@@ -18,16 +18,22 @@ pronosticos bayesianos de la Copa Mundial 2026.
 
 ## Capa visual
 
-La version `0.2.7` mejora la legibilidad movil con escala tipografica mayor,
-botones tactiles de mayor altura, filtros menos comprimidos y tablas con
-desplazamiento horizontal legible. Conserva el canvas del balon del hero:
-posicion, velocidad, rebote contra limites, rotacion, sombra y estela con
-`requestAnimationFrame`. Ademas corrige `renderClassroomCards()` para que la
-tarjeta `Senal` use `filteredTeams()` y responda a filtros activos. Se agregan
-colores por grupo mediante `--group-color`, scroll interno del panel lateral en
-escritorio, microanimaciones en tablas, heatmaps y graficos, y perfiles
-academicos estructurados en `Autores`. Las animaciones respetan
-`prefers-reduced-motion` para usuarios que soliciten reducir movimiento.
+La version `0.2.8` agrega banderas SVG reales mediante `flag-icons@7.5.0`
+con licencia MIT y un manifest curado `PLAYER_MEDIA` para fotos de jugadores
+desde Wikimedia Commons, siempre con autor, licencia y enlace de fuente. Si no
+hay foto libre verificada, la interfaz muestra un avatar. La funcion
+`flagMarkup()` evita depender de emoji flags, que en Windows pueden aparecer
+como letras regionales. Los elementos con `.has-rich-popover` muestran tarjetas
+emergentes de equipo o jugador con estadisticas y atribucion de imagen.
+
+La version conserva la legibilidad movil de `0.2.7`, el canvas del balon del
+hero con posicion, velocidad, rebote contra limites, rotacion, sombra y estela
+con `requestAnimationFrame`. Tambien conserva `renderClassroomCards()` con
+`filteredTeams()`, colores por grupo mediante `--group-color`, scroll interno
+del panel lateral en escritorio, microanimaciones en tablas, heatmaps y
+graficos, y perfiles academicos estructurados en `Autores`. Las animaciones
+respetan `prefers-reduced-motion` para usuarios que soliciten reducir
+movimiento.
 
 ## Pronosticos de usuarios
 

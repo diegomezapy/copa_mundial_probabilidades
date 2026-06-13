@@ -18,13 +18,14 @@ certeza; muestra probabilidades, supuestos, limitaciones y trazabilidad de datos
 
 ## Version actual
 
-`0.2.7` mejora la legibilidad movil con tipografia mayor, botones tactiles mas
-grandes, filtros menos comprimidos, tablas con lectura horizontal y tarjetas
-mas respiradas en celulares. Mantiene la correccion de `Senal` filtrable,
-colores por grupo, microanimaciones, `Autores` en pestana propia, `Acerta`
-reorganizada, balon canvas con rebote, pronosticos propios, registro inicial
-sin password, estadisticas de visitas, referencias, derechos de uso, evidencia
-historica 1930-2022 y filtros por Copa, pais, jugador y posicion.
+`0.2.8` agrega banderas SVG reales para los 48 equipos, fotos curadas de
+jugadores desde Wikimedia Commons cuando existe fuente/licencia verificable y
+tarjetas emergentes al posar el cursor sobre equipos o jugadores. Mantiene la
+legibilidad movil de `0.2.7`, la correccion de `Senal` filtrable, colores por
+grupo, microanimaciones, `Autores` en pestana propia, `Acerta` reorganizada,
+balon canvas con rebote, pronosticos propios, registro inicial sin password,
+estadisticas de visitas, referencias, derechos de uso, evidencia historica
+1930-2022 y filtros por Copa, pais, jugador y posicion.
 
 ## Fuentes
 

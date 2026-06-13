@@ -25,7 +25,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-APP_VERSION = "0.2.7"
+APP_VERSION = "0.2.8"
 DATA_VERSION_PREFIX = "wc26"
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
@@ -975,6 +975,23 @@ def build_payload() -> dict[str, Any]:
                 "name": "FIFA World Cup archive",
                 "url": "https://www.archives.fifa.com/fifa_world_cup",
                 "note": "Official archive reference for past tournaments. Structured app data is regenerated from OpenFootball JSON.",
+            },
+            "flag_icons": {
+                "name": "flag-icons",
+                "url": "https://github.com/lipis/flag-icons",
+                "version": "7.5.0",
+                "license": "MIT",
+                "note": "SVG flags used as visual aids for teams/countries. The frontend maps each team to a reviewed flag code.",
+            },
+            "wikimedia_commons": {
+                "name": "Wikimedia Commons",
+                "url": "https://commons.wikimedia.org/",
+                "note": "Player photos are shown only when a curated frontend manifest records source, author and license.",
+            },
+            "wikidata_licensing": {
+                "name": "Wikidata licensing",
+                "url": "https://www.wikidata.org/wiki/Wikidata:Licensing",
+                "note": "Reference for reusable structured metadata and rights context.",
             },
             "openfootball_historical_worldcups": historical_metas,
         },

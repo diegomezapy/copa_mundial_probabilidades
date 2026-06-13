@@ -53,3 +53,6 @@ modelos multivariados de pronostico y modelos bayesianos.
   resumir el perfil de Nicolas Vera Ramos.
 - Mejorar urgentemente la vista movil porque en celulares se veia demasiado
   pequena, casi ilegible y con elementos dificiles de tocar o revisar.
+- Corregir la ausencia visible de banderas y fotos: usar banderas reales,
+  agregar fotos solo con licencia/fuente verificable y mantener referencias de
+  derechos de uso.

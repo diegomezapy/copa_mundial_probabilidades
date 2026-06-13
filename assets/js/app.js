@@ -37,6 +37,125 @@
     "#4f46e5",
     "#64748b"
   ];
+  const FLAG_ICON_BASE = "https://cdn.jsdelivr.net/npm/flag-icons@7.5.0/flags/4x3";
+  const TEAM_FLAG_CODES = {
+    Algeria: "dz",
+    Argentina: "ar",
+    Australia: "au",
+    Austria: "at",
+    Belgium: "be",
+    "Bosnia & Herzegovina": "ba",
+    Brazil: "br",
+    Canada: "ca",
+    "Cape Verde": "cv",
+    Colombia: "co",
+    Croatia: "hr",
+    Curaçao: "cw",
+    "Czech Republic": "cz",
+    "DR Congo": "cd",
+    Ecuador: "ec",
+    Egypt: "eg",
+    England: "gb-eng",
+    France: "fr",
+    Germany: "de",
+    Ghana: "gh",
+    Haiti: "ht",
+    Iran: "ir",
+    Iraq: "iq",
+    "Ivory Coast": "ci",
+    Japan: "jp",
+    Jordan: "jo",
+    Mexico: "mx",
+    Morocco: "ma",
+    Netherlands: "nl",
+    "New Zealand": "nz",
+    Norway: "no",
+    Panama: "pa",
+    Paraguay: "py",
+    Portugal: "pt",
+    Qatar: "qa",
+    "Saudi Arabia": "sa",
+    Scotland: "gb-sct",
+    Senegal: "sn",
+    "South Africa": "za",
+    "South Korea": "kr",
+    Spain: "es",
+    Sweden: "se",
+    Switzerland: "ch",
+    Tunisia: "tn",
+    Turkey: "tr",
+    USA: "us",
+    Uruguay: "uy",
+    Uzbekistan: "uz"
+  };
+  const PLAYER_MEDIA = {
+    "lionel messi": {
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Lionel_Messi_White_House_2026_%283x4_cropped%29.jpg/250px-Lionel_Messi_White_House_2026_%283x4_cropped%29.jpg",
+      source: "https://commons.wikimedia.org/wiki/File:Lionel_Messi_White_House_2026_(3x4_cropped).jpg",
+      license: "Public domain",
+      author: "The White House"
+    },
+    "cristiano ronaldo": {
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/2025_Cristiano_Ronaldo_%28cropped%29.jpg/250px-2025_Cristiano_Ronaldo_%28cropped%29.jpg",
+      source: "https://commons.wikimedia.org/wiki/File:2025_Cristiano_Ronaldo_(cropped).jpg",
+      license: "Public domain",
+      author: "The White House"
+    },
+    "virgil van dijk": {
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/20160604_AUT_NED_8876_%28cropped%29.jpg/250px-20160604_AUT_NED_8876_%28cropped%29.jpg",
+      source: "https://commons.wikimedia.org/wiki/File:20160604_AUT_NED_8876_(cropped).jpg",
+      license: "CC BY-SA 3.0 at",
+      author: "Ailura"
+    },
+    neymar: {
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/20180610_FIFA_Friendly_Match_Austria_vs._Brazil_Neymar_850_1705.jpg/250px-20180610_FIFA_Friendly_Match_Austria_vs._Brazil_Neymar_850_1705.jpg",
+      source: "https://commons.wikimedia.org/wiki/File:20180610_FIFA_Friendly_Match_Austria_vs._Brazil_Neymar_850_1705.jpg",
+      license: "CC BY-SA 4.0",
+      author: "Granada"
+    },
+    "romelu lukaku": {
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Romelu_Lukaku_2021.jpg/250px-Romelu_Lukaku_2021.jpg",
+      source: "https://commons.wikimedia.org/wiki/File:Romelu_Lukaku_2021.jpg",
+      license: "CC BY-SA 3.0",
+      author: "Vyacheslav Evdokimov"
+    },
+    "kevin de bruyne": {
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Kevin_De_Bruyne_USMNT_v_Belgium_Mar_28_2026-64_%28cropped%29.jpg/250px-Kevin_De_Bruyne_USMNT_v_Belgium_Mar_28_2026-64_%28cropped%29.jpg",
+      source: "https://commons.wikimedia.org/wiki/File:Kevin_De_Bruyne_USMNT_v_Belgium_Mar_28_2026-64_(cropped).jpg",
+      license: "CC BY-SA 4.0",
+      author: "Bryan Berlin"
+    },
+    "son heung min": {
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/BFA_2023_-2_Heung-Min_Son_%28cropped%29.jpg/250px-BFA_2023_-2_Heung-Min_Son_%28cropped%29.jpg",
+      source: "https://commons.wikimedia.org/wiki/File:BFA_2023_-2_Heung-Min_Son_(cropped).jpg",
+      license: "CC BY-SA 4.0",
+      author: "Ujishadow"
+    },
+    "harry kane": {
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Harry_Kane_2023.jpg/250px-Harry_Kane_2023.jpg",
+      source: "https://commons.wikimedia.org/wiki/File:Harry_Kane_2023.jpg",
+      license: "CC BY 2.0",
+      author: "Number 10"
+    },
+    "mohamed salah": {
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Mohamed_Salah_2018.jpg/250px-Mohamed_Salah_2018.jpg",
+      source: "https://commons.wikimedia.org/wiki/File:Mohamed_Salah_2018.jpg",
+      license: "CC BY-SA 3.0",
+      author: "Anna Nessi"
+    },
+    "yassine bounou": {
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Yassine_Bono_%28cropped%29.jpg/250px-Yassine_Bono_%28cropped%29.jpg",
+      source: "https://commons.wikimedia.org/wiki/File:Yassine_Bono_(cropped).jpg",
+      license: "CC BY 4.0",
+      author: "Laloumance"
+    }
+  };
   const AUTHORS = [
     {
       name: "Diego Bernardo Meza Bogado",
@@ -111,6 +230,76 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
+  }
+
+  function normalizeLookup(value) {
+    return String(value || "")
+      .replace(/\s*\([^)]*\)/g, "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+  }
+
+  function teamFlagCode(team) {
+    if (TEAM_FLAG_CODES[team]) return TEAM_FLAG_CODES[team];
+    const lookup = normalizeLookup(team);
+    const match = Object.entries(TEAM_FLAG_CODES).find(([name]) => normalizeLookup(name) === lookup);
+    return match ? match[1] : "";
+  }
+
+  function flagFallback(team, code = "") {
+    if (code) return code.replace("gb-", "").slice(0, 3).toUpperCase();
+    return String(team || "")
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0])
+      .join("")
+      .toUpperCase();
+  }
+
+  function flagMarkup(team, className = "flag-badge") {
+    const code = teamFlagCode(team);
+    const fallback = flagFallback(team, code);
+    if (!code) {
+      return `<span class="${className} flag-empty" role="img" aria-label="Bandera no disponible para ${escapeHtml(team)}">${escapeHtml(fallback || "??")}</span>`;
+    }
+    return `<span class="${className}" role="img" aria-label="Bandera de ${escapeHtml(team)}" title="Bandera de ${escapeHtml(team)}">
+      <img src="${FLAG_ICON_BASE}/${escapeHtml(code)}.svg" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.hidden=true;this.nextElementSibling.hidden=false" />
+      <span class="flag-fallback" hidden>${escapeHtml(fallback)}</span>
+    </span>`;
+  }
+
+  function playerKey(player) {
+    return normalizeLookup(`${player.team}|${player.name}`);
+  }
+
+  function cleanPlayerName(name) {
+    return String(name || "").replace(/\s*\([^)]*\)/g, "").trim();
+  }
+
+  function playerMedia(player) {
+    return PLAYER_MEDIA[normalizeLookup(cleanPlayerName(player.name))] || null;
+  }
+
+  function initials(name) {
+    return cleanPlayerName(name)
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0])
+      .join("")
+      .toUpperCase();
+  }
+
+  function playerPortraitMarkup(player, sizeClass = "") {
+    const media = playerMedia(player);
+    if (media?.image) {
+      return `<img class="player-photo ${sizeClass}" src="${escapeHtml(media.image)}" alt="Foto de ${escapeHtml(cleanPlayerName(player.name))}" loading="lazy" referrerpolicy="no-referrer" />`;
+    }
+    return `<span class="player-avatar ${sizeClass}" aria-hidden="true">${escapeHtml(initials(player.name) || flagFallback(player.team, teamFlagCode(player.team)))}</span>`;
   }
 
   function shortDate(value) {
@@ -575,9 +764,10 @@
     $("#contenders").innerHTML = rows
       .map(
         (team, index) => `
-        <article class="rank-row" style="${groupStyle(team.group)}">
+        <article class="rank-row has-rich-popover" style="${groupStyle(team.group)}" data-kind="team" data-team="${escapeHtml(team.team)}" tabindex="0">
           <div>
             <span class="rank">${index + 1}</span>
+            ${flagMarkup(team.team)}
             <strong>${escapeHtml(team.team)}</strong>
             <small>${escapeHtml(team.group)} · rating ${team.rating}</small>
           </div>
@@ -593,7 +783,7 @@
 
   function teamOptions() {
     return `<option value="all">Todos los equipos</option>${state.data.teams
-      .map((team) => `<option value="${escapeHtml(team.team)}">${escapeHtml(team.team)}</option>`)
+      .map((team) => `<option value="${escapeHtml(team.team)}">${escapeHtml(`${flagFallback(team.team, teamFlagCode(team.team))} - ${team.team}`)}</option>`)
       .join("")}`;
   }
 
@@ -625,7 +815,7 @@
       .map(
         (team) => `
           <button type="button" class="${state.filters.team === team.team ? "active" : ""}" data-team="${escapeHtml(team.team)}" style="${groupStyle(team.group)}">
-            <span>${escapeHtml(team.team)}</span>
+            <span>${flagMarkup(team.team)}${escapeHtml(team.team)}</span>
             <b>${WorldCupBayes.pct(team.p_advance_group, 0)}</b>
           </button>
         `
@@ -658,8 +848,8 @@
                 .map((team) => {
                   const p = Math.round(team.p_advance_group * 100);
                   return `
-                    <span class="heat-team" style="--p:${p};${groupStyle(team.group)}">
-                      <b>${escapeHtml(team.team)}</b>
+                    <span class="heat-team has-rich-popover" style="--p:${p};${groupStyle(team.group)}" data-kind="team" data-team="${escapeHtml(team.team)}" tabindex="0">
+                      <b>${flagMarkup(team.team)}${escapeHtml(team.team)}</b>
                       <small>${p}%</small>
                     </span>
                   `;
@@ -727,7 +917,7 @@
               <span>${shortDate(match.date)}</span>
               <b>${escapeHtml(match.group || match.round)}</b>
             </header>
-            <strong>${escapeHtml(match.team1)} <em>vs</em> ${escapeHtml(match.team2)}</strong>
+            <strong>${flagMarkup(match.team1)}${escapeHtml(match.team1)} <em>vs</em> ${flagMarkup(match.team2)}${escapeHtml(match.team2)}</strong>
             <small>${escapeHtml(match.ground)}</small>
             <div class="triplet">
               <span style="--w:${Math.round(p.home_win * 100)}"><b>1</b>${WorldCupBayes.pct(p.home_win, 0)}</span>
@@ -773,7 +963,7 @@
       </article>
       <article>
         <span>Señal</span>
-        <strong>${escapeHtml(signalLabel)}</strong>
+        <strong>${top ? flagMarkup(top.team) : ""}${escapeHtml(signalLabel)}</strong>
         <p>${escapeHtml(signalNote)}</p>
       </article>
     `;
@@ -800,8 +990,8 @@
                     .map((row) => {
                       const team = teamRecord(row.team);
                       return `
-                        <tr style="${groupStyle(team?.group || group)}">
-                          <td><strong>${escapeHtml(row.team)}</strong></td>
+                        <tr class="has-rich-popover" style="${groupStyle(team?.group || group)}" data-kind="team" data-team="${escapeHtml(row.team)}" tabindex="0">
+                          <td><strong>${flagMarkup(row.team)}${escapeHtml(row.team)}</strong></td>
                           <td>${row.points}</td>
                           <td>${row.played}</td>
                           <td>${row.goals_for}</td>
@@ -832,7 +1022,7 @@
         return `
           <tr style="${match.group ? groupStyle(match.group) : ""}">
             <td>${shortDate(match.date)}<small>${escapeHtml(match.time)}</small></td>
-            <td><strong>${escapeHtml(match.team1)}</strong><small>${escapeHtml(match.team2)}</small></td>
+            <td><strong>${flagMarkup(match.team1)}${escapeHtml(match.team1)}</strong><small>${flagMarkup(match.team2)}${escapeHtml(match.team2)}</small></td>
             <td>${escapeHtml(match.group || match.round)}</td>
             <td>${escapeHtml(match.ground)}</td>
             <td><span class="status ${match.status}">${score}</span></td>
@@ -855,9 +1045,9 @@
     $("#teamsGrid").innerHTML = rows
       .map(
         (team) => `
-        <article class="team-card" style="${groupStyle(team.group)}">
+        <article class="team-card has-rich-popover" style="${groupStyle(team.group)}" data-kind="team" data-team="${escapeHtml(team.team)}" tabindex="0">
           <header>
-            <strong>${escapeHtml(team.team)}</strong>
+            <strong class="team-heading">${flagMarkup(team.team, "flag-badge large")}${escapeHtml(team.team)}</strong>
             <span>${escapeHtml(team.group)}</span>
           </header>
           <dl>
@@ -885,10 +1075,15 @@
         (player) => {
           const team = teamRecord(player.team);
           return `
-        <tr style="${team ? groupStyle(team.group) : ""}">
+        <tr class="has-rich-popover" style="${team ? groupStyle(team.group) : ""}" data-kind="player" data-player-key="${escapeHtml(playerKey(player))}" tabindex="0">
           <td>${player.number ?? ""}</td>
-          <td><strong>${escapeHtml(player.name)}</strong><small>${escapeHtml(player.club)}</small></td>
-          <td>${escapeHtml(player.team)}</td>
+          <td>
+            <div class="player-cell">
+              ${playerPortraitMarkup(player)}
+              <span><strong>${escapeHtml(player.name)}</strong><small>${escapeHtml(player.club)}</small></span>
+            </div>
+          </td>
+          <td>${flagMarkup(player.team)}${escapeHtml(player.team)}</td>
           <td>${escapeHtml(player.position)}</td>
           <td>${player.age ?? "s/d"}</td>
           <td>${player.caps}</td>
@@ -1385,6 +1580,9 @@
       ["OpenFootball World Cup JSON", "https://github.com/openfootball/worldcup.json"],
       ["OpenFootball 2026 JSON", sources.openfootball_worldcup_json.url],
       ["Wikipedia squads 2026", sources.wikipedia_squads.url],
+      ["flag-icons - banderas SVG MIT", "https://github.com/lipis/flag-icons"],
+      ["Wikimedia Commons - imagenes libres", "https://commons.wikimedia.org/"],
+      ["Wikidata - datos estructurados CC0", "https://www.wikidata.org/wiki/Wikidata:Licensing"],
       ["Repositorio del proyecto", window.APP_CONFIG.githubRepo],
       ["Hoja operativa Google Sheets", `https://docs.google.com/spreadsheets/d/${window.APP_CONFIG.spreadsheetId}/edit`]
     ];
@@ -1403,6 +1601,10 @@
           <p>Las marcas, nombres de torneos y contenidos de terceros pertenecen a sus titulares. Antes de reutilizar datos fuera del aula se deben revisar las condiciones de cada fuente enlazada.</p>
         </article>
         <article>
+          <strong>Imagenes y banderas</strong>
+          <p>Las banderas se muestran como SVG abiertos de flag-icons bajo licencia MIT. Las fotos de jugadores se muestran solo cuando existe una imagen libre con fuente y licencia registradas; si no hay licencia clara, se muestra un avatar.</p>
+        </article>
+        <article>
           <strong>Cobertura historica</strong>
           <p>Se procesan ${historicalCount} archivos historicos estructurados de OpenFootball y se enlaza el archivo FIFA como referencia oficial de consulta.</p>
         </article>
@@ -1418,6 +1620,113 @@
         `
       )
       .join("");
+  }
+
+  function teamTooltip(team) {
+    const history = (state.data.history?.countries || []).find((row) => row.team === team.team);
+    return `
+      <div class="tooltip-head">
+        ${flagMarkup(team.team, "flag-badge tooltip-flag")}
+        <div>
+          <strong>${escapeHtml(team.team)}</strong>
+          <small>${escapeHtml(team.group)} · rating ${team.rating}</small>
+        </div>
+      </div>
+      <div class="tooltip-grid">
+        <span><b>${WorldCupBayes.pct(team.p_advance_group)}</b><small>avance</small></span>
+        <span><b>${WorldCupBayes.number(team.attack_posterior_mean)}</b><small>ataque</small></span>
+        <span><b>${WorldCupBayes.number(team.defense_posterior_mean)}</b><small>defensa</small></span>
+        <span><b>${team.squad.players || 0}</b><small>jugadores</small></span>
+      </div>
+      <p>${history ? `${history.appearances} Copas, ${history.matches} partidos historicos, ${history.goals_for}/${history.goals_against} GF/GC.` : "Sin resumen historico agregado para este pais."}</p>
+    `;
+  }
+
+  function playerTooltip(player) {
+    const media = playerMedia(player);
+    const photo = playerPortraitMarkup(player, "large");
+    return `
+      <div class="tooltip-head player">
+        ${photo}
+        <div>
+          <strong>${escapeHtml(cleanPlayerName(player.name))}</strong>
+          <small>${flagMarkup(player.team)}${escapeHtml(player.team)} · ${escapeHtml(player.position)} · ${escapeHtml(player.club || "s/d")}</small>
+        </div>
+      </div>
+      <div class="tooltip-grid">
+        <span><b>${player.age ?? "s/d"}</b><small>edad</small></span>
+        <span><b>${player.caps ?? 0}</b><small>caps</small></span>
+        <span><b>${player.goals ?? 0}</b><small>goles</small></span>
+        <span><b>${player.number ?? "s/d"}</b><small>dorsal</small></span>
+      </div>
+      ${
+        media
+          ? `<p class="media-source">Foto: ${escapeHtml(media.author)} · ${escapeHtml(media.license)} · <a href="${escapeHtml(media.source)}" target="_blank" rel="noopener noreferrer">Commons</a></p>`
+          : `<p class="media-source">Sin foto libre verificada en el manifest; se muestra avatar academico.</p>`
+      }
+    `;
+  }
+
+  function tooltipContent(target) {
+    if (!state.data) return "";
+    if (target.dataset.kind === "team") {
+      const team = teamRecord(target.dataset.team);
+      return team ? teamTooltip(team) : "";
+    }
+    if (target.dataset.kind === "player") {
+      const player = state.data.players.find((item) => playerKey(item) === target.dataset.playerKey);
+      return player ? playerTooltip(player) : "";
+    }
+    return "";
+  }
+
+  function positionTooltip(event, tooltip) {
+    const margin = 14;
+    const width = tooltip.offsetWidth || 320;
+    const height = tooltip.offsetHeight || 220;
+    const x = Math.min(window.innerWidth - width - margin, Math.max(margin, event.clientX + 16));
+    const y = Math.min(window.innerHeight - height - margin, Math.max(margin, event.clientY + 16));
+    tooltip.style.left = `${x}px`;
+    tooltip.style.top = `${y}px`;
+  }
+
+  function bindRichTooltips() {
+    const tooltip = $("#richTooltip");
+    if (!tooltip) return;
+    let activeTarget = null;
+    const show = (target, event) => {
+      const html = tooltipContent(target);
+      if (!html) return;
+      activeTarget = target;
+      tooltip.innerHTML = html;
+      tooltip.hidden = false;
+      positionTooltip(event, tooltip);
+    };
+    const hide = () => {
+      activeTarget = null;
+      tooltip.hidden = true;
+    };
+    document.addEventListener("pointerover", (event) => {
+      const target = event.target.closest(".has-rich-popover");
+      if (target) show(target, event);
+    });
+    document.addEventListener("pointermove", (event) => {
+      if (!activeTarget || tooltip.hidden) return;
+      positionTooltip(event, tooltip);
+    });
+    document.addEventListener("pointerout", (event) => {
+      if (activeTarget && !event.relatedTarget?.closest?.(".has-rich-popover")) hide();
+    });
+    document.addEventListener("focusin", (event) => {
+      const target = event.target.closest(".has-rich-popover");
+      if (target) show(target, { clientX: 24, clientY: 88 });
+    });
+    document.addEventListener("focusout", hide);
+    document.addEventListener("click", (event) => {
+      const target = event.target.closest(".has-rich-popover");
+      if (!target) return;
+      show(target, event);
+    });
   }
 
   function renderAll() {
@@ -1816,6 +2125,7 @@
     bindFilters();
     bindInstall();
     bindOnlineStatus();
+    bindRichTooltips();
     setupHeroBallCanvas();
     await registerServiceWorker();
     state.user = loadUserProfile();

@@ -1,5 +1,135 @@
 # Bitacora Mundial Probabilidades Copa 2026 Appweb
 
+## 2026-06-12 20:38
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: Proyecto academico publico
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.2.8`
+
+### Objetivo de la intervencion
+
+Corregir la ausencia visible de banderas y fotos en la app publica, manteniendo
+derechos de uso, atribucion de fuentes y compatibilidad movil.
+
+### Diagnostico inicial
+
+* La app ya tenia referencias de investigacion sobre banderas/fotos, pero la
+  interfaz todavia no mostraba banderas reales ni fotos en forma suficientemente
+  visible para el usuario.
+* La primera implementacion con emoji flags no era robusta: en Windows los
+  emoji de banderas pueden verse como codigos regionales, por ejemplo `MX`, y
+  no como banderas.
+* Para jugadores, no era aceptable usar fotos sin fuente/licencia clara. Se
+  requeria un manifest curado y fallback visual.
+
+### Acciones realizadas
+
+* Se reemplazo el uso de emoji flags por banderas SVG de `flag-icons@7.5.0`
+  bajo licencia MIT.
+* Se agrego `TEAM_FLAG_CODES` para los 48 equipos del torneo y `flagMarkup()`
+  para renderizar imagenes SVG con fallback textual.
+* Se agrego `PLAYER_MEDIA` como primer manifest curado de fotos desde
+  Wikimedia Commons, con enlace de fuente, autor y licencia por jugador.
+* Se agregaron fotos/avatares en la tabla de jugadores y tarjetas emergentes
+  ricas al posar el cursor o enfocar equipos y jugadores.
+* Se agregaron banderas en rankings, botones rapidos, heatmaps, partidos,
+  posiciones por grupo, tarjetas de equipos, selector de equipo y tabla de
+  jugadores.
+* Se actualizo la vista `Referencias` para enlazar flag-icons, Wikimedia
+  Commons y Wikidata, y explicar el criterio de derechos de uso.
+* Se agregaron `flag_icons`, `wikimedia_commons` y `wikidata_licensing` al
+  bloque `sources` del JSON y del manifest publico.
+* Se actualizo version/cache/frontend/GAS/JSON a `0.2.8`.
+* Se actualizaron README, manual tecnico, manual de usuario y secuencia de
+  prompts.
+
+### Archivos modificados
+
+* `assets/js/app.js`
+* `assets/css/styles.css`
+* `assets/js/config.js`
+* `service-worker.js`
+* `scripts/update_data.py`
+* `gas/Config.gs`
+* `index.html`
+* `data/worldcup2026_latest.json`
+* `data/sources_manifest.json`
+* `README.md`
+* `docs/manual_usuario.md`
+* `docs/manual_tecnico.md`
+* `docs/PROMPTS_MUNDIAL_PROBABILIDADES_2026-06-12.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+npm view flag-icons version license repository.url homepage --json
+python scripts\update_data.py
+node --check assets\js\config.js
+node --check assets\js\app.js
+node --check service-worker.js
+python -m py_compile scripts\update_data.py scripts\make_assets.py
+npm install --prefix $env:TEMP\mundial-pw-playwright --no-save playwright@1.60.0
+```
+
+### Resultados verificados
+
+* JSON local `0.2.8` generado con `data_version=wc26-20260613T004224z`.
+* Cobertura conservada: 48 equipos, 1248 jugadores, 104 partidos, 3 partidos
+  completados y 964 partidos historicos.
+* Validacion local en Chromium desktop:
+  48 banderas SVG encontradas y 48 cargadas desde `flag-icons`.
+* Tooltip de Mexico verificado con
+  `https://cdn.jsdelivr.net/npm/flag-icons@7.5.0/flags/4x3/mx.svg`.
+* Jugador Lionel Messi verificado con foto de Wikimedia Commons cargada
+  (`naturalWidth=250`) y bandera Argentina `ar.svg`.
+* Validacion local movil `390px`:
+  48 banderas presentes, primera bandera visible cargada, `bodyOverflow=0` y
+  botones con fuente minima `16.32px`.
+* Capturas locales:
+  `tmp/media-local-flags-svg-desktop.png` y
+  `tmp/media-local-flags-svg-mobile.png`.
+
+### Pruebas realizadas
+
+* Sintaxis JS: correcta.
+* Compilacion Python: correcta.
+* Prueba local Chromium desktop: correcta.
+* Prueba local Chromium movil `390px`: correcta.
+
+### Errores o incidentes
+
+* Los emoji flags no eran una solucion visual portable porque Windows puede
+  representarlos como letras regionales.
+* La instalacion temporal de Playwright dentro del repo genero errores por la
+  carpeta sincronizada; se elimino `node_modules` del repo y se ejecuto la
+  prueba desde una carpeta temporal local de Windows.
+
+### Soluciones aplicadas
+
+* Banderas SVG reales desde una libreria abierta y versionada.
+* Fotos solo con manifest curado, fuente y licencia visible.
+* Avatar cuando no existe imagen libre verificada.
+* Tooltips ricos para paises y jugadores con datos estadisticos y atribucion.
+
+### Pendientes
+
+* Publicar `0.2.8` en GitHub Pages y validar la URL publica con cache-busting.
+* Desplegar GAS candidato `0.2.8` si las credenciales de `clasp` lo permiten y
+  volver a registrar el estado de acceso anonimo.
+
+### Riesgos
+
+* Las fotos externas dependen de Wikimedia Commons; si una imagen cambia o deja
+  de responder, la app conserva avatar/fallback para no romper la interfaz.
+* Las banderas dependen de CDN jsDelivr para `flag-icons`; si se requiere modo
+  completamente offline, conviene vendorizar los SVG necesarios.
+
 ## 2026-06-12 18:18
 
 ### Proyecto

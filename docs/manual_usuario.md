@@ -30,6 +30,13 @@ Las tarjetas, tablas y graficos usan colores por grupo para reducir la
 dominancia de un solo color y facilitar comparaciones visuales. La tarjeta
 `Senal` responde a los filtros activos: equipo, grupo o busqueda.
 
+Las vistas de equipos, jugadores, partidos y evidencia muestran banderas reales
+en formato SVG para ayudar a reconocer rapidamente paises y grupos. En
+Jugadores, algunas figuras destacadas tienen foto libre verificada; al posar el
+cursor o enfocar una fila aparece una tarjeta con datos personales, estadisticas
+basicas y la atribucion de la imagen. Cuando no hay una foto libre clara, la app
+muestra un avatar para respetar derechos de uso.
+
 ## Acertá
 
 Cada usuario puede cargar marcadores previstos para partidos pendientes. La app
