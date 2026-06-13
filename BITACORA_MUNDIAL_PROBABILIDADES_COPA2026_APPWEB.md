@@ -1,5 +1,139 @@
 # Bitacora Mundial Probabilidades Copa 2026 Appweb
 
+## 2026-06-13 07:35
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: Proyecto academico publico
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.2.11`
+
+### Objetivo de la intervencion
+
+Agregar una vista tipo mapa/diagrama de seguimiento de resultados inspirada en
+una lamina de torneo: grupos a ambos lados, llave eliminatoria central y nodos
+rectangulares que permitan seguir partidos, resultados y cruces por completar.
+
+### Diagnostico inicial
+
+* La vista `Mapa` tenia un mapa de grupos y un camino de eliminacion separados.
+* Faltaba una vista integral tipo poster que permitiera leer el torneo completo
+  como una lamina de seguimiento.
+* En movil no convenia comprimir todo el diagrama, porque quedaria ilegible; se
+  requeria scroll interno controlado.
+* Los filtros debian afectar el mural sin destruir el contexto completo del
+  torneo.
+
+### Acciones realizadas
+
+* Se agrego el panel `Mural completo del torneo` en la vista `Mapa`.
+* Se implemento `renderTournamentWall()` con grupos A-F a la izquierda, grupos
+  G-L a la derecha y llave central con ronda de 32, octavos, cuartos,
+  semifinal, final y tercer puesto.
+* Se agregaron etiquetas explicativas para placeholders como `1A`, `2B`, `W74`
+  y `L101`.
+* Se agrego definicion emergente `(i)` para explicar como leer el mural.
+* Se hizo que los filtros atenuen elementos no coincidentes en el mural, sin
+  eliminar el contexto general del torneo.
+* Se agregaron estilos responsive con scroll horizontal interno, microanimacion
+  de trazo y tarjetas compactas por grupo/ronda.
+* Se actualizo version/cache/frontend/GAS/generador a `0.2.11`.
+* Se regeneraron JSON y CSV publicos con `app_version=0.2.11`.
+* Se actualizo README, manual tecnico y secuencia de prompts del proyecto.
+
+### Archivos modificados
+
+* `index.html`
+* `assets/js/app.js`
+* `assets/css/styles.css`
+* `assets/js/config.js`
+* `service-worker.js`
+* `gas/Config.gs`
+* `scripts/update_data.py`
+* `data/worldcup2026_latest.json`
+* `data/sources_manifest.json`
+* `data/sheets/*.csv`
+* `README.md`
+* `docs/manual_tecnico.md`
+* `docs/PROMPTS_MUNDIAL_PROBABILIDADES_2026-06-12.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+python scripts\update_data.py
+node --check assets\js\app.js
+node --check assets\js\config.js
+node --check service-worker.js
+python -m py_compile scripts\update_data.py scripts\make_assets.py
+python -m http.server 8791
+git diff --check
+git commit -m "feat: agregar mural completo del torneo"
+git push origin main
+```
+
+### Resultados verificados
+
+* JSON local `app_version=0.2.11`, 104 partidos, 72 de grupo y 32 eliminatorios.
+* URL publica sirve `assets/js/config.js` con `0.2.11`.
+* URL publica sirve `assets/js/app.js` con `renderTournamentWall`.
+* URL publica sirve `data/worldcup2026_latest.json` con `app_version=0.2.11`.
+* Commit de implementacion publicado: `1084651`.
+
+### Pruebas realizadas
+
+* Validacion local Playwright desktop: 12 grupos, 72 filas de grupo, 32 nodos
+  eliminatorios, `bodyOverflow=0`, scroll interno del mural.
+* Validacion local Playwright movil 390x860: 12 grupos, `bodyOverflow=0`,
+  scroll interno `1640 > 364`, fuente de ficha `12.75px`.
+* Validacion publica Playwright desktop: version `0.2.11`, 12 grupos, 72 filas
+  de grupo, 32 nodos eliminatorios, `bodyOverflow=0`.
+* Validacion publica con filtro `Group D`: 6 filas visibles, 66 atenuadas y 29
+  nodos eliminatorios atenuados de 32.
+* Capturas generadas:
+  `tmp/tournament-wall-public-desktop.png` y
+  `tmp/tournament-wall-public-mobile.png`.
+
+### Errores o incidentes
+
+* `playwright` no estaba disponible como modulo Node local; se uso Playwright
+  Python ya instalado en el entorno.
+* GitHub Pages tardo algunos intentos en servir `0.2.11`; en el intento 5 ya
+  sirvio config, app y JSON actualizados.
+
+### Soluciones aplicadas
+
+* Se mantuvo el mural como lamina horizontal con scroll interno para no provocar
+  desborde global ni miniaturizar textos.
+* Se uso atenuacion visual para filtros, de modo que el mapa siga respondiendo
+  sin perder contexto.
+* Se separo visualmente `Final` y `Tercer puesto` para evitar ambiguedad.
+
+### Pendientes
+
+* Evaluar con usuarios si el mural debe ofrecer boton de centrado rapido
+  (`Grupos A-F`, `Llave`, `Grupos G-L`) sin saturar la interfaz.
+* Cuando existan resultados reales adicionales, verificar que los nodos
+  completados se lean claramente en el mural.
+
+### Riesgos
+
+* El mural es ancho por diseño; en celulares requiere desplazamiento horizontal
+  interno. Esto es preferible a reducirlo hasta hacerlo ilegible.
+* Los placeholders de eliminatoria dependen del calendario normalizado; si la
+  fuente cambia nomenclaturas, puede requerirse ajustar `isSlotName()`.
+
+### Recomendaciones
+
+* Mantener la vista detallada de `Mapa de grupos` y `Camino de eliminacion`
+  debajo del mural, porque el mural sirve para vision global y las vistas
+  inferiores para lectura detallada.
+* Para apps educativas con llaves complejas, usar contenedores con scroll
+  interno y filtros por atenuacion antes que destruir el diagrama completo.
+
 ## 2026-06-13 07:12
 
 ### Proyecto
