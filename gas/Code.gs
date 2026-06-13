@@ -28,6 +28,10 @@ function doGet(e) {
       var result = syncFromGithub();
       return respond_({ ok: true, result: result }, params.callback);
     }
+    if (action === 'sync_public' || action === 'syncPublic') {
+      var publicResult = syncPublicFromGithub_();
+      return respond_({ ok: true, public_sync: true, result: publicResult }, params.callback);
+    }
     return respond_({ ok: false, error: 'Accion no soportada: ' + action }, params.callback);
   } catch (err) {
     recordError_('doGet:' + action, err, '');
@@ -55,4 +59,41 @@ function loadPublishedData_() {
     throw new Error('No se pudo leer JSON publicado. HTTP ' + code);
   }
   return JSON.parse(response.getContentText());
+}
+
+function syncPublicFromGithub_() {
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(3000)) {
+    return {
+      skipped: true,
+      reason: 'Sincronizacion ya en curso'
+    };
+  }
+
+  try {
+    var props = PropertiesService.getScriptProperties();
+    var lastMs = Number(props.getProperty(APP_CONFIG.PUBLIC_SYNC_LAST_PROPERTY) || 0);
+    var nowMs = Date.now();
+    var minMs = Number(APP_CONFIG.PUBLIC_SYNC_MINUTES || 10) * 60 * 1000;
+
+    if (lastMs && nowMs - lastMs < minMs) {
+      return {
+        skipped: true,
+        reason: 'Sincronizacion publica reciente',
+        last_sync_at: new Date(lastMs).toISOString(),
+        wait_seconds: Math.ceil((minMs - (nowMs - lastMs)) / 1000)
+      };
+    }
+
+    var result = syncFromGithub();
+    props.setProperty(APP_CONFIG.PUBLIC_SYNC_LAST_PROPERTY, String(nowMs));
+    audit_('public', 'sync_public', 'Datos publicos actualizados desde GitHub Pages', result.data_version);
+    return {
+      skipped: false,
+      synced_at: new Date(nowMs).toISOString(),
+      data: result
+    };
+  } finally {
+    lock.releaseLock();
+  }
 }

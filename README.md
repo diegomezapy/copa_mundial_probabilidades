@@ -41,6 +41,12 @@ El generador tambien publica CSV normalizados para la hoja operativa:
 `equipos.csv`, `jugadores.csv`, `partidos.csv`, `pronosticos.csv` y tablas
 historicas bajo `data/sheets/`.
 
+La hoja operativa `FUTBOL_PROBABILIDADES` puede leer esos CSV desde GitHub Pages
+con `IMPORTDATA`. Para evitar el bloqueo `#REF!` de importaciones externas, el
+libro debe tener habilitada la propiedad
+`importFunctionsExternalUrlAccessAllowed=true`. Las columnas de fecha y marcador
+historico se formatean explicitamente para que no se vean como numeros seriales.
+
 ## Ejecucion local
 
 ```powershell
@@ -68,8 +74,10 @@ clasp deploy --description "v0.1.0 app publica mundial probabilidades"
 
 Funciones manuales relevantes desde el editor de Apps Script:
 
-- `setupWorkbook()`: crea las pestañas y cabeceras.
+- `setupWorkbook()`: crea las pestanas y cabeceras.
 - `syncFromGithub()`: copia el JSON publicado a Sheets.
+- `/exec?action=sync_public`: refresca datos publicos desde GitHub con bloqueo y
+  ventana minima entre ejecuciones. No acepta carga de datos del usuario.
 - `installDailySyncTrigger()`: instala sincronizacion diaria a las 06:00.
 - `setAdminToken(token)`: guarda un token administrativo en Script Properties.
 

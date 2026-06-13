@@ -5,7 +5,9 @@ var APP_CONFIG = {
   PUBLIC_DATA_URL: 'https://raw.githubusercontent.com/diegomezapy/copa_mundial_probabilidades/main/data/worldcup2026_latest.json',
   GITHUB_REPO: 'https://github.com/diegomezapy/copa_mundial_probabilidades',
   TIMEZONE: 'America/Asuncion',
-  ADMIN_TOKEN_PROPERTY: 'MUNDIAL_ADMIN_TOKEN'
+  ADMIN_TOKEN_PROPERTY: 'MUNDIAL_ADMIN_TOKEN',
+  PUBLIC_SYNC_LAST_PROPERTY: 'MUNDIAL_LAST_PUBLIC_SYNC_MS',
+  PUBLIC_SYNC_MINUTES: 10
 };
 
 var SHEET_HEADERS = {

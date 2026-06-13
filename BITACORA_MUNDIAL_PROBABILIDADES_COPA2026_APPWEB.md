@@ -1,5 +1,138 @@
 # Bitacora Mundial Probabilidades Copa 2026 Appweb
 
+## 2026-06-13 06:08
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: Proyecto academico publico
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.2.9`
+
+### Objetivo de la intervencion
+
+Cerrar la publicacion de la vista didactica `0.2.9`, verificar la app publica,
+dejar poblada la hoja online y documentar el estado real del backend GAS.
+
+### Diagnostico inicial
+
+* GitHub Pages aun no habia sido verificado publicamente luego del rebase.
+* La hoja online mostraba `#REF!` al usar `IMPORTDATA` porque Google Sheets
+  bloqueaba importaciones externas hasta autorizar acceso.
+* El Web App GAS mantenia el bloqueo anonimo `403 Acceso denegado`, consistente
+  con intervenciones anteriores.
+
+### Acciones realizadas
+
+* Se completo el rebase sobre `origin/main` y se publicaron los cambios en GitHub.
+* Se verifico GitHub Pages con navegador real en desktop y movil.
+* Se agregaron clases semanticas de estado a los nodos del mapa:
+  `is-completed`, `is-estimated` e `is-pending`.
+* Se conectaron ocho pestanas de la hoja con CSV publicos de `data/sheets/`.
+* Se habilito `importFunctionsExternalUrlAccessAllowed=true` en la hoja para
+  permitir `IMPORTDATA` sin confirmacion manual.
+* Se formatearon columnas de fecha y marcador historico para evitar numeros
+  seriales visibles.
+* Se agrego en GAS la accion `sync_public`, con bloqueo y ventana minima entre
+  ejecuciones, para futura sincronizacion controlada desde JSON publico.
+* Se empujo GAS y se creo version `13`; el deployment principal fue apuntado a
+  `@13`.
+
+### Archivos modificados
+
+* `assets/js/app.js`
+* `gas/Code.gs`
+* `gas/Config.gs`
+* `README.md`
+* `docs/manual_tecnico.md`
+* `BITACORA_MUNDIAL_PROBABILIDADES_COPA2026_APPWEB.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+git rebase --continue
+git push origin main
+clasp push -f
+clasp version "v0.2.9 didactica mapa y sync_public"
+clasp deploy --deploymentId AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g --versionNumber 13 --description "v0.2.9 didactica mapa sync_public"
+```
+
+### Resultados verificados
+
+* GitHub Pages sirve `app_version=0.2.9` y `data_version=wc26-20260613T094319z`.
+* Datos publicos: 48 equipos, 1248 jugadores, 104 partidos y 72 pronosticos.
+* CSV publicos verificados con HTTP 200:
+  `equipos.csv`, `jugadores.csv`, `partidos.csv`, `pronosticos.csv`,
+  `historico_copas.csv`, `historico_paises.csv`, `historico_partidos.csv` y
+  `historico_goleadores.csv`.
+* Prueba publica desktop:
+  72 celdas `prob-triplet-cell`, tooltip de `Probabilidad 1 / X / 2`, 12
+  tarjetas de grupo, 104 nodos de mapa, 6 columnas de eliminatorias, 4 nodos
+  finalizados, 68 estimados y 32 pendientes.
+* Prueba publica movil `390px`:
+  `bodyOverflow=0`, 104 nodos, fuente de nodo `17px`, primer nodo `161px`.
+* Hoja online:
+  `EQUIPOS!A1:Q6`, `JUGADORES!A1:L6`, `PARTIDOS!A1:L6`,
+  `PRONOSTICOS!A1:J6`, `HISTORICO_PARTIDOS!A1:J6` e
+  `HISTORICO_GOLEADORES!A1:G6` muestran datos reales.
+* Formato de `PARTIDOS.date` verificado como `2026-06-11`.
+* Formato de `HISTORICO_PARTIDOS.date` y `score` verificado como
+  `1930-07-13` y `4-1`.
+
+### Pruebas realizadas
+
+* `node --check assets\js\app.js`: correcto.
+* Validacion publica con Playwright desktop y movil: correcta.
+* Lecturas de Google Sheets por conector: correctas luego de habilitar acceso
+  externo y formatear columnas.
+* Prueba anonima de todos los deployments GAS listados: `403 Prohibido`.
+
+### Errores o incidentes
+
+* `IMPORTDATA` devolvio `#REF!` hasta habilitar
+  `importFunctionsExternalUrlAccessAllowed`.
+* `IMPORTDATA` interpreto fechas y marcadores historicos como numeros seriales;
+  se corrigio visualmente con formato de columnas.
+* `clasp run syncFromGithub` siguio bloqueado: el proyecto no esta desplegado
+  como API executable con un Cloud Project estandar compartido.
+* El Web App GAS `AKfycbywq...` queda desplegado en `@13`, pero anonimamente
+  responde `403 Acceso denegado`.
+
+### Soluciones aplicadas
+
+* GitHub Pages queda como superficie publica operativa y validada.
+* Google Sheets queda poblado mediante CSV publicos auditables, con permiso
+  externo activado y formatos aplicados.
+* GAS queda preparado con `sync_public`, pero no se usa como dependencia del
+  frontend hasta corregir permisos anonimos.
+
+### Pendientes
+
+* Desde la cuenta propietaria o una cuenta con permisos completos, abrir Apps
+  Script y re-publicar el Web App con acceso `Anyone`/`Anyone anonymous`.
+* Si se requiere `clasp run`, asociar el proyecto Apps Script a un Cloud Project
+  estandar, habilitar Apps Script API y desplegar como API executable.
+* Decidir si la hoja debe conservar formulas `IMPORTDATA` vivas o si se desea
+  reemplazarlas periodicamente por valores congelados.
+
+### Riesgos
+
+* La hoja depende de `IMPORTDATA`; si GitHub Pages cambia de URL o Google cambia
+  politicas de importacion, puede volver a requerir intervencion.
+* El backend GAS no debe anunciarse como operativo publico hasta que `health`
+  responda anonimamente con JSON.
+
+### Recomendaciones
+
+* Mantener `assets/js/config.js` sin `gasExecUrl` mientras GAS siga en `403`.
+* Usar la hoja como respaldo operativo visible y la app como experiencia publica
+  principal.
+* Evaluar una fuente licenciada de eventos 2026 en vivo antes de integrar pases,
+  tiros al arco u otros datos finos al modelo bayesiano.
+
 ## 2026-06-13 05:39
 
 ### Proyecto

@@ -69,6 +69,9 @@ academicos verificables.
 8. Se publican CSV en `data/sheets/` para lectura desde Google Sheets.
 9. GAS puede ejecutar `syncFromGithub()` para copiar el mismo estado a Sheets
    cuando el token administrativo y permisos del Web App esten configurados.
+10. Como respaldo operativo, la hoja puede leer los CSV por `IMPORTDATA` desde
+    GitHub Pages. Para que funcione sin `#REF!`, el libro debe tener
+    `importFunctionsExternalUrlAccessAllowed=true`.
 
 ## Registro y visitas
 
@@ -92,7 +95,10 @@ el frontend puede enviar eventos JSONP con `action=visit`.
 - `VISITAS`
 
 Mientras el token administrativo GAS no este configurado, la hoja puede leer
-los CSV publicos con formulas `IMPORTDATA` apuntando a GitHub Pages.
+los CSV publicos con formulas `IMPORTDATA` apuntando a GitHub Pages. En la hoja
+`FUTBOL_PROBABILIDADES`, se debe habilitar el acceso externo para funciones de
+importacion y formatear explicitamente fechas/marcadores historicos para evitar
+que Google Sheets muestre numeros seriales en columnas como `date` o `score`.
 
 ## Validaciones minimas
 
@@ -115,5 +121,8 @@ Luego verificar en navegador:
 No se publican tokens ni credenciales en el frontend. La vista publica solo lee
 JSON abierto. Las acciones de sincronizacion sobre Sheets deben ejecutarse desde
 Apps Script autorizado o con token administrativo guardado en Script Properties.
+La accion `sync_public` de GAS solo vuelve a copiar el JSON publico fijo del
+repositorio, usa bloqueo de script y aplica una ventana minima entre ejecuciones;
+no debe usarse para recibir cargas arbitrarias de usuarios.
 El registro sin password no debe usarse para proteger datos sensibles; solo
 habilita una experiencia publica personalizada.
