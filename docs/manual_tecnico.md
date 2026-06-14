@@ -18,11 +18,12 @@ pronosticos bayesianos de la Copa Mundial 2026.
 
 ## Capa visual
 
-La version `0.2.16` restringe `Visitas` y `Auditoria` a las cuentas
-administrativas definidas en `assets/js/config.js`, normaliza perfiles cargados
-desde `localStorage` para que un rol `admin` manipulado no baste por si solo y
-muestra un aviso operativo cuando GAS no tiene Web App anonimo validado. Mantiene
-el control visible `Vista` para ajustar el modo de lectura entre `Normal`,
+La version `0.2.17` conecta el frontend publico con el Web App GAS validado
+para registrar visitas en Google Sheets. Mantiene la restriccion de `Visitas`
+y `Auditoria` a las cuentas administrativas definidas en `assets/js/config.js`,
+normaliza perfiles cargados desde `localStorage` para que un rol `admin`
+manipulado no baste por si solo y muestra un aviso operativo si GAS falla.
+Mantiene el control visible `Vista` para ajustar el modo de lectura entre `Normal`,
 `Comoda` y `Grande`, el boton visible para limpiar todos los filtros activos,
 la estimacion permanente bajo `Ruta del modelo`, la figura didactica del flujo
 bayesiano, la vista `Metodologia` completa, multifiltros globales desde
@@ -94,9 +95,13 @@ El frontend usa `localStorage` para guardar un perfil local sin password bajo
 visitas y trazabilidad educativa, no autenticacion fuerte.
 
 Las estadisticas locales se guardan en `mundialProbabilidades.visits.v1`:
-visitas totales, primer ingreso, ultimo ingreso y conteo por vista. Si
-`APP_CONFIG.gasExecUrl` se configura con un Web App anonimo realmente operativo,
-el frontend puede enviar eventos JSONP con `action=visit`.
+visitas totales, primer ingreso, ultimo ingreso y conteo por vista. Desde
+`0.2.17`, `APP_CONFIG.gasExecUrl` apunta al Web App anonimo validado y el
+frontend envia eventos JSONP con `action=visit`.
+
+Endpoint activo:
+
+`https://script.google.com/macros/s/AKfycbxtuAbgT4K1ORsfs5WkPmKf2wnN4ygf0MX65xjZ_VCjGujtH-qwV6rzwDSqS4Cc9kfC7Q/exec`
 
 Desde `0.2.16`, la vista detallada de visitas queda visible solo para usuarios
 administrativos permitidos en `APP_CONFIG.adminUsernames`. Un usuario comun que
@@ -120,14 +125,14 @@ los CSV publicos con formulas `IMPORTDATA` apuntando a GitHub Pages. En la hoja
 importacion y formatear explicitamente fechas/marcadores historicos para evitar
 que Google Sheets muestre numeros seriales en columnas como `date` o `score`.
 
-En la intervencion `0.2.16`, GAS fue actualizado con `clasp push -f`. La URL
-versionada `@18` sigue devolviendo `403 Prohibido`. El deployment `@HEAD`
-responde HTTP `200`, pero devuelve HTML de error de Apps Script, no JSON/JSONP:
-"No cuentas con el permiso necesario para acceder al documento solicitado". Una
-implementacion diagnostica nueva `@19` tambien devolvio `403 Prohibido`. Por
-tanto el frontend mantiene `gasExecUrl: ""` hasta que el Web App quede accesible
-anonimamente y se verifique una escritura real en `VISITAS`. La hoja `VISITAS`
-existe y, al 2026-06-14 15:30 America/Asuncion, contenia solo la cabecera.
+En la intervencion `0.2.17`, el deployment
+`AKfycbxtuAbgT4K1ORsfs5WkPmKf2wnN4ygf0MX65xjZ_VCjGujtH-qwV6rzwDSqS4Cc9kfC7Q`
+fue verificado anonimamente:
+
+- `/exec?action=health` devuelve JSON `ok:true`;
+- `/exec?action=health&callback=cb` devuelve JSONP;
+- `/exec?action=visit&callback=cb...` devuelve `ok:true`;
+- `VISITAS!A2:K2` recibio la fila de prueba `codex_manual_test`.
 
 ## Validaciones minimas
 

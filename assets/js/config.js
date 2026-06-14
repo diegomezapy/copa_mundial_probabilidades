@@ -1,10 +1,11 @@
 window.APP_CONFIG = {
   appName: "Copa Mundial 2026 - Probabilidades Bayesianas",
-  appVersion: "0.2.16",
+  appVersion: "0.2.17",
   buildDate: "2026-06-14",
   dataUrl: "data/worldcup2026_latest.json",
   sourcesUrl: "data/sources_manifest.json",
-  gasExecUrl: "",
+  gasExecUrl:
+    "https://script.google.com/macros/s/AKfycbxtuAbgT4K1ORsfs5WkPmKf2wnN4ygf0MX65xjZ_VCjGujtH-qwV6rzwDSqS4Cc9kfC7Q/exec",
   adminUsernames: ["diegomezapy", "dmeza.py"],
   adminViews: ["visitas", "auditoria"],
   spreadsheetId: "1k_zmucPFA9A7pyE7Y6ZZgb-c4K3UTlp6YknpovCv5pQ",
@@ -12,5 +13,5 @@ window.APP_CONFIG = {
   githubRawData:
     "https://raw.githubusercontent.com/diegomezapy/copa_mundial_probabilidades/main/data/worldcup2026_latest.json",
   publicUrl: "https://diegomezapy.github.io/copa_mundial_probabilidades/",
-  cacheName: "mundial-probabilidades-v0-2-16"
+  cacheName: "mundial-probabilidades-v0-2-17"
 };

@@ -18,10 +18,11 @@ certeza; muestra probabilidades, supuestos, limitaciones y trazabilidad de datos
 
 ## Version actual
 
-`0.2.16` restringe las vistas `Visitas` y `Auditoria` a las cuentas
-administrativas definidas en `assets/js/config.js`, muestra el estado real del
-backend cuando GAS aun no tiene acceso anonimo validado y refuerza la escritura
-de cabeceras en Sheets antes de registrar visitas o pronosticos. Mantiene el
+`0.2.17` conecta el frontend publico con el Web App GAS ya validado para
+registrar visitas en la hoja `VISITAS`. Mantiene la restriccion de las vistas
+`Visitas` y `Auditoria` a las cuentas administrativas definidas en
+`assets/js/config.js`, y el refuerzo de cabeceras en Sheets antes de registrar
+visitas o pronosticos. Mantiene el
 boton visible `Vista`, el boton para limpiar filtros, la estimacion permanente
 bajo `Ruta del modelo`, la figura didactica bayesiana, la vista `Metodologia`,
 multifiltros globales, controles de zoom/foco, imagenes generadas, definiciones
@@ -72,10 +73,13 @@ Comandos operativos:
 clasp push -f
 ```
 
-Para produccion, usar el deployment `@HEAD` configurado manualmente en Apps
-Script con acceso **Cualquier persona** y ejecutar solo `clasp push -f`. No
-escribir `gasExecUrl` en `assets/js/config.js` hasta que
-`/exec?action=health&callback=cb` responda JSONP real, no HTML de error.
+El frontend publico usa el Web App validado:
+
+`https://script.google.com/macros/s/AKfycbxtuAbgT4K1ORsfs5WkPmKf2wnN4ygf0MX65xjZ_VCjGujtH-qwV6rzwDSqS4Cc9kfC7Q/exec`
+
+Para mantener produccion, no cambiar `gasExecUrl` hasta que
+`/exec?action=health&callback=cb` responda JSONP real y `action=visit` escriba
+una fila comprobada en `VISITAS`.
 
 Funciones manuales relevantes desde el editor de Apps Script:
 
@@ -99,18 +103,13 @@ antes de escribir su URL en `assets/js/config.js`.
 
 Estado operativo reciente:
 
-- `clasp push -f` fue ejecutado correctamente para `0.2.16`.
-- El deployment versionado `@18` devuelve `403 Prohibido`.
-- El deployment `@HEAD` devuelve HTTP `200`, pero el cuerpo es HTML de error de
-  Apps Script: "No cuentas con el permiso necesario para acceder al documento
-  solicitado". No es un endpoint JSON/JSONP operativo.
-- Una implementacion diagnostica nueva `@19`
+- El deployment
   (`AKfycbxtuAbgT4K1ORsfs5WkPmKf2wnN4ygf0MX65xjZ_VCjGujtH-qwV6rzwDSqS4Cc9kfC7Q`)
-  tambien devolvio `403 Prohibido`.
-- La hoja `VISITAS` existe y conserva solo la cabecera; no habia visitas
-  remotas registradas al 2026-06-14 15:30 America/Asuncion.
-- Por seguridad, `assets/js/config.js` conserva `gasExecUrl: ""`; las visitas
-  siguen contando localmente hasta que el Web App quede publico y verificado.
+  responde `health` como JSON y JSONP.
+- La prueba manual `action=visit` devolvio `ok:true`.
+- La hoja `VISITAS` recibio la fila de prueba `codex_manual_test` en
+  `VISITAS!A2:K2`.
+- `assets/js/config.js` ya apunta a ese Web App desde `0.2.17`.
 
 ## Automatizacion de datos
 

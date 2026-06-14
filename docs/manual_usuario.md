@@ -99,6 +99,10 @@ Los detalles de `Visitas` y `Auditoria` solo se muestran a las cuentas
 administrativas configuradas por el proyecto. Para usuarios comunes, la app
 mantiene la experiencia publica y redirige esas vistas a `Resumen`.
 
+Desde la version `0.2.17`, los ingresos y cambios de vista tambien se envian al
+backend GAS validado para registrar trazabilidad basica en la hoja operativa
+`VISITAS`.
+
 ## Filtros
 
 El panel lateral permite combinar:

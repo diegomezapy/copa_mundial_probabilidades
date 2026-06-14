@@ -4044,3 +4044,99 @@ node tmp\admin-access-check.js
   * `index.html`: `0.2.16`.
 * Lectura final de `VISITAS!A1:K5`: continua solo la cabecera, consistente con
   el bloqueo GAS pendiente.
+
+## 2026-06-14 16:07
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas.
+* Cliente o institucion: FACEN / uso academico publico.
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`.
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`.
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`.
+* Responsable: Codex.
+* Version: `0.2.17`.
+
+### Objetivo de la intervencion
+
+* Conectar la app publica al deployment GAS que el usuario habilito para
+  cualquier usuario.
+* Verificar que `action=visit` escribe realmente en la hoja `VISITAS`.
+
+### Diagnostico inicial
+
+* El deployment
+  `AKfycbxtuAbgT4K1ORsfs5WkPmKf2wnN4ygf0MX65xjZ_VCjGujtH-qwV6rzwDSqS4Cc9kfC7Q`
+  ya respondia publicamente.
+* `assets/js/config.js` seguia con `gasExecUrl: ""`, por lo que los navegadores
+  de usuarios no estaban enviando eventos al backend.
+
+### Acciones realizadas
+
+* Se probo `health` en JSON y JSONP.
+* Se ejecuto una llamada manual `action=visit` con usuario
+  `codex_manual_test`.
+* Se confirmo la fila nueva en `VISITAS!A2:K2`.
+* Se escribio el endpoint GAS validado en `assets/js/config.js`.
+* Se actualizo version/cache a `0.2.17`.
+* Se actualizaron README, manual tecnico y manual de usuario.
+
+### Archivos modificados
+
+* `assets/js/config.js`
+* `service-worker.js`
+* `index.html`
+* `README.md`
+* `docs/manual_tecnico.md`
+* `docs/manual_usuario.md`
+* `BITACORA_MUNDIAL_PROBABILIDADES_COPA2026_APPWEB.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+Invoke-WebRequest https://script.google.com/macros/s/AKfycbxtuAbgT4K1ORsfs5WkPmKf2wnN4ygf0MX65xjZ_VCjGujtH-qwV6rzwDSqS4Cc9kfC7Q/exec?action=health
+Invoke-WebRequest https://script.google.com/macros/s/AKfycbxtuAbgT4K1ORsfs5WkPmKf2wnN4ygf0MX65xjZ_VCjGujtH-qwV6rzwDSqS4Cc9kfC7Q/exec?action=health&callback=cb
+Invoke-WebRequest https://script.google.com/macros/s/AKfycbxtuAbgT4K1ORsfs5WkPmKf2wnN4ygf0MX65xjZ_VCjGujtH-qwV6rzwDSqS4Cc9kfC7Q/exec?action=visit&callback=cb...
+```
+
+### Resultados verificados
+
+* `health` JSON: `{"ok":true,...,"version":"0.2.16"}`.
+* `health` JSONP: `cb({"ok":true,...});`.
+* `visit` JSONP: `cb({"ok":true,"visit":{...}});`.
+* `VISITAS!A1:K10` contiene cabecera y fila:
+  `2026-06-14T20:00:52.525Z`, `codex_manual_test`,
+  `manual_endpoint_test`, `resumen`, `0.2.16`, `manual-test`.
+
+### Pruebas realizadas
+
+* HTTP anonimo contra endpoint GAS.
+* Lectura de metadata y rango acotado de Google Sheets.
+
+### Errores o incidentes
+
+* No habia error en Sheets ni en GAS luego de habilitar el deployment; faltaba
+  conectar `gasExecUrl` en el frontend publicado.
+
+### Soluciones aplicadas
+
+* Frontend conectado al Web App validado.
+* Cache de PWA incrementada a `mundial-probabilidades-v0-2-17`.
+
+### Pendientes
+
+* Publicar en GitHub Pages y verificar que `assets/js/config.js` publico muestre
+  el endpoint GAS y `0.2.17`.
+* Abrir la app publica, registrar un usuario de prueba y confirmar una nueva
+  fila real de navegador en `VISITAS`.
+
+### Riesgos
+
+* El deployment GAS versionado puede quedar obsoleto si se cambia codigo backend
+  sin redeploy. Para cambios backend, volver a probar `health`, `visit` y la
+  fila en Sheets antes de publicar `gasExecUrl`.
+
+### Recomendaciones
+
+* Mantener una prueba de visita manual antes de cada release que toque GAS o
+  `config.js`.
