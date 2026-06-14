@@ -3617,3 +3617,85 @@ python scripts\create_social_gif_from_video.py
 
 * Cuando el usuario pida "sin inventar imagenes", usar solo frames del video o
   captura indicada, y documentar explicitamente la regla de fuente.
+
+## 2026-06-14 14:08
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas.
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`.
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`.
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`.
+* Responsable: Codex.
+* Version de app: `0.2.15`.
+
+### Objetivo de la intervencion
+
+Registrar la publicacion y validacion publica del GIF de 14 segundos generado
+desde el video real `screen-capture.webm`.
+
+### Diagnostico inicial
+
+* El primer intento de descarga desde GitHub Pages devolvio `404`, porque Pages
+  todavia no habia procesado el nuevo archivo.
+* El archivo si estaba presente en `origin/main` y respondia por
+  `raw.githubusercontent.com`.
+
+### Acciones realizadas
+
+* Se confirmo presencia del GIF y del script en `origin/main`.
+* Se verifico que el GIF responde por `raw.githubusercontent.com`.
+* Se espero el procesamiento de GitHub Pages.
+* Se descargo el GIF desde la URL publica con cache-busting.
+* Se verifico el archivo descargado con Pillow.
+
+### Archivos modificados
+
+* `BITACORA_MUNDIAL_PROBABILIDADES_COPA2026_APPWEB.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+git ls-tree -r -l origin/main assets/social/mundial_probabilidades_screen_capture_14s.gif
+Invoke-WebRequest -UseBasicParsing https://diegomezapy.github.io/copa_mundial_probabilidades/assets/social/mundial_probabilidades_screen_capture_14s.gif?v=20260614-1406 -OutFile tmp\public_mundial_probabilidades_screen_capture_14s.gif
+```
+
+### Resultados verificados
+
+* URL publica del GIF:
+  `https://diegomezapy.github.io/copa_mundial_probabilidades/assets/social/mundial_probabilidades_screen_capture_14s.gif`
+* Descarga publica: correcta.
+* Frames: 140.
+* Duracion: 14.000 ms.
+* Velocidad: 10 fps.
+* Tamano: 960 x 431 px.
+* Peso: 7.316.348 bytes, aproximadamente 6.98 MB.
+
+### Pruebas realizadas
+
+* Verificacion de presencia en `origin/main`.
+* Verificacion de URL publica con cache-busting.
+* Verificacion local del archivo descargado desde GitHub Pages con Pillow.
+
+### Errores o incidentes
+
+* GitHub Pages tardo cerca de un minuto en publicar el asset nuevo.
+
+### Soluciones aplicadas
+
+* Reintento con espera y cache-busting antes de declarar fallo real.
+
+### Pendientes
+
+* Ninguno para esta pieza.
+
+### Riesgos
+
+* Si el WebM fuente se elimina de la carpeta local ignorada, el GIF publicado
+  permanece disponible, pero no se podra regenerar identicamente desde otro
+  equipo sin recuperar el video fuente.
+
+### Recomendaciones
+
+* Para piezas derivadas de video real, verificar publicamente el GIF final y
+  conservar el video fuente local o en Drive operativo.
