@@ -4125,10 +4125,8 @@ Invoke-WebRequest https://script.google.com/macros/s/AKfycbxtuAbgT4K1ORsfs5WkPmK
 
 ### Pendientes
 
-* Publicar en GitHub Pages y verificar que `assets/js/config.js` publico muestre
-  el endpoint GAS y `0.2.17`.
-* Abrir la app publica, registrar un usuario de prueba y confirmar una nueva
-  fila real de navegador en `VISITAS`.
+* Sin pendientes para la conexion inicial de visitas. Queda como monitoreo:
+  revisar periodicamente `VISITAS` y `LOG`.
 
 ### Riesgos
 
@@ -4140,3 +4138,24 @@ Invoke-WebRequest https://script.google.com/macros/s/AKfycbxtuAbgT4K1ORsfs5WkPmK
 
 * Mantener una prueba de visita manual antes de cada release que toque GAS o
   `config.js`.
+
+### Cierre de despliegue y validacion publica
+
+* Commit publicado: `08cfedb` (`fix: conectar visitas al GAS validado`).
+* GitHub Pages verificado con cache-busting:
+  * `assets/js/config.js`: `0.2.17`,
+    `AKfycbxtuAbgT4K1ORsfs5WkPmKf2wnN4ygf0MX65xjZ_VCjGujtH-qwV6rzwDSqS4Cc9kfC7Q`,
+    `mundial-probabilidades-v0-2-17`.
+  * `service-worker.js`: `mundial-probabilidades-v0-2-17`.
+  * `index.html`: `0.2.17`.
+* Prueba con navegador headless sobre la URL publica:
+  `https://diegomezapy.github.io/copa_mundial_probabilidades/?view=resumen&test=public-app-visit-0217`.
+* Resultado en app publica:
+  * `window.APP_CONFIG.appVersion`: `0.2.17`.
+  * `window.APP_CONFIG.gasExecUrl`: deployment GAS validado.
+  * Usuario de prueba: `public_app_test`.
+* Lectura final de `VISITAS!A1:K20`:
+  * Fila `codex_manual_test`: llamada manual `0.2.16`.
+  * Fila `codex_config_test`: llamada manual `0.2.17`.
+  * Fila `public_app_test` / `session_start`: generada por la app publica.
+  * Fila `public_app_test` / `view`: generada por la app publica.
