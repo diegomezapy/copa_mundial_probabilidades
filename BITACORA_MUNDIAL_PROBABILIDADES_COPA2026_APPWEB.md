@@ -4032,3 +4032,15 @@ node tmp\admin-access-check.js
   `VISITAS`.
 * Mantener `adminUsernames` minimo y explicito; actualmente se permiten
   `diegomezapy` y `dmeza.py`.
+
+### Cierre de despliegue
+
+* Commit generado: `aa33ce6` (`fix: restringir visitas admin y documentar bloqueo GAS`).
+* Push realizado a `origin/main`.
+* GitHub Pages verificado con cache-busting:
+  * `assets/js/config.js`: `0.2.16`, `adminUsernames`,
+    `mundial-probabilidades-v0-2-16`.
+  * `service-worker.js`: `mundial-probabilidades-v0-2-16`.
+  * `index.html`: `0.2.16`.
+* Lectura final de `VISITAS!A1:K5`: continua solo la cabecera, consistente con
+  el bloqueo GAS pendiente.
