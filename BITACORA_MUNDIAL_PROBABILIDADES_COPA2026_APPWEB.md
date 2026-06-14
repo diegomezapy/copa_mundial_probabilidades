@@ -4159,3 +4159,112 @@ Invoke-WebRequest https://script.google.com/macros/s/AKfycbxtuAbgT4K1ORsfs5WkPmK
   * Fila `codex_config_test`: llamada manual `0.2.17`.
   * Fila `public_app_test` / `session_start`: generada por la app publica.
   * Fila `public_app_test` / `view`: generada por la app publica.
+
+## 2026-06-14 17:13
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: FACEN-UNA / app academica publica
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Responsable: Codex
+* Version: `0.2.18`
+
+### Objetivo de la intervencion
+
+* Hacer visible la version de la app en la barra superior.
+* Agregar un boton claro para actualizar la app cuando un navegador o telefono
+  mantenga una version anterior en cache.
+
+### Diagnostico inicial
+
+* La app mostraba la version solo en el footer (`v0.2.17`), poco visible en
+  telefonos y PWA.
+* Existia control `Vista` para legibilidad, pero no habia accion visible para
+  forzar limpieza de cache o actualizacion del service worker.
+
+### Acciones realizadas
+
+* Se actualizo la version frontend a `0.2.18`.
+* Se agrego `Version 0.2.18` en la barra superior.
+* Se agrego el boton `Actualizar app`.
+* El boton registra evento `app_refresh` cuando hay usuario local activo,
+  solicita `registration.update()`, borra caches `mundial-probabilidades-*` y
+  recarga la vista actual con parametros de cache-busting.
+* Se actualizo el cache PWA a `mundial-probabilidades-v0-2-18`.
+* Se actualizaron README, manual tecnico y manual de usuario.
+
+### Archivos modificados
+
+* `index.html`
+* `assets/js/config.js`
+* `assets/js/app.js`
+* `assets/css/styles.css`
+* `service-worker.js`
+* `README.md`
+* `docs/manual_tecnico.md`
+* `docs/manual_usuario.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+node --check assets\js\config.js
+node --check assets\js\app.js
+node --check service-worker.js
+git diff --check
+python -m http.server 8767
+git commit -m "feat: mostrar version y boton de actualizacion"
+git push origin HEAD:main
+```
+
+### Resultados verificados
+
+* Commit funcional publicado: `a08427d`.
+* Verificacion HTTP local: `index.html`, `config.js` y `service-worker.js`
+  contienen `0.2.18`, `refreshAppButton`, `Actualizar app` y
+  `mundial-probabilidades-v0-2-18`.
+* Chrome headless local renderizo el DOM con `Version 0.2.18`,
+  `Actualizar app` y footer `v0.2.18`.
+* GitHub raw sirvio `assets/js/config.js` con `0.2.18`.
+* GitHub Pages sirvio publicamente:
+  * `assets/js/config.js`: `0.2.18`.
+  * `index.html`: boton `Actualizar app`.
+  * `service-worker.js`: `mundial-probabilidades-v0-2-18`.
+
+### Pruebas realizadas
+
+* Validacion de sintaxis JavaScript con `node --check`.
+* Validacion de espacios finales con `git diff --check`.
+* Verificacion HTTP local con servidor temporal.
+* Verificacion DOM local con Chrome headless.
+* Verificacion HTTP publica con cache-busting en GitHub Pages.
+
+### Errores o incidentes
+
+* GitHub Pages sirvio inicialmente `0.2.17` por cache CDN (`max-age=600`).
+  El remoto y GitHub raw ya tenian `0.2.18`; al reintentar, Pages publico la
+  version correcta.
+
+### Soluciones aplicadas
+
+* Version visible como control permanente.
+* Boton de actualizacion con limpieza de caches PWA y recarga cache-busting.
+
+### Pendientes
+
+* Validar con usuario final en telefono real que el boton sea facil de tocar y
+  que la version se lea correctamente.
+
+### Riesgos
+
+* Usuarios con service worker muy antiguo podrian necesitar recargar una vez o
+  cerrar/abrir la PWA para recibir el boton por primera vez.
+
+### Recomendaciones
+
+* Mantener en cada release un incremento de `APP_CONFIG.appVersion`,
+  `APP_CONFIG.cacheName`, `CACHE_NAME` del service worker y version visible en
+  UI.
+* Verificar siempre GitHub Pages con cache-busting, no solo GitHub raw.
