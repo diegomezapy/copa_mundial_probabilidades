@@ -1,5 +1,46 @@
 # Piezas para redes
 
+## `mundial_probabilidades_screen_capture_14s_fast.gif`
+
+GIF acelerado generado directamente desde el video real de captura de pantalla:
+
+```text
+imagenes/screen-capture.webm
+```
+
+Esta es la variante recomendada cuando se quiere abarcar la mayor cantidad
+posible del video fuente dentro de 14 segundos. No usa storyboard, imagenes
+generadas, laminas externas ni capturas inventadas.
+
+Caracteristicas:
+
+* Duracion final: 14 segundos exactos.
+* Video fuente detectado: 2.560 frames, aproximadamente 84.48 segundos utiles.
+* Aceleracion aplicada: x6.03.
+* Cuadros finales: 280 frames a 20 cuadros por segundo.
+* Tamano: 960 x 431 px, respetando la relacion de aspecto del video.
+* Peso aproximado: 18.14 MB.
+* Fuente visual: `imagenes/screen-capture.webm`.
+* Regla de fuente: `video_frames_only_no_storyboard_no_generated_images`.
+
+Vista previa estatica:
+
+```text
+assets/social/mundial_probabilidades_screen_capture_14s_fast_preview.jpg
+```
+
+URL publica esperada:
+
+```text
+https://diegomezapy.github.io/copa_mundial_probabilidades/assets/social/mundial_probabilidades_screen_capture_14s_fast.gif
+```
+
+Regeneracion:
+
+```powershell
+python scripts\create_social_gif_from_video.py
+```
+
 ## `mundial_probabilidades_screen_capture_14s.gif`
 
 GIF generado directamente desde el video real de captura de pantalla:
@@ -35,7 +76,7 @@ https://diegomezapy.github.io/copa_mundial_probabilidades/assets/social/mundial_
 Regeneracion:
 
 ```powershell
-python scripts\create_social_gif_from_video.py
+python scripts\create_social_gif_from_video.py --output assets\social\mundial_probabilidades_screen_capture_14s.gif --preview assets\social\mundial_probabilidades_screen_capture_14s_preview.jpg --source-seconds 14 --fps 10 --max-colors 128 --preview-second 3
 ```
 
 ## `mundial_probabilidades_demo_15s_5fps_suave.gif`

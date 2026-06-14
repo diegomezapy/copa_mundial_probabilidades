@@ -3699,3 +3699,103 @@ Invoke-WebRequest -UseBasicParsing https://diegomezapy.github.io/copa_mundial_pr
 
 * Para piezas derivadas de video real, verificar publicamente el GIF final y
   conservar el video fuente local o en Drive operativo.
+
+## 2026-06-14 14:14
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas.
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`.
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`.
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`.
+* Responsable: Codex.
+* Version de app: `0.2.15`.
+
+### Objetivo de la intervencion
+
+Regenerar el GIF desde `imagenes/screen-capture.webm` a mayor velocidad y con
+mas frames por segundo, para abarcar la mayor cantidad posible del video fuente
+dentro de 14 segundos.
+
+### Diagnostico inicial
+
+* La primera version del GIF desde video usaba los primeros 14 segundos del
+  WebM a 10 fps.
+* El WebM contiene 2.560 frames, equivalentes a aproximadamente 84.48 segundos
+  utiles segun `ffprobe -count_frames`.
+* Para mostrar mas contenido sin inventar imagenes, se necesita comprimir el
+  tiempo del video, no agregar pantallas externas.
+
+### Acciones realizadas
+
+* Se actualizo `scripts/create_social_gif_from_video.py`.
+* El script ahora detecta frames y duracion util aproximada del video.
+* Por defecto, comprime todo el video detectable dentro de 14 segundos.
+* Se aumento la salida a 20 fps.
+* Se genero una variante nueva:
+  `mundial_probabilidades_screen_capture_14s_fast.gif`.
+* Se mantuvo la regla de fuente:
+  `video_frames_only_no_storyboard_no_generated_images`.
+
+### Archivos generados
+
+* `assets/social/mundial_probabilidades_screen_capture_14s_fast.gif`
+* `assets/social/mundial_probabilidades_screen_capture_14s_fast_preview.jpg`
+
+### Archivos modificados
+
+* `scripts/create_social_gif_from_video.py`
+* `assets/social/README.md`
+* `docs/PROMPTS_MUNDIAL_PROBABILIDADES_2026-06-12.md`
+* `BITACORA_MUNDIAL_PROBABILIDADES_COPA2026_APPWEB.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+ffprobe -v error -count_frames -select_streams v:0 -show_entries stream=nb_read_frames,width,height,avg_frame_rate,r_frame_rate,duration -of json "G:\Mi unidad\MUNDIAL_PROBABILIDADES\imagenes\screen-capture.webm"
+python -m py_compile scripts\create_social_gif_from_video.py
+python scripts\create_social_gif_from_video.py
+```
+
+### Resultados verificados
+
+* Video fuente detectado: 2.560 frames.
+* Duracion util aproximada del fuente: 84.48 segundos.
+* Duracion final del GIF: 14.000 ms.
+* Factor de aceleracion: x6.03.
+* Frames finales: 280.
+* Velocidad final: 20 fps.
+* Tamano: 960 x 431 px.
+* Peso: 19.021.850 bytes, aproximadamente 18.14 MB.
+* Paleta: 96 colores.
+
+### Pruebas realizadas
+
+* Compilacion Python del script: correcta.
+* Generacion reproducible con `python scripts\create_social_gif_from_video.py`.
+* Verificacion de frames, duracion, tamano y peso con Pillow.
+
+### Errores o incidentes
+
+* FFmpeg mantiene advertencias informativas sobre color no sRGB declarado en el
+  WebM; no impiden la generacion.
+
+### Soluciones aplicadas
+
+* Uso de `setpts=PTS/speed_factor` para acelerar el video fuente.
+* Uso de 20 fps y `-frames:v 280` para asegurar 14 segundos exactos.
+* Reduccion de paleta a 96 colores para contener el peso.
+
+### Pendientes
+
+* Publicar commit y verificar URL publica del GIF rapido.
+
+### Riesgos
+
+* El GIF rapido pesa mas que la variante de 10 fps porque contiene el doble de
+  frames.
+
+### Recomendaciones
+
+* Usar esta variante cuando se priorice mostrar recorrido completo del video.
+* Usar la variante de 10 fps si se prioriza menor peso de archivo.

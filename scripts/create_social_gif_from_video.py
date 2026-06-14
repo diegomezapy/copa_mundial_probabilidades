@@ -2,7 +2,9 @@
 
 This script does not use storyboard images, generated art, overlays, or
 synthetic frames. It trims the provided video to the requested duration and
-converts its actual frames to a GIF with an ffmpeg palette pipeline.
+converts its actual frames to a GIF with an ffmpeg palette pipeline. By default
+it compresses all readable source frames into a 14-second, 20 FPS GIF so the
+piece covers as much of the source capture as possible without invented images.
 """
 
 from __future__ import annotations
@@ -18,12 +20,13 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_INPUT = ROOT / "imagenes" / "screen-capture.webm"
-DEFAULT_OUTPUT = ROOT / "assets" / "social" / "mundial_probabilidades_screen_capture_14s.gif"
-DEFAULT_PREVIEW = ROOT / "assets" / "social" / "mundial_probabilidades_screen_capture_14s_preview.jpg"
+DEFAULT_OUTPUT = ROOT / "assets" / "social" / "mundial_probabilidades_screen_capture_14s_fast.gif"
+DEFAULT_PREVIEW = ROOT / "assets" / "social" / "mundial_probabilidades_screen_capture_14s_fast_preview.jpg"
 DEFAULT_DURATION_SECONDS = 14
-DEFAULT_FPS = 10
+DEFAULT_FPS = 20
 DEFAULT_WIDTH = 960
-DEFAULT_PREVIEW_SECOND = 3
+DEFAULT_PREVIEW_SECOND = 42
+DEFAULT_MAX_COLORS = 96
 
 
 def run(command: list[str]) -> None:
@@ -37,16 +40,27 @@ def tool_path(name: str) -> str:
     return path
 
 
+def parse_frame_rate(value: str) -> float:
+    if not value or value == "0/0":
+        return 0.0
+    if "/" in value:
+        numerator, denominator = value.split("/", 1)
+        denominator_value = float(denominator)
+        return float(numerator) / denominator_value if denominator_value else 0.0
+    return float(value)
+
+
 def probe_video(ffprobe: str, source: Path) -> dict[str, object]:
     result = subprocess.run(
         [
             ffprobe,
             "-v",
             "error",
+            "-count_frames",
             "-select_streams",
             "v:0",
             "-show_entries",
-            "stream=width,height,avg_frame_rate,r_frame_rate",
+            "stream=width,height,avg_frame_rate,r_frame_rate,nb_read_frames",
             "-of",
             "json",
             str(source),
@@ -58,11 +72,16 @@ def probe_video(ffprobe: str, source: Path) -> dict[str, object]:
     )
     data = json.loads(result.stdout)
     stream = data["streams"][0]
+    frame_rate = parse_frame_rate(stream.get("avg_frame_rate", "")) or parse_frame_rate(stream.get("r_frame_rate", ""))
+    frame_count = int(stream.get("nb_read_frames") or 0)
+    detected_seconds = frame_count / frame_rate if frame_count and frame_rate else 0.0
     return {
         "width": int(stream["width"]),
         "height": int(stream["height"]),
         "avg_frame_rate": stream.get("avg_frame_rate", ""),
         "r_frame_rate": stream.get("r_frame_rate", ""),
+        "nb_read_frames": frame_count,
+        "detected_seconds": round(detected_seconds, 3),
     }
 
 
@@ -99,6 +118,8 @@ def build_gif(
     fps: int,
     width: int,
     preview_second: int,
+    source_seconds: float | None,
+    max_colors: int,
 ) -> dict[str, object]:
     ffmpeg = tool_path("ffmpeg")
     ffprobe = tool_path("ffprobe")
@@ -111,24 +132,31 @@ def build_gif(
     source_meta = probe_video(ffprobe, source)
     height = target_height(int(source_meta["width"]), int(source_meta["height"]), width)
     frame_count = duration_seconds * fps
+    detected_seconds = float(source_meta.get("detected_seconds") or 0)
+    source_seconds_used = source_seconds if source_seconds and source_seconds > 0 else detected_seconds
+    if not source_seconds_used:
+        source_seconds_used = duration_seconds
+    speed_factor = max(1.0, source_seconds_used / duration_seconds)
     scale_filter = f"fps={fps},scale={width}:{height}:flags=lanczos,setsar=1"
     filter_complex = (
-        f"[0:v]{scale_filter},split[s0][s1];"
-        "[s0]palettegen=max_colors=128:stats_mode=diff[p];"
+        f"[0:v]setpts=PTS/{speed_factor:.6f},{scale_filter},split[s0][s1];"
+        f"[s0]palettegen=max_colors={max_colors}:stats_mode=diff[p];"
         "[s1][p]paletteuse=dither=bayer:bayer_scale=3:diff_mode=rectangle"
     )
 
-    run(
+    gif_command = [
+        ffmpeg,
+        "-y",
+        "-hide_banner",
+        "-loglevel",
+        "warning",
+        "-fflags",
+        "+genpts",
+    ]
+    if source_seconds and source_seconds > 0:
+        gif_command.extend(["-t", str(source_seconds)])
+    gif_command.extend(
         [
-            ffmpeg,
-            "-y",
-            "-hide_banner",
-            "-loglevel",
-            "warning",
-            "-fflags",
-            "+genpts",
-            "-t",
-            str(duration_seconds),
             "-i",
             str(source),
             "-filter_complex",
@@ -138,7 +166,9 @@ def build_gif(
             str(output),
         ]
     )
+    run(gif_command)
 
+    preview_at = min(preview_second, max(0, int(source_seconds_used) - 1))
     run(
         [
             ffmpeg,
@@ -147,7 +177,7 @@ def build_gif(
             "-loglevel",
             "warning",
             "-ss",
-            str(preview_second),
+            str(preview_at),
             "-i",
             str(source),
             "-frames:v",
@@ -168,6 +198,9 @@ def build_gif(
         "duration_seconds": duration_seconds,
         "fps": fps,
         "target_frames": frame_count,
+        "source_seconds_used": round(source_seconds_used, 3),
+        "speed_factor": round(speed_factor, 3),
+        "max_colors": max_colors,
         "gif": gif_metadata(output),
         "preview_meta": image_metadata(preview),
         "source_rule": "video_frames_only_no_storyboard_no_generated_images",
@@ -183,6 +216,13 @@ def main() -> None:
     parser.add_argument("--fps", type=int, default=DEFAULT_FPS, help="Frames per second.")
     parser.add_argument("--width", type=int, default=DEFAULT_WIDTH, help="Output width in pixels.")
     parser.add_argument("--preview-second", type=int, default=DEFAULT_PREVIEW_SECOND, help="Second used for preview frame.")
+    parser.add_argument(
+        "--source-seconds",
+        type=float,
+        default=0,
+        help="Source seconds to compress into the GIF. Use 0 to fit all readable source frames.",
+    )
+    parser.add_argument("--max-colors", type=int, default=DEFAULT_MAX_COLORS, help="Palette size for GIF generation.")
     args = parser.parse_args()
 
     result = build_gif(
@@ -193,6 +233,8 @@ def main() -> None:
         fps=args.fps,
         width=args.width,
         preview_second=args.preview_second,
+        source_seconds=args.source_seconds,
+        max_colors=args.max_colors,
     )
     print(json.dumps(result, indent=2, ensure_ascii=False))
 

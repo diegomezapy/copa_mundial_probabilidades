@@ -89,3 +89,5 @@ modelos multivariados de pronostico y modelos bayesianos.
   transiciones mas suaves para redes.
 - Usar el video `G:\Mi unidad\MUNDIAL_PROBABILIDADES\imagenes\screen-capture.webm`
   para crear un GIF de 14 segundos, sin inventar imagenes ni usar storyboard.
+- Regenerar el GIF desde el video a mayor velocidad y con mas cuadros por
+  segundo, de modo que entren mas secciones del WebM dentro de 14 segundos.
