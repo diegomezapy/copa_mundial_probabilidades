@@ -3342,3 +3342,85 @@ python scripts\create_social_gif.py
   fundidos entre escenas.
 * Mantener una variante GIF para compatibilidad y considerar MP4 cuando el peso
   sea una restriccion.
+
+## 2026-06-14 13:54
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas.
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`.
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`.
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`.
+* Responsable: Codex.
+* Version de app: `0.2.15`.
+
+### Objetivo de la intervencion
+
+Registrar la publicacion y validacion publica del GIF suave de 15 segundos.
+
+### Diagnostico inicial
+
+* El primer intento de descarga desde GitHub Pages devolvio `404`, porque Pages
+  todavia no habia procesado el nuevo archivo.
+* El archivo si estaba presente en `origin/main` y respondia por
+  `raw.githubusercontent.com`.
+
+### Acciones realizadas
+
+* Se confirmo que `origin/main` contiene
+  `assets/social/mundial_probabilidades_demo_15s_5fps_suave.gif`.
+* Se espero el procesamiento de GitHub Pages y se reintento con cache-busting.
+* Se descargo el GIF desde la URL publica de GitHub Pages.
+* Se verifico el archivo descargado con Pillow.
+
+### Archivos modificados
+
+* `BITACORA_MUNDIAL_PROBABILIDADES_COPA2026_APPWEB.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+git ls-tree -r -l origin/main assets/social/mundial_probabilidades_demo_15s_5fps_suave.gif
+Invoke-WebRequest -UseBasicParsing https://diegomezapy.github.io/copa_mundial_probabilidades/assets/social/mundial_probabilidades_demo_15s_5fps_suave.gif?v=20260614-1352 -OutFile tmp\public_mundial_probabilidades_demo_15s_5fps_suave.gif
+```
+
+### Resultados verificados
+
+* URL publica del GIF:
+  `https://diegomezapy.github.io/copa_mundial_probabilidades/assets/social/mundial_probabilidades_demo_15s_5fps_suave.gif`
+* Descarga publica: correcta.
+* Frames: 75.
+* Duracion: 15.000 ms.
+* Demora por frame: 200 ms.
+* Velocidad: 5 fps.
+* Tamano: 960 x 540 px.
+* Peso: 15.527.995 bytes, aproximadamente 14.81 MB.
+
+### Pruebas realizadas
+
+* Verificacion de presencia en `origin/main`.
+* Verificacion de URL publica con cache-busting.
+* Verificacion local del archivo descargado desde GitHub Pages con Pillow.
+
+### Errores o incidentes
+
+* GitHub Pages tardo cerca de un minuto en publicar el archivo nuevo.
+
+### Soluciones aplicadas
+
+* Reintento con espera y cache-busting antes de declarar fallo real.
+
+### Pendientes
+
+* Opcional: generar version MP4 liviana si se desea publicar en plataformas que
+  penalizan GIFs de mas de 10 MB.
+
+### Riesgos
+
+* Algunas redes pueden recomprimir o convertir automaticamente el GIF por su
+  peso.
+
+### Recomendaciones
+
+* Para assets grandes en GitHub Pages, verificar primero presencia en
+  `origin/main`, luego repetir la URL publica con cache-busting tras una espera.
