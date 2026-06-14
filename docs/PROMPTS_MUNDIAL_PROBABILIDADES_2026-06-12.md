@@ -87,3 +87,5 @@ modelos multivariados de pronostico y modelos bayesianos.
   un control visible de modo de vista/zoom.
 - Regenerar un GIF de 15 segundos con al menos 4 cuadros por segundo y
   transiciones mas suaves para redes.
+- Usar el video `G:\Mi unidad\MUNDIAL_PROBABILIDADES\imagenes\screen-capture.webm`
+  para crear un GIF de 14 segundos, sin inventar imagenes ni usar storyboard.

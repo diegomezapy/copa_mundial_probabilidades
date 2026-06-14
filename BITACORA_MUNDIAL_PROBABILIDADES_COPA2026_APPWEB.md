@@ -3514,3 +3514,106 @@ Select-String -Path "G:\Mi unidad\MANUAL_MAESTRO_FORMATOS_FUNCIONES_APPWEB\Manua
   controles de vista antes de agregar graficos avanzados.
 * Validar con capturas moviles y de escritorio que zoom y contenedores no
   produzcan solapamientos.
+
+## 2026-06-14 14:04
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas.
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`.
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`.
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`.
+* Responsable: Codex.
+* Version de app: `0.2.15`.
+
+### Objetivo de la intervencion
+
+Crear un GIF de 14 segundos usando exclusivamente el video real
+`imagenes/screen-capture.webm`, sin inventar imagenes, sin storyboard y sin
+laminas generadas.
+
+### Diagnostico inicial
+
+* El video fuente existe en `imagenes/screen-capture.webm`.
+* El archivo fuente esta ignorado por `.gitignore` bajo `imagenes/`, por lo que
+  no se debe versionar el video completo.
+* `ffmpeg` y `ffprobe` estan disponibles en el entorno.
+* El WebM no declara duracion en metadatos, pero contiene video H.264 de
+  1920 x 862 px y aproximadamente 30 fps.
+
+### Acciones realizadas
+
+* Se creo un script reproducible:
+  `scripts/create_social_gif_from_video.py`.
+* Se genero un GIF desde los frames del video con `ffmpeg`.
+* Se preservo la relacion de aspecto del video en salida de 960 x 431 px.
+* Se limito la salida a 140 frames a 10 fps para obtener 14 segundos exactos.
+* Se genero una vista previa estatica desde un frame del mismo video.
+
+### Archivos generados
+
+* `assets/social/mundial_probabilidades_screen_capture_14s.gif`
+* `assets/social/mundial_probabilidades_screen_capture_14s_preview.jpg`
+
+### Archivos modificados
+
+* `scripts/create_social_gif_from_video.py`
+* `assets/social/README.md`
+* `docs/PROMPTS_MUNDIAL_PROBABILIDADES_2026-06-12.md`
+* `BITACORA_MUNDIAL_PROBABILIDADES_COPA2026_APPWEB.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+ffprobe -v error -show_entries format=duration,size,bit_rate -show_entries stream=index,codec_type,codec_name,width,height,avg_frame_rate,r_frame_rate,duration -of json "G:\Mi unidad\MUNDIAL_PROBABILIDADES\imagenes\screen-capture.webm"
+python -m py_compile scripts\create_social_gif_from_video.py
+python scripts\create_social_gif_from_video.py
+```
+
+### Resultados verificados
+
+* Fuente: `imagenes/screen-capture.webm`.
+* Regla de fuente: `video_frames_only_no_storyboard_no_generated_images`.
+* GIF: 140 frames.
+* Duracion: 14.000 ms.
+* Velocidad: 10 fps.
+* Tamano: 960 x 431 px.
+* Peso: 7.316.348 bytes, aproximadamente 6.98 MB.
+* Vista previa: 960 x 431 px.
+
+### Pruebas realizadas
+
+* Compilacion Python del script: correcta.
+* Verificacion con Pillow de frames, duracion, tamano y peso.
+* Revision visual de la vista previa:
+  `assets/social/mundial_probabilidades_screen_capture_14s_preview.jpg`.
+
+### Errores o incidentes
+
+* Un primer intento con paleta externa genero un GIF de un solo frame por una
+  particularidad de FFmpeg con este WebM sin duracion declarada.
+* Se corrigio usando `filter_complex` con `palettegen` y `paletteuse` en una
+  misma cadena.
+* FFmpeg mostro advertencias informativas sobre color no sRGB declarado; no
+  impidieron la generacion ni agregaron imagenes externas.
+
+### Soluciones aplicadas
+
+* Conversion directa desde video con `ffmpeg`.
+* Limite explicito de frames con `-frames:v 140` para asegurar 14 segundos.
+* Script reproducible y documentacion separada de los GIFs generados con
+  storyboard.
+
+### Pendientes
+
+* Publicar commit y verificar URL publica del GIF en GitHub Pages.
+
+### Riesgos
+
+* El video fuente no esta versionado por estar en carpeta ignorada; si se desea
+  regenerar en otro equipo, debe conservarse localmente el WebM original.
+
+### Recomendaciones
+
+* Cuando el usuario pida "sin inventar imagenes", usar solo frames del video o
+  captura indicada, y documentar explicitamente la regla de fuente.

@@ -1,5 +1,43 @@
 # Piezas para redes
 
+## `mundial_probabilidades_screen_capture_14s.gif`
+
+GIF generado directamente desde el video real de captura de pantalla:
+
+```text
+imagenes/screen-capture.webm
+```
+
+Esta variante no usa storyboard, imagenes generadas, laminas externas ni
+capturas inventadas. Solo recorta y convierte los frames del video fuente.
+
+Caracteristicas:
+
+* Duracion: 14 segundos exactos.
+* Cuadros: 140 frames a 10 cuadros por segundo.
+* Tamano: 960 x 431 px, respetando la relacion de aspecto del video.
+* Peso aproximado: 6.98 MB.
+* Fuente visual: `imagenes/screen-capture.webm`.
+* Regla de fuente: `video_frames_only_no_storyboard_no_generated_images`.
+
+Vista previa estatica:
+
+```text
+assets/social/mundial_probabilidades_screen_capture_14s_preview.jpg
+```
+
+URL publica esperada:
+
+```text
+https://diegomezapy.github.io/copa_mundial_probabilidades/assets/social/mundial_probabilidades_screen_capture_14s.gif
+```
+
+Regeneracion:
+
+```powershell
+python scripts\create_social_gif_from_video.py
+```
+
 ## `mundial_probabilidades_demo_15s_5fps_suave.gif`
 
 GIF promocional actualizado para compartir la app publica **Copa Mundial 2026 -
