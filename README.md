@@ -18,17 +18,20 @@ certeza; muestra probabilidades, supuestos, limitaciones y trazabilidad de datos
 
 ## Version actual
 
-`0.2.17` conecta el frontend publico con el Web App GAS ya validado para
-registrar visitas en la hoja `VISITAS`. Mantiene la restriccion de las vistas
-`Visitas` y `Auditoria` a las cuentas administrativas definidas en
-`assets/js/config.js`, y el refuerzo de cabeceras en Sheets antes de registrar
-visitas o pronosticos. Mantiene el
-boton visible `Vista`, el boton para limpiar filtros, la estimacion permanente
-bajo `Ruta del modelo`, la figura didactica bayesiana, la vista `Metodologia`,
-multifiltros globales, controles de zoom/foco, imagenes generadas, definiciones
-`(i)`, CSV publicos, banderas SVG, fotos curadas con fuente/licencia, registro
-inicial, referencias, evidencia historica 1930-2022 y filtros por Copa, pais,
-jugador y posicion.
+`0.2.18` mantiene el frontend publico conectado con el Web App GAS validado para
+registrar visitas en la hoja `VISITAS` y agrega dos controles operativos
+visibles en la barra superior: `Version 0.2.18` y `Actualizar app`. El boton de
+actualizacion limpia caches PWA `mundial-probabilidades-*`, solicita actualizar
+el service worker y recarga la vista activa con cache-busting para reducir casos
+de telefonos que siguen mostrando una version anterior. Mantiene la restriccion
+de las vistas `Visitas` y `Auditoria` a las cuentas administrativas definidas en
+`assets/js/config.js`, el refuerzo de cabeceras en Sheets antes de registrar
+visitas o pronosticos, el boton visible `Vista`, el boton para limpiar filtros,
+la estimacion permanente bajo `Ruta del modelo`, la figura didactica bayesiana,
+la vista `Metodologia`, multifiltros globales, controles de zoom/foco, imagenes
+generadas, definiciones `(i)`, CSV publicos, banderas SVG, fotos curadas con
+fuente/licencia, registro inicial, referencias, evidencia historica 1930-2022 y
+filtros por Copa, pais, jugador y posicion.
 
 ## Fuentes
 
@@ -109,7 +112,8 @@ Estado operativo reciente:
 - La prueba manual `action=visit` devolvio `ok:true`.
 - La hoja `VISITAS` recibio la fila de prueba `codex_manual_test` en
   `VISITAS!A2:K2`.
-- `assets/js/config.js` ya apunta a ese Web App desde `0.2.17`.
+- `assets/js/config.js` ya apunta a ese Web App desde `0.2.17` y mantiene el
+  registro remoto en `0.2.18`.
 
 ## Automatizacion de datos
 

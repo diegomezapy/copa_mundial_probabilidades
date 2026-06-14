@@ -717,11 +717,39 @@ button:hover {
   filter: brightness(0.96);
 }
 
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
 .secondary-button,
 .ghost-button {
   background: var(--surface);
   color: var(--primary);
   border: 1px solid var(--line);
+}
+
+.version-pill {
+  min-width: 118px;
+  justify-content: center;
+  border-color: rgba(15, 90, 74, 0.34);
+  background: #ecfdf5;
+  color: var(--primary-2);
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.update-button {
+  min-width: 132px;
+  border-color: rgba(15, 90, 74, 0.38);
+  color: var(--primary-2);
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.update-button.is-updating {
+  background: #f0fdfa;
+  box-shadow: 0 10px 24px rgba(15, 90, 74, 0.13);
 }
 
 .reset-visible {
@@ -4016,6 +4044,11 @@ label {
 
   .view-scale-button {
     min-width: 142px;
+  }
+
+  .version-pill,
+  .update-button {
+    min-width: 136px;
   }
 
   html[data-view-scale="large"] .wall-match-row,

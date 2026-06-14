@@ -18,16 +18,19 @@ pronosticos bayesianos de la Copa Mundial 2026.
 
 ## Capa visual
 
-La version `0.2.17` conecta el frontend publico con el Web App GAS validado
-para registrar visitas en Google Sheets. Mantiene la restriccion de `Visitas`
-y `Auditoria` a las cuentas administrativas definidas en `assets/js/config.js`,
+La version `0.2.18` mantiene el frontend publico conectado con el Web App GAS
+validado para registrar visitas en Google Sheets y agrega version visible en la
+barra superior junto al boton `Actualizar app`. Ese boton solicita actualizar el
+service worker, borra caches PWA `mundial-probabilidades-*` y recarga la vista
+activa con parametros de cache-busting. Mantiene la restriccion de `Visitas` y
+`Auditoria` a las cuentas administrativas definidas en `assets/js/config.js`,
 normaliza perfiles cargados desde `localStorage` para que un rol `admin`
 manipulado no baste por si solo y muestra un aviso operativo si GAS falla.
-Mantiene el control visible `Vista` para ajustar el modo de lectura entre `Normal`,
-`Comoda` y `Grande`, el boton visible para limpiar todos los filtros activos,
-la estimacion permanente bajo `Ruta del modelo`, la figura didactica del flujo
-bayesiano, la vista `Metodologia` completa, multifiltros globales desde
-tablas/figuras/nodos y controles de zoom/foco para el mural del torneo en
+Mantiene el control visible `Vista` para ajustar el modo de lectura entre
+`Normal`, `Comoda` y `Grande`, el boton visible para limpiar todos los filtros
+activos, la estimacion permanente bajo `Ruta del modelo`, la figura didactica
+del flujo bayesiano, la vista `Metodologia` completa, multifiltros globales
+desde tablas/figuras/nodos y controles de zoom/foco para el mural del torneo en
 escritorio. Mantiene el set de imagenes generadas en `assets/img/generated/`,
 hero, iconos PWA, pelota animada, definiciones emergentes `(i)`, nodos
 rectangulares de grupos/partidos/etapas y exportaciones CSV publicas bajo
@@ -97,7 +100,9 @@ visitas y trazabilidad educativa, no autenticacion fuerte.
 Las estadisticas locales se guardan en `mundialProbabilidades.visits.v1`:
 visitas totales, primer ingreso, ultimo ingreso y conteo por vista. Desde
 `0.2.17`, `APP_CONFIG.gasExecUrl` apunta al Web App anonimo validado y el
-frontend envia eventos JSONP con `action=visit`.
+frontend envia eventos JSONP con `action=visit`. Desde `0.2.18`, el boton
+`Actualizar app` registra el evento `app_refresh` cuando existe usuario local,
+antes de limpiar cache y recargar la app.
 
 Endpoint activo:
 

@@ -305,10 +305,69 @@
     renderViewScaleButton();
   }
 
+  function renderVersionStatus() {
+    const version = window.APP_CONFIG?.appVersion || "s/d";
+    const buildDate = window.APP_CONFIG?.buildDate || "";
+    const cacheName = window.APP_CONFIG?.cacheName || "cache no configurado";
+    const label = `Version ${version}`;
+    const status = $("#versionStatus");
+    if (status) {
+      status.textContent = label;
+      status.title = `Build ${buildDate || "s/d"} · ${cacheName}`;
+      status.setAttribute("aria-label", `${label}. Build ${buildDate || "sin fecha"}.`);
+    }
+    const footer = $("#footerVersion");
+    if (footer) footer.textContent = `v${version}${buildDate ? ` · ${buildDate}` : ""}`;
+  }
+
   function cycleViewScale() {
     const currentIndex = VIEW_SCALE_OPTIONS.findIndex((item) => item.id === state.viewScale);
     const next = VIEW_SCALE_OPTIONS[(currentIndex + 1) % VIEW_SCALE_OPTIONS.length];
     applyViewScale(next.id, { persist: true });
+  }
+
+  async function refreshAppVersion() {
+    const button = $("#refreshAppButton");
+    const activeView = $(".view.active")?.id || new URLSearchParams(window.location.search).get("view") || "resumen";
+    if (button) {
+      button.disabled = true;
+      button.classList.add("is-updating");
+      button.setAttribute("aria-busy", "true");
+      button.textContent = "Actualizando...";
+    }
+    try {
+      await sendVisitEvent("app_refresh", activeView, { timeoutMs: 900 });
+      if ("serviceWorker" in navigator) {
+        const registration = await navigator.serviceWorker.getRegistration();
+        if (registration) await registration.update();
+      }
+      if ("caches" in window) {
+        const cacheName = window.APP_CONFIG?.cacheName || "";
+        const prefix = cacheName.split("-v")[0] || "mundial-probabilidades";
+        const keys = await caches.keys();
+        await Promise.all(
+          keys
+            .filter((key) => key === cacheName || key.startsWith(`${prefix}-`))
+            .map((key) => caches.delete(key))
+        );
+      }
+      await new Promise((resolve) => setTimeout(resolve, 180));
+      const url = new URL(window.location.href);
+      url.searchParams.set("view", sanitizeViewTarget(activeView));
+      url.searchParams.set("v", window.APP_CONFIG?.appVersion || Date.now().toString());
+      url.searchParams.set("refresh", Date.now().toString());
+      window.location.replace(url.toString());
+    } catch (error) {
+      console.warn("app refresh failed", error);
+      if (button) {
+        button.disabled = false;
+        button.classList.remove("is-updating");
+        button.removeAttribute("aria-busy");
+        button.textContent = "Actualizar app";
+      }
+      const dataStatus = $("#dataStatus");
+      if (dataStatus) dataStatus.textContent = "No se pudo actualizar automaticamente";
+    }
   }
 
   function createId(prefix) {
@@ -513,8 +572,8 @@
     writeJsonStorage(predictionStorageKey(), predictions);
   }
 
-  function sendVisitEvent(action, view) {
-    if (!window.APP_CONFIG.gasExecUrl || !state.user) return;
+  function sendVisitEvent(action, view, options = {}) {
+    if (!window.APP_CONFIG.gasExecUrl || !state.user) return Promise.resolve(false);
     const callback = `visitCb_${Date.now()}_${Math.random().toString(36).slice(2)}`;
     const params = new URLSearchParams({
       action: "visit",
@@ -530,15 +589,25 @@
       data_version: state.data?.metadata?.data_version || "",
       user_agent: navigator.userAgent.slice(0, 180)
     });
-    const script = document.createElement("script");
-    const cleanup = () => {
-      delete window[callback];
-      script.remove();
-    };
-    window[callback] = cleanup;
-    script.onerror = cleanup;
-    script.src = `${window.APP_CONFIG.gasExecUrl}?${params.toString()}`;
-    document.head.appendChild(script);
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      const timeoutMs = Number(options.timeoutMs || 5000);
+      let settled = false;
+      let timer = null;
+      const cleanup = (ok = true) => {
+        if (settled) return;
+        settled = true;
+        if (timer) window.clearTimeout(timer);
+        delete window[callback];
+        script.remove();
+        resolve(ok);
+      };
+      window[callback] = () => cleanup(true);
+      script.onerror = () => cleanup(false);
+      if (timeoutMs > 0) timer = window.setTimeout(() => cleanup(false), timeoutMs);
+      script.src = `${window.APP_CONFIG.gasExecUrl}?${params.toString()}`;
+      document.head.appendChild(script);
+    });
   }
 
   function sendPredictionEvent(match, prediction) {
@@ -2636,6 +2705,7 @@
     });
     $("#userButton").addEventListener("click", () => showAuthGate(true));
     $("#viewScaleButton")?.addEventListener("click", cycleViewScale);
+    $("#refreshAppButton")?.addEventListener("click", refreshAppVersion);
     document.addEventListener("click", (event) => {
       if (event.target.closest("#editRegistration")) {
         showAuthGate(true);
@@ -3046,6 +3116,7 @@
 
   async function init() {
     applyViewScale(loadViewScale());
+    renderVersionStatus();
     bindNavigation();
     bindAuth();
     bindFilters();

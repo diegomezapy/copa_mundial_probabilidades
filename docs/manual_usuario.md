@@ -27,6 +27,14 @@ El boton `Vista` de la barra superior cambia el tamano de lectura entre
 para que la app vuelva a abrir con el mismo tamano en ese telefono o equipo.
 Use `Vista: grande` si las letras se ven demasiado pequenas en un celular.
 
+## Version y actualizacion
+
+La barra superior muestra la version activa de la app, por ejemplo
+`Version 0.2.18`. El boton `Actualizar app` fuerza una recarga limpia: borra la
+cache local de la PWA, solicita actualizar el service worker y vuelve a abrir la
+misma vista con cache-busting. Use este boton si un telefono sigue mostrando una
+version anterior o si acaba de publicarse una mejora.
+
 ## Lectura visual
 
 La pantalla principal muestra una ruta del modelo que ordena el flujo
@@ -101,7 +109,8 @@ mantiene la experiencia publica y redirige esas vistas a `Resumen`.
 
 Desde la version `0.2.17`, los ingresos y cambios de vista tambien se envian al
 backend GAS validado para registrar trazabilidad basica en la hoja operativa
-`VISITAS`.
+`VISITAS`. Desde `0.2.18`, el boton `Actualizar app` registra un evento
+`app_refresh` cuando hay usuario local activo.
 
 ## Filtros
 
