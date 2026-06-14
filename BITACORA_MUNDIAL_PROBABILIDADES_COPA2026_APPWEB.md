@@ -3799,3 +3799,82 @@ python scripts\create_social_gif_from_video.py
 
 * Usar esta variante cuando se priorice mostrar recorrido completo del video.
 * Usar la variante de 10 fps si se prioriza menor peso de archivo.
+
+## 2026-06-14 14:16
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas.
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`.
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`.
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`.
+* Responsable: Codex.
+* Version de app: `0.2.15`.
+
+### Objetivo de la intervencion
+
+Registrar la publicacion y validacion publica del GIF rapido generado desde
+`screen-capture.webm`.
+
+### Diagnostico inicial
+
+* El GIF rapido ya estaba generado y publicado en `origin/main`.
+* Al ser un asset nuevo y pesado, se requeria esperar el procesamiento de
+  GitHub Pages antes de validar la URL publica.
+
+### Acciones realizadas
+
+* Se verifico presencia del GIF en `origin/main`.
+* Se confirmo disponibilidad en `raw.githubusercontent.com`.
+* Se descargo desde GitHub Pages con cache-busting.
+* Se verifico el archivo descargado con Pillow.
+
+### Archivos modificados
+
+* `BITACORA_MUNDIAL_PROBABILIDADES_COPA2026_APPWEB.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+git ls-tree -r -l origin/main assets/social/mundial_probabilidades_screen_capture_14s_fast.gif
+Invoke-WebRequest -UseBasicParsing https://diegomezapy.github.io/copa_mundial_probabilidades/assets/social/mundial_probabilidades_screen_capture_14s_fast.gif?v=20260614-1415 -OutFile tmp\public_mundial_probabilidades_screen_capture_14s_fast.gif
+```
+
+### Resultados verificados
+
+* URL publica del GIF rapido:
+  `https://diegomezapy.github.io/copa_mundial_probabilidades/assets/social/mundial_probabilidades_screen_capture_14s_fast.gif`
+* Descarga publica: correcta.
+* Frames: 280.
+* Duracion: 14.000 ms.
+* Velocidad: 20 fps.
+* Tamano: 960 x 431 px.
+* Peso: 19.021.850 bytes, aproximadamente 18.14 MB.
+
+### Pruebas realizadas
+
+* Verificacion de presencia en `origin/main`.
+* Verificacion de URL publica con cache-busting.
+* Verificacion local del archivo descargado desde GitHub Pages con Pillow.
+
+### Errores o incidentes
+
+* No se detectaron errores en la validacion final.
+
+### Soluciones aplicadas
+
+* Validacion publica posterior a espera de procesamiento de GitHub Pages.
+
+### Pendientes
+
+* Ninguno para esta pieza.
+
+### Riesgos
+
+* El archivo pesa mas que la variante de 10 fps; algunas redes pueden
+  recomprimirlo.
+
+### Recomendaciones
+
+* Para compartir por redes que limiten peso, considerar convertir esta pieza a
+  MP4 manteniendo la misma fuente y velocidad.
