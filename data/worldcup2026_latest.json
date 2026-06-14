@@ -1,15 +1,15 @@
 {
   "metadata": {
     "app_version": "0.2.15",
-    "data_version": "wc26-20260614T013159z",
-    "generated_at": "2026-06-14T01:31:59Z",
+    "data_version": "wc26-20260614T075705z",
+    "generated_at": "2026-06-14T07:57:05Z",
     "timezone": "UTC",
     "tournament": "World Cup 2026",
     "coverage": {
       "teams": 48,
       "players": 1248,
       "matches": 104,
-      "completed_matches": 6,
+      "completed_matches": 7,
       "groups": 12,
       "historical_tournaments": 22,
       "historical_matches": 964,
@@ -33,17 +33,17 @@
   "sources": {
     "openfootball_worldcup_json": {
       "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json",
-      "downloaded_at": "2026-06-14T01:31:50Z",
+      "downloaded_at": "2026-06-14T07:56:57Z",
       "status_code": 200,
-      "bytes": 20498,
-      "sha256": "3e0aa93a9899a1ff86596088c9c4ec878979a892044b5810afaa4e0b6ebbba18"
+      "bytes": 20616,
+      "sha256": "95e0c670fe791930ecccbbbb32e7bf7197205213deefa32672d17bb381c31f49"
     },
     "wikipedia_squads": {
       "url": "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads",
-      "downloaded_at": "2026-06-14T01:31:50Z",
+      "downloaded_at": "2026-06-14T07:56:57Z",
       "status_code": 200,
-      "bytes": 1904771,
-      "sha256": "671ef1d48d53c7e92d8762104136a008b0fc380e829c622ceb711f1682423cfe",
+      "bytes": 1904564,
+      "sha256": "576a105057f41e239b159e04933c7c6648c84af37cd240606b5fdcb30f1295f5",
       "rows_extracted": 1248
     },
     "official_reference": {
@@ -96,7 +96,7 @@
     "openfootball_historical_worldcups": [
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1930/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:51Z",
+        "downloaded_at": "2026-06-14T07:56:59Z",
         "status_code": 200,
         "bytes": 7578,
         "sha256": "24e0fa5793715c8b8d218f57230f6579e0516d9507224f3f74ae874df0f402c9",
@@ -104,7 +104,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1934/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:51Z",
+        "downloaded_at": "2026-06-14T07:56:59Z",
         "status_code": 200,
         "bytes": 6935,
         "sha256": "0939c8d517b4f302b8be4568af62f85f8a2a0fccce4e6690d7a7417f7a85a549",
@@ -112,7 +112,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1938/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:52Z",
+        "downloaded_at": "2026-06-14T07:56:59Z",
         "status_code": 200,
         "bytes": 8087,
         "sha256": "e4a9f079cbd3c724e279287ac7d14407e50a151c7d25a75d7a526c4f6de51cc5",
@@ -120,7 +120,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1950/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:52Z",
+        "downloaded_at": "2026-06-14T07:56:59Z",
         "status_code": 200,
         "bytes": 9132,
         "sha256": "50bf66cbe8c437e3e84cdfad914e3a0fd52fcc8dec651e2cf9cbaf056402b3a9",
@@ -128,7 +128,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1954/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:52Z",
+        "downloaded_at": "2026-06-14T07:56:59Z",
         "status_code": 200,
         "bytes": 5318,
         "sha256": "310b5ef1aeece5f050bb3caa2069eed0ef66e31b7db93e61e64ca9d17455a256",
@@ -136,7 +136,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1958/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:52Z",
+        "downloaded_at": "2026-06-14T07:56:59Z",
         "status_code": 200,
         "bytes": 7004,
         "sha256": "c33302ab0d3658ae8c00575bf2e72d0f7e6e7d829bb6b6eb24eccca503d6419c",
@@ -144,7 +144,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1962/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:52Z",
+        "downloaded_at": "2026-06-14T07:56:59Z",
         "status_code": 200,
         "bytes": 6643,
         "sha256": "fbf9cf0fe64fe31db78e742edb1d24a1acee227cf4710a3713500bfca331a30f",
@@ -152,7 +152,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1966/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:52Z",
+        "downloaded_at": "2026-06-14T07:56:59Z",
         "status_code": 200,
         "bytes": 6502,
         "sha256": "54f7943a6a11396a405479814b4bd114e6094243fd54ebaea7b2e3fd3807b7a4",
@@ -160,7 +160,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1970/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:52Z",
+        "downloaded_at": "2026-06-14T07:56:59Z",
         "status_code": 200,
         "bytes": 6555,
         "sha256": "60124878cda29bd5848b44fbf5f4668f5344fd64ab4b26b91c364c74761f52fa",
@@ -168,7 +168,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1974/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:52Z",
+        "downloaded_at": "2026-06-14T07:56:59Z",
         "status_code": 200,
         "bytes": 7887,
         "sha256": "3eb873244c9902ba6fdab6087a0c746f6f5289ead66f6151b9e5c1878e8508d1",
@@ -176,7 +176,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1978/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:52Z",
+        "downloaded_at": "2026-06-14T07:56:59Z",
         "status_code": 200,
         "bytes": 8214,
         "sha256": "b05ba19b2406564a4e7584e6fa57d263212a081a2bf6a6d831bca3d3d57fec82",
@@ -184,7 +184,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1982/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:52Z",
+        "downloaded_at": "2026-06-14T07:56:59Z",
         "status_code": 200,
         "bytes": 10868,
         "sha256": "680cee2bca9def804b71055e236062fafacbb031feb9ab10bde32f7f071d53db",
@@ -192,7 +192,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1986/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:52Z",
+        "downloaded_at": "2026-06-14T07:56:59Z",
         "status_code": 200,
         "bytes": 10809,
         "sha256": "8312ff289b6683c2b43821f05472b89da38eea6732090c00db3bdee70264880e",
@@ -200,7 +200,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1990/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:52Z",
+        "downloaded_at": "2026-06-14T07:56:59Z",
         "status_code": 200,
         "bytes": 11130,
         "sha256": "77be0a9ca518c6f1346f90d1669bfbe45c69c084fabffc611dd65c615ab2d146",
@@ -208,7 +208,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1994/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:52Z",
+        "downloaded_at": "2026-06-14T07:56:59Z",
         "status_code": 200,
         "bytes": 10382,
         "sha256": "ff290bc3f040d1d7e134e6ff96aa34543e53947f4bc9fc1699942ebf59b1361e",
@@ -216,7 +216,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1998/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:52Z",
+        "downloaded_at": "2026-06-14T07:56:59Z",
         "status_code": 200,
         "bytes": 13064,
         "sha256": "6addf8d8ee4befad154c36943233b9f4db89032531cc37992c7d212433b779a6",
@@ -224,7 +224,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2002/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:53Z",
+        "downloaded_at": "2026-06-14T07:56:59Z",
         "status_code": 200,
         "bytes": 13064,
         "sha256": "10a452ba237a07876efde0d29bb00dd824b0a87cd452f9f5d2763b6ff1ed0c71",
@@ -232,7 +232,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2006/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:53Z",
+        "downloaded_at": "2026-06-14T07:56:59Z",
         "status_code": 200,
         "bytes": 14482,
         "sha256": "de004d88a0a374b054ed3bc8bfcbb5b4b12abc3b837b6b949a4dc8750eef3eba",
@@ -240,7 +240,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2010/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:53Z",
+        "downloaded_at": "2026-06-14T07:56:59Z",
         "status_code": 200,
         "bytes": 14787,
         "sha256": "dd36ad80ca6caf0bb2e1aff350d97d5b322e1e130a241e44fcd5f5c424b6f356",
@@ -248,7 +248,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2014/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:53Z",
+        "downloaded_at": "2026-06-14T07:57:00Z",
         "status_code": 200,
         "bytes": 25864,
         "sha256": "a5614bec9bccb26d4eb639607eb7fabceef98fee6743b910985132f13e26977f",
@@ -256,7 +256,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2018/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:53Z",
+        "downloaded_at": "2026-06-14T07:57:00Z",
         "status_code": 200,
         "bytes": 25988,
         "sha256": "1fb1038ca41e81887c994560fdf5e2bb014eedda7ea7f2e0cd2c5bced5711017",
@@ -264,7 +264,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2022/worldcup.json",
-        "downloaded_at": "2026-06-14T01:31:53Z",
+        "downloaded_at": "2026-06-14T07:57:00Z",
         "status_code": 200,
         "bytes": 26072,
         "sha256": "5b81ae4dd5f2da1f0083f9da987e95e10b898e399c53dcd6bc28c0d016e4dcdd",
@@ -367,9 +367,9 @@
         "midfielders": 7,
         "forwards": 7
       },
-      "p_top2": 0.1944,
-      "p_advance_group": 0.4108,
-      "p_champion_rough": 0.0112
+      "p_top2": 0.2088,
+      "p_advance_group": 0.4324,
+      "p_champion_rough": 0.0118
     },
     {
       "team": "Mexico",
@@ -391,9 +391,9 @@
         "midfielders": 8,
         "forwards": 8
       },
-      "p_top2": 0.8724,
-      "p_advance_group": 0.966,
-      "p_champion_rough": 0.0315
+      "p_top2": 0.8576,
+      "p_advance_group": 0.9588,
+      "p_champion_rough": 0.0313
     },
     {
       "team": "South Africa",
@@ -415,9 +415,9 @@
         "midfielders": 5,
         "forwards": 8
       },
-      "p_top2": 0.1796,
-      "p_advance_group": 0.366,
-      "p_champion_rough": 0.0097
+      "p_top2": 0.1624,
+      "p_advance_group": 0.3512,
+      "p_champion_rough": 0.0093
     },
     {
       "team": "South Korea",
@@ -439,9 +439,9 @@
         "midfielders": 11,
         "forwards": 3
       },
-      "p_top2": 0.7536,
-      "p_advance_group": 0.9044,
-      "p_champion_rough": 0.022
+      "p_top2": 0.7712,
+      "p_advance_group": 0.9008,
+      "p_champion_rough": 0.0219
     },
     {
       "team": "Bosnia & Herzegovina",
@@ -463,9 +463,9 @@
         "midfielders": 8,
         "forwards": 7
       },
-      "p_top2": 0.4656,
-      "p_advance_group": 0.6468,
-      "p_champion_rough": 0.0181
+      "p_top2": 0.4732,
+      "p_advance_group": 0.6444,
+      "p_champion_rough": 0.018
     },
     {
       "team": "Canada",
@@ -487,9 +487,9 @@
         "midfielders": 7,
         "forwards": 7
       },
-      "p_top2": 0.4648,
-      "p_advance_group": 0.6264,
-      "p_champion_rough": 0.0148
+      "p_top2": 0.4604,
+      "p_advance_group": 0.622,
+      "p_champion_rough": 0.0147
     },
     {
       "team": "Qatar",
@@ -511,9 +511,9 @@
         "midfielders": 5,
         "forwards": 9
       },
-      "p_top2": 0.5204,
-      "p_advance_group": 0.66,
-      "p_champion_rough": 0.0179
+      "p_top2": 0.5356,
+      "p_advance_group": 0.6768,
+      "p_champion_rough": 0.0183
     },
     {
       "team": "Switzerland",
@@ -535,9 +535,9 @@
         "midfielders": 8,
         "forwards": 7
       },
-      "p_top2": 0.5492,
-      "p_advance_group": 0.6908,
-      "p_champion_rough": 0.0203
+      "p_top2": 0.5308,
+      "p_advance_group": 0.6764,
+      "p_champion_rough": 0.0199
     },
     {
       "team": "Brazil",
@@ -559,20 +559,20 @@
         "midfielders": 6,
         "forwards": 9
       },
-      "p_top2": 0.6136,
-      "p_advance_group": 0.7716,
+      "p_top2": 0.5972,
+      "p_advance_group": 0.772,
       "p_champion_rough": 0.0361
     },
     {
       "team": "Haiti",
       "team_id": "haiti",
       "group": "Group C",
-      "rating": 1537.8,
-      "attack_posterior_mean": 1.426,
-      "defense_posterior_mean": 1.259,
-      "matches_observed_2026": 0,
+      "rating": 1524.6,
+      "attack_posterior_mean": 1.118,
+      "defense_posterior_mean": 1.228,
+      "matches_observed_2026": 1,
       "goals_for_observed_2026": 0,
-      "goals_against_observed_2026": 0,
+      "goals_against_observed_2026": 1,
       "squad": {
         "players": 26,
         "avg_age": 27.0,
@@ -583,43 +583,43 @@
         "midfielders": 5,
         "forwards": 9
       },
-      "p_top2": 0.4528,
-      "p_advance_group": 0.612,
-      "p_champion_rough": 0.0153
+      "p_top2": 0.174,
+      "p_advance_group": 0.3292,
+      "p_champion_rough": 0.0079
     },
     {
       "team": "Morocco",
       "team_id": "morocco",
       "group": "Group C",
-      "rating": 1580.7,
-      "attack_posterior_mean": 1.418,
-      "defense_posterior_mean": 1.143,
+      "rating": 1579.1,
+      "attack_posterior_mean": 1.416,
+      "defense_posterior_mean": 1.145,
       "matches_observed_2026": 1,
       "goals_for_observed_2026": 1,
       "goals_against_observed_2026": 1,
       "squad": {
         "players": 26,
         "avg_age": 26.12,
-        "total_caps": 701,
-        "total_international_goals": 98,
+        "total_caps": 670,
+        "total_international_goals": 80,
         "goalkeepers": 3,
         "defenders": 9,
         "midfielders": 9,
         "forwards": 5
       },
-      "p_top2": 0.4888,
-      "p_advance_group": 0.6764,
-      "p_champion_rough": 0.0195
+      "p_top2": 0.5144,
+      "p_advance_group": 0.6936,
+      "p_champion_rough": 0.0199
     },
     {
       "team": "Scotland",
       "team_id": "scotland",
       "group": "Group C",
-      "rating": 1537.9,
-      "attack_posterior_mean": 1.426,
-      "defense_posterior_mean": 1.259,
-      "matches_observed_2026": 0,
-      "goals_for_observed_2026": 0,
+      "rating": 1551.0,
+      "attack_posterior_mean": 1.364,
+      "defense_posterior_mean": 0.987,
+      "matches_observed_2026": 1,
+      "goals_for_observed_2026": 1,
       "goals_against_observed_2026": 0,
       "squad": {
         "players": 26,
@@ -631,9 +631,9 @@
         "midfielders": 6,
         "forwards": 7
       },
-      "p_top2": 0.4448,
-      "p_advance_group": 0.602,
-      "p_champion_rough": 0.0151
+      "p_top2": 0.7144,
+      "p_advance_group": 0.8868,
+      "p_champion_rough": 0.0232
     },
     {
       "team": "Australia",
@@ -655,9 +655,9 @@
         "midfielders": 5,
         "forwards": 8
       },
-      "p_top2": 0.4584,
-      "p_advance_group": 0.6644,
-      "p_champion_rough": 0.0166
+      "p_top2": 0.444,
+      "p_advance_group": 0.6552,
+      "p_champion_rough": 0.0163
     },
     {
       "team": "Paraguay",
@@ -679,9 +679,9 @@
         "midfielders": 9,
         "forwards": 6
       },
-      "p_top2": 0.1396,
-      "p_advance_group": 0.2844,
-      "p_champion_rough": 0.0077
+      "p_top2": 0.138,
+      "p_advance_group": 0.294,
+      "p_champion_rough": 0.008
     },
     {
       "team": "Turkey",
@@ -703,9 +703,9 @@
         "midfielders": 5,
         "forwards": 9
       },
-      "p_top2": 0.544,
-      "p_advance_group": 0.7352,
-      "p_champion_rough": 0.0225
+      "p_top2": 0.548,
+      "p_advance_group": 0.7248,
+      "p_champion_rough": 0.0222
     },
     {
       "team": "USA",
@@ -727,9 +727,9 @@
         "midfielders": 6,
         "forwards": 7
       },
-      "p_top2": 0.858,
-      "p_advance_group": 0.972,
-      "p_champion_rough": 0.0277
+      "p_top2": 0.87,
+      "p_advance_group": 0.9788,
+      "p_champion_rough": 0.0279
     },
     {
       "team": "Curaçao",
@@ -751,9 +751,9 @@
         "midfielders": 7,
         "forwards": 8
       },
-      "p_top2": 0.4428,
-      "p_advance_group": 0.6364,
-      "p_champion_rough": 0.0184
+      "p_top2": 0.4492,
+      "p_advance_group": 0.6276,
+      "p_champion_rough": 0.0181
     },
     {
       "team": "Ecuador",
@@ -775,9 +775,9 @@
         "midfielders": 8,
         "forwards": 7
       },
-      "p_top2": 0.4708,
-      "p_advance_group": 0.644,
-      "p_champion_rough": 0.0198
+      "p_top2": 0.4692,
+      "p_advance_group": 0.6416,
+      "p_champion_rough": 0.0197
     },
     {
       "team": "Germany",
@@ -799,8 +799,8 @@
         "midfielders": 11,
         "forwards": 4
       },
-      "p_top2": 0.648,
-      "p_advance_group": 0.7924,
+      "p_top2": 0.6492,
+      "p_advance_group": 0.7928,
       "p_champion_rough": 0.0366
     },
     {
@@ -823,9 +823,9 @@
         "midfielders": 6,
         "forwards": 9
       },
-      "p_top2": 0.4384,
-      "p_advance_group": 0.6072,
-      "p_champion_rough": 0.0171
+      "p_top2": 0.4324,
+      "p_advance_group": 0.6124,
+      "p_champion_rough": 0.0172
     },
     {
       "team": "Japan",
@@ -847,9 +847,9 @@
         "midfielders": 9,
         "forwards": 5
       },
-      "p_top2": 0.4192,
-      "p_advance_group": 0.61,
-      "p_champion_rough": 0.017
+      "p_top2": 0.438,
+      "p_advance_group": 0.6076,
+      "p_champion_rough": 0.0169
     },
     {
       "team": "Netherlands",
@@ -871,9 +871,9 @@
         "midfielders": 8,
         "forwards": 7
       },
-      "p_top2": 0.672,
-      "p_advance_group": 0.8232,
-      "p_champion_rough": 0.0403
+      "p_top2": 0.658,
+      "p_advance_group": 0.8136,
+      "p_champion_rough": 0.0398
     },
     {
       "team": "Sweden",
@@ -895,9 +895,9 @@
         "midfielders": 7,
         "forwards": 5
       },
-      "p_top2": 0.506,
-      "p_advance_group": 0.6664,
-      "p_champion_rough": 0.0227
+      "p_top2": 0.5004,
+      "p_advance_group": 0.6768,
+      "p_champion_rough": 0.0231
     },
     {
       "team": "Tunisia",
@@ -919,9 +919,9 @@
         "midfielders": 8,
         "forwards": 5
       },
-      "p_top2": 0.4028,
-      "p_advance_group": 0.5708,
-      "p_champion_rough": 0.0134
+      "p_top2": 0.4036,
+      "p_advance_group": 0.5784,
+      "p_champion_rough": 0.0136
     },
     {
       "team": "Belgium",
@@ -943,9 +943,9 @@
         "midfielders": 8,
         "forwards": 6
       },
-      "p_top2": 0.6068,
-      "p_advance_group": 0.754,
-      "p_champion_rough": 0.0275
+      "p_top2": 0.5904,
+      "p_advance_group": 0.7496,
+      "p_champion_rough": 0.0273
     },
     {
       "team": "Egypt",
@@ -967,8 +967,8 @@
         "midfielders": 7,
         "forwards": 7
       },
-      "p_top2": 0.452,
-      "p_advance_group": 0.6248,
+      "p_top2": 0.454,
+      "p_advance_group": 0.6244,
       "p_champion_rough": 0.015
     },
     {
@@ -991,9 +991,9 @@
         "midfielders": 8,
         "forwards": 6
       },
-      "p_top2": 0.44,
-      "p_advance_group": 0.624,
-      "p_champion_rough": 0.0147
+      "p_top2": 0.4536,
+      "p_advance_group": 0.622,
+      "p_champion_rough": 0.0146
     },
     {
       "team": "New Zealand",
@@ -1015,9 +1015,9 @@
         "midfielders": 10,
         "forwards": 4
       },
-      "p_top2": 0.5012,
-      "p_advance_group": 0.6576,
-      "p_champion_rough": 0.0176
+      "p_top2": 0.502,
+      "p_advance_group": 0.6708,
+      "p_champion_rough": 0.0179
     },
     {
       "team": "Cape Verde",
@@ -1039,9 +1039,9 @@
         "midfielders": 12,
         "forwards": 3
       },
-      "p_top2": 0.4816,
-      "p_advance_group": 0.6596,
-      "p_champion_rough": 0.0192
+      "p_top2": 0.484,
+      "p_advance_group": 0.6652,
+      "p_champion_rough": 0.0193
     },
     {
       "team": "Saudi Arabia",
@@ -1063,9 +1063,9 @@
         "midfielders": 6,
         "forwards": 7
       },
-      "p_top2": 0.3956,
-      "p_advance_group": 0.5636,
-      "p_champion_rough": 0.0118
+      "p_top2": 0.3924,
+      "p_advance_group": 0.5764,
+      "p_champion_rough": 0.012
     },
     {
       "team": "Spain",
@@ -1087,9 +1087,9 @@
         "midfielders": 7,
         "forwards": 8
       },
-      "p_top2": 0.5852,
-      "p_advance_group": 0.7452,
-      "p_champion_rough": 0.0283
+      "p_top2": 0.6092,
+      "p_advance_group": 0.7596,
+      "p_champion_rough": 0.0288
     },
     {
       "team": "Uruguay",
@@ -1111,9 +1111,9 @@
         "midfielders": 11,
         "forwards": 5
       },
-      "p_top2": 0.5376,
-      "p_advance_group": 0.7052,
-      "p_champion_rough": 0.0229
+      "p_top2": 0.5144,
+      "p_advance_group": 0.6876,
+      "p_champion_rough": 0.0224
     },
     {
       "team": "France",
@@ -1135,9 +1135,9 @@
         "midfielders": 7,
         "forwards": 7
       },
-      "p_top2": 0.6388,
-      "p_advance_group": 0.7912,
-      "p_champion_rough": 0.0363
+      "p_top2": 0.6516,
+      "p_advance_group": 0.8004,
+      "p_champion_rough": 0.0367
     },
     {
       "team": "Iraq",
@@ -1159,9 +1159,9 @@
         "midfielders": 7,
         "forwards": 7
       },
-      "p_top2": 0.4124,
-      "p_advance_group": 0.5816,
-      "p_champion_rough": 0.0147
+      "p_top2": 0.4148,
+      "p_advance_group": 0.5844,
+      "p_champion_rough": 0.0148
     },
     {
       "team": "Norway",
@@ -1183,9 +1183,9 @@
         "midfielders": 11,
         "forwards": 3
       },
-      "p_top2": 0.4648,
-      "p_advance_group": 0.6436,
-      "p_champion_rough": 0.0197
+      "p_top2": 0.4632,
+      "p_advance_group": 0.6384,
+      "p_champion_rough": 0.0195
     },
     {
       "team": "Senegal",
@@ -1207,9 +1207,9 @@
         "midfielders": 7,
         "forwards": 8
       },
-      "p_top2": 0.484,
-      "p_advance_group": 0.6584,
-      "p_champion_rough": 0.0207
+      "p_top2": 0.4704,
+      "p_advance_group": 0.644,
+      "p_champion_rough": 0.0202
     },
     {
       "team": "Algeria",
@@ -1231,9 +1231,9 @@
         "midfielders": 7,
         "forwards": 7
       },
-      "p_top2": 0.422,
-      "p_advance_group": 0.6048,
-      "p_champion_rough": 0.0165
+      "p_top2": 0.4412,
+      "p_advance_group": 0.6124,
+      "p_champion_rough": 0.0167
     },
     {
       "team": "Argentina",
@@ -1255,9 +1255,9 @@
         "midfielders": 8,
         "forwards": 7
       },
-      "p_top2": 0.6452,
-      "p_advance_group": 0.7968,
-      "p_champion_rough": 0.0349
+      "p_top2": 0.6368,
+      "p_advance_group": 0.7868,
+      "p_champion_rough": 0.0344
     },
     {
       "team": "Austria",
@@ -1279,8 +1279,8 @@
         "midfielders": 11,
         "forwards": 4
       },
-      "p_top2": 0.4452,
-      "p_advance_group": 0.6212,
+      "p_top2": 0.4516,
+      "p_advance_group": 0.6236,
       "p_champion_rough": 0.0182
     },
     {
@@ -1303,9 +1303,9 @@
         "midfielders": 8,
         "forwards": 6
       },
-      "p_top2": 0.4876,
-      "p_advance_group": 0.6688,
-      "p_champion_rough": 0.0197
+      "p_top2": 0.4704,
+      "p_advance_group": 0.628,
+      "p_champion_rough": 0.0184
     },
     {
       "team": "Colombia",
@@ -1327,9 +1327,9 @@
         "midfielders": 8,
         "forwards": 6
       },
-      "p_top2": 0.5076,
-      "p_advance_group": 0.6956,
-      "p_champion_rough": 0.0227
+      "p_top2": 0.5068,
+      "p_advance_group": 0.6848,
+      "p_champion_rough": 0.0223
     },
     {
       "team": "DR Congo",
@@ -1351,9 +1351,9 @@
         "midfielders": 8,
         "forwards": 7
       },
-      "p_top2": 0.4716,
-      "p_advance_group": 0.632,
-      "p_champion_rough": 0.0184
+      "p_top2": 0.4612,
+      "p_advance_group": 0.626,
+      "p_champion_rough": 0.0182
     },
     {
       "team": "Portugal",
@@ -1375,9 +1375,9 @@
         "midfielders": 6,
         "forwards": 8
       },
-      "p_top2": 0.5516,
-      "p_advance_group": 0.7128,
-      "p_champion_rough": 0.0253
+      "p_top2": 0.558,
+      "p_advance_group": 0.722,
+      "p_champion_rough": 0.0256
     },
     {
       "team": "Uzbekistan",
@@ -1399,8 +1399,8 @@
         "midfielders": 10,
         "forwards": 3
       },
-      "p_top2": 0.4692,
-      "p_advance_group": 0.6496,
+      "p_top2": 0.474,
+      "p_advance_group": 0.6504,
       "p_champion_rough": 0.0191
     },
     {
@@ -1423,9 +1423,9 @@
         "midfielders": 9,
         "forwards": 6
       },
-      "p_top2": 0.5268,
-      "p_advance_group": 0.7048,
-      "p_champion_rough": 0.025
+      "p_top2": 0.5548,
+      "p_advance_group": 0.7292,
+      "p_champion_rough": 0.0258
     },
     {
       "team": "England",
@@ -1447,9 +1447,9 @@
         "midfielders": 7,
         "forwards": 7
       },
-      "p_top2": 0.5896,
-      "p_advance_group": 0.7488,
-      "p_champion_rough": 0.0288
+      "p_top2": 0.56,
+      "p_advance_group": 0.7416,
+      "p_champion_rough": 0.0285
     },
     {
       "team": "Ghana",
@@ -1471,9 +1471,9 @@
         "midfielders": 6,
         "forwards": 8
       },
-      "p_top2": 0.45,
-      "p_advance_group": 0.6116,
-      "p_champion_rough": 0.0165
+      "p_top2": 0.4552,
+      "p_advance_group": 0.6204,
+      "p_champion_rough": 0.0167
     },
     {
       "team": "Panama",
@@ -1495,9 +1495,9 @@
         "midfielders": 8,
         "forwards": 4
       },
-      "p_top2": 0.4336,
-      "p_advance_group": 0.6048,
-      "p_champion_rough": 0.0156
+      "p_top2": 0.43,
+      "p_advance_group": 0.604,
+      "p_champion_rough": 0.0155
     }
   ],
   "players": [
@@ -10739,8 +10739,8 @@
       "name": "Soufiane Rahimi",
       "birth_date": null,
       "age": 30,
-      "caps": 37,
-      "goals": 12,
+      "caps": 27,
+      "goals": 6,
       "club": "Al Ain",
       "source": "wikipedia_2026_squads"
     },
@@ -10765,7 +10765,7 @@
       "name": "Ismael Saibari",
       "birth_date": null,
       "age": 25,
-      "caps": 30,
+      "caps": 31,
       "goals": 9,
       "club": "PSV Eindhoven",
       "source": "wikipedia_2026_squads"
@@ -10778,7 +10778,7 @@
       "name": "Munir Mohamedi",
       "birth_date": null,
       "age": 37,
-      "caps": 53,
+      "caps": 52,
       "goals": 0,
       "club": "RS Berkane",
       "source": "wikipedia_2026_squads"
@@ -10869,7 +10869,7 @@
       "name": "Youssef Belammari",
       "birth_date": null,
       "age": 27,
-      "caps": 19,
+      "caps": 11,
       "goals": 0,
       "club": "Al Ahly",
       "source": "wikipedia_2026_squads"
@@ -10882,8 +10882,8 @@
       "name": "Ayoub El Kaabi",
       "birth_date": null,
       "age": 32,
-      "caps": 71,
-      "goals": 35,
+      "caps": 58,
+      "goals": 23,
       "club": "Olympiacos",
       "source": "wikipedia_2026_squads"
     },
@@ -18088,11 +18088,11 @@
         }
       ],
       "prediction": {
-        "home_win": 0.4501,
-        "draw": 0.2602,
-        "away_win": 0.2898,
-        "expected_goals_home": 1.464,
-        "expected_goals_away": 1.121
+        "home_win": 0.4507,
+        "draw": 0.2601,
+        "away_win": 0.2892,
+        "expected_goals_home": 1.465,
+        "expected_goals_away": 1.12
       }
     },
     {
@@ -18106,16 +18106,24 @@
       "team2_id": "scotland",
       "group": "Group C",
       "ground": "Boston (Foxborough)",
-      "status": "scheduled",
-      "score": null,
+      "status": "final",
+      "score": {
+        "team1": 0,
+        "team2": 1
+      },
       "goals1": [],
-      "goals2": [],
+      "goals2": [
+        {
+          "name": "John McGinn",
+          "minute": "28"
+        }
+      ],
       "prediction": {
-        "home_win": 0.3703,
-        "draw": 0.2593,
-        "away_win": 0.3704,
-        "expected_goals_home": 1.34,
-        "expected_goals_away": 1.34
+        "home_win": 0.3015,
+        "draw": 0.2778,
+        "away_win": 0.4207,
+        "expected_goals_home": 1.05,
+        "expected_goals_away": 1.294
       }
     },
     {
@@ -18134,11 +18142,11 @@
       "goals1": [],
       "goals2": [],
       "prediction": {
-        "home_win": 0.3546,
-        "draw": 0.263,
-        "away_win": 0.3824,
-        "expected_goals_home": 1.277,
-        "expected_goals_away": 1.336
+        "home_win": 0.3792,
+        "draw": 0.2743,
+        "away_win": 0.3465,
+        "expected_goals_home": 1.25,
+        "expected_goals_away": 1.182
       }
     },
     {
@@ -18157,11 +18165,11 @@
       "goals1": [],
       "goals2": [],
       "prediction": {
-        "home_win": 0.4681,
-        "draw": 0.2539,
-        "away_win": 0.278,
-        "expected_goals_home": 1.537,
-        "expected_goals_away": 1.124
+        "home_win": 0.4936,
+        "draw": 0.2582,
+        "away_win": 0.2482,
+        "expected_goals_home": 1.517,
+        "expected_goals_away": 0.995
       }
     },
     {
@@ -18180,11 +18188,11 @@
       "goals1": [],
       "goals2": [],
       "prediction": {
-        "home_win": 0.2781,
-        "draw": 0.2539,
-        "away_win": 0.468,
-        "expected_goals_home": 1.124,
-        "expected_goals_away": 1.536
+        "home_win": 0.3026,
+        "draw": 0.2698,
+        "away_win": 0.4276,
+        "expected_goals_home": 1.099,
+        "expected_goals_away": 1.36
       }
     },
     {
@@ -18203,11 +18211,11 @@
       "goals1": [],
       "goals2": [],
       "prediction": {
-        "home_win": 0.3825,
-        "draw": 0.263,
-        "away_win": 0.3545,
-        "expected_goals_home": 1.337,
-        "expected_goals_away": 1.277
+        "home_win": 0.409,
+        "draw": 0.2718,
+        "away_win": 0.3192,
+        "expected_goals_home": 1.318,
+        "expected_goals_away": 1.132
       }
     },
     {
@@ -20134,6 +20142,19 @@
     ],
     "Group C": [
       {
+        "team": "Scotland",
+        "team_id": "scotland",
+        "group": "Group C",
+        "played": 1,
+        "wins": 1,
+        "draws": 0,
+        "losses": 0,
+        "goals_for": 1,
+        "goals_against": 0,
+        "goal_difference": 1,
+        "points": 3
+      },
+      {
         "team": "Morocco",
         "team_id": "morocco",
         "group": "Group C",
@@ -20160,29 +20181,16 @@
         "points": 1
       },
       {
-        "team": "Scotland",
-        "team_id": "scotland",
-        "group": "Group C",
-        "played": 0,
-        "wins": 0,
-        "draws": 0,
-        "losses": 0,
-        "goals_for": 0,
-        "goals_against": 0,
-        "goal_difference": 0,
-        "points": 0
-      },
-      {
         "team": "Haiti",
         "team_id": "haiti",
         "group": "Group C",
-        "played": 0,
+        "played": 1,
         "wins": 0,
         "draws": 0,
-        "losses": 0,
+        "losses": 1,
         "goals_for": 0,
-        "goals_against": 0,
-        "goal_difference": 0,
+        "goals_against": 1,
+        "goal_difference": -1,
         "points": 0
       }
     ],
