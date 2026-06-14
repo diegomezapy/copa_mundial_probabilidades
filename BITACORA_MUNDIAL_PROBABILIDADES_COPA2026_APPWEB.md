@@ -3424,3 +3424,93 @@ Invoke-WebRequest -UseBasicParsing https://diegomezapy.github.io/copa_mundial_pr
 
 * Para assets grandes en GitHub Pages, verificar primero presencia en
   `origin/main`, luego repetir la URL publica con cache-busting tras una espera.
+
+## 2026-06-14 13:58
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas.
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`.
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`.
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`.
+* Responsable: Codex.
+* Version de app: `0.2.15`.
+
+### Objetivo de la intervencion
+
+Actualizar el Manual Maestro institucional para que toda appweb contemple como
+requisito general: multifiltro global, ajuste de zoom/modo de lectura y ajuste
+manual de ancho/alto o modo foco de contenedores principales.
+
+### Diagnostico inicial
+
+* El manual maestro ya tenia secciones sobre filtros globales y responsive.
+* Faltaba una regla transversal que obligue simultaneamente a:
+  multifiltro global, zoom propio de la app y contenedores ajustables.
+* La experiencia acumulada en esta app mostro que esos tres elementos son
+  necesarios para tableros densos, murales, mapas y vistas moviles.
+
+### Acciones realizadas
+
+* Se agrego una nueva seccion `37` al Manual Maestro.
+* Se documento la arquitectura recomendada para multifiltros.
+* Se definieron requisitos para controles visibles de zoom o modo de lectura.
+* Se definieron requisitos para redimensionar contenedores principales.
+* Se agregaron pruebas minimas obligatorias y checklist de cierre.
+* Se creo una nota de aprendizaje reutilizable en la carpeta maestra.
+
+### Archivos modificados fuera del repositorio
+
+* `G:\Mi unidad\MANUAL_MAESTRO_FORMATOS_FUNCIONES_APPWEB\Manual maestro para creación de appweb.txt`
+* `G:\Mi unidad\MANUAL_MAESTRO_FORMATOS_FUNCIONES_APPWEB\APRENDIZAJE_APPWEB_MULTIFILTRO_ZOOM_CONTENEDORES_2026-06-14.md`
+
+### Archivos modificados en el repositorio
+
+* `BITACORA_MUNDIAL_PROBABILIDADES_COPA2026_APPWEB.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+rg -n "multifiltro|filtro|zoom|ancho|alto|contenedor|responsive|appweb|dashboard|tablero" "G:\Mi unidad\MANUAL_MAESTRO_FORMATOS_FUNCIONES_APPWEB\Manual maestro para creación de appweb.txt"
+Select-String -Path "G:\Mi unidad\MANUAL_MAESTRO_FORMATOS_FUNCIONES_APPWEB\Manual maestro para creación de appweb.txt" -Pattern "^## "
+```
+
+### Resultados verificados
+
+* El Manual Maestro contiene la nueva seccion:
+  `37. Actualizacion operativa 2026-06-14: multifiltros globales, zoom de vista y contenedores ajustables`.
+* La seccion incluye:
+  multifiltro global, arquitectura de filtros, zoom/modo de lectura,
+  contenedores ajustables, relacion entre filtros/zoom/contenedores, pruebas
+  minimas, checklist de cierre y criterios de no conformidad.
+
+### Pruebas realizadas
+
+* Busqueda textual del manual para ubicar secciones relacionadas.
+* Verificacion posterior de presencia de la nueva seccion.
+
+### Errores o incidentes
+
+* No se detectaron errores operativos.
+
+### Soluciones aplicadas
+
+* Se consolido la buena practica como regla general del Manual Maestro, no solo
+  como aprendizaje aislado del proyecto Mundial.
+
+### Pendientes
+
+* Aplicar esta regla como checklist obligatorio en nuevas appwebs y auditorias
+  de proyectos existentes.
+
+### Riesgos
+
+* Apps existentes pueden no cumplir todavia estos criterios y requerir
+  refactorizacion de estado de filtros o layout.
+
+### Recomendaciones
+
+* En cada nueva appweb, construir primero el estado global de filtros y los
+  controles de vista antes de agregar graficos avanzados.
+* Validar con capturas moviles y de escritorio que zoom y contenedores no
+  produzcan solapamientos.
