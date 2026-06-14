@@ -1,6 +1,6 @@
 # Secuencia de prompts - Mundial Probabilidades
 
-Ultima edicion: 2026-06-13
+Ultima edicion: 2026-06-14
 
 ## Prompt inicial del proyecto
 
@@ -76,3 +76,14 @@ modelos multivariados de pronostico y modelos bayesianos.
   metodologica completa, convertir tablas/figuras en multifiltros globales,
   mejorar el ajuste horizontal del mural con zoom/foco y actualizar el deploy
   para revisar vinculacion con la planilla en linea.
+- Agregar un boton visible para limpiar todos los filtros.
+- Describir brevemente en que consistio el proyecto y mejorar el GIF/texto de
+  difusion.
+- Entregar instrucciones para GPT online con herramienta de edicion de imagenes.
+- Informar donde estaba el GIF inicial.
+- Regenerar una nueva version visual de la app web usando las referencias de
+  `imagenes/NUEVAS`.
+- Explicar por que en algunos telefonos se veian pequenas las letras y agregar
+  un control visible de modo de vista/zoom.
+- Regenerar un GIF de 15 segundos con al menos 4 cuadros por segundo y
+  transiciones mas suaves para redes.

@@ -1,5 +1,42 @@
 # Piezas para redes
 
+## `mundial_probabilidades_demo_15s_5fps_suave.gif`
+
+GIF promocional actualizado para compartir la app publica **Copa Mundial 2026 -
+Probabilidades Bayesianas** con transiciones mas suaves.
+
+Caracteristicas:
+
+* Duracion: 15 segundos.
+* Cuadros: 75 frames a 5 cuadros por segundo.
+* Tamano: 960 x 540 px.
+* Peso aproximado: 14.81 MB.
+* Fuente visual: storyboard local `imagenes/NUEVAS/`.
+* Narrativa: portada, recalculo bayesiano, filtros, fichas, probabilidades,
+  mapa, evidencia historica, metodologia, pronosticos de usuarios y cierre.
+* Transiciones: paneo/zoom suave por escena y fundido corto entre imagenes.
+* Uso recomendado: publicaciones donde se prioriza calidad visual y recorrido
+  didactico. Para WhatsApp o redes con limite estricto de peso, puede convenir
+  convertirlo a video MP4 desde el GIF.
+
+Vista previa estatica:
+
+```text
+assets/social/mundial_probabilidades_demo_15s_5fps_suave_preview.jpg
+```
+
+URL publica esperada:
+
+```text
+https://diegomezapy.github.io/copa_mundial_probabilidades/assets/social/mundial_probabilidades_demo_15s_5fps_suave.gif
+```
+
+Regeneracion:
+
+```powershell
+python scripts\create_social_gif.py
+```
+
 ## `mundial_probabilidades_demo_10s_4fps.gif`
 
 GIF promocional de 10 segundos para compartir la novedad de la app publica

@@ -1,9 +1,12 @@
-"""Create a 10-second promotional GIF for the public web app.
+"""Create a 15-second promotional GIF for the public web app.
 
-The output uses 40 frames at 4 FPS and is intended for social media sharing.
+The output uses 75 frames at 5 FPS and is intended for social media sharing.
 It captures the public GitHub Pages app with a localStorage demo user so the
 registration gate does not cover the interface, then adds a compact story layer:
 cover, feature highlights, motion cue, progress bar and final call to action.
+When a storyboard folder is available, it uses all storyboard images with
+Ken Burns motion and short crossfades so transitions feel smoother than a static
+one-image-per-second GIF.
 """
 
 from __future__ import annotations
@@ -24,20 +27,21 @@ from playwright.sync_api import Page, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_BASE_URL = "https://diegomezapy.github.io/copa_mundial_probabilidades/"
-OUTPUT_PATH = ROOT / "assets" / "social" / "mundial_probabilidades_demo_10s_4fps.gif"
-PREVIEW_PATH = ROOT / "assets" / "social" / "mundial_probabilidades_demo_10s_4fps_preview.jpg"
+OUTPUT_PATH = ROOT / "assets" / "social" / "mundial_probabilidades_demo_15s_5fps_suave.gif"
+PREVIEW_PATH = ROOT / "assets" / "social" / "mundial_probabilidades_demo_15s_5fps_suave_preview.jpg"
 FRAME_DIR = ROOT / "tmp" / "social_gif_frames"
 CONTACT_SHEET_PATH = ROOT / "tmp" / "social_gif_contact_sheet.jpg"
 DEFAULT_STORYBOARD_DIR = ROOT / "imagenes" / "NUEVAS"
 HERO_IMAGE = ROOT / "assets" / "img" / "generated" / "hero-bayes-football-1920x1080.jpg"
 CLASSROOM_IMAGE = ROOT / "assets" / "img" / "generated" / "classroom-football-statistics-1600x900.jpg"
 BALL_IMAGE = ROOT / "assets" / "img" / "generated" / "ball-realistic-transparent-1024.png"
-FPS = 4
-TOTAL_SECONDS = 10
+FPS = 5
+TOTAL_SECONDS = 15
 FRAME_COUNT = FPS * TOTAL_SECONDS
 FRAME_DURATION_MS = int(1000 / FPS)
 CAPTURE_SIZE = (1280, 720)
 OUTPUT_SIZE = (960, 540)
+STORYBOARD_COLORS = 72
 URL_TEXT = "diegomezapy.github.io/copa_mundial_probabilidades"
 APP_VERSION = "0.2.15"
 
@@ -122,14 +126,48 @@ def crop_to_output(image: Image.Image, zoom: float = 1.0, pan_x: float = 0.5, pa
     return resized.crop((left, top, left + target_w, top + target_h))
 
 
-def storyboard_frame(image_path: Path, scene_index: int, frame_in_scene: int) -> Image.Image:
+def ease_in_out(value: float) -> float:
+    value = min(1.0, max(0.0, value))
+    return value * value * (3 - 2 * value)
+
+
+def scene_frame_counts(scene_count: int) -> list[int]:
+    if scene_count <= 0:
+        return []
+    base = FRAME_COUNT // scene_count
+    remainder = FRAME_COUNT % scene_count
+    return [base + (1 if index < remainder else 0) for index in range(scene_count)]
+
+
+def storyboard_rgb_frame(image_path: Path, scene_index: int, scene_progress: float) -> Image.Image:
     image = Image.open(image_path).convert("RGB")
-    pan_x = 0.46 + 0.08 * math.sin(scene_index * 0.9)
-    pan_y = 0.48 + 0.04 * math.cos(scene_index * 0.7)
-    frame = crop_to_output(image, zoom=1.0, pan_x=pan_x, pan_y=pan_y)
+    eased = ease_in_out(scene_progress)
+    direction = -1 if scene_index % 2 else 1
+    pan_x = 0.46 + direction * (0.035 * eased) + 0.018 * math.sin(scene_index * 0.9)
+    pan_y = 0.49 + 0.022 * math.cos(scene_index * 0.7 + eased)
+    frame = crop_to_output(image, zoom=1.0 + 0.035 * eased, pan_x=pan_x, pan_y=pan_y)
     frame = ImageEnhance.Sharpness(frame).enhance(1.04)
     frame = ImageEnhance.Contrast(frame).enhance(1.02)
-    return frame.convert("P", palette=Image.Palette.ADAPTIVE, colors=96)
+    return frame.convert("RGB")
+
+
+def storyboard_frame(
+    image_path: Path,
+    next_image_path: Path | None,
+    scene_index: int,
+    frame_in_scene: int,
+    frames_in_scene: int,
+) -> Image.Image:
+    scene_progress = frame_in_scene / max(1, frames_in_scene - 1)
+    frame = storyboard_rgb_frame(image_path, scene_index, scene_progress)
+    transition_frames = min(2, max(0, frames_in_scene // 3))
+    if next_image_path and transition_frames and frame_in_scene >= frames_in_scene - transition_frames:
+        transition_index = frame_in_scene - (frames_in_scene - transition_frames)
+        alpha = ease_in_out((transition_index + 1) / (transition_frames + 1))
+        next_progress = transition_index / max(1, transition_frames - 1)
+        next_frame = storyboard_rgb_frame(next_image_path, scene_index + 1, next_progress)
+        frame = Image.blend(frame, next_frame, alpha)
+    return frame.convert("P", palette=Image.Palette.ADAPTIVE, colors=STORYBOARD_COLORS)
 
 
 def load_cover_image(path: Path) -> Image.Image:
@@ -335,7 +373,7 @@ def app_frame(base: Image.Image, shot: Shot, frame_index: int, frame_in_shot: in
     draw.rounded_rectangle((28, 22, 256, 54), radius=16, fill=(255, 255, 255, 232))
     draw.text((44, 31), top_chip, font=FONT_SMALL, fill=(15, 23, 42, 255))
 
-    badge = f"{frame_index + 1:02d}/40"
+    badge = f"{frame_index + 1:02d}/{FRAME_COUNT}"
     draw.rounded_rectangle((w - 92, 22, w - 28, 54), radius=16, fill=(255, 255, 255, 232))
     draw.text((w - 80, 31), badge, font=FONT_SMALL, fill=(15, 23, 42, 255))
 
@@ -458,8 +496,9 @@ def shots_for_frames() -> list[Shot]:
         ),
     ]
     frames: list[Shot] = []
-    for segment in segments:
-        frames.extend([segment] * FPS)
+    counts = scene_frame_counts(len(segments))
+    for segment, count in zip(segments, counts):
+        frames.extend([segment] * count)
     return frames[:FRAME_COUNT]
 
 
@@ -489,14 +528,19 @@ def build_gif(base_url: str, output_path: Path) -> None:
 def build_gif_with_storyboard(base_url: str, output_path: Path, storyboard_dir: Path | None) -> str:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     FRAME_DIR.mkdir(parents=True, exist_ok=True)
-    storyboard = storyboard_images(storyboard_dir)[:TOTAL_SECONDS]
+    storyboard = storyboard_images(storyboard_dir)
     if storyboard:
-        frames = [storyboard_frame(image_path, scene_index, 0) for scene_index, image_path in enumerate(storyboard)]
+        counts = scene_frame_counts(len(storyboard))
+        frames: list[Image.Image] = []
+        for scene_index, (image_path, count) in enumerate(zip(storyboard, counts)):
+            next_image_path = storyboard[scene_index + 1] if scene_index + 1 < len(storyboard) else None
+            for frame_in_scene in range(count):
+                frames.append(storyboard_frame(image_path, next_image_path, scene_index, frame_in_scene, count))
         frames[0].save(
             output_path,
             save_all=True,
             append_images=frames[1:],
-            duration=int(1000 * TOTAL_SECONDS / len(frames)),
+            duration=FRAME_DURATION_MS,
             loop=0,
             optimize=True,
             disposal=2,

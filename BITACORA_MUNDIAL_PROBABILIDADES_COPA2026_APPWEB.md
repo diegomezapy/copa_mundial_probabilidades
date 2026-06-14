@@ -3243,3 +3243,102 @@ Invoke-RestMethod https://diegomezapy.github.io/copa_mundial_probabilidades/data
 ### Recomendaciones
 
 * Mantener versionado de cache en cada cambio de UI visible.
+
+## 2026-06-14 13:49
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas.
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`.
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`.
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`.
+* Responsable: Codex.
+* Version de app: `0.2.15`.
+
+### Objetivo de la intervencion
+
+Regenerar una pieza GIF promocional de 15 segundos con al menos 4 cuadros por
+segundo y transiciones mas suaves para difusion en redes.
+
+### Diagnostico inicial
+
+* Existia un GIF anterior `mundial_probabilidades_demo_10s_4fps.gif`.
+* El script `scripts/create_social_gif.py`, al usar `imagenes/NUEVAS/`, tomaba
+  una imagen por segundo; por eso las transiciones quedaban bruscas.
+* La carpeta `imagenes/NUEVAS/` contiene 10 imagenes de storyboard de
+  1672 x 941 px.
+
+### Acciones realizadas
+
+* Se actualizo el generador para producir una variante nueva de 15 segundos.
+* Se aumento la frecuencia a 5 cuadros por segundo, equivalente a 75 frames.
+* Se agrego movimiento Ken Burns leve por escena: zoom y paneo controlados.
+* Se agrego fundido corto entre escenas para suavizar los cambios.
+* Se ajusto la paleta del storyboard a 72 colores para reducir peso sin perder
+  legibilidad general.
+* Se genero una vista previa estatica tipo hoja de contacto.
+
+### Archivos modificados
+
+* `scripts/create_social_gif.py`
+* `assets/social/README.md`
+* `docs/PROMPTS_MUNDIAL_PROBABILIDADES_2026-06-12.md`
+* `BITACORA_MUNDIAL_PROBABILIDADES_COPA2026_APPWEB.md`
+
+### Archivos generados
+
+* `assets/social/mundial_probabilidades_demo_15s_5fps_suave.gif`
+* `assets/social/mundial_probabilidades_demo_15s_5fps_suave_preview.jpg`
+
+### Comandos o scripts ejecutados
+
+```powershell
+python -m py_compile scripts\create_social_gif.py
+python scripts\create_social_gif.py
+```
+
+### Resultados verificados
+
+* Modo de generacion: `storyboard`.
+* GIF generado: 75 cuadros.
+* Duracion total verificada: 15.000 ms.
+* Demora por cuadro: 200 ms.
+* Velocidad efectiva: 5 fps.
+* Tamano: 960 x 540 px.
+* Peso final aproximado: 14.81 MB.
+
+### Pruebas realizadas
+
+* Compilacion Python del script: correcta.
+* Verificacion con Pillow de numero de frames, duracion, tamano y peso.
+* Revision visual de la vista previa:
+  `assets/social/mundial_probabilidades_demo_15s_5fps_suave_preview.jpg`.
+
+### Errores o incidentes
+
+* `gifsicle` no esta disponible en el entorno local, por lo que la optimizacion
+  se realizo con Pillow y reduccion de paleta.
+
+### Soluciones aplicadas
+
+* Variante nueva con nombre explicito para no sobrescribir la pieza previa.
+* Transiciones interpoladas y fundidos breves en vez de cuadros estaticos por
+  segundo.
+
+### Pendientes
+
+* Publicar los cambios en GitHub Pages y verificar la descarga publica del GIF.
+* Si se requiere una version mas liviana para WhatsApp, generar una variante
+  MP4 o un GIF de menor resolucion.
+
+### Riesgos
+
+* El formato GIF es pesado para 15 segundos a 960 x 540 px; algunas plataformas
+  pueden convertirlo o comprimirlo automaticamente.
+
+### Recomendaciones
+
+* Para piezas de redes con transiciones suaves, preferir 5 fps o mas y usar
+  fundidos entre escenas.
+* Mantener una variante GIF para compatibilidad y considerar MP4 cuando el peso
+  sea una restriccion.
