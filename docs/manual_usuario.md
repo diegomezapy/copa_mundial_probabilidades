@@ -16,7 +16,7 @@ partir de datos abiertos y un modelo bayesiano explicable.
 - Modelo: laboratorio para comparar dos equipos.
 - Acertá: pronosticos propios, puntaje, aciertos, fallas y evolucion.
 - Autores: autoria, colaboracion y perfiles academicos editables.
-- Visitas: perfil registrado y estadisticas locales de uso.
+- Visitas: vista administrativa con perfil registrado y estadisticas locales de uso.
 - Referencias: derechos de uso de datos, fuentes y paginas de interes.
 - Auditoria: fuentes, version de datos y estado del backend.
 
@@ -94,6 +94,10 @@ usuario pueda volver a ingresar sin credenciales.
 El registro es una puerta educativa de personalizacion y trazabilidad local, no
 un mecanismo de seguridad fuerte. Si se usa otro dispositivo o navegador, se
 debe registrar el usuario nuevamente.
+
+Los detalles de `Visitas` y `Auditoria` solo se muestran a las cuentas
+administrativas configuradas por el proyecto. Para usuarios comunes, la app
+mantiene la experiencia publica y redirige esas vistas a `Resumen`.
 
 ## Filtros
 

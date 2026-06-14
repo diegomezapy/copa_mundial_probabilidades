@@ -18,16 +18,15 @@ certeza; muestra probabilidades, supuestos, limitaciones y trazabilidad de datos
 
 ## Version actual
 
-`0.2.15` agrega un boton visible `Vista` para que cada usuario ajuste el modo de
-lectura entre `Normal`, `Comoda` y `Grande`. La preferencia se guarda en el
-telefono o navegador y aumenta la legibilidad en moviles con alta densidad de
-pixeles o navegadores que renderizan la app demasiado pequena. Mantiene el
-redisenio visual inspirado en `imagenes/NUEVAS`, el boton visible para limpiar
-todos los filtros, la estimacion permanente bajo `Ruta del modelo`, la figura
-didactica bayesiana, la vista `Metodologia`, multifiltros globales, controles
-de zoom/foco para el mural, imagenes generadas, definiciones `(i)`, CSV
-publicos, banderas SVG, fotos curadas con fuente/licencia, registro inicial,
-visitas, referencias, evidencia historica 1930-2022 y filtros por Copa, pais,
+`0.2.16` restringe las vistas `Visitas` y `Auditoria` a las cuentas
+administrativas definidas en `assets/js/config.js`, muestra el estado real del
+backend cuando GAS aun no tiene acceso anonimo validado y refuerza la escritura
+de cabeceras en Sheets antes de registrar visitas o pronosticos. Mantiene el
+boton visible `Vista`, el boton para limpiar filtros, la estimacion permanente
+bajo `Ruta del modelo`, la figura didactica bayesiana, la vista `Metodologia`,
+multifiltros globales, controles de zoom/foco, imagenes generadas, definiciones
+`(i)`, CSV publicos, banderas SVG, fotos curadas con fuente/licencia, registro
+inicial, referencias, evidencia historica 1930-2022 y filtros por Copa, pais,
 jugador y posicion.
 
 ## Fuentes
@@ -71,9 +70,12 @@ Comandos operativos:
 
 ```powershell
 clasp push -f
-clasp version "v0.2.15 control modo lectura movil"
-clasp deploy --deploymentId AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g --versionNumber 18 --description "v0.2.15 control modo lectura movil"
 ```
+
+Para produccion, usar el deployment `@HEAD` configurado manualmente en Apps
+Script con acceso **Cualquier persona** y ejecutar solo `clasp push -f`. No
+escribir `gasExecUrl` en `assets/js/config.js` hasta que
+`/exec?action=health&callback=cb` responda JSONP real, no HTML de error.
 
 Funciones manuales relevantes desde el editor de Apps Script:
 
@@ -97,16 +99,18 @@ antes de escribir su URL en `assets/js/config.js`.
 
 Estado operativo reciente:
 
-- `clasp push`, `clasp version` y `clasp deploy --deploymentId` fueron
-  ejecutados correctamente para `0.2.15`.
-- Deployment actualizado:
-  `AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g`
-  en version GAS `18`.
-- La prueba anonima de `/exec?action=health` sigue devolviendo `403 Prohibido`;
-  por eso `assets/js/config.js` conserva `gasExecUrl: ""` y el frontend sigue
-  usando JSON/CSV publicos. Los CSV de `data/sheets/` si responden por GitHub
-  Pages y son el camino recomendado para `IMPORTDATA` mientras se corrige el
-  acceso anonimo del Web App.
+- `clasp push -f` fue ejecutado correctamente para `0.2.16`.
+- El deployment versionado `@18` devuelve `403 Prohibido`.
+- El deployment `@HEAD` devuelve HTTP `200`, pero el cuerpo es HTML de error de
+  Apps Script: "No cuentas con el permiso necesario para acceder al documento
+  solicitado". No es un endpoint JSON/JSONP operativo.
+- Una implementacion diagnostica nueva `@19`
+  (`AKfycbxtuAbgT4K1ORsfs5WkPmKf2wnN4ygf0MX65xjZ_VCjGujtH-qwV6rzwDSqS4Cc9kfC7Q`)
+  tambien devolvio `403 Prohibido`.
+- La hoja `VISITAS` existe y conserva solo la cabecera; no habia visitas
+  remotas registradas al 2026-06-14 15:30 America/Asuncion.
+- Por seguridad, `assets/js/config.js` conserva `gasExecUrl: ""`; las visitas
+  siguen contando localmente hasta que el Web App quede publico y verificado.
 
 ## Automatizacion de datos
 

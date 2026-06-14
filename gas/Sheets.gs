@@ -50,6 +50,11 @@ function setSheetData_(sheetName, headers, rows) {
 function appendRow_(sheetName, row) {
   var ss = getWorkbook_();
   var sheet = ss.getSheetByName(sheetName) || ss.insertSheet(sheetName);
+  var headers = SHEET_HEADERS[sheetName];
+  if (headers && sheet.getLastRow() === 0) {
+    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+    sheet.setFrozenRows(1);
+    sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold').setBackground('#0f5a4a').setFontColor('#ffffff');
+  }
   sheet.appendRow(row);
 }
-

@@ -18,22 +18,21 @@ pronosticos bayesianos de la Copa Mundial 2026.
 
 ## Capa visual
 
-La version `0.2.15` agrega un control visible `Vista` para ajustar el modo de
-lectura entre `Normal`, `Comoda` y `Grande`. La preferencia se guarda en
-`localStorage` bajo `mundialProbabilidades.viewScale.v1` y se aplica desde el
-`head` antes de cargar CSS para reducir parpadeos. Este control mejora la
-legibilidad en moviles con alta densidad de pixeles o navegadores que muestran
-la app demasiado pequena. Mantiene el redisenio visual propuesto en
-`imagenes/NUEVAS`, el boton visible para limpiar todos los filtros activos
-desde cualquier vista, la estimacion permanente bajo `Ruta del modelo`, la
-figura didactica del flujo bayesiano, la vista `Metodologia` completa,
-multifiltros globales desde tablas/figuras/nodos y controles de zoom/foco para
-el mural del torneo en escritorio. Mantiene el set de imagenes generadas en
-`assets/img/generated/`, hero, iconos PWA, pelota animada, definiciones
-emergentes `(i)`, nodos rectangulares de grupos/partidos/etapas y
-exportaciones CSV publicas bajo `data/sheets/` para alimentar Google Sheets
-mediante `IMPORTDATA`. Cada CSV queda registrado en `data/sources_manifest.json`
-con filas, columnas, bytes y hash SHA-256.
+La version `0.2.16` restringe `Visitas` y `Auditoria` a las cuentas
+administrativas definidas en `assets/js/config.js`, normaliza perfiles cargados
+desde `localStorage` para que un rol `admin` manipulado no baste por si solo y
+muestra un aviso operativo cuando GAS no tiene Web App anonimo validado. Mantiene
+el control visible `Vista` para ajustar el modo de lectura entre `Normal`,
+`Comoda` y `Grande`, el boton visible para limpiar todos los filtros activos,
+la estimacion permanente bajo `Ruta del modelo`, la figura didactica del flujo
+bayesiano, la vista `Metodologia` completa, multifiltros globales desde
+tablas/figuras/nodos y controles de zoom/foco para el mural del torneo en
+escritorio. Mantiene el set de imagenes generadas en `assets/img/generated/`,
+hero, iconos PWA, pelota animada, definiciones emergentes `(i)`, nodos
+rectangulares de grupos/partidos/etapas y exportaciones CSV publicas bajo
+`data/sheets/` para alimentar Google Sheets mediante `IMPORTDATA`. Cada CSV
+queda registrado en `data/sources_manifest.json` con filas, columnas, bytes y
+hash SHA-256.
 
 El origen local `imagenes/` se mantiene fuera de Git; la app solo publica la
 copia normalizada en `assets/img/generated/`. Los metadatos de integracion se
@@ -99,6 +98,12 @@ visitas totales, primer ingreso, ultimo ingreso y conteo por vista. Si
 `APP_CONFIG.gasExecUrl` se configura con un Web App anonimo realmente operativo,
 el frontend puede enviar eventos JSONP con `action=visit`.
 
+Desde `0.2.16`, la vista detallada de visitas queda visible solo para usuarios
+administrativos permitidos en `APP_CONFIG.adminUsernames`. Un usuario comun que
+abra `?view=visitas` o tenga esa ultima vista guardada es enviado a `Resumen`.
+Este control es una proteccion de interfaz para la app publica; no reemplaza una
+autenticacion fuerte de backend.
+
 ## Pestañas historicas en Sheets
 
 `syncFromGithub()` crea y actualiza:
@@ -115,14 +120,14 @@ los CSV publicos con formulas `IMPORTDATA` apuntando a GitHub Pages. En la hoja
 importacion y formatear explicitamente fechas/marcadores historicos para evitar
 que Google Sheets muestre numeros seriales en columnas como `date` o `score`.
 
-En la intervencion `0.2.15`, GAS fue actualizado con `clasp push`, version GAS
-`18` y redeploy sobre
-`AKfycbywqIoc4rXWIPMtUeQkLStaVycJmQP_q4vHbAiG48gLUXxMphIN5ABtvIHPhXE7bdiL4g`.
-La URL `/exec?action=health` sigue devolviendo `403 Prohibido`; por tanto el
-frontend mantiene `gasExecUrl: ""` hasta que el Web App quede accesible
-anonimamente. Los CSV publicos en `data/sheets/` fueron verificados con estado
-`200` y siguen siendo el camino operativo para la planilla mediante
-`IMPORTDATA`.
+En la intervencion `0.2.16`, GAS fue actualizado con `clasp push -f`. La URL
+versionada `@18` sigue devolviendo `403 Prohibido`. El deployment `@HEAD`
+responde HTTP `200`, pero devuelve HTML de error de Apps Script, no JSON/JSONP:
+"No cuentas con el permiso necesario para acceder al documento solicitado". Una
+implementacion diagnostica nueva `@19` tambien devolvio `403 Prohibido`. Por
+tanto el frontend mantiene `gasExecUrl: ""` hasta que el Web App quede accesible
+anonimamente y se verifique una escritura real en `VISITAS`. La hoja `VISITAS`
+existe y, al 2026-06-14 15:30 America/Asuncion, contenia solo la cabecera.
 
 ## Validaciones minimas
 

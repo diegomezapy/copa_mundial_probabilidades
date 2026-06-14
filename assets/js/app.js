@@ -28,6 +28,9 @@
   const VIEW_SCALE_STORAGE_KEY = "mundialProbabilidades.viewScale.v1";
   const MAX_PREDICTION_CARDS = 18;
   const GENERATED_BALL_IMAGE_SRC = "assets/img/generated/ball-realistic-transparent-1024.png";
+  const PUBLIC_PROFILE_ROLES = new Set(["estudiante", "docente", "visitante", "investigador"]);
+  const ADMIN_USERNAMES = new Set((window.APP_CONFIG?.adminUsernames || []).map(cleanUserName).filter(Boolean));
+  const ADMIN_VIEW_IDS = new Set(window.APP_CONFIG?.adminViews || ["visitas", "auditoria"]);
   const VIEW_SCALE_OPTIONS = [
     {
       id: "normal",
@@ -322,6 +325,45 @@
       .slice(0, 40);
   }
 
+  function isAdminUsername(username) {
+    return ADMIN_USERNAMES.has(cleanUserName(username));
+  }
+
+  function isAdminUser(profile = state.user) {
+    return Boolean(profile && isAdminUsername(profile.username));
+  }
+
+  function normalizeProfileAccess(profile) {
+    if (!profile) return null;
+    const role = isAdminUsername(profile.username)
+      ? "admin"
+      : PUBLIC_PROFILE_ROLES.has(profile.role)
+        ? profile.role
+        : "estudiante";
+    return { ...profile, role };
+  }
+
+  function canAccessView(target) {
+    return !ADMIN_VIEW_IDS.has(target) || isAdminUser();
+  }
+
+  function sanitizeViewTarget(target) {
+    return target && document.getElementById(target) && canAccessView(target) ? target : "resumen";
+  }
+
+  function applyAccessControls() {
+    const admin = isAdminUser();
+    ADMIN_VIEW_IDS.forEach((viewId) => {
+      const button = $(`.tab-button[data-target="${viewId}"]`);
+      const view = document.getElementById(viewId);
+      if (button) {
+        button.hidden = !admin;
+        button.setAttribute("aria-hidden", String(!admin));
+      }
+      if (view) view.dataset.adminOnly = admin ? "false" : "true";
+    });
+  }
+
   function escapeHtml(value) {
     return String(value ?? "")
       .replace(/&/g, "&amp;")
@@ -432,8 +474,9 @@
   }
 
   function saveUserProfile(profile) {
-    state.user = profile;
-    writeJsonStorage(USER_STORAGE_KEY, profile);
+    const normalizedProfile = normalizeProfileAccess(profile);
+    state.user = normalizedProfile;
+    writeJsonStorage(USER_STORAGE_KEY, normalizedProfile);
     renderUserButton();
   }
 
@@ -557,7 +600,9 @@
   function renderUserButton() {
     const button = $("#userButton");
     if (!button) return;
-    button.textContent = state.user?.username ? `Usuario: ${state.user.username}` : "Registrarse";
+    button.textContent = state.user?.username
+      ? `Usuario: ${state.user.username}${isAdminUser() ? " (admin)" : ""}`
+      : "Registrarse";
   }
 
   function showAuthGate(prefill) {
@@ -568,7 +613,7 @@
       form.usuario.value = profile.username || "";
       form.nombre.value = profile.name || "";
       form.pais.value = profile.country || "";
-      form.perfil.value = profile.role || "estudiante";
+      form.perfil.value = PUBLIC_PROFILE_ROLES.has(profile.role) ? profile.role : "docente";
       form.institucion.value = profile.institution || "";
       $("#acceptDataRights").checked = true;
     } else {
@@ -599,12 +644,13 @@
       return;
     }
     const previous = state.user || loadUserProfile();
+    const requestedRole = String(form.perfil.value || "estudiante");
     const profile = {
       id: previous?.id || createId("usr"),
       username,
       name,
       country: String(form.pais.value || "").trim(),
-      role: form.perfil.value,
+      role: isAdminUsername(username) ? "admin" : requestedRole,
       institution: String(form.institucion.value || "").trim(),
       created_at: previous?.created_at || now,
       last_seen_at: now,
@@ -613,6 +659,7 @@
       visit_count: state.visits?.total_visits || previous?.visit_count || 0
     };
     saveUserProfile(profile);
+    applyAccessControls();
     hideAuthGate();
     if (!state.visits) beginVisitSession();
     if (state.appStarted) {
@@ -860,7 +907,11 @@
       </article>
     `;
     $("#dataStatus").textContent = `${state.status.source === "gas" ? "GAS" : "JSON publico"} · ${fullDateTime(meta.generated_at)}`;
-    $("#backendStatus").textContent = state.status.error ? `Fallback activo: ${state.status.error}` : state.status.backend;
+    $("#backendStatus").textContent = !window.APP_CONFIG.gasExecUrl
+      ? "GAS visitas pendiente: Web App sin acceso anonimo validado"
+      : state.status.error
+        ? `Fallback activo: ${state.status.error}`
+        : state.status.backend;
   }
 
   function renderModelFlow() {
@@ -2271,11 +2322,20 @@
       <p><strong>Wyscout/Figshare</strong><a href="${escapeHtml(sources.wyscout_figshare_events?.url || "https://figshare.com/collections/Soccer_match_event_dataset/4415000")}" target="_blank" rel="noopener noreferrer">dataset academico de eventos</a></p>
       <p><strong>API 2026 candidata</strong><a href="${escapeHtml(sources.api_football_fixture_statistics?.url || "https://api-sports.io/documentation/football/v3")}" target="_blank" rel="noopener noreferrer">API-Football fixture statistics</a></p>
       <p><strong>Hoja operativa</strong><span>${escapeHtml(window.APP_CONFIG.spreadsheetId)}</span></p>
+      <p><strong>Registro remoto de visitas</strong><span>${window.APP_CONFIG.gasExecUrl ? "GAS configurado" : "pendiente: Web App sin acceso anonimo validado"}</span></p>
     `;
   }
 
   function renderVisitStats() {
     if (!state.visits) return;
+    if (!isAdminUser()) {
+      $("#visitorStatus").textContent = "solo admin";
+      $("#visitSummary").textContent = "restringido";
+      $("#visitorProfile").innerHTML = `<p class="empty-state">Los detalles de visitas quedan visibles solo para la cuenta administradora.</p>`;
+      $("#visitStats").innerHTML = "";
+      $("#viewStats").innerHTML = "";
+      return;
+    }
     const profile = state.user || {};
     const stats = state.visits;
     const viewCounts = stats.view_counts || {};
@@ -2530,6 +2590,7 @@
 
   function renderAll() {
     markRecalculating();
+    applyAccessControls();
     renderKpis();
     renderModelFlow();
     renderModelFlowForecast();
@@ -2556,6 +2617,8 @@
   }
 
   function activateView(target, options = {}) {
+    target = sanitizeViewTarget(target);
+    applyAccessControls();
     $$(".tab-button").forEach((item) => item.classList.toggle("active", item.dataset.target === target));
     $$(".view").forEach((view) => view.classList.toggle("active", view.id === target));
     if (options.track !== false) trackView(target);
@@ -2564,7 +2627,7 @@
   function bindNavigation() {
     $$(".tab-button").forEach((button) => {
       button.addEventListener("click", () => {
-        const target = button.dataset.target;
+        const target = sanitizeViewTarget(button.dataset.target);
         activateView(target);
         const url = new URL(window.location.href);
         url.searchParams.set("view", target);
@@ -2582,6 +2645,7 @@
         localStorage.removeItem(VISIT_STORAGE_KEY);
         state.user = null;
         state.visits = null;
+        applyAccessControls();
         renderUserButton();
         showAuthGate(false);
       }
@@ -2965,8 +3029,13 @@
       state.status = loaded.status;
       renderAll();
       const requestedView = new URLSearchParams(window.location.search).get("view");
-      const target = requestedView && document.getElementById(requestedView) ? requestedView : state.visits?.last_view || "resumen";
-      if (document.getElementById(target)) activateView(target, { track: false });
+      const target = sanitizeViewTarget(requestedView || state.visits?.last_view || "resumen");
+      if (requestedView && requestedView !== target) {
+        const url = new URL(window.location.href);
+        url.searchParams.set("view", target);
+        window.history.replaceState({}, "", url);
+      }
+      activateView(target, { track: false });
       trackView(target);
       $("#appShell").classList.remove("loading");
     } catch (error) {
@@ -2985,7 +3054,9 @@
     bindRichTooltips();
     setupHeroBallCanvas();
     await registerServiceWorker();
-    state.user = loadUserProfile();
+    state.user = normalizeProfileAccess(loadUserProfile());
+    if (state.user) writeJsonStorage(USER_STORAGE_KEY, state.user);
+    applyAccessControls();
     renderUserButton();
     if (!state.user) {
       showAuthGate(false);

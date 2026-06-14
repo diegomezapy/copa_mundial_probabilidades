@@ -3878,3 +3878,157 @@ Invoke-WebRequest -UseBasicParsing https://diegomezapy.github.io/copa_mundial_pr
 
 * Para compartir por redes que limiten peso, considerar convertir esta pieza a
   MP4 manteniendo la misma fuente y velocidad.
+
+## 2026-06-14 15:37
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas.
+* Cliente o institucion: FACEN / uso academico publico.
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`.
+* Repositorio: `https://github.com/diegomezapy/copa_mundial_probabilidades.git`.
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`.
+* Responsable: Codex.
+* Version: `0.2.16`.
+
+### Objetivo de la intervencion
+
+* Revisar por que las visitas publicas no aparecen en la app ni en la planilla
+  en linea.
+* Asegurar que los detalles de visitas y auditoria solo queden visibles para
+  cuenta administrativa.
+* Reforzar la preparacion de GAS/Sheets para guardar visitas cuando el Web App
+  quede publicamente habilitado.
+
+### Diagnostico inicial
+
+* `assets/js/config.js` tenia `gasExecUrl: ""`; por tanto el frontend no estaba
+  enviando eventos `action=visit` a GAS.
+* La hoja `VISITAS` de `FUTBOL_PROBABILIDADES`
+  (`1k_zmucPFA9A7pyE7Y6ZZgb-c4K3UTlp6YknpovCv5pQ`) existe, pero contenia solo
+  la cabecera: no habia filas de visitas remotas.
+* La hoja `LOG` solo tenia el evento `setupWorkbook` del 2026-06-13.
+* `clasp show-authorized-user` informo sesion como `apoyomedicoips@gmail.com`;
+  se debe verificar la identidad propietaria/mantenedora correcta antes de
+  declarar operativo el Web App.
+* El deployment versionado `@18` devolvio `403 Prohibido`.
+* El deployment `@HEAD` devolvio HTTP `200`, pero con HTML de error de Apps
+  Script: "No cuentas con el permiso necesario para acceder al documento
+  solicitado"; no es JSON/JSONP operativo.
+* Una implementacion diagnostica nueva `@19`
+  (`AKfycbxtuAbgT4K1ORsfs5WkPmKf2wnN4ygf0MX65xjZ_VCjGujtH-qwV6rzwDSqS4Cc9kfC7Q`)
+  tambien devolvio `403 Prohibido`.
+
+### Acciones realizadas
+
+* Se agrego `adminUsernames` y `adminViews` en `assets/js/config.js`.
+* Se normaliza el perfil local para que solo usuarios permitidos puedan operar
+  como `admin`.
+* Se ocultan `Visitas` y `Auditoria` a usuarios no administradores.
+* Se redirige a `Resumen` si un usuario comun entra por URL directa
+  `?view=visitas` o `?view=auditoria`.
+* Se muestra el estado real del backend cuando GAS no tiene Web App anonimo
+  validado.
+* Se reforzo `appendRow_()` en GAS para crear cabeceras si una hoja se inserta
+  vacia antes de guardar filas.
+* Se actualizo la version/cache a `0.2.16`.
+* Se ejecuto `clasp push -f` para subir el GAS a HEAD.
+
+### Archivos modificados
+
+* `assets/js/config.js`
+* `assets/js/app.js`
+* `gas/Config.gs`
+* `gas/Sheets.gs`
+* `index.html`
+* `service-worker.js`
+* `README.md`
+* `docs/manual_tecnico.md`
+* `docs/manual_usuario.md`
+* `BITACORA_MUNDIAL_PROBABILIDADES_COPA2026_APPWEB.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+git status --branch --short
+clasp show-authorized-user
+clasp deployments
+clasp deploy --description "diagnostico acceso anonimo visitas 2026-06-14"
+clasp push -f
+node --check assets\js\config.js
+node --check assets\js\data.js
+node --check assets\js\app.js
+node --check service-worker.js
+git diff --check
+python -m http.server 8766 --bind 127.0.0.1
+node tmp\admin-access-check.js
+```
+
+### Resultados verificados
+
+* `VISITAS!A1:K25` contiene solo cabecera; se confirma ausencia de registros
+  remotos previos.
+* `LOG!A1:E30` contiene cabecera y `setupWorkbook`.
+* `@18` no es publico: `403 Prohibido`.
+* `@HEAD` no es operativo: devuelve HTML de error, no JSON/JSONP.
+* `@19` diagnostico tampoco es publico: `403 Prohibido`.
+* Prueba local con navegador headless:
+  * Usuario `estudiante.demo` con `?view=visitas` termina en `Resumen`.
+  * Para `estudiante.demo`, los botones `Visitas` y `Auditoria` quedan ocultos.
+  * Usuario `diegomezapy` abre `Visitas`, ve `Auditoria` y aparece como
+    `Usuario: diegomezapy (admin)`.
+
+### Pruebas realizadas
+
+* Sintaxis JS con `node --check`.
+* Verificacion de diff sin espacios conflictivos con `git diff --check`.
+* Lectura real de Google Sheets con conector Google Drive.
+* Pruebas HTTP anonimas a deployments GAS.
+* Prueba browser local con Edge/Playwright instalado temporalmente fuera de
+  Google Drive.
+
+### Errores o incidentes
+
+* El backend GAS sigue bloqueado por permisos del Web App o identidad de
+  despliegue. No se escribio `gasExecUrl` en la app porque fallaria para
+  visitantes.
+* Instalar Playwright dentro de carpeta sincronizada por Google Drive produjo
+  advertencias y paquete invalido; se repitio la instalacion temporal fuera de
+  Drive.
+
+### Soluciones aplicadas
+
+* Cierre de vistas administrativas en frontend.
+* Diagnostico visible de backend pendiente.
+* Refuerzo de cabeceras en escritura GAS.
+* Version/cache `0.2.16` para invalidar service worker previo.
+
+### Pendientes
+
+* Desde la cuenta propietaria correcta del Apps Script, abrir el editor y
+  configurar el deployment `@HEAD` con acceso `Cualquier persona`.
+* Verificar anonimamente:
+  `/exec?action=health&callback=cb` debe devolver `cb({...});`.
+* Ejecutar una visita de prueba:
+  `/exec?action=visit&callback=cb&usuario=diagnostico&event=test&view=resumen`.
+* Confirmar nueva fila en `VISITAS`.
+* Solo despues escribir la URL `@HEAD` en `assets/js/config.js`, subir a GitHub
+  Pages y validar URL publica con cache-busting.
+
+### Riesgos
+
+* El registro local sin password no es autenticacion fuerte; protege visibilidad
+  de interfaz, no datos sensibles en backend.
+* Si el deployment se hace con cuenta sin permiso real sobre la planilla, puede
+  seguir fallando aunque figure como `ANYONE_ANONYMOUS`.
+* Mientras `gasExecUrl` siga vacio, las visitas reales de publico no se guardan
+  en Google Sheets.
+
+### Recomendaciones
+
+* Usar `@HEAD` para produccion y evitar redeploy versionado que pueda resetear
+  permisos.
+* No publicar ningun `gasExecUrl` hasta comprobar JSONP real y escritura en
+  `VISITAS`.
+* Mantener `adminUsernames` minimo y explicito; actualmente se permiten
+  `diegomezapy` y `dmeza.py`.
