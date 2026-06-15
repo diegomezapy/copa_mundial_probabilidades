@@ -4414,3 +4414,64 @@ python -m http.server 8768
   navegador y que son una ayuda educativa, no una fuente oficial de resultados.
 * Las redes de torneo deben validarse con prueba visual desktop/movil antes de
   publicarse.
+
+## 2026-06-14 21:48
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Version: `0.2.19`
+
+### Objetivo de la intervencion
+
+* Registrar el cierre de publicacion y verificacion publica de la version
+  funcional `0.2.19`.
+
+### Acciones realizadas
+
+* Se publico el commit funcional `7832398` en `main`.
+* Se verifico GitHub Pages con cache-busting.
+* Se verifico que GitHub raw sirve `assets/js/config.js` con version `0.2.19`.
+
+### Comandos o scripts ejecutados
+
+```powershell
+git push origin HEAD:main
+curl.exe -I -L "https://diegomezapy.github.io/copa_mundial_probabilidades/?v=0.2.19-check"
+curl.exe -L "https://raw.githubusercontent.com/diegomezapy/copa_mundial_probabilidades/main/assets/js/config.js?v=0.2.19-check"
+curl.exe -L --url "https://diegomezapy.github.io/copa_mundial_probabilidades/?v=0.2.19-direct"
+```
+
+### Resultados verificados
+
+* Git remoto `main`: `7832398cf1f4498afd09b3f02e3e0c82cefb80bc`.
+* GitHub Pages respondio `200 OK`.
+* `index.html` publico contiene `Version 0.2.19`, `Activar avisos`,
+  `Mis pronosticos`, `statsLearningPanel` y `main-tabs`.
+* `assets/js/config.js` publico contiene `appVersion: "0.2.19"` y
+  `mundial-probabilidades-v0-2-19`.
+* `service-worker.js` publico contiene `mundial-probabilidades-v0-2-19` y
+  `notificationclick`.
+
+### Pruebas realizadas
+
+* Verificacion HTTP publica de HTML, configuracion y service worker con
+  cache-busting.
+
+### Pendientes
+
+* Validar en telefono real del usuario que el perfil queda recordado segun el
+  navegador usado.
+* Validar permiso de notificaciones en dispositivos reales.
+
+### Riesgos
+
+* GitHub Pages usa cache `max-age=600`; algunos usuarios podrian ver la version
+  anterior por minutos hasta tocar `Actualizar app` o limpiar cache.
+
+### Recomendaciones
+
+* Luego de cada push funcional, registrar en bitacora la verificacion HTTP
+  publica, no solo la validacion local.
