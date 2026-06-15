@@ -16,7 +16,7 @@
     appStarted: false,
     motionTimer: null,
     viewScale: "normal",
-    wallZoom: 0.86,
+    wallZoom: 0.74,
     wallFocus: "full"
   };
 
@@ -26,6 +26,9 @@
   const VISIT_STORAGE_KEY = "mundialProbabilidades.visits.v1";
   const PREDICTION_STORAGE_KEY = "mundialProbabilidades.predictions.v1";
   const VIEW_SCALE_STORAGE_KEY = "mundialProbabilidades.viewScale.v1";
+  const NOTIFICATION_PREF_KEY = "mundialProbabilidades.notifications.v1";
+  const NOTIFICATION_SEEN_KEY = "mundialProbabilidades.notificationsSeen.v1";
+  const COOKIE_STORAGE_KEYS = new Set([USER_STORAGE_KEY]);
   const MAX_PREDICTION_CARDS = 18;
   const GENERATED_BALL_IMAGE_SRC = "assets/img/generated/ball-realistic-transparent-1024.png";
   const PUBLIC_PROFILE_ROLES = new Set(["estudiante", "docente", "visitante", "investigador"]);
@@ -251,11 +254,11 @@
   function readJsonStorage(key, fallback) {
     try {
       const value = localStorage.getItem(key);
-      return value ? JSON.parse(value) : fallback;
+      if (value) return JSON.parse(value);
     } catch (error) {
       console.warn("storage read failed", key, error);
-      return fallback;
     }
+    return COOKIE_STORAGE_KEYS.has(key) ? readJsonCookie(key, fallback) : fallback;
   }
 
   function writeJsonStorage(key, value) {
@@ -264,6 +267,51 @@
     } catch (error) {
       console.warn("storage write failed", key, error);
     }
+    if (COOKIE_STORAGE_KEYS.has(key)) writeJsonCookie(key, value);
+  }
+
+  function removeJsonStorage(key) {
+    try {
+      localStorage.removeItem(key);
+    } catch (error) {
+      console.warn("storage remove failed", key, error);
+    }
+    if (COOKIE_STORAGE_KEYS.has(key)) removeJsonCookie(key);
+  }
+
+  function cookieNameForStorage(key) {
+    return `mp_${key.replace(/[^a-z0-9]/gi, "_")}`;
+  }
+
+  function cookiePath() {
+    return window.location.pathname.includes("/copa_mundial_probabilidades") ? "/copa_mundial_probabilidades/" : "/";
+  }
+
+  function readJsonCookie(key, fallback) {
+    try {
+      const name = `${cookieNameForStorage(key)}=`;
+      const value = document.cookie
+        .split(";")
+        .map((item) => item.trim())
+        .find((item) => item.startsWith(name));
+      return value ? JSON.parse(decodeURIComponent(value.slice(name.length))) : fallback;
+    } catch (error) {
+      console.warn("cookie read failed", key, error);
+      return fallback;
+    }
+  }
+
+  function writeJsonCookie(key, value) {
+    try {
+      const encoded = encodeURIComponent(JSON.stringify(value));
+      document.cookie = `${cookieNameForStorage(key)}=${encoded}; Max-Age=31536000; Path=${cookiePath()}; SameSite=Lax`;
+    } catch (error) {
+      console.warn("cookie write failed", key, error);
+    }
+  }
+
+  function removeJsonCookie(key) {
+    document.cookie = `${cookieNameForStorage(key)}=; Max-Age=0; Path=${cookiePath()}; SameSite=Lax`;
   }
 
   function viewScaleOption(value) {
@@ -368,6 +416,146 @@
       const dataStatus = $("#dataStatus");
       if (dataStatus) dataStatus.textContent = "No se pudo actualizar automaticamente";
     }
+  }
+
+  function notificationsSupported() {
+    return "Notification" in window;
+  }
+
+  function loadNotificationPrefs() {
+    return readJsonStorage(NOTIFICATION_PREF_KEY, { enabled: false });
+  }
+
+  function saveNotificationPrefs(prefs) {
+    writeJsonStorage(NOTIFICATION_PREF_KEY, prefs);
+  }
+
+  function notificationSeenKey(match) {
+    const score = match.score ? `${match.score.team1}-${match.score.team2}` : "pending";
+    return `${match.match_id}|${score}|${state.data?.metadata?.data_version || "data"}`;
+  }
+
+  function loadNotificationSeen() {
+    return readJsonStorage(NOTIFICATION_SEEN_KEY, []);
+  }
+
+  function saveNotificationSeen(ids) {
+    writeJsonStorage(NOTIFICATION_SEEN_KEY, [...new Set(ids)].slice(-320));
+  }
+
+  function renderNotificationButton() {
+    const button = $("#notificationButton");
+    if (!button) return;
+    if (!notificationsSupported()) {
+      button.textContent = "Avisos no disponibles";
+      button.disabled = true;
+      button.title = "Este navegador no permite notificaciones web.";
+      return;
+    }
+    const prefs = loadNotificationPrefs();
+    const granted = Notification.permission === "granted";
+    if (Notification.permission === "denied") {
+      button.textContent = "Avisos bloqueados";
+      button.disabled = true;
+      button.title = "El navegador bloqueo las notificaciones para este sitio.";
+      return;
+    }
+    button.disabled = false;
+    button.classList.toggle("is-enabled", Boolean(prefs.enabled && granted));
+    button.textContent = prefs.enabled && granted ? "Avisos activos" : "Activar avisos";
+    button.title =
+      prefs.enabled && granted
+        ? "Avisos locales activos para resultados nuevos y comparacion con tus pronosticos."
+        : "Activa avisos locales cuando la app detecte resultados nuevos.";
+  }
+
+  function resultNotificationBody(match) {
+    const prediction = loadPredictions()[match.match_id];
+    const evaluation = evaluatePrediction(match, prediction);
+    const modelSignal = leadingPrediction(match);
+    const modelText = modelSignal
+      ? `Modelo: ${modelSignal.label} ${WorldCupBayes.pct(modelSignal.value, 0)}.`
+      : "Modelo: sin estimacion disponible.";
+    const userText = prediction
+      ? `Tu pronostico: ${prediction.goals_home}-${prediction.goals_away}; ${evaluation.label}.`
+      : "No tenias pronostico guardado para este partido.";
+    return `${match.team1} ${match.score.team1}-${match.score.team2} ${match.team2}. ${userText} ${modelText}`;
+  }
+
+  async function showLocalNotification(title, options = {}) {
+    if (!notificationsSupported() || Notification.permission !== "granted") return false;
+    const payload = {
+      icon: "assets/img/icon-192.png",
+      badge: "assets/img/icon-192.png",
+      tag: options.tag || "mundial-probabilidades",
+      renotify: false,
+      ...options
+    };
+    try {
+      if ("serviceWorker" in navigator) {
+        const registration = await navigator.serviceWorker.ready;
+        if (registration?.showNotification) {
+          await registration.showNotification(title, payload);
+          return true;
+        }
+      }
+      new Notification(title, payload);
+      return true;
+    } catch (error) {
+      console.warn("notification failed", error);
+      return false;
+    }
+  }
+
+  function finalMatchesWithScore() {
+    return (state.data?.matches || []).filter((match) => match.status === "final" && match.score);
+  }
+
+  async function enableNotifications() {
+    const button = $("#notificationButton");
+    if (!notificationsSupported()) {
+      if (button) button.textContent = "Avisos no disponibles";
+      return;
+    }
+    if (button) {
+      button.disabled = true;
+      button.textContent = "Activando...";
+    }
+    const permission = Notification.permission === "default" ? await Notification.requestPermission() : Notification.permission;
+    if (permission !== "granted") {
+      saveNotificationPrefs({ enabled: false });
+      renderNotificationButton();
+      return;
+    }
+    saveNotificationPrefs({ enabled: true, enabled_at: new Date().toISOString() });
+    saveNotificationSeen(finalMatchesWithScore().map(notificationSeenKey));
+    renderNotificationButton();
+    await showLocalNotification("Avisos activados", {
+      body: "Te avisare al abrir o actualizar la app cuando haya resultados nuevos para comparar con tus pronosticos y el modelo.",
+      tag: "mundial-probabilidades-enabled"
+    });
+  }
+
+  async function checkResultNotifications() {
+    const prefs = loadNotificationPrefs();
+    if (!prefs.enabled || !notificationsSupported() || Notification.permission !== "granted" || !state.data) return;
+    const seen = new Set(loadNotificationSeen());
+    const finals = finalMatchesWithScore();
+    const pending = finals.filter((match) => !seen.has(notificationSeenKey(match)));
+    if (!pending.length) return;
+    for (const match of pending.slice(0, 3)) {
+      await showLocalNotification(`Resultado: ${match.team1} vs ${match.team2}`, {
+        body: resultNotificationBody(match),
+        tag: `mundial-result-${match.match_id}`
+      });
+    }
+    if (pending.length > 3) {
+      await showLocalNotification("Hay mas resultados nuevos", {
+        body: `${pending.length} partidos nuevos quedaron registrados. Abre Mis pronosticos para comparar tu puntaje.`,
+        tag: "mundial-results-summary"
+      });
+    }
+    saveNotificationSeen([...seen, ...pending.map(notificationSeenKey)]);
   }
 
   function createId(prefix) {
@@ -672,6 +860,9 @@
     button.textContent = state.user?.username
       ? `Usuario: ${state.user.username}${isAdminUser() ? " (admin)" : ""}`
       : "Registrarse";
+    button.title = state.user?.username
+      ? "Usuario recordado en este dispositivo. Toca para editar el registro."
+      : "Registrate una vez para guardar tus pronosticos en este dispositivo.";
   }
 
   function showAuthGate(prefill) {
@@ -981,6 +1172,50 @@
       : state.status.error
         ? `Fallback activo: ${state.status.error}`
         : state.status.backend;
+  }
+
+  function renderStatsLearningPanel() {
+    const container = $("#statsLearningPanel");
+    if (!container || !state.data) return;
+    const teams = filteredTeams();
+    const matches = filteredMatches();
+    const finalMatches = matches.filter((match) => match.status === "final" && match.score);
+    const predictedMatches = matches.filter((match) => match.prediction);
+    const goals = finalMatches.reduce((sum, match) => sum + Number(match.score.team1 || 0) + Number(match.score.team2 || 0), 0);
+    const avgGoals = finalMatches.length ? goals / finalMatches.length : null;
+    const topTeam = [...teams].sort((a, b) => b.p_advance_group - a.p_advance_group)[0];
+    const closestMatch = [...predictedMatches]
+      .map((match) => {
+        const signal = leadingPrediction(match);
+        return { match, signal, uncertainty: signal ? 1 - signal.value : 1 };
+      })
+      .sort((a, b) => b.uncertainty - a.uncertainty)[0];
+    const attackValues = teams.map((team) => Number(team.attack_posterior_mean || 0)).filter(Boolean);
+    const minAttack = attackValues.length ? Math.min(...attackValues) : 0;
+    const maxAttack = attackValues.length ? Math.max(...attackValues) : 0;
+    const attackSpread = Math.max(0, maxAttack - minAttack);
+    container.innerHTML = `
+      <article>
+        <span>Promedio</span>
+        <strong>${avgGoals === null ? "s/d" : WorldCupBayes.number(avgGoals, 2)}</strong>
+        <p>Goles por partido finalizado en el filtro actual. Es una media: resume, pero no cuenta toda la historia.</p>
+      </article>
+      <article>
+        <span>Probabilidad</span>
+        <strong>${topTeam ? WorldCupBayes.pct(topTeam.p_advance_group, 0) : "s/d"}</strong>
+        <p>${topTeam ? `${flagMarkup(topTeam.team)}${escapeHtml(topTeam.team)} tiene la senal mas alta de avance entre los equipos visibles.` : "Sin equipo destacado con estos filtros."}</p>
+      </article>
+      <article>
+        <span>Incertidumbre</span>
+        <strong>${closestMatch?.signal ? WorldCupBayes.pct(closestMatch.uncertainty, 0) : "s/d"}</strong>
+        <p>${closestMatch ? `${escapeHtml(closestMatch.match.team1)} vs ${escapeHtml(closestMatch.match.team2)} muestra que incluso la mejor senal deja margen de duda.` : "Sin partido estimado en este filtro."}</p>
+      </article>
+      <article>
+        <span>Variacion</span>
+        <strong>${WorldCupBayes.number(attackSpread, 2)}</strong>
+        <p>Diferencia entre ataques posteriores visibles. Comparar variacion ayuda a no mirar solo el ranking.</p>
+      </article>
+    `;
   }
 
   function renderModelFlow() {
@@ -1766,21 +2001,23 @@
     }, {});
     const rounds = order.filter((round) => byRound[round]?.length);
     $("#knockoutMap").innerHTML = rounds.length
-      ? rounds
-          .map(
-            (round) => `
-              <section class="knockout-column">
-                <h3>${escapeHtml(round)}</h3>
-                <div class="knockout-nodes">
-                  ${byRound[round]
-                    .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`))
-                    .map(matchNode)
-                    .join("")}
-                </div>
-              </section>
-            `
-          )
-          .join("")
+      ? `<div class="knockout-network">
+          ${rounds
+            .map(
+              (round, index) => `
+                <section class="knockout-stage" style="--stage:${index + 1}">
+                  <h3><span>${index + 1}</span>${escapeHtml(roundLabel(round))}</h3>
+                  <div class="knockout-nodes">
+                    ${byRound[round]
+                      .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`))
+                      .map(matchNode)
+                      .join("")}
+                  </div>
+                </section>
+              `
+            )
+            .join("")}
+        </div>`
       : `<p class="empty-state">Las etapas eliminatorias no coinciden con los filtros actuales o aun no tienen equipos definidos.</p>`;
   }
 
@@ -2124,6 +2361,24 @@
         </article>
       </section>
 
+      <section class="method-section method-kids-guide">
+        <article>
+          <span>Pregunta</span>
+          <strong>Que puede pasar?</strong>
+          <p>La estadistica no adivina: organiza datos para decir que resultados parecen mas o menos probables.</p>
+        </article>
+        <article>
+          <span>Ejemplo</span>
+          <strong>Un partido</strong>
+          <p>Si un equipo ataca mucho y el rival defiende poco, suben sus goles esperados, pero todavia puede empatar o perder.</p>
+        </article>
+        <article>
+          <span>Clave</span>
+          <strong>Incertidumbre</strong>
+          <p>Una probabilidad de 60% no significa seguridad: significa que, en muchas simulaciones parecidas, ocurre cerca de 6 de cada 10 veces.</p>
+        </article>
+      </section>
+
       <section class="method-section method-equation-panel">
         <div>
           <p class="eyebrow">Formula conceptual</p>
@@ -2153,11 +2408,12 @@
 
       <section class="method-section method-pipeline">
         ${[
-          ["1", "Ingesta", "Calendario, resultados, planteles y evidencia historica se normalizan con scripts reproducibles."],
-          ["2", "Calidad", "Se registran fuente, fecha, bytes y hash para trazabilidad de datos."],
-          ["3", "Posterior", "Las tasas de ataque y defensa se recalculan cuando hay resultados nuevos."],
-          ["4", "Simulacion", "Se evalua una grilla de marcadores y se estiman senales 1-X-2 y avance."],
-          ["5", "Interpretacion", "La app muestra supuestos, limites y referencias para lectura academica."]
+          ["1", "Datos", "Calendario, resultados, planteles e historia se ordenan para que todos los calculos salgan de la misma base."],
+          ["2", "Prior", "Antes de observar nuevos resultados, cada equipo parte con una expectativa basada en rating, historia y plantel."],
+          ["3", "Actualizacion", "Cuando aparece un resultado, el modelo ajusta ataque, defensa y goles esperados."],
+          ["4", "Marcadores", "Se calcula la probabilidad de muchos resultados posibles: 0-0, 1-0, 1-1, 2-1 y asi sucesivamente."],
+          ["5", "Resumen", "Las probabilidades de marcadores se agrupan como gana A, empate o gana B."],
+          ["6", "Aprendizaje", "El usuario compara su pronostico, el resultado real y la senal del modelo para aprender del error."]
         ]
           .map(
             ([step, title, body]) => `
@@ -2190,6 +2446,22 @@
             .map((item) => `<span><b>${escapeHtml(item.score)}</b>${WorldCupBayes.pct(item.probability)}</span>`)
             .join("")}
         </div>
+      </section>
+
+      <section class="method-section method-classroom">
+        <article>
+          <h3>Como leer una tarjeta de partido</h3>
+          <p><strong>1</strong> es el primer equipo, <strong>X</strong> es empate y <strong>2</strong> es el segundo equipo. La suma se acerca a 100% porque son caminos alternativos del mismo partido.</p>
+        </article>
+        <article>
+          <h3>Que mirar con estudiantes</h3>
+          <ul>
+            <li>Que cambia cuando filtramos un grupo o un pais.</li>
+            <li>Que equipos tienen alta probabilidad pero tambien riesgo.</li>
+            <li>Como el promedio de goles no describe todos los marcadores.</li>
+            <li>Como un pronostico personal puede acertar por resultado, por signo o fallar.</li>
+          </ul>
+        </article>
       </section>
 
       <section class="method-section method-limits">
@@ -2409,18 +2681,18 @@
     const stats = state.visits;
     const viewCounts = stats.view_counts || {};
     const viewLabels = {
-      resumen: "Resumen",
+      resumen: "Inicio",
       equipos: "Equipos",
       jugadores: "Jugadores",
       partidos: "Partidos",
-      mapa: "Mapa",
-      evidencia: "Evidencia",
-      modelo: "Modelo",
+      mapa: "Mapa del torneo",
+      evidencia: "Historia",
+      modelo: "Comparar",
       metodologia: "Metodologia",
-      acerta: "Acerta",
+      acerta: "Mis pronosticos",
       autores: "Autores",
       visitas: "Visitas",
-      referencias: "Referencias",
+      referencias: "Fuentes",
       auditoria: "Auditoria"
     };
     $("#visitorStatus").textContent = profile.role ? `${profile.role} · sin password` : "perfil local";
@@ -2661,6 +2933,7 @@
     markRecalculating();
     applyAccessControls();
     renderKpis();
+    renderStatsLearningPanel();
     renderModelFlow();
     renderModelFlowForecast();
     renderFilters();
@@ -2706,13 +2979,14 @@
     $("#userButton").addEventListener("click", () => showAuthGate(true));
     $("#viewScaleButton")?.addEventListener("click", cycleViewScale);
     $("#refreshAppButton")?.addEventListener("click", refreshAppVersion);
+    $("#notificationButton")?.addEventListener("click", enableNotifications);
     document.addEventListener("click", (event) => {
       if (event.target.closest("#editRegistration")) {
         showAuthGate(true);
       }
       if (event.target.closest("#clearRegistration")) {
-        localStorage.removeItem(USER_STORAGE_KEY);
-        localStorage.removeItem(VISIT_STORAGE_KEY);
+        removeJsonStorage(USER_STORAGE_KEY);
+        removeJsonStorage(VISIT_STORAGE_KEY);
         state.user = null;
         state.visits = null;
         applyAccessControls();
@@ -3107,6 +3381,7 @@
       }
       activateView(target, { track: false });
       trackView(target);
+      await checkResultNotifications();
       $("#appShell").classList.remove("loading");
     } catch (error) {
       $("#fatalError").hidden = false;
@@ -3117,6 +3392,7 @@
   async function init() {
     applyViewScale(loadViewScale());
     renderVersionStatus();
+    renderNotificationButton();
     bindNavigation();
     bindAuth();
     bindFilters();

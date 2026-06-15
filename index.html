@@ -83,8 +83,9 @@
         <div class="topbar-status">
           <span id="onlineStatus" class="pill">online</span>
           <span id="dataStatus" class="pill">cargando</span>
-          <span id="versionStatus" class="pill version-pill">Version 0.2.18</span>
+          <span id="versionStatus" class="pill version-pill">Version 0.2.19</span>
           <button id="refreshAppButton" class="ghost-button update-button" type="button">Actualizar app</button>
+          <button id="notificationButton" class="ghost-button notify-button" type="button">Activar avisos</button>
           <button id="viewScaleButton" class="ghost-button view-scale-button" type="button">Vista: normal</button>
           <button id="globalResetFilters" class="ghost-button reset-visible" type="button">Limpiar filtros</button>
           <button id="userButton" class="ghost-button" type="button">Usuario</button>
@@ -100,8 +101,25 @@
         <span>Partidos</span>
         <span>Mapa</span>
         <span>Bayes</span>
-        <span>Acerta</span>
+        <span>Pronosticos</span>
       </div>
+
+      <nav class="tabs main-tabs" aria-label="Vistas principales">
+        <span class="nav-kicker">Vistas</span>
+        <button class="tab-button active" data-target="resumen">Inicio</button>
+        <button class="tab-button" data-target="equipos">Equipos</button>
+        <button class="tab-button" data-target="jugadores">Jugadores</button>
+        <button class="tab-button" data-target="partidos">Partidos</button>
+        <button class="tab-button" data-target="mapa">Mapa del torneo</button>
+        <button class="tab-button" data-target="evidencia">Historia</button>
+        <button class="tab-button" data-target="modelo">Comparar</button>
+        <button class="tab-button" data-target="metodologia">Metodologia</button>
+        <button class="tab-button" data-target="acerta">Mis pronosticos</button>
+        <button class="tab-button" data-target="autores">Autores</button>
+        <button class="tab-button" data-target="visitas">Visitas</button>
+        <button class="tab-button" data-target="referencias">Fuentes</button>
+        <button class="tab-button" data-target="auditoria">Auditoria</button>
+      </nav>
 
       <main>
         <section class="summary-band">
@@ -197,22 +215,6 @@
           </aside>
 
           <div class="workspace">
-            <nav class="tabs" aria-label="Vistas principales">
-              <button class="tab-button active" data-target="resumen">Resumen</button>
-              <button class="tab-button" data-target="equipos">Equipos</button>
-              <button class="tab-button" data-target="jugadores">Jugadores</button>
-              <button class="tab-button" data-target="partidos">Partidos</button>
-              <button class="tab-button" data-target="mapa">Mapa</button>
-              <button class="tab-button" data-target="evidencia">Evidencia</button>
-              <button class="tab-button" data-target="modelo">Modelo</button>
-              <button class="tab-button" data-target="metodologia">Metodologia</button>
-              <button class="tab-button" data-target="acerta">Acerta</button>
-              <button class="tab-button" data-target="autores">Autores</button>
-              <button class="tab-button" data-target="visitas">Visitas</button>
-              <button class="tab-button" data-target="referencias">Referencias</button>
-              <button class="tab-button" data-target="auditoria">Auditoria</button>
-            </nav>
-
             <p id="fatalError" class="fatal-error" hidden></p>
 
             <section id="resumen" class="view active">
@@ -224,6 +226,14 @@
                 <div id="modelFlow" class="model-flow"></div>
                 <div id="modelFlowForecast" class="model-flow-forecast"></div>
                 <p class="story-label story-label-wide">Bayes visible: prior, posterior y simulacion</p>
+              </section>
+
+              <section class="panel stats-learning-panel">
+                <header class="panel-header">
+                  <h2>Estadisticas en la cancha</h2>
+                  <span>probabilidad, promedio y variacion</span>
+                </header>
+                <div id="statsLearningPanel" class="stats-learning-grid"></div>
               </section>
 
               <div class="dashboard-grid">
@@ -544,13 +554,14 @@
             <section id="acerta" class="view">
               <div class="acerta-hero">
                 <div>
-                  <p class="eyebrow">Acerta</p>
-                  <h2>Tu laboratorio de pronosticos</h2>
+                  <p class="eyebrow">Mis pronosticos</p>
+                  <h2>Pronostica y compara</h2>
                   <p>
                     Anota marcador y confianza antes de cada partido; la app
-                    compara tus aciertos y fallas cuando se publican resultados.
+                    compara tus aciertos, el resultado real y la senal del
+                    modelo bayesiano cuando se publican resultados.
                   </p>
-                  <p class="story-label">Acerta tus pronosticos y aprende del error</p>
+                  <p class="story-label">Juga con datos y aprende del error</p>
                 </div>
                 <div class="hero-side-stack">
                   <figure class="hero-image">
@@ -748,7 +759,7 @@
       <div id="richTooltip" class="rich-tooltip" role="tooltip" hidden></div>
 
       <footer class="footer">
-        <span id="footerVersion">v0.2.18 · 2026-06-14</span>
+        <span id="footerVersion">v0.2.19 · 2026-06-14</span>
         <a href="docs/metodologia_bayesiana.md">metodologia</a>
         <a href="docs/diccionario_datos.md">diccionario</a>
         <a href="?view=referencias">referencias</a>

@@ -4268,3 +4268,149 @@ git push origin HEAD:main
   `APP_CONFIG.cacheName`, `CACHE_NAME` del service worker y version visible en
   UI.
 * Verificar siempre GitHub Pages con cache-busting, no solo GitHub raw.
+
+## 2026-06-14 21:34
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Cliente o institucion: FACEN / uso publico educativo
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* Repositorio: GitHub Pages + Google Apps Script + Google Sheets
+* URL publica: GitHub Pages del proyecto
+* Responsable: Codex
+* Version: `0.2.19`
+
+### Objetivo de la intervencion
+
+* Corregir la persistencia del usuario para que la app no solicite registro en
+  cada recarga.
+* Hacer la navegacion principal mas obvia, visible y prioritaria.
+* Agregar activacion de avisos del navegador sobre resultados y comparacion con
+  pronosticos del usuario y estimaciones bayesianas.
+* Reducir solapamientos en la vista de etapas y representar el torneo como red
+  de nodos conectados.
+* Simplificar la experiencia para publico general y ninos.
+* Reforzar la lectura estadistica y mejorar la seccion de metodologia.
+* Renombrar vistas confusas, especialmente `Acerta`.
+
+### Diagnostico inicial
+
+* La app dependia solo de `localStorage` para recordar el perfil local; en
+  algunos navegadores o configuraciones moviles esto puede fallar o limpiarse.
+* La navegacion principal estaba visualmente integrada dentro del contenido y no
+  funcionaba como primer punto de orientacion.
+* La vista `Acerta` no comunicaba con claridad que era el espacio de pronosticos
+  personales.
+* La explicacion metodologica podia resultar muy tecnica para estudiantes o
+  usuarios no especializados.
+* La vista de etapas tenia riesgo de lectura como tabla compacta y de
+  solapamiento visual.
+
+### Acciones realizadas
+
+* Se agrego respaldo por cookie para el perfil local
+  `mundialProbabilidades.user.v1`, manteniendo `localStorage` como almacenamiento
+  principal.
+* Se movio la navegacion principal a una franja superior, antes del contenido de
+  vistas, con botones mas grandes y etiquetas mas claras.
+* Se renombro `Resumen` a `Inicio`, `Mapa` a `Mapa del torneo`, `Evidencia` a
+  `Historia`, `Modelo` a `Comparar`, `Acerta` a `Mis pronosticos` y
+  `Referencias` a `Fuentes`.
+* Se agrego boton `Activar avisos` con permiso de notificaciones del navegador.
+* Se agrego logica de avisos locales para nuevos partidos finalizados,
+  comparando resultado real, pronostico guardado y senal principal del modelo.
+* Se agrego manejador `notificationclick` en el service worker para abrir la
+  vista `Mis pronosticos`.
+* Se agrego panel `Estadisticas en la cancha` con ejemplos de promedio, senal,
+  incertidumbre y variacion calculados segun filtros activos.
+* Se amplio `Metodologia` con guia para ninos, pipeline mas detallado y lectura
+  didactica de tarjetas de partido.
+* Se rearmo el mapa de eliminatorias como red de etapas y nodos conectados.
+* Se ajustaron anchos, alto, separacion y zoom del muro de torneo para reducir
+  solapamientos en escritorio y movil.
+* Se actualizo la version visible, configuracion y cache PWA a `0.2.19`.
+
+### Archivos modificados
+
+* `index.html`
+* `assets/css/styles.css`
+* `assets/js/app.js`
+* `assets/js/config.js`
+* `service-worker.js`
+* `README.md`
+* `docs/manual_tecnico.md`
+* `docs/manual_usuario.md`
+* `BITACORA_MUNDIAL_PROBABILIDADES_COPA2026_APPWEB.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+node --check assets\js\app.js
+node --check assets\js\config.js
+node --check service-worker.js
+git diff --check
+python -m http.server 8768
+```
+
+### Resultados verificados
+
+* Sintaxis JavaScript valida en `app.js`, `config.js` y `service-worker.js`.
+* `git diff --check` sin errores de espacios.
+* Perfil local probado con Chrome/Playwright: luego de registrar usuario y
+  recargar, la compuerta de registro no reaparece.
+* El perfil queda guardado en `localStorage` y cookie local.
+* La UI local muestra `Version 0.2.19`, `Actualizar app`, `Activar avisos` y
+  `Mis pronosticos`.
+* La navegacion renderiza primero las vistas principales con etiquetas claras.
+* El panel de estadisticas renderiza cuatro tarjetas didacticas.
+* La vista de etapas renderiza como `knockout-network`.
+* Prueba de solapamiento de etapas en 1366x900 y 390x844: sin solapamiento de
+  etapas, con scroll horizontal controlado donde corresponde.
+
+### Pruebas realizadas
+
+* Validacion de sintaxis JavaScript con `node --check`.
+* Validacion de diff limpio con `git diff --check`.
+* Prueba local de persistencia de usuario con recarga.
+* Prueba local de presencia de controles de version, actualizacion y avisos.
+* Prueba local de navegacion y conteo de tarjetas estadisticas.
+* Prueba local desktop/movil de red de etapas y scroll del muro.
+
+### Errores o incidentes
+
+* No se detectaron errores de sintaxis ni de diff.
+* Las notificaciones web dependen del permiso del navegador y no reemplazan un
+  sistema push del servidor con la app cerrada.
+
+### Soluciones aplicadas
+
+* Persistencia robustecida con `localStorage` + cookie.
+* Navegacion prioritaria, visible y nombrada en lenguaje claro.
+* Avisos locales activables por el usuario.
+* Red de etapas conectadas y ajustes de layout para evitar solapamientos.
+* Metodologia y estadisticas explicadas en lenguaje educativo.
+
+### Pendientes
+
+* Validar en telefonos reales que el perfil quede recordado segun navegador.
+* Validar permisos de notificaciones en Chrome/Android, Edge y Safari/iOS.
+* Publicar y verificar GitHub Pages con cache-busting.
+
+### Riesgos
+
+* iOS y algunos navegadores pueden restringir notificaciones web o cookies si el
+  usuario usa modos privados o bloqueos estrictos.
+* Usuarios con service worker anterior pueden requerir tocar `Actualizar app` o
+  cerrar y abrir nuevamente la PWA para recibir `0.2.19`.
+
+### Recomendaciones
+
+* En futuras apps publicas, usar persistencia dual para perfiles locales no
+  sensibles: `localStorage` como principal y cookie como respaldo.
+* Las vistas principales deben aparecer antes que los paneles de contenido y
+  usar nombres orientados a tareas.
+* Las notificaciones deben explicar claramente que requieren permiso del
+  navegador y que son una ayuda educativa, no una fuente oficial de resultados.
+* Las redes de torneo deben validarse con prueba visual desktop/movil antes de
+  publicarse.

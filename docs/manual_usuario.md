@@ -7,17 +7,18 @@ partir de datos abiertos y un modelo bayesiano explicable.
 
 ## Vistas
 
-- Resumen: favoritos relativos y tablas por grupo.
+- Inicio: favoritos relativos, estadisticas didacticas y tablas por grupo.
 - Equipos: rating, ataque, defensa, plantel y probabilidad de avance.
 - Jugadores: planteles con posicion, edad, caps, goles y club.
 - Partidos: calendario, resultados y probabilidades 1-X-2.
-- Mapa: grupos, partidos y etapas del torneo como nodos rectangulares.
-- Evidencia: historia por pais, Copa, partidos, mano a mano y goleadores.
-- Modelo: laboratorio para comparar dos equipos.
-- Acertá: pronosticos propios, puntaje, aciertos, fallas y evolucion.
+- Mapa del torneo: grupos, partidos y etapas como nodos conectados.
+- Historia: evidencia por pais, Copa, partidos, mano a mano y goleadores.
+- Comparar: laboratorio para comparar dos equipos.
+- Metodologia: explicacion paso a paso del modelo bayesiano.
+- Mis pronosticos: marcadores propios, puntaje, aciertos, fallas y evolucion.
 - Autores: autoria, colaboracion y perfiles academicos editables.
 - Visitas: vista administrativa con perfil registrado y estadisticas locales de uso.
-- Referencias: derechos de uso de datos, fuentes y paginas de interes.
+- Fuentes: derechos de uso de datos, fuentes y paginas de interes.
 - Auditoria: fuentes, version de datos y estado del backend.
 
 ## Modo de lectura
@@ -27,13 +28,19 @@ El boton `Vista` de la barra superior cambia el tamano de lectura entre
 para que la app vuelva a abrir con el mismo tamano en ese telefono o equipo.
 Use `Vista: grande` si las letras se ven demasiado pequenas en un celular.
 
-## Version y actualizacion
+## Version, avisos y actualizacion
 
 La barra superior muestra la version activa de la app, por ejemplo
-`Version 0.2.18`. El boton `Actualizar app` fuerza una recarga limpia: borra la
+`Version 0.2.19`. El boton `Actualizar app` fuerza una recarga limpia: borra la
 cache local de la PWA, solicita actualizar el service worker y vuelve a abrir la
 misma vista con cache-busting. Use este boton si un telefono sigue mostrando una
 version anterior o si acaba de publicarse una mejora.
+
+El boton `Activar avisos` solicita permiso del navegador para mostrar
+notificaciones locales cuando la app detecta nuevos resultados al abrirse o
+actualizarse. Los avisos comparan resultado real, pronostico guardado y senal
+del modelo bayesiano. No reemplazan un sistema de push remoto con la app
+cerrada.
 
 ## Lectura visual
 
@@ -46,7 +53,7 @@ Las tarjetas, tablas y graficos usan colores por grupo para reducir la
 dominancia de un solo color y facilitar comparaciones visuales. La tarjeta
 `Senal` responde a los filtros activos: equipo, grupo o busqueda.
 
-Las vistas de equipos, jugadores, partidos y evidencia muestran banderas reales
+Las vistas de equipos, jugadores, partidos e historia muestran banderas reales
 en formato SVG para ayudar a reconocer rapidamente paises y grupos. En
 Jugadores, algunas figuras destacadas tienen foto libre verificada; al posar el
 cursor o enfocar una fila aparece una tarjeta con datos personales, estadisticas
@@ -62,14 +69,15 @@ En partidos, `Probabilidad 1 / Empate / 2` significa:
 Los botones `(i)` abren definiciones emergentes para evitar dudas durante la
 lectura de tablas, mapas y resultados.
 
-## Mapa
+## Mapa del torneo
 
-La vista Mapa muestra grupos, partidos y eliminatorias como nodos. Un nodo verde
-indica partido finalizado y muestra marcador; un nodo pendiente muestra fecha,
-equipos y, cuando existe, la senal probabilistica actual. La vista responde a
-los filtros activos de grupo, equipo, estado y busqueda.
+La vista Mapa del torneo muestra grupos, partidos y eliminatorias como nodos
+conectados. Un nodo verde indica partido finalizado y muestra marcador; un nodo
+pendiente muestra fecha, equipos y, cuando existe, la senal probabilistica
+actual. La vista responde a los filtros activos de grupo, equipo, estado y
+busqueda.
 
-## Acertá
+## Mis pronosticos
 
 Cada usuario puede cargar marcadores previstos para partidos pendientes. La app
 guarda esos pronosticos en el navegador y, cuando el partido aparece como
@@ -82,8 +90,6 @@ finalizado en el JSON publico, calcula:
 La vista muestra evolucion personal, aciertos, fallas, reglas de puntaje y una
 lista acotada de partidos que respeta los filtros activos. La informacion de
 autoria y colaboracion queda en la pestana Autores.
-Mientras el backend GAS no este autorizado anonimamente, estos pronosticos son
-locales al navegador.
 
 ## Autores
 
@@ -103,9 +109,13 @@ El registro es una puerta educativa de personalizacion y trazabilidad local, no
 un mecanismo de seguridad fuerte. Si se usa otro dispositivo o navegador, se
 debe registrar el usuario nuevamente.
 
+Desde la version `0.2.19`, el perfil local se guarda en `localStorage` y tambien
+en una cookie no sensible de respaldo para reducir casos en los que el navegador
+vuelve a pedir registro aunque sea el mismo dispositivo.
+
 Los detalles de `Visitas` y `Auditoria` solo se muestran a las cuentas
 administrativas configuradas por el proyecto. Para usuarios comunes, la app
-mantiene la experiencia publica y redirige esas vistas a `Resumen`.
+mantiene la experiencia publica y redirige esas vistas a `Inicio`.
 
 Desde la version `0.2.17`, los ingresos y cambios de vista tambien se envian al
 backend GAS validado para registrar trazabilidad basica en la hoja operativa
@@ -134,15 +144,3 @@ quedan debajo del contenido principal.
 Las probabilidades son estimaciones educativas. Cambian cuando se actualizan
 resultados o planteles. No deben interpretarse como certeza ni como consejo de
 apuestas.
-
-## Referencias y derechos
-
-La vista Referencias enlaza las fuentes consultadas y recuerda que las marcas,
-datos y contenidos de terceros pertenecen a sus titulares. Antes de reutilizar
-datos fuera de actividades academicas se deben revisar las condiciones de uso de
-cada fuente enlazada.
-
-## Uso offline
-
-Despues de una primera carga, el navegador conserva la app y el ultimo JSON en
-cache. Si no hay conexion, se puede consultar la ultima version disponible.

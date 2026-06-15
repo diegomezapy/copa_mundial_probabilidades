@@ -1,4 +1,4 @@
-const CACHE_NAME = "mundial-probabilidades-v0-2-18";
+const CACHE_NAME = "mundial-probabilidades-v0-2-19";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -50,5 +50,18 @@ self.addEventListener("fetch", (event) => {
         return response;
       })
       .catch(() => caches.match(event.request).then((cached) => cached || caches.match("./index.html")))
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  event.waitUntil(
+    self.clients
+      .matchAll({ type: "window", includeUncontrolled: true })
+      .then((clients) => {
+        const existing = clients.find((client) => client.url.includes(self.registration.scope));
+        if (existing) return existing.focus();
+        return self.clients.openWindow("./index.html?view=acerta");
+      })
   );
 });

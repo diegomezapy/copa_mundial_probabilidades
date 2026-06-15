@@ -18,19 +18,22 @@ pronosticos bayesianos de la Copa Mundial 2026.
 
 ## Capa visual
 
-La version `0.2.18` mantiene el frontend publico conectado con el Web App GAS
-validado para registrar visitas en Google Sheets y agrega version visible en la
-barra superior junto al boton `Actualizar app`. Ese boton solicita actualizar el
-service worker, borra caches PWA `mundial-probabilidades-*` y recarga la vista
-activa con parametros de cache-busting. Mantiene la restriccion de `Visitas` y
-`Auditoria` a las cuentas administrativas definidas en `assets/js/config.js`,
-normaliza perfiles cargados desde `localStorage` para que un rol `admin`
-manipulado no baste por si solo y muestra un aviso operativo si GAS falla.
-Mantiene el control visible `Vista` para ajustar el modo de lectura entre
-`Normal`, `Comoda` y `Grande`, el boton visible para limpiar todos los filtros
-activos, la estimacion permanente bajo `Ruta del modelo`, la figura didactica
-del flujo bayesiano, la vista `Metodologia` completa, multifiltros globales
-desde tablas/figuras/nodos y controles de zoom/foco para el mural del torneo en
+La version `0.2.19` mantiene el frontend publico conectado con el Web App GAS
+validado para registrar visitas en Google Sheets y refuerza la experiencia de
+uso: version visible, `Actualizar app`, `Activar avisos`, navegacion principal
+mas notable, vista `Mis pronosticos`, respaldo por cookie para el perfil local,
+panel didactico de estadisticas, red de etapas eliminatorias y metodologia mas
+detallada. El boton `Actualizar app` solicita actualizar el service worker,
+borra caches PWA `mundial-probabilidades-*` y recarga la vista activa con
+parametros de cache-busting. Mantiene la restriccion de `Visitas` y `Auditoria`
+a las cuentas administrativas definidas en `assets/js/config.js`, normaliza
+perfiles cargados desde almacenamiento local para que un rol `admin` manipulado
+no baste por si solo y muestra un aviso operativo si GAS falla. Mantiene el
+control visible `Vista` para ajustar el modo de lectura entre `Normal`, `Comoda`
+y `Grande`, el boton visible para limpiar todos los filtros activos, la
+estimacion permanente bajo `Ruta del modelo`, la figura didactica del flujo
+bayesiano, la vista `Metodologia` completa, multifiltros globales desde
+tablas/figuras/nodos y controles de zoom/foco para el mural del torneo en
 escritorio. Mantiene el set de imagenes generadas en `assets/img/generated/`,
 hero, iconos PWA, pelota animada, definiciones emergentes `(i)`, nodos
 rectangulares de grupos/partidos/etapas y exportaciones CSV publicas bajo
@@ -61,7 +64,7 @@ movimiento.
 
 ## Pronosticos de usuarios
 
-La vista `Acertá` guarda pronosticos por usuario en `localStorage` bajo
+La vista `Mis pronosticos` guarda pronosticos por usuario en `localStorage` bajo
 `mundialProbabilidades.predictions.v1.<user_id>`. Cada registro conserva
 `match_id`, equipos, marcador previsto, confianza, version de datos y fecha de
 actualizacion. La evaluacion se calcula en cliente cuando el partido queda
@@ -94,15 +97,22 @@ academicos verificables.
 ## Registro y visitas
 
 El frontend usa `localStorage` para guardar un perfil local sin password bajo
-`mundialProbabilidades.user.v1`. El objetivo es personalizacion, conteo de
-visitas y trazabilidad educativa, no autenticacion fuerte.
+`mundialProbabilidades.user.v1`. Desde `0.2.19`, tambien guarda una cookie de
+respaldo no sensible, limitada al path de la app, para reducir casos en los que
+el navegador vuelve a pedir registro en el mismo dispositivo. El objetivo es
+personalizacion, conteo de visitas y trazabilidad educativa, no autenticacion
+fuerte.
 
 Las estadisticas locales se guardan en `mundialProbabilidades.visits.v1`:
 visitas totales, primer ingreso, ultimo ingreso y conteo por vista. Desde
 `0.2.17`, `APP_CONFIG.gasExecUrl` apunta al Web App anonimo validado y el
 frontend envia eventos JSONP con `action=visit`. Desde `0.2.18`, el boton
 `Actualizar app` registra el evento `app_refresh` cuando existe usuario local,
-antes de limpiar cache y recargar la app.
+antes de limpiar cache y recargar la app. Desde `0.2.19`, las notificaciones
+locales usan la API Web Notifications: al activarlas se marcan como conocidos
+los resultados ya existentes y, en aperturas posteriores, la app avisa sobre
+resultados finales nuevos comparando resultado real, pronostico guardado y senal
+principal del modelo. No implementa push remoto con la app cerrada.
 
 Endpoint activo:
 
