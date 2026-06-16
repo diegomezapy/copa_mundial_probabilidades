@@ -1138,13 +1138,236 @@ html[data-view-scale="large"] .quick-team-grid button {
   margin-bottom: 18px;
 }
 
+.bayes-learning-figure {
+  padding: 18px;
+}
+
+.learning-layout {
+  display: grid;
+  grid-template-columns: minmax(210px, 0.72fr) minmax(360px, 1.45fr) minmax(220px, 0.78fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+.learning-stage,
+.learning-curve-card {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #ffffff;
+}
+
+.learning-stage {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 18px;
+}
+
+.learning-stage span,
+.learning-curve-card header span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.learning-stage strong,
+.learning-curve-card header strong {
+  color: var(--primary-2);
+  font-size: clamp(1.45rem, 2.2vw, 2.2rem);
+  line-height: 1;
+}
+
+.learning-stage p,
+.learning-stage small,
+.learning-curve-card small {
+  margin: 0;
+  color: #40504c;
+}
+
+.learning-progress {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e2e8f0;
+}
+
+.learning-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--blue), var(--accent), var(--primary));
+}
+
+.posterior-stage dl {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.posterior-stage dl div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--surface-2);
+}
+
+.posterior-stage dt {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.posterior-stage dd {
+  margin: 0;
+  color: var(--primary-2);
+  font-weight: 900;
+}
+
+.learning-curve-card {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  background:
+    linear-gradient(135deg, rgba(37, 99, 235, 0.07), transparent 46%),
+    #ffffff;
+}
+
+.learning-curve-card header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: start;
+}
+
+.learning-curve-card header div {
+  display: grid;
+  gap: 4px;
+}
+
+.learning-curve-svg {
+  width: 100%;
+  min-height: 250px;
+  display: block;
+}
+
+.learning-chart-bg {
+  fill: #f8fafc;
+  stroke: #d9e3df;
+}
+
+.learning-grid-line {
+  stroke: #dbe5e1;
+  stroke-width: 1;
+}
+
+.learning-axis-line {
+  stroke: #8aa09a;
+  stroke-width: 1.4;
+}
+
+.learning-axis-label,
+.learning-point text,
+.learning-empty-marker {
+  fill: #64748b;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.learning-curve-area {
+  fill: rgba(46, 117, 182, 0.12);
+}
+
+.learning-curve-line {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.learning-point circle {
+  fill: #ffffff;
+  stroke: var(--blue);
+  stroke-width: 4;
+}
+
+.learning-point.is-correct circle {
+  stroke: var(--primary);
+}
+
+.learning-point.is-miss circle {
+  stroke: var(--orange);
+}
+
+.learning-axis-caption,
+.learning-evidence-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.learning-axis-caption span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.learning-axis-caption span:last-child {
+  text-align: right;
+}
+
+.learning-evidence-list {
+  margin-top: 14px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.learning-evidence-list article {
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--orange);
+  border-radius: 8px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.learning-evidence-list article.is-correct {
+  border-left-color: var(--primary);
+}
+
+.learning-evidence-list span,
+.learning-evidence-list small {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.learning-evidence-list strong {
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+  overflow-wrap: anywhere;
+}
+
 .model-flow {
   position: relative;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
-  padding: 18px;
+  padding: 0 18px 18px;
   overflow: hidden;
+}
+
+.flow-step.compact-flow-step {
+  min-height: 104px;
+  box-shadow: none;
 }
 
 .model-flow-forecast {
@@ -1378,6 +1601,68 @@ html[data-view-scale="large"] .quick-team-grid button {
 
 .dashboard-grid .span-2 {
   grid-column: span 2;
+}
+
+.priority-grid {
+  margin-bottom: 18px;
+}
+
+.analysis-drawer {
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.82);
+  overflow: hidden;
+}
+
+.analysis-drawer summary {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 18px;
+  color: var(--primary-2);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.analysis-drawer summary::marker {
+  color: var(--accent);
+}
+
+.analysis-drawer .dashboard-grid {
+  margin: 0;
+  padding: 0 18px 18px;
+}
+
+.bayes-interpretation-panel {
+  --panel-accent: var(--primary);
+}
+
+.interpretation-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding: 16px;
+}
+
+.interpretation-strip article {
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-2);
+}
+
+.interpretation-strip strong {
+  color: var(--primary-2);
+  font-size: 1.18rem;
+}
+
+.interpretation-strip span {
+  color: #40504c;
 }
 
 .panel-header {
@@ -3554,6 +3839,10 @@ label {
   border-top: 5px solid var(--blue);
 }
 
+.method-hero.slim-method-hero {
+  grid-template-columns: 1fr;
+}
+
 .method-hero h2,
 .method-hero p {
   margin: 0;
@@ -4098,6 +4387,7 @@ label {
   .summary-band,
   .workbench,
   .dashboard-grid,
+  .learning-layout,
   .evidence-hero,
   .acerta-hero,
   .authors-hero,
@@ -4109,6 +4399,11 @@ label {
   .content-grid.two,
   .auth-panel {
     grid-template-columns: 1fr;
+  }
+
+  .learning-evidence-list,
+  .interpretation-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .hero-side-stack {
@@ -4204,7 +4499,7 @@ label {
   }
 
   .main-tabs {
-    top: 46px;
+    top: 0;
     padding: 10px 12px;
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -4465,10 +4760,20 @@ label {
 
   .heatmap-grid,
   .standings-grid,
-  .stats-learning-grid {
+  .stats-learning-grid,
+  .learning-evidence-list,
+  .interpretation-strip {
     grid-template-columns: 1fr;
     gap: 14px;
     padding: 12px;
+  }
+
+  .bayes-learning-figure {
+    padding: 12px;
+  }
+
+  .learning-curve-svg {
+    min-height: 220px;
   }
 
   .segmented-buttons.compact,

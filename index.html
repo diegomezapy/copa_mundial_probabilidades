@@ -77,13 +77,13 @@
           <span class="brand-mark" aria-hidden="true"></span>
           <div>
             <strong>Copa Mundial 2026</strong>
-            <small>Probabilidades bayesianas · aula estadistica</small>
+            <small>Probabilidades bayesianas - aula estadistica</small>
           </div>
         </div>
         <div class="topbar-status">
           <span id="onlineStatus" class="pill">online</span>
           <span id="dataStatus" class="pill">cargando</span>
-          <span id="versionStatus" class="pill version-pill">Version 0.2.19</span>
+          <span id="versionStatus" class="pill version-pill">Version 0.2.20</span>
           <button id="refreshAppButton" class="ghost-button update-button" type="button">Actualizar app</button>
           <button id="notificationButton" class="ghost-button notify-button" type="button">Activar avisos</button>
           <button id="viewScaleButton" class="ghost-button view-scale-button" type="button">Vista: normal</button>
@@ -92,17 +92,6 @@
           <button id="installButton" class="ghost-button" hidden>Instalar</button>
         </div>
       </header>
-
-      <div class="story-rail" aria-label="Recorrido didactico de la app">
-        <span class="story-rail-ball" aria-hidden="true"></span>
-        <span>Datos</span>
-        <span>Filtros</span>
-        <span>Equipos</span>
-        <span>Partidos</span>
-        <span>Mapa</span>
-        <span>Bayes</span>
-        <span>Pronosticos</span>
-      </div>
 
       <nav class="tabs main-tabs" aria-label="Vistas principales">
         <span class="nav-kicker">Vistas</span>
@@ -141,17 +130,17 @@
           </div>
           <div class="summary-copy">
             <p class="eyebrow">Modelo vivo con datos abiertos</p>
-            <p class="hero-kicker">El Mundial tambien puede ensenar estadistica</p>
-            <h1>Pronosticos recalculados con cada resultado disponible</h1>
+            <p class="hero-kicker">Bayes aprende cuando aparecen marcadores reales</p>
+            <h1>Del supuesto inicial a la cercania con el resultado observado</h1>
             <p>
-              Exploracion publica para estudiantes de estadistica: planteles,
-              partidos, resultados y posterior bayesiano de goles por equipo.
+              Una lectura publica para ver como el prior se corrige con cada
+              partido finalizado y como cambia la senal del modelo.
             </p>
             <div class="hero-story-actions">
-              <a class="hero-action primary" href="?view=resumen">Explorar datos</a>
-              <a class="hero-action" href="?view=metodologia">Ver metodologia</a>
+              <a class="hero-action primary" href="?view=resumen">Ver curva Bayes</a>
+              <a class="hero-action" href="?view=modelo">Comparar equipos</a>
             </div>
-            <p class="story-label hero-label">Datos en movimiento, no certezas magicas</p>
+            <p class="story-label hero-label">Prior, resultados, posterior y verificacion</p>
           </div>
           <div id="kpiGrid" class="kpi-grid" aria-live="polite"></div>
         </section>
@@ -220,37 +209,15 @@
             <section id="resumen" class="view active">
               <section class="panel model-flow-panel">
                 <header class="panel-header">
-                  <h2>Ruta del modelo</h2>
-                  <span>datos en movimiento</span>
+                  <h2>Como mejora el modelo</h2>
+                  <span>curva contra resultados reales</span>
                 </header>
+                <div id="bayesLearningFigure" class="bayes-learning-figure"></div>
                 <div id="modelFlow" class="model-flow"></div>
-                <div id="modelFlowForecast" class="model-flow-forecast"></div>
-                <p class="story-label story-label-wide">Bayes visible: prior, posterior y simulacion</p>
+                <p class="story-label story-label-wide">Cada punto es un partido finalizado con pronostico y marcador observado</p>
               </section>
 
-              <section class="panel stats-learning-panel">
-                <header class="panel-header">
-                  <h2>Estadisticas en la cancha</h2>
-                  <span>probabilidad, promedio y variacion</span>
-                </header>
-                <div id="statsLearningPanel" class="stats-learning-grid"></div>
-              </section>
-
-              <div class="dashboard-grid">
-                <section class="panel span-2">
-                  <header class="panel-header">
-                    <h2>Mapa de avance por grupo</h2>
-                    <span>simulacion Monte Carlo</span>
-                  </header>
-                  <div id="groupHeatmap" class="heatmap-grid"></div>
-                </section>
-                <section class="panel">
-                  <header class="panel-header">
-                    <h2>Ataque vs defensa</h2>
-                    <span>posterior por equipo</span>
-                  </header>
-                  <div id="attackDefenseChart" class="chart-box"></div>
-                </section>
+              <div class="content-grid two priority-grid">
                 <section class="panel">
                   <header class="panel-header">
                     <h2>Proximos cruces</h2>
@@ -260,29 +227,46 @@
                 </section>
                 <section class="panel">
                   <header class="panel-header">
-                    <h2>Aula Bayes</h2>
-                    <span>idea central</span>
-                  </header>
-                  <div id="classroomCards" class="classroom-grid"></div>
-                </section>
-              </div>
-
-              <div class="content-grid two">
-                <section class="panel">
-                  <header class="panel-header">
                     <h2>Favoritos relativos</h2>
                     <span>indice academico</span>
                   </header>
                   <div id="contenders" class="rank-list"></div>
                 </section>
-                <section class="panel">
-                  <header class="panel-header">
-                    <h2>Tablas por grupo</h2>
-                    <span>incluye resultados</span>
-                  </header>
-                  <div id="standings" class="standings-grid"></div>
-                </section>
               </div>
+
+              <details class="analysis-drawer">
+                <summary>Ver analisis detallado del tablero</summary>
+                <div class="dashboard-grid">
+                  <section class="panel span-2">
+                    <header class="panel-header">
+                      <h2>Mapa de avance por grupo</h2>
+                      <span>simulacion Monte Carlo</span>
+                    </header>
+                    <div id="groupHeatmap" class="heatmap-grid"></div>
+                  </section>
+                  <section class="panel">
+                    <header class="panel-header">
+                      <h2>Ataque vs defensa</h2>
+                      <span>posterior por equipo</span>
+                    </header>
+                    <div id="attackDefenseChart" class="chart-box"></div>
+                  </section>
+                  <section class="panel">
+                    <header class="panel-header">
+                      <h2>Aula Bayes</h2>
+                      <span>idea central</span>
+                    </header>
+                    <div id="classroomCards" class="classroom-grid"></div>
+                  </section>
+                  <section class="panel span-2">
+                    <header class="panel-header">
+                      <h2>Tablas por grupo</h2>
+                      <span>incluye resultados</span>
+                    </header>
+                    <div id="standings" class="standings-grid"></div>
+                  </section>
+                </div>
+              </details>
             </section>
 
             <section id="equipos" class="view">
@@ -493,13 +477,17 @@
             </section>
 
             <section id="modelo" class="view">
-              <div class="content-grid two">
-                <section class="visual-feature span-2">
-                  <img
-                    src="assets/img/generated/bayes-model-flow-1600x900.jpg"
-                    alt="Flujo visual de datos, distribuciones y posterior bayesiano"
-                    loading="lazy"
-                  />
+              <div class="content-grid two model-lab-grid">
+                <section class="panel span-2 bayes-interpretation-panel">
+                  <header class="panel-header">
+                    <h2>Lectura rapida del laboratorio</h2>
+                    <span>sin certezas absolutas</span>
+                  </header>
+                  <div class="interpretation-strip">
+                    <article><strong>Prior</strong><span>historia y plantel antes del partido</span></article>
+                    <article><strong>Datos</strong><span>goles observados que ajustan tasas</span></article>
+                    <article><strong>Posterior</strong><span>probabilidades actuales con incertidumbre</span></article>
+                  </div>
                 </section>
                 <section class="panel">
                   <header class="panel-header">
@@ -529,7 +517,7 @@
             </section>
 
             <section id="metodologia" class="view">
-              <div class="method-hero">
+              <div class="method-hero slim-method-hero">
                 <div>
                   <p class="eyebrow">Metodologia bayesiana</p>
                   <h2>Como se calculan las probabilidades</h2>
@@ -540,13 +528,6 @@
                   </p>
                   <p class="story-label">Bayes visible: prior, posterior y simulacion</p>
                 </div>
-                <figure class="hero-image">
-                  <img
-                    src="assets/img/generated/bayes-model-flow-1600x900.jpg"
-                    alt="Flujo conceptual del modelo bayesiano"
-                    loading="lazy"
-                  />
-                </figure>
               </div>
               <div id="methodologyDeep" class="methodology-deep"></div>
             </section>
@@ -759,7 +740,7 @@
       <div id="richTooltip" class="rich-tooltip" role="tooltip" hidden></div>
 
       <footer class="footer">
-        <span id="footerVersion">v0.2.19 · 2026-06-14</span>
+        <span id="footerVersion">v0.2.20 - 2026-06-16</span>
         <a href="docs/metodologia_bayesiana.md">metodologia</a>
         <a href="docs/diccionario_datos.md">diccionario</a>
         <a href="?view=referencias">referencias</a>

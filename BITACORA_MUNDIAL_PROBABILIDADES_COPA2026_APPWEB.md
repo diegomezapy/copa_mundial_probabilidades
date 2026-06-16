@@ -4475,3 +4475,138 @@ curl.exe -L --url "https://diegomezapy.github.io/copa_mundial_probabilidades/?v=
 
 * Luego de cada push funcional, registrar en bitacora la verificacion HTTP
   publica, no solo la validacion local.
+
+## 2026-06-16 16:29
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Version: `0.2.20`
+
+### Objetivo de la intervencion
+
+* Resolver dificultad de comprension del modelo bayesiano, exceso de carga
+  visual en `Inicio` y repeticion de elementos/imagenes entre vistas.
+
+### Diagnostico inicial
+
+* La app explicaba Bayes mediante paneles y metodologia, pero no mostraba una
+  figura central que permitiera ver como la senal del modelo se acerca o se
+  aleja del resultado real a medida que entran partidos finalizados.
+* `Inicio` acumulaba demasiados bloques visibles: ruta del modelo, estadisticas,
+  mapa de avance, ataque/defensa, proximos cruces, aula, favoritos y tablas.
+* Existia un carril global repetitivo fuera de las vistas y se repetia la imagen
+  grande del flujo bayesiano en `Comparar` y `Metodologia`.
+
+### Acciones realizadas
+
+* Se agrego una figura dinamica `bayesLearningFigure` en `Inicio`.
+* La figura calcula `modelLearningSeries()` con partidos finalizados visibles
+  segun filtros activos, compara la senal 1-X-2 mas probable contra el marcador
+  real, dibuja una curva acumulada de cercania y muestra error medio de goles.
+* Se simplifico `Inicio`: quedan visibles la curva Bayes, proximos cruces y
+  favoritos relativos; el tablero denso pasa a `Ver analisis detallado del
+  tablero`.
+* Se elimino el carril global `story-rail` del HTML para evitar repeticion en
+  todas las vistas.
+* Se reemplazo la imagen grande repetida de `Comparar` por una banda textual de
+  lectura rapida y se dejo `Metodologia` sin imagen duplicada.
+* Se actualizo version, build y cache PWA a `0.2.20`.
+* Se corrigio el footer reescrito por JavaScript y una carrera menor de callback
+  JSONP de visitas cuando GAS responde despues del timeout.
+* Se actualizaron `README.md`, `docs/manual_usuario.md` y
+  `docs/manual_tecnico.md`.
+
+### Archivos modificados
+
+* `index.html`
+* `assets/js/app.js`
+* `assets/css/styles.css`
+* `assets/js/config.js`
+* `service-worker.js`
+* `README.md`
+* `docs/manual_usuario.md`
+* `docs/manual_tecnico.md`
+* `BITACORA_MUNDIAL_PROBABILIDADES_COPA2026_APPWEB.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+node --check assets\js\app.js
+node --check assets\js\config.js
+node --check service-worker.js
+git diff --check
+python -m http.server 8770 --bind 127.0.0.1
+python - <<'PY'
+# Prueba Playwright local: desktop 1366x900 y movil 390x844
+PY
+```
+
+### Resultados verificados
+
+* `app.js`, `config.js` y `service-worker.js` tienen sintaxis valida.
+* `git diff --check` no reporto errores.
+* Servidor local activo en `http://127.0.0.1:8770`.
+* Playwright desktop `1366x900`: sin overflow horizontal, `Version 0.2.20`,
+  footer `v0.2.20 - 2026-06-16`, curva renderizada, 4 tarjetas de evidencia,
+  `story-rail` ausente, desplegable cerrado por defecto, sin imagen
+  `bayes-model-flow` visible y sin errores de pagina.
+* Playwright movil `390x844`: sin overflow horizontal, curva renderizada,
+  filtros despues del contenido principal y sin errores de pagina.
+* Prueba de navegacion: el desplegable renderiza 12 grupos, `Comparar` renderiza
+  3 tarjetas de probabilidad, `Metodologia` renderiza 7 secciones, sin overflow
+  y sin errores.
+* Capturas locales guardadas en `tmp/bayes_learning_desktop.png` y
+  `tmp/bayes_learning_mobile.png`.
+
+### Pruebas realizadas
+
+* Validacion de sintaxis JavaScript.
+* Validacion de diff limpio.
+* Prueba local HTTP.
+* Prueba visual automatizada en escritorio y movil con Playwright Python.
+* Prueba de navegacion entre `Inicio`, desplegable de analisis, `Comparar` y
+  `Metodologia`.
+
+### Errores o incidentes
+
+* Playwright no estaba disponible como paquete Node, pero si como modulo Python;
+  se uso Python Playwright para la validacion visual.
+* Se detecto que el footer era sobrescrito por `renderVersionStatus()` con el
+  separador anterior; se corrigio en JavaScript.
+* Se detecto una carrera de callback JSONP de visitas cuando GAS respondia tarde;
+  se dejo un callback no-op temporal antes de eliminarlo.
+
+### Soluciones aplicadas
+
+* Figura dinamica de aprendizaje bayesiano basada en datos reales de partidos
+  finalizados.
+* Reordenamiento de Inicio con jerarquia didactica y analisis avanzado
+  desplegable.
+* Eliminacion de carril repetitivo y de imagenes duplicadas entre vistas.
+* Versionado PWA `0.2.20` para forzar refresco de cache.
+
+### Pendientes
+
+* Publicar en GitHub Pages si se decide cerrar esta mejora como version publica.
+* Verificar la URL publica con cache-busting despues del push.
+* Validar con usuarios no tecnicos si la frase "curva de cercania" resulta clara
+  o si conviene renombrarla como "acierto acumulado del modelo".
+
+### Riesgos
+
+* La curva mide coincidencia de la senal principal 1-X-2 contra el resultado
+  observado; no demuestra causalidad ni garantiza predicciones futuras.
+* Con filtros muy restrictivos puede haber pocos partidos finalizados y la curva
+  mostrara poca evidencia.
+* La app puede usar datos GAS mas recientes que el JSON local si el backend esta
+  disponible; el comportamiento esta previsto por la arquitectura de fallback.
+
+### Recomendaciones
+
+* En apps educativas con modelos bayesianos, ubicar primero una figura narrativa
+  de aprendizaje y dejar graficos densos en una capa secundaria.
+* Nombrar la metrica como senal o cercania, evitando lenguaje de certeza.
+* Validar siempre desktop y movil con captura visual, no solo con sintaxis.

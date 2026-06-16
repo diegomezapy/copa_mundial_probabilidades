@@ -18,12 +18,14 @@ certeza; muestra probabilidades, supuestos, limitaciones y trazabilidad de datos
 
 ## Version actual
 
-`0.2.19` refuerza la experiencia publica para telefonos y usuarios no tecnicos:
-mantiene `Version` y `Actualizar app`, agrega `Activar avisos`, hace la
-navegacion por vistas mucho mas visible al inicio, renombra `Acerta` como
-`Mis pronosticos`, agrega respaldo por cookie para recordar el usuario local,
-expone un panel didactico de estadisticas en la portada, mejora la red de etapas
-eliminatorias y amplia la vista `Metodologia` con una explicacion paso a paso.
+`0.2.20` simplifica la experiencia publica y hace visible el aprendizaje del
+modelo bayesiano: la portada muestra una curva de cercania acumulada entre la
+senal principal del modelo y los resultados reales ya observados, resume prior,
+datos, posterior y verificacion, y mueve el tablero detallado a un desplegable
+para reducir carga visual. Tambien elimina un carril global repetitivo, reduce
+imagenes duplicadas entre `Comparar` y `Metodologia`, mantiene `Version`,
+`Actualizar app`, `Activar avisos`, `Mis pronosticos` y el respaldo por cookie
+para recordar el usuario local.
 Mantiene el frontend conectado con el Web App GAS validado para registrar
 visitas en `VISITAS`, la restriccion de `Visitas` y `Auditoria` a cuentas
 administrativas, el boton `Vista`, el boton para limpiar filtros, multifiltros
@@ -112,7 +114,7 @@ Estado operativo reciente:
 - La hoja `VISITAS` recibio la fila de prueba `codex_manual_test` en
   `VISITAS!A2:K2`.
 - `assets/js/config.js` ya apunta a ese Web App desde `0.2.17` y mantiene el
-  registro remoto en `0.2.19`.
+  registro remoto en `0.2.20`.
 
 ## Automatizacion de datos
 

@@ -18,12 +18,13 @@ pronosticos bayesianos de la Copa Mundial 2026.
 
 ## Capa visual
 
-La version `0.2.19` mantiene el frontend publico conectado con el Web App GAS
-validado para registrar visitas en Google Sheets y refuerza la experiencia de
-uso: version visible, `Actualizar app`, `Activar avisos`, navegacion principal
-mas notable, vista `Mis pronosticos`, respaldo por cookie para el perfil local,
-panel didactico de estadisticas, red de etapas eliminatorias y metodologia mas
-detallada. El boton `Actualizar app` solicita actualizar el service worker,
+La version `0.2.20` mantiene el frontend publico conectado con el Web App GAS
+validado para registrar visitas en Google Sheets y simplifica la experiencia de
+uso: version visible, `Actualizar app`, `Activar avisos`, navegacion principal,
+vista `Mis pronosticos`, respaldo por cookie para el perfil local, curva de
+aprendizaje bayesiano contra resultados reales, tablero detallado bajo
+desplegable y metodologia sin imagen duplicada. El boton `Actualizar app`
+solicita actualizar el service worker,
 borra caches PWA `mundial-probabilidades-*` y recarga la vista activa con
 parametros de cache-busting. Mantiene la restriccion de `Visitas` y `Auditoria`
 a las cuentas administrativas definidas en `assets/js/config.js`, normaliza
@@ -113,6 +114,13 @@ locales usan la API Web Notifications: al activarlas se marcan como conocidos
 los resultados ya existentes y, en aperturas posteriores, la app avisa sobre
 resultados finales nuevos comparando resultado real, pronostico guardado y senal
 principal del modelo. No implementa push remoto con la app cerrada.
+
+Desde `0.2.20`, `assets/js/app.js` calcula `modelLearningSeries()` con partidos
+finalizados que tienen prediccion y marcador. Para cada partido compara la
+senal 1-X-2 de mayor probabilidad con el resultado real, acumula la cercania y
+estima error medio de goles esperados. `renderBayesLearningFigure()` dibuja la
+curva en `Inicio` y deja el tablero denso en un contenedor desplegable para
+mejorar comprension y reducir repeticion visual.
 
 Endpoint activo:
 

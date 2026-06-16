@@ -31,7 +31,7 @@ Use `Vista: grande` si las letras se ven demasiado pequenas en un celular.
 ## Version, avisos y actualizacion
 
 La barra superior muestra la version activa de la app, por ejemplo
-`Version 0.2.19`. El boton `Actualizar app` fuerza una recarga limpia: borra la
+`Version 0.2.20`. El boton `Actualizar app` fuerza una recarga limpia: borra la
 cache local de la PWA, solicita actualizar el service worker y vuelve a abrir la
 misma vista con cache-busting. Use este boton si un telefono sigue mostrando una
 version anterior o si acaba de publicarse una mejora.
@@ -112,6 +112,13 @@ debe registrar el usuario nuevamente.
 Desde la version `0.2.19`, el perfil local se guarda en `localStorage` y tambien
 en una cookie no sensible de respaldo para reducir casos en los que el navegador
 vuelve a pedir registro aunque sea el mismo dispositivo.
+
+Desde la version `0.2.20`, la vista `Inicio` prioriza una curva de aprendizaje
+bayesiano. Cada punto corresponde a un partido finalizado con pronostico y
+marcador observado; la curva muestra si la senal principal del modelo se fue
+acercando al resultado real a medida que entran mas partidos. Los mapas,
+tablas y graficos mas densos quedan dentro de `Ver analisis detallado del
+tablero` para evitar saturacion visual en la primera lectura.
 
 Los detalles de `Visitas` y `Auditoria` solo se muestran a las cuentas
 administrativas configuradas por el proyecto. Para usuarios comunes, la app

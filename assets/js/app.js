@@ -361,11 +361,11 @@
     const status = $("#versionStatus");
     if (status) {
       status.textContent = label;
-      status.title = `Build ${buildDate || "s/d"} · ${cacheName}`;
+      status.title = `Build ${buildDate || "s/d"} - ${cacheName}`;
       status.setAttribute("aria-label", `${label}. Build ${buildDate || "sin fecha"}.`);
     }
     const footer = $("#footerVersion");
-    if (footer) footer.textContent = `v${version}${buildDate ? ` · ${buildDate}` : ""}`;
+    if (footer) footer.textContent = `v${version}${buildDate ? ` - ${buildDate}` : ""}`;
   }
 
   function cycleViewScale() {
@@ -786,7 +786,8 @@
         if (settled) return;
         settled = true;
         if (timer) window.clearTimeout(timer);
-        delete window[callback];
+        window[callback] = () => {};
+        window.setTimeout(() => delete window[callback], 30000);
         script.remove();
         resolve(ok);
       };
@@ -1166,7 +1167,7 @@
         <strong>${escapeHtml(versionDate)}</strong>
       </article>
     `;
-    $("#dataStatus").textContent = `${state.status.source === "gas" ? "GAS" : "JSON publico"} · ${fullDateTime(meta.generated_at)}`;
+    $("#dataStatus").textContent = `${state.status.source === "gas" ? "GAS" : "JSON publico"} - ${fullDateTime(meta.generated_at)}`;
     $("#backendStatus").textContent = !window.APP_CONFIG.gasExecUrl
       ? "GAS visitas pendiente: Web App sin acceso anonimo validado"
       : state.status.error
@@ -1219,44 +1220,40 @@
   }
 
   function renderModelFlow() {
+    const container = $("#modelFlow");
+    if (!container) return;
     const coverage = state.data.metadata.coverage;
-    const topTeam = [...state.data.teams].sort((a, b) => b.p_advance_group - a.p_advance_group)[0];
-    const bestMatch = featuredPredictionMatch();
+    const topTeam = filteredTeams()[0];
     const historyMatches = coverage.historical_matches || state.data.history?.coverage?.historical_matches || 0;
-    const forecastText = bestMatch
-      ? `${bestMatch.team1} vs ${bestMatch.team2}`
-      : topTeam?.team || "sin cruce";
+    const learningRows = modelLearningSeries();
+    const latestLearning = learningRows[learningRows.length - 1];
     const items = [
       {
-        label: "Datos",
-        value: `${coverage.completed_matches}/${coverage.matches}`,
-        note: "resultados observados",
-      },
-      {
-        label: "Prior",
+        label: "1. Prior",
         value: historyMatches.toLocaleString("es-PY"),
-        note: "evidencia historica",
+        note: "partidos historicos ordenan el punto de partida",
       },
       {
-        label: "Posterior",
+        label: "2. Datos",
+        value: `${coverage.completed_matches}/${coverage.matches}`,
+        note: "marcadores 2026 ya observados",
+      },
+      {
+        label: "3. Cercania",
+        value: latestLearning ? WorldCupBayes.pct(latestLearning.cumulativeAccuracy, 0) : "s/d",
+        note: latestLearning ? "senal principal contra resultado real" : "esperando resultados",
+      },
+      {
+        label: "4. Posterior",
         value: topTeam ? WorldCupBayes.pct(topTeam.p_advance_group, 0) : "s/d",
         note: topTeam ? `${topTeam.team}: senal de avance` : "sin equipo",
       },
-      {
-        label: "Pronostico",
-        value: forecastText,
-        note: bestMatch?.date ? shortDate(bestMatch.date) : "partido destacado",
-      },
     ];
-    $("#modelFlow").innerHTML = `
-      <div class="flow-motion" aria-hidden="true">
-        <span class="flow-line"></span>
-        <span class="flow-ball"></span>
-      </div>
+    container.innerHTML = `
       ${items
         .map(
           (item, index) => `
-            <article class="flow-step" style="--i:${index}">
+            <article class="flow-step compact-flow-step" style="--i:${index}">
               <span>${escapeHtml(item.label)}</span>
               <strong>${escapeHtml(item.value)}</strong>
               <small>${escapeHtml(item.note)}</small>
@@ -1688,6 +1685,187 @@
       { code: "2", label: match.team2, value: pred.away_win }
     ];
     return options.sort((a, b) => b.value - a.value)[0];
+  }
+
+  function modelOutcomeCode(match) {
+    const outcome = matchOutcomeFromScore(match.score);
+    if (outcome === "home") return "1";
+    if (outcome === "away") return "2";
+    if (outcome === "draw") return "X";
+    return "";
+  }
+
+  function modelOutcomeLabel(code, match) {
+    if (code === "1") return match.team1;
+    if (code === "2") return match.team2;
+    if (code === "X") return "Empate";
+    return "s/d";
+  }
+
+  function modelLearningSeries(sourceMatches = filteredMatches()) {
+    if (!state.data?.matches) return [];
+    const rows = sourceMatches
+      .filter((match) => match.status === "final" && match.score && match.prediction)
+      .sort((a, b) => `${a.date} ${a.time} ${a.match_id}`.localeCompare(`${b.date} ${b.time} ${b.match_id}`));
+    let correctCount = 0;
+    let goalErrorSum = 0;
+    let signalSum = 0;
+    return rows.map((match, index) => {
+      const signal = leadingPrediction(match);
+      const actualCode = modelOutcomeCode(match);
+      const correct = Boolean(signal && signal.code === actualCode);
+      const expectedHome = Number(match.prediction.expected_goals_home || 0);
+      const expectedAway = Number(match.prediction.expected_goals_away || 0);
+      const goalError =
+        (Math.abs(Number(match.score.team1 || 0) - expectedHome) + Math.abs(Number(match.score.team2 || 0) - expectedAway)) / 2;
+      if (correct) correctCount += 1;
+      goalErrorSum += goalError;
+      signalSum += Number(signal?.value || 0);
+      return {
+        match,
+        index: index + 1,
+        signal,
+        actualCode,
+        actualLabel: modelOutcomeLabel(actualCode, match),
+        correct,
+        goalError,
+        cumulativeAccuracy: correctCount / (index + 1),
+        meanGoalError: goalErrorSum / (index + 1),
+        meanSignal: signalSum / (index + 1)
+      };
+    });
+  }
+
+  function learningCurveSvg(rows) {
+    const width = 760;
+    const height = 280;
+    const padLeft = 58;
+    const padRight = 28;
+    const padTop = 28;
+    const padBottom = 42;
+    const plotWidth = width - padLeft - padRight;
+    const plotHeight = height - padTop - padBottom;
+    const yFor = (value) => padTop + (1 - Math.max(0, Math.min(1, value))) * plotHeight;
+    const xFor = (index) => (rows.length <= 1 ? padLeft + plotWidth / 2 : padLeft + (index / (rows.length - 1)) * plotWidth);
+    const points = rows.map((row, index) => ({
+      row,
+      x: xFor(index),
+      y: yFor(row.cumulativeAccuracy)
+    }));
+    const path = points.map((point, index) => `${index ? "L" : "M"} ${point.x.toFixed(1)} ${point.y.toFixed(1)}`).join(" ");
+    const baseline = height - padBottom;
+    const areaPath = points.length
+      ? `${path} L ${points[points.length - 1].x.toFixed(1)} ${baseline} L ${points[0].x.toFixed(1)} ${baseline} Z`
+      : "";
+    const grid = [1, 0.75, 0.5, 0.25, 0]
+      .map((value) => {
+        const y = yFor(value);
+        return `
+          <line class="learning-grid-line" x1="${padLeft}" x2="${width - padRight}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}"></line>
+          <text class="learning-axis-label" x="12" y="${(y + 4).toFixed(1)}">${Math.round(value * 100)}%</text>
+        `;
+      })
+      .join("");
+    const dots = points
+      .map(
+        (point) => `
+          <g class="learning-point ${point.row.correct ? "is-correct" : "is-miss"}">
+            <title>${escapeHtml(shortDate(point.row.match.date))} ${escapeHtml(point.row.match.team1)} vs ${escapeHtml(point.row.match.team2)}: modelo ${escapeHtml(point.row.signal?.code || "s/d")}, real ${escapeHtml(point.row.actualCode || "s/d")}</title>
+            <circle cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="7"></circle>
+            <text x="${point.x.toFixed(1)}" y="${(baseline + 22).toFixed(1)}">${point.row.index}</text>
+          </g>
+        `
+      )
+      .join("");
+    return `
+      <svg class="learning-curve-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Curva acumulada de cercania del modelo con resultados reales">
+        <rect class="learning-chart-bg" x="0" y="0" width="${width}" height="${height}" rx="18"></rect>
+        ${grid}
+        <line class="learning-axis-line" x1="${padLeft}" x2="${width - padRight}" y1="${baseline}" y2="${baseline}"></line>
+        <line class="learning-axis-line" x1="${padLeft}" x2="${padLeft}" y1="${padTop}" y2="${baseline}"></line>
+        ${
+          points.length
+            ? `<path class="learning-curve-area" d="${areaPath}"></path><path class="learning-curve-line" d="${path}"></path>${dots}`
+            : `<text class="learning-empty-marker" x="${width / 2}" y="${height / 2}" text-anchor="middle">La curva aparece al registrar partidos finalizados</text>`
+        }
+      </svg>
+    `;
+  }
+
+  function renderBayesLearningFigure() {
+    const container = $("#bayesLearningFigure");
+    if (!container || !state.data) return;
+    const visibleMatches = filteredMatches();
+    const rows = modelLearningSeries(visibleMatches);
+    const latest = rows[rows.length - 1];
+    const completed = visibleMatches.filter((match) => match.status === "final").length;
+    const total = visibleMatches.length || state.data.metadata.coverage.matches || 0;
+    const progress = total ? Math.round((completed / total) * 100) : 0;
+    const correctCount = rows.filter((row) => row.correct).length;
+    const missCount = Math.max(0, rows.length - correctCount);
+    const latestText = latest
+      ? latest.correct
+        ? "El ultimo marcador observado acompano la senal principal del modelo."
+        : "El ultimo marcador observado mostro distancia entre senal y realidad."
+      : "Aun no hay partidos finalizados para contrastar la senal.";
+    const evidenceRows = rows.slice(-4).reverse();
+    container.innerHTML = `
+      <div class="learning-layout" style="--progress:${progress}">
+        <article class="learning-stage prior-stage">
+          <span>Antes del partido</span>
+          <strong>Prior</strong>
+          <p>Historia, rating y plantel dan una expectativa inicial. Todavia no es evidencia del Mundial actual.</p>
+          <div class="learning-progress">
+            <span style="width:${Math.max(2, progress)}%"></span>
+          </div>
+          <small>${completed}/${total || "s/d"} partidos visibles ya entraron al modelo</small>
+        </article>
+
+        <article class="learning-curve-card">
+          <header>
+            <div>
+              <span>Curva de cercania</span>
+              <strong>${latest ? WorldCupBayes.pct(latest.cumulativeAccuracy, 0) : "s/d"}</strong>
+            </div>
+            <small>${rows.length} partidos contrastados</small>
+          </header>
+          ${learningCurveSvg(rows)}
+          <div class="learning-axis-caption">
+            <span>primer resultado</span>
+            <span>mas informacion agregada</span>
+          </div>
+        </article>
+
+        <article class="learning-stage posterior-stage">
+          <span>Despues de observar</span>
+          <strong>Posterior</strong>
+          <p>${escapeHtml(latestText)}</p>
+          <dl>
+            <div><dt>Acompanaron</dt><dd>${correctCount}</dd></div>
+            <div><dt>Se alejaron</dt><dd>${missCount}</dd></div>
+            <div><dt>Error medio</dt><dd>${latest ? WorldCupBayes.number(latest.meanGoalError, 2) : "s/d"}</dd></div>
+          </dl>
+        </article>
+      </div>
+
+      <div class="learning-evidence-list">
+        ${
+          evidenceRows.length
+            ? evidenceRows
+                .map(
+                  (row) => `
+                    <article class="${row.correct ? "is-correct" : "is-miss"}" data-filter-match="${escapeHtml(row.match.match_id)}" tabindex="0">
+                      <span>${escapeHtml(shortDate(row.match.date))}</span>
+                      <strong>${flagMarkup(row.match.team1)}${escapeHtml(row.match.team1)} ${escapeHtml(scoreLabel(row.match))} ${flagMarkup(row.match.team2)}${escapeHtml(row.match.team2)}</strong>
+                      <small>Modelo: ${escapeHtml(row.signal?.code || "s/d")} ${escapeHtml(row.signal?.label || "s/d")} - Real: ${escapeHtml(row.actualCode)} ${escapeHtml(row.actualLabel)}</small>
+                    </article>
+                  `
+                )
+                .join("")
+            : `<p class="empty-note">Cuando se carguen resultados finales, esta lista mostrara si la senal se acerco o se alejo del marcador real.</p>`
+        }
+      </div>
+    `;
   }
 
   function groupMatchesByRound(matches) {
@@ -2933,6 +3111,7 @@
     markRecalculating();
     applyAccessControls();
     renderKpis();
+    renderBayesLearningFigure();
     renderStatsLearningPanel();
     renderModelFlow();
     renderModelFlowForecast();
