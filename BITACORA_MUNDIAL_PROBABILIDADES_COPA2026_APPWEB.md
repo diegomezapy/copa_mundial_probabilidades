@@ -4655,8 +4655,8 @@ curl.exe -L "https://raw.githubusercontent.com/diegomezapy/copa_mundial_probabil
 
 ### Resultados verificados
 
-* Git remoto `main`: `9cde366 docs: registrar verificacion publica 0220`;
-  incluye el commit funcional `9e69a09 feat: clarificar aprendizaje bayesiano`.
+* Verificacion funcional publicada: `9e69a09 feat: clarificar aprendizaje
+  bayesiano`; los commits documentales posteriores solo ajustan la bitacora.
 * `assets/js/config.js` publico contiene `appVersion: "0.2.20"` y
   `mundial-probabilidades-v0-2-20`.
 * `service-worker.js` publico contiene `mundial-probabilidades-v0-2-20`.
