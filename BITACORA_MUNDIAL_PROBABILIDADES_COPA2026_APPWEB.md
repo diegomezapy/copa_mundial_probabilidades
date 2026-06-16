@@ -4610,3 +4610,98 @@ PY
   de aprendizaje y dejar graficos densos en una capa secundaria.
 * Nombrar la metrica como senal o cercania, evitando lenguaje de certeza.
 * Validar siempre desktop y movil con captura visual, no solo con sintaxis.
+
+## 2026-06-16 16:38
+
+### Proyecto
+
+* Nombre: Copa Mundial 2026 - Probabilidades Bayesianas
+* Ruta local: `G:\Mi unidad\MUNDIAL_PROBABILIDADES`
+* URL publica: `https://diegomezapy.github.io/copa_mundial_probabilidades/`
+* Version: `0.2.20`
+
+### Objetivo de la intervencion
+
+* Registrar publicacion y verificacion HTTP/visual publica de la version
+  `0.2.20`.
+
+### Acciones realizadas
+
+* Se rebaso el commit funcional sobre `origin/main`, que habia avanzado con 8
+  commits automaticos de datos.
+* Se resolvio el bloqueo de `git fetch` moviendo `refs/codex` fuera de
+  `.git/refs` a `.git/refs-codex-backup-20260616-1635`, porque Google Drive
+  recreaba `desktop.ini` dentro de refs no estandar.
+* Se publico el commit `9e69a09` en `main`.
+* Se verifico GitHub raw para `assets/js/config.js` y `service-worker.js`.
+* Se espero la actualizacion de GitHub Pages hasta que el HTML publico sirvio
+  `Version 0.2.20` y `bayesLearningFigure`.
+* Se ejecuto prueba Playwright contra la URL publica en escritorio y movil.
+
+### Archivos modificados
+
+* `BITACORA_MUNDIAL_PROBABILIDADES_COPA2026_APPWEB.md`
+
+### Comandos o scripts ejecutados
+
+```powershell
+git fetch origin main
+git rebase origin/main
+git push origin HEAD:main
+curl.exe -L "https://diegomezapy.github.io/copa_mundial_probabilidades/?v=0.2.20-verify"
+curl.exe -L "https://raw.githubusercontent.com/diegomezapy/copa_mundial_probabilidades/main/assets/js/config.js?v=0.2.20-verify"
+curl.exe -L "https://raw.githubusercontent.com/diegomezapy/copa_mundial_probabilidades/main/service-worker.js?v=0.2.20-verify"
+```
+
+### Resultados verificados
+
+* Git remoto `main`: `9e69a09 feat: clarificar aprendizaje bayesiano`.
+* `assets/js/config.js` publico contiene `appVersion: "0.2.20"` y
+  `mundial-probabilidades-v0-2-20`.
+* `service-worker.js` publico contiene `mundial-probabilidades-v0-2-20`.
+* GitHub Pages inicialmente sirvio HTML viejo `0.2.19`, pero en el intento 4
+  con cache-busting ya sirvio `Version 0.2.20` y `bayesLearningFigure`.
+* Playwright publico desktop `1366x900`: sin overflow, 16 puntos en la curva, 4
+  tarjetas de evidencia, desplegable cerrado por defecto, sin `story-rail`, sin
+  imagen bayesiana duplicada visible y sin errores de pagina.
+* Playwright publico movil `390x844`: sin overflow, `Version 0.2.20`, 16 puntos
+  en la curva, 4 tarjetas de evidencia y sin errores de pagina.
+
+### Pruebas realizadas
+
+* Verificacion HTTP publica con cache-busting.
+* Verificacion de archivos raw de GitHub.
+* Prueba visual automatizada publica en escritorio y movil.
+
+### Errores o incidentes
+
+* El primer push fue rechazado porque `origin/main` habia avanzado con datos.
+* `git fetch` fallo por `desktop.ini` dentro de `.git/refs/codex`; se movio la
+  carpeta no estandar de refs Codex a respaldo interno de `.git`.
+* GitHub Pages tardo varios intentos en servir el HTML actualizado, aunque raw
+  GitHub ya mostraba `0.2.20`.
+
+### Soluciones aplicadas
+
+* Rebase sobre datos remotos actualizados.
+* Limpieza/movimiento controlado de refs Codex afectadas por metadatos de Drive.
+* Verificacion publica despues de esperar propagacion de GitHub Pages.
+
+### Pendientes
+
+* Validar con usuarios no tecnicos si el termino "curva de cercania" es claro o
+  si conviene cambiarlo a "acierto acumulado del modelo".
+
+### Riesgos
+
+* Usuarios con service worker viejo pueden requerir tocar `Actualizar app` o
+  recargar para recibir `0.2.20`.
+* Google Drive puede volver a generar `desktop.ini` en carpetas internas; si
+  reaparece en `.git/refs`, repetir limpieza controlada antes de `fetch`.
+
+### Recomendaciones
+
+* Tras cada publicacion en GitHub Pages, verificar HTML publico, raw config y
+  service worker con cache-busting.
+* En repos sincronizados por Drive, revisar `desktop.ini` dentro de `.git/refs`
+  antes de diagnosticar corrupcion Git.
