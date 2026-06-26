@@ -1,105 +1,105 @@
 match_id,round,date,time,team1,team2,group,ground,status,score_team1,score_team2,data_version
-wc26-001,Matchday 1,2026-06-11,13:00 UTC-6,Mexico,South Africa,Group A,Mexico City,final,2,0,wc26-20260626T130534z
-wc26-002,Matchday 1,2026-06-11,20:00 UTC-6,South Korea,Czech Republic,Group A,Guadalajara (Zapopan),final,2,1,wc26-20260626T130534z
-wc26-003,Matchday 8,2026-06-18,12:00 UTC-4,Czech Republic,South Africa,Group A,Atlanta,final,1,1,wc26-20260626T130534z
-wc26-004,Matchday 8,2026-06-18,19:00 UTC-6,Mexico,South Korea,Group A,Guadalajara (Zapopan),final,1,0,wc26-20260626T130534z
-wc26-005,Matchday 14,2026-06-24,19:00 UTC-6,Czech Republic,Mexico,Group A,Mexico City,final,0,3,wc26-20260626T130534z
-wc26-006,Matchday 14,2026-06-24,19:00 UTC-6,South Africa,South Korea,Group A,Monterrey (Guadalupe),final,1,0,wc26-20260626T130534z
-wc26-007,Matchday 2,2026-06-12,15:00 UTC-4,Canada,Bosnia & Herzegovina,Group B,Toronto,final,1,1,wc26-20260626T130534z
-wc26-008,Matchday 3,2026-06-13,12:00 UTC-7,Qatar,Switzerland,Group B,San Francisco Bay Area (Santa Clara),final,1,1,wc26-20260626T130534z
-wc26-009,Matchday 8,2026-06-18,12:00 UTC-7,Switzerland,Bosnia & Herzegovina,Group B,Los Angeles (Inglewood),final,4,1,wc26-20260626T130534z
-wc26-010,Matchday 8,2026-06-18,15:00 UTC-7,Canada,Qatar,Group B,Vancouver,final,6,0,wc26-20260626T130534z
-wc26-011,Matchday 14,2026-06-24,12:00 UTC-7,Switzerland,Canada,Group B,Vancouver,final,2,1,wc26-20260626T130534z
-wc26-012,Matchday 14,2026-06-24,12:00 UTC-7,Bosnia & Herzegovina,Qatar,Group B,Seattle,final,3,1,wc26-20260626T130534z
-wc26-013,Matchday 3,2026-06-13,18:00 UTC-4,Brazil,Morocco,Group C,New York/New Jersey (East Rutherford),final,1,1,wc26-20260626T130534z
-wc26-014,Matchday 3,2026-06-13,21:00 UTC-4,Haiti,Scotland,Group C,Boston (Foxborough),final,0,1,wc26-20260626T130534z
-wc26-015,Matchday 9,2026-06-19,18:00 UTC-4,Scotland,Morocco,Group C,Boston (Foxborough),final,0,1,wc26-20260626T130534z
-wc26-016,Matchday 9,2026-06-19,20:30 UTC-4,Brazil,Haiti,Group C,Philadelphia,final,3,0,wc26-20260626T130534z
-wc26-017,Matchday 14,2026-06-24,18:00 UTC-4,Scotland,Brazil,Group C,Miami (Miami Gardens),final,0,3,wc26-20260626T130534z
-wc26-018,Matchday 14,2026-06-24,18:00 UTC-4,Morocco,Haiti,Group C,Atlanta,final,4,2,wc26-20260626T130534z
-wc26-019,Matchday 2,2026-06-12,18:00 UTC-7,USA,Paraguay,Group D,Los Angeles (Inglewood),final,4,1,wc26-20260626T130534z
-wc26-020,Matchday 3,2026-06-13,21:00 UTC-7,Australia,Turkey,Group D,Vancouver,final,2,0,wc26-20260626T130534z
-wc26-021,Matchday 9,2026-06-19,12:00 UTC-7,USA,Australia,Group D,Seattle,final,2,0,wc26-20260626T130534z
-wc26-022,Matchday 9,2026-06-19,20:00 UTC-7,Turkey,Paraguay,Group D,San Francisco Bay Area (Santa Clara),final,0,1,wc26-20260626T130534z
-wc26-023,Matchday 15,2026-06-25,19:00 UTC-7,Turkey,USA,Group D,Los Angeles (Inglewood),final,3,2,wc26-20260626T130534z
-wc26-024,Matchday 15,2026-06-25,19:00 UTC-7,Paraguay,Australia,Group D,San Francisco Bay Area (Santa Clara),final,0,0,wc26-20260626T130534z
-wc26-025,Matchday 4,2026-06-14,12:00 UTC-5,Germany,Curaçao,Group E,Houston,final,7,1,wc26-20260626T130534z
-wc26-026,Matchday 4,2026-06-14,19:00 UTC-4,Ivory Coast,Ecuador,Group E,Philadelphia,final,1,0,wc26-20260626T130534z
-wc26-027,Matchday 10,2026-06-20,16:00 UTC-4,Germany,Ivory Coast,Group E,Toronto,final,2,1,wc26-20260626T130534z
-wc26-028,Matchday 10,2026-06-20,19:00 UTC-5,Ecuador,Curaçao,Group E,Kansas City,final,0,0,wc26-20260626T130534z
-wc26-029,Matchday 15,2026-06-25,16:00 UTC-4,Curaçao,Ivory Coast,Group E,Philadelphia,final,0,2,wc26-20260626T130534z
-wc26-030,Matchday 15,2026-06-25,16:00 UTC-4,Ecuador,Germany,Group E,New York/New Jersey (East Rutherford),final,2,1,wc26-20260626T130534z
-wc26-031,Matchday 4,2026-06-14,15:00 UTC-5,Netherlands,Japan,Group F,Dallas (Arlington),final,2,2,wc26-20260626T130534z
-wc26-032,Matchday 4,2026-06-14,20:00 UTC-6,Sweden,Tunisia,Group F,Monterrey (Guadalupe),final,5,1,wc26-20260626T130534z
-wc26-033,Matchday 10,2026-06-20,12:00 UTC-5,Netherlands,Sweden,Group F,Houston,final,5,1,wc26-20260626T130534z
-wc26-034,Matchday 10,2026-06-20,22:00 UTC-6,Tunisia,Japan,Group F,Monterrey (Guadalupe),final,0,4,wc26-20260626T130534z
-wc26-035,Matchday 15,2026-06-25,18:00 UTC-5,Japan,Sweden,Group F,Dallas (Arlington),final,1,1,wc26-20260626T130534z
-wc26-036,Matchday 15,2026-06-25,18:00 UTC-5,Tunisia,Netherlands,Group F,Kansas City,final,1,3,wc26-20260626T130534z
-wc26-037,Matchday 5,2026-06-15,12:00 UTC-7,Belgium,Egypt,Group G,Seattle,final,1,1,wc26-20260626T130534z
-wc26-038,Matchday 5,2026-06-15,18:00 UTC-7,Iran,New Zealand,Group G,Los Angeles (Inglewood),final,2,2,wc26-20260626T130534z
-wc26-039,Matchday 11,2026-06-21,12:00 UTC-7,Belgium,Iran,Group G,Los Angeles (Inglewood),final,0,0,wc26-20260626T130534z
-wc26-040,Matchday 11,2026-06-21,18:00 UTC-7,New Zealand,Egypt,Group G,Vancouver,final,1,3,wc26-20260626T130534z
-wc26-041,Matchday 16,2026-06-26,20:00 UTC-7,Egypt,Iran,Group G,Seattle,scheduled,,,wc26-20260626T130534z
-wc26-042,Matchday 16,2026-06-26,20:00 UTC-7,New Zealand,Belgium,Group G,Vancouver,scheduled,,,wc26-20260626T130534z
-wc26-043,Matchday 5,2026-06-15,12:00 UTC-4,Spain,Cape Verde,Group H,Atlanta,final,0,0,wc26-20260626T130534z
-wc26-044,Matchday 5,2026-06-15,18:00 UTC-4,Saudi Arabia,Uruguay,Group H,Miami (Miami Gardens),final,1,1,wc26-20260626T130534z
-wc26-045,Matchday 11,2026-06-21,12:00 UTC-4,Spain,Saudi Arabia,Group H,Atlanta,final,4,0,wc26-20260626T130534z
-wc26-046,Matchday 11,2026-06-21,18:00 UTC-4,Uruguay,Cape Verde,Group H,Miami (Miami Gardens),final,2,2,wc26-20260626T130534z
-wc26-047,Matchday 16,2026-06-26,19:00 UTC-5,Cape Verde,Saudi Arabia,Group H,Houston,scheduled,,,wc26-20260626T130534z
-wc26-048,Matchday 16,2026-06-26,18:00 UTC-6,Uruguay,Spain,Group H,Guadalajara (Zapopan),scheduled,,,wc26-20260626T130534z
-wc26-049,Matchday 6,2026-06-16,15:00 UTC-4,France,Senegal,Group I,New York/New Jersey (East Rutherford),final,3,1,wc26-20260626T130534z
-wc26-050,Matchday 6,2026-06-16,18:00 UTC-4,Iraq,Norway,Group I,Boston (Foxborough),final,1,4,wc26-20260626T130534z
-wc26-051,Matchday 12,2026-06-22,17:00 UTC-4,France,Iraq,Group I,Philadelphia,final,3,0,wc26-20260626T130534z
-wc26-052,Matchday 12,2026-06-22,20:00 UTC-4,Norway,Senegal,Group I,New York/New Jersey (East Rutherford),final,3,2,wc26-20260626T130534z
-wc26-053,Matchday 16,2026-06-26,15:00 UTC-4,Norway,France,Group I,Boston (Foxborough),scheduled,,,wc26-20260626T130534z
-wc26-054,Matchday 16,2026-06-26,15:00 UTC-4,Senegal,Iraq,Group I,Toronto,scheduled,,,wc26-20260626T130534z
-wc26-055,Matchday 6,2026-06-16,20:00 UTC-5,Argentina,Algeria,Group J,Kansas City,final,3,0,wc26-20260626T130534z
-wc26-056,Matchday 6,2026-06-16,21:00 UTC-7,Austria,Jordan,Group J,San Francisco Bay Area (Santa Clara),final,3,1,wc26-20260626T130534z
-wc26-057,Matchday 12,2026-06-22,12:00 UTC-5,Argentina,Austria,Group J,Dallas (Arlington),final,2,0,wc26-20260626T130534z
-wc26-058,Matchday 12,2026-06-22,20:00 UTC-7,Jordan,Algeria,Group J,San Francisco Bay Area (Santa Clara),final,1,2,wc26-20260626T130534z
-wc26-059,Matchday 17,2026-06-27,21:00 UTC-5,Algeria,Austria,Group J,Kansas City,scheduled,,,wc26-20260626T130534z
-wc26-060,Matchday 17,2026-06-27,21:00 UTC-5,Jordan,Argentina,Group J,Dallas (Arlington),scheduled,,,wc26-20260626T130534z
-wc26-061,Matchday 7,2026-06-17,12:00 UTC-5,Portugal,DR Congo,Group K,Houston,final,1,1,wc26-20260626T130534z
-wc26-062,Matchday 7,2026-06-17,20:00 UTC-6,Uzbekistan,Colombia,Group K,Mexico City,final,1,3,wc26-20260626T130534z
-wc26-063,Matchday 13,2026-06-23,12:00 UTC-5,Portugal,Uzbekistan,Group K,Houston,final,5,0,wc26-20260626T130534z
-wc26-064,Matchday 13,2026-06-23,20:00 UTC-6,Colombia,DR Congo,Group K,Guadalajara (Zapopan),final,1,0,wc26-20260626T130534z
-wc26-065,Matchday 17,2026-06-27,19:30 UTC-4,Colombia,Portugal,Group K,Miami (Miami Gardens),scheduled,,,wc26-20260626T130534z
-wc26-066,Matchday 17,2026-06-27,19:30 UTC-4,DR Congo,Uzbekistan,Group K,Atlanta,scheduled,,,wc26-20260626T130534z
-wc26-067,Matchday 7,2026-06-17,15:00 UTC-5,England,Croatia,Group L,Dallas (Arlington),final,4,2,wc26-20260626T130534z
-wc26-068,Matchday 7,2026-06-17,19:00 UTC-4,Ghana,Panama,Group L,Toronto,final,1,0,wc26-20260626T130534z
-wc26-069,Matchday 13,2026-06-23,16:00 UTC-4,England,Ghana,Group L,Boston (Foxborough),final,0,0,wc26-20260626T130534z
-wc26-070,Matchday 13,2026-06-23,19:00 UTC-4,Panama,Croatia,Group L,Toronto,final,0,1,wc26-20260626T130534z
-wc26-071,Matchday 17,2026-06-27,17:00 UTC-4,Panama,England,Group L,New York/New Jersey (East Rutherford),scheduled,,,wc26-20260626T130534z
-wc26-072,Matchday 17,2026-06-27,17:00 UTC-4,Croatia,Ghana,Group L,Philadelphia,scheduled,,,wc26-20260626T130534z
-wc26-073,Round of 32,2026-06-28,12:00 UTC-7,South Africa,Canada,,Los Angeles (Inglewood),scheduled,,,wc26-20260626T130534z
-wc26-074,Round of 32,2026-06-29,16:30 UTC-4,Germany,3A/B/C/D/F,,Boston (Foxborough),scheduled,,,wc26-20260626T130534z
-wc26-075,Round of 32,2026-06-29,19:00 UTC-6,Netherlands,Morocco,,Monterrey (Guadalupe),scheduled,,,wc26-20260626T130534z
-wc26-076,Round of 32,2026-06-29,12:00 UTC-5,Brazil,Japan,,Houston,scheduled,,,wc26-20260626T130534z
-wc26-077,Round of 32,2026-06-30,17:00 UTC-4,1I,3C/D/F/G/H,,New York/New Jersey (East Rutherford),scheduled,,,wc26-20260626T130534z
-wc26-078,Round of 32,2026-06-30,12:00 UTC-5,Ivory Coast,2I,,Dallas (Arlington),scheduled,,,wc26-20260626T130534z
-wc26-079,Round of 32,2026-06-30,19:00 UTC-6,Mexico,3C/E/F/H/I,,Mexico City,scheduled,,,wc26-20260626T130534z
-wc26-080,Round of 32,2026-07-01,12:00 UTC-4,1L,3E/H/I/J/K,,Atlanta,scheduled,,,wc26-20260626T130534z
-wc26-081,Round of 32,2026-07-01,17:00 UTC-7,USA,3B/E/F/I/J,,San Francisco Bay Area (Santa Clara),scheduled,,,wc26-20260626T130534z
-wc26-082,Round of 32,2026-07-01,13:00 UTC-7,1G,3A/E/H/I/J,,Seattle,scheduled,,,wc26-20260626T130534z
-wc26-083,Round of 32,2026-07-02,19:00 UTC-4,2K,2L,,Toronto,scheduled,,,wc26-20260626T130534z
-wc26-084,Round of 32,2026-07-02,12:00 UTC-7,1H,2J,,Los Angeles (Inglewood),scheduled,,,wc26-20260626T130534z
-wc26-085,Round of 32,2026-07-02,20:00 UTC-7,Switzerland,3E/F/G/I/J,,Vancouver,scheduled,,,wc26-20260626T130534z
-wc26-086,Round of 32,2026-07-03,18:00 UTC-4,1J,2H,,Miami (Miami Gardens),scheduled,,,wc26-20260626T130534z
-wc26-087,Round of 32,2026-07-03,20:30 UTC-5,1K,3D/E/I/J/L,,Kansas City,scheduled,,,wc26-20260626T130534z
-wc26-088,Round of 32,2026-07-03,13:00 UTC-5,Australia,2G,,Dallas (Arlington),scheduled,,,wc26-20260626T130534z
-wc26-089,Round of 16,2026-07-04,17:00 UTC-4,W74,W77,,Philadelphia,scheduled,,,wc26-20260626T130534z
-wc26-090,Round of 16,2026-07-04,12:00 UTC-5,W73,W75,,Houston,scheduled,,,wc26-20260626T130534z
-wc26-091,Round of 16,2026-07-05,16:00 UTC-4,W76,W78,,New York/New Jersey (East Rutherford),scheduled,,,wc26-20260626T130534z
-wc26-092,Round of 16,2026-07-05,18:00 UTC-6,W79,W80,,Mexico City,scheduled,,,wc26-20260626T130534z
-wc26-093,Round of 16,2026-07-06,14:00 UTC-5,W83,W84,,Dallas (Arlington),scheduled,,,wc26-20260626T130534z
-wc26-094,Round of 16,2026-07-06,17:00 UTC-7,W81,W82,,Seattle,scheduled,,,wc26-20260626T130534z
-wc26-095,Round of 16,2026-07-07,12:00 UTC-4,W86,W88,,Atlanta,scheduled,,,wc26-20260626T130534z
-wc26-096,Round of 16,2026-07-07,13:00 UTC-7,W85,W87,,Vancouver,scheduled,,,wc26-20260626T130534z
-wc26-097,Quarter-final,2026-07-09,16:00 UTC-4,W89,W90,,Boston (Foxborough),scheduled,,,wc26-20260626T130534z
-wc26-098,Quarter-final,2026-07-10,12:00 UTC-7,W93,W94,,Los Angeles (Inglewood),scheduled,,,wc26-20260626T130534z
-wc26-099,Quarter-final,2026-07-11,17:00 UTC-4,W91,W92,,Miami (Miami Gardens),scheduled,,,wc26-20260626T130534z
-wc26-100,Quarter-final,2026-07-11,20:00 UTC-5,W95,W96,,Kansas City,scheduled,,,wc26-20260626T130534z
-wc26-101,Semi-final,2026-07-14,14:00 UTC-5,W97,W98,,Dallas (Arlington),scheduled,,,wc26-20260626T130534z
-wc26-102,Semi-final,2026-07-15,15:00 UTC-4,W99,W100,,Atlanta,scheduled,,,wc26-20260626T130534z
-wc26-103,Match for third place,2026-07-18,17:00 UTC-4,L101,L102,,Miami (Miami Gardens),scheduled,,,wc26-20260626T130534z
-wc26-104,Final,2026-07-19,15:00 UTC-4,W101,W102,,New York/New Jersey (East Rutherford),scheduled,,,wc26-20260626T130534z
+wc26-001,Matchday 1,2026-06-11,13:00 UTC-6,Mexico,South Africa,Group A,Mexico City,final,2,0,wc26-20260626T190005z
+wc26-002,Matchday 1,2026-06-11,20:00 UTC-6,South Korea,Czech Republic,Group A,Guadalajara (Zapopan),final,2,1,wc26-20260626T190005z
+wc26-003,Matchday 8,2026-06-18,12:00 UTC-4,Czech Republic,South Africa,Group A,Atlanta,final,1,1,wc26-20260626T190005z
+wc26-004,Matchday 8,2026-06-18,19:00 UTC-6,Mexico,South Korea,Group A,Guadalajara (Zapopan),final,1,0,wc26-20260626T190005z
+wc26-005,Matchday 14,2026-06-24,19:00 UTC-6,Czech Republic,Mexico,Group A,Mexico City,final,0,3,wc26-20260626T190005z
+wc26-006,Matchday 14,2026-06-24,19:00 UTC-6,South Africa,South Korea,Group A,Monterrey (Guadalupe),final,1,0,wc26-20260626T190005z
+wc26-007,Matchday 2,2026-06-12,15:00 UTC-4,Canada,Bosnia & Herzegovina,Group B,Toronto,final,1,1,wc26-20260626T190005z
+wc26-008,Matchday 3,2026-06-13,12:00 UTC-7,Qatar,Switzerland,Group B,San Francisco Bay Area (Santa Clara),final,1,1,wc26-20260626T190005z
+wc26-009,Matchday 8,2026-06-18,12:00 UTC-7,Switzerland,Bosnia & Herzegovina,Group B,Los Angeles (Inglewood),final,4,1,wc26-20260626T190005z
+wc26-010,Matchday 8,2026-06-18,15:00 UTC-7,Canada,Qatar,Group B,Vancouver,final,6,0,wc26-20260626T190005z
+wc26-011,Matchday 14,2026-06-24,12:00 UTC-7,Switzerland,Canada,Group B,Vancouver,final,2,1,wc26-20260626T190005z
+wc26-012,Matchday 14,2026-06-24,12:00 UTC-7,Bosnia & Herzegovina,Qatar,Group B,Seattle,final,3,1,wc26-20260626T190005z
+wc26-013,Matchday 3,2026-06-13,18:00 UTC-4,Brazil,Morocco,Group C,New York/New Jersey (East Rutherford),final,1,1,wc26-20260626T190005z
+wc26-014,Matchday 3,2026-06-13,21:00 UTC-4,Haiti,Scotland,Group C,Boston (Foxborough),final,0,1,wc26-20260626T190005z
+wc26-015,Matchday 9,2026-06-19,18:00 UTC-4,Scotland,Morocco,Group C,Boston (Foxborough),final,0,1,wc26-20260626T190005z
+wc26-016,Matchday 9,2026-06-19,20:30 UTC-4,Brazil,Haiti,Group C,Philadelphia,final,3,0,wc26-20260626T190005z
+wc26-017,Matchday 14,2026-06-24,18:00 UTC-4,Scotland,Brazil,Group C,Miami (Miami Gardens),final,0,3,wc26-20260626T190005z
+wc26-018,Matchday 14,2026-06-24,18:00 UTC-4,Morocco,Haiti,Group C,Atlanta,final,4,2,wc26-20260626T190005z
+wc26-019,Matchday 2,2026-06-12,18:00 UTC-7,USA,Paraguay,Group D,Los Angeles (Inglewood),final,4,1,wc26-20260626T190005z
+wc26-020,Matchday 3,2026-06-13,21:00 UTC-7,Australia,Turkey,Group D,Vancouver,final,2,0,wc26-20260626T190005z
+wc26-021,Matchday 9,2026-06-19,12:00 UTC-7,USA,Australia,Group D,Seattle,final,2,0,wc26-20260626T190005z
+wc26-022,Matchday 9,2026-06-19,20:00 UTC-7,Turkey,Paraguay,Group D,San Francisco Bay Area (Santa Clara),final,0,1,wc26-20260626T190005z
+wc26-023,Matchday 15,2026-06-25,19:00 UTC-7,Turkey,USA,Group D,Los Angeles (Inglewood),final,3,2,wc26-20260626T190005z
+wc26-024,Matchday 15,2026-06-25,19:00 UTC-7,Paraguay,Australia,Group D,San Francisco Bay Area (Santa Clara),final,0,0,wc26-20260626T190005z
+wc26-025,Matchday 4,2026-06-14,12:00 UTC-5,Germany,Curaçao,Group E,Houston,final,7,1,wc26-20260626T190005z
+wc26-026,Matchday 4,2026-06-14,19:00 UTC-4,Ivory Coast,Ecuador,Group E,Philadelphia,final,1,0,wc26-20260626T190005z
+wc26-027,Matchday 10,2026-06-20,16:00 UTC-4,Germany,Ivory Coast,Group E,Toronto,final,2,1,wc26-20260626T190005z
+wc26-028,Matchday 10,2026-06-20,19:00 UTC-5,Ecuador,Curaçao,Group E,Kansas City,final,0,0,wc26-20260626T190005z
+wc26-029,Matchday 15,2026-06-25,16:00 UTC-4,Curaçao,Ivory Coast,Group E,Philadelphia,final,0,2,wc26-20260626T190005z
+wc26-030,Matchday 15,2026-06-25,16:00 UTC-4,Ecuador,Germany,Group E,New York/New Jersey (East Rutherford),final,2,1,wc26-20260626T190005z
+wc26-031,Matchday 4,2026-06-14,15:00 UTC-5,Netherlands,Japan,Group F,Dallas (Arlington),final,2,2,wc26-20260626T190005z
+wc26-032,Matchday 4,2026-06-14,20:00 UTC-6,Sweden,Tunisia,Group F,Monterrey (Guadalupe),final,5,1,wc26-20260626T190005z
+wc26-033,Matchday 10,2026-06-20,12:00 UTC-5,Netherlands,Sweden,Group F,Houston,final,5,1,wc26-20260626T190005z
+wc26-034,Matchday 10,2026-06-20,22:00 UTC-6,Tunisia,Japan,Group F,Monterrey (Guadalupe),final,0,4,wc26-20260626T190005z
+wc26-035,Matchday 15,2026-06-25,18:00 UTC-5,Japan,Sweden,Group F,Dallas (Arlington),final,1,1,wc26-20260626T190005z
+wc26-036,Matchday 15,2026-06-25,18:00 UTC-5,Tunisia,Netherlands,Group F,Kansas City,final,1,3,wc26-20260626T190005z
+wc26-037,Matchday 5,2026-06-15,12:00 UTC-7,Belgium,Egypt,Group G,Seattle,final,1,1,wc26-20260626T190005z
+wc26-038,Matchday 5,2026-06-15,18:00 UTC-7,Iran,New Zealand,Group G,Los Angeles (Inglewood),final,2,2,wc26-20260626T190005z
+wc26-039,Matchday 11,2026-06-21,12:00 UTC-7,Belgium,Iran,Group G,Los Angeles (Inglewood),final,0,0,wc26-20260626T190005z
+wc26-040,Matchday 11,2026-06-21,18:00 UTC-7,New Zealand,Egypt,Group G,Vancouver,final,1,3,wc26-20260626T190005z
+wc26-041,Matchday 16,2026-06-26,20:00 UTC-7,Egypt,Iran,Group G,Seattle,scheduled,,,wc26-20260626T190005z
+wc26-042,Matchday 16,2026-06-26,20:00 UTC-7,New Zealand,Belgium,Group G,Vancouver,scheduled,,,wc26-20260626T190005z
+wc26-043,Matchday 5,2026-06-15,12:00 UTC-4,Spain,Cape Verde,Group H,Atlanta,final,0,0,wc26-20260626T190005z
+wc26-044,Matchday 5,2026-06-15,18:00 UTC-4,Saudi Arabia,Uruguay,Group H,Miami (Miami Gardens),final,1,1,wc26-20260626T190005z
+wc26-045,Matchday 11,2026-06-21,12:00 UTC-4,Spain,Saudi Arabia,Group H,Atlanta,final,4,0,wc26-20260626T190005z
+wc26-046,Matchday 11,2026-06-21,18:00 UTC-4,Uruguay,Cape Verde,Group H,Miami (Miami Gardens),final,2,2,wc26-20260626T190005z
+wc26-047,Matchday 16,2026-06-26,19:00 UTC-5,Cape Verde,Saudi Arabia,Group H,Houston,scheduled,,,wc26-20260626T190005z
+wc26-048,Matchday 16,2026-06-26,18:00 UTC-6,Uruguay,Spain,Group H,Guadalajara (Zapopan),scheduled,,,wc26-20260626T190005z
+wc26-049,Matchday 6,2026-06-16,15:00 UTC-4,France,Senegal,Group I,New York/New Jersey (East Rutherford),final,3,1,wc26-20260626T190005z
+wc26-050,Matchday 6,2026-06-16,18:00 UTC-4,Iraq,Norway,Group I,Boston (Foxborough),final,1,4,wc26-20260626T190005z
+wc26-051,Matchday 12,2026-06-22,17:00 UTC-4,France,Iraq,Group I,Philadelphia,final,3,0,wc26-20260626T190005z
+wc26-052,Matchday 12,2026-06-22,20:00 UTC-4,Norway,Senegal,Group I,New York/New Jersey (East Rutherford),final,3,2,wc26-20260626T190005z
+wc26-053,Matchday 16,2026-06-26,15:00 UTC-4,Norway,France,Group I,Boston (Foxborough),scheduled,,,wc26-20260626T190005z
+wc26-054,Matchday 16,2026-06-26,15:00 UTC-4,Senegal,Iraq,Group I,Toronto,scheduled,,,wc26-20260626T190005z
+wc26-055,Matchday 6,2026-06-16,20:00 UTC-5,Argentina,Algeria,Group J,Kansas City,final,3,0,wc26-20260626T190005z
+wc26-056,Matchday 6,2026-06-16,21:00 UTC-7,Austria,Jordan,Group J,San Francisco Bay Area (Santa Clara),final,3,1,wc26-20260626T190005z
+wc26-057,Matchday 12,2026-06-22,12:00 UTC-5,Argentina,Austria,Group J,Dallas (Arlington),final,2,0,wc26-20260626T190005z
+wc26-058,Matchday 12,2026-06-22,20:00 UTC-7,Jordan,Algeria,Group J,San Francisco Bay Area (Santa Clara),final,1,2,wc26-20260626T190005z
+wc26-059,Matchday 17,2026-06-27,21:00 UTC-5,Algeria,Austria,Group J,Kansas City,scheduled,,,wc26-20260626T190005z
+wc26-060,Matchday 17,2026-06-27,21:00 UTC-5,Jordan,Argentina,Group J,Dallas (Arlington),scheduled,,,wc26-20260626T190005z
+wc26-061,Matchday 7,2026-06-17,12:00 UTC-5,Portugal,DR Congo,Group K,Houston,final,1,1,wc26-20260626T190005z
+wc26-062,Matchday 7,2026-06-17,20:00 UTC-6,Uzbekistan,Colombia,Group K,Mexico City,final,1,3,wc26-20260626T190005z
+wc26-063,Matchday 13,2026-06-23,12:00 UTC-5,Portugal,Uzbekistan,Group K,Houston,final,5,0,wc26-20260626T190005z
+wc26-064,Matchday 13,2026-06-23,20:00 UTC-6,Colombia,DR Congo,Group K,Guadalajara (Zapopan),final,1,0,wc26-20260626T190005z
+wc26-065,Matchday 17,2026-06-27,19:30 UTC-4,Colombia,Portugal,Group K,Miami (Miami Gardens),scheduled,,,wc26-20260626T190005z
+wc26-066,Matchday 17,2026-06-27,19:30 UTC-4,DR Congo,Uzbekistan,Group K,Atlanta,scheduled,,,wc26-20260626T190005z
+wc26-067,Matchday 7,2026-06-17,15:00 UTC-5,England,Croatia,Group L,Dallas (Arlington),final,4,2,wc26-20260626T190005z
+wc26-068,Matchday 7,2026-06-17,19:00 UTC-4,Ghana,Panama,Group L,Toronto,final,1,0,wc26-20260626T190005z
+wc26-069,Matchday 13,2026-06-23,16:00 UTC-4,England,Ghana,Group L,Boston (Foxborough),final,0,0,wc26-20260626T190005z
+wc26-070,Matchday 13,2026-06-23,19:00 UTC-4,Panama,Croatia,Group L,Toronto,final,0,1,wc26-20260626T190005z
+wc26-071,Matchday 17,2026-06-27,17:00 UTC-4,Panama,England,Group L,New York/New Jersey (East Rutherford),scheduled,,,wc26-20260626T190005z
+wc26-072,Matchday 17,2026-06-27,17:00 UTC-4,Croatia,Ghana,Group L,Philadelphia,scheduled,,,wc26-20260626T190005z
+wc26-073,Round of 32,2026-06-28,12:00 UTC-7,South Africa,Canada,,Los Angeles (Inglewood),scheduled,,,wc26-20260626T190005z
+wc26-074,Round of 32,2026-06-29,16:30 UTC-4,Germany,3A/B/C/D/F,,Boston (Foxborough),scheduled,,,wc26-20260626T190005z
+wc26-075,Round of 32,2026-06-29,19:00 UTC-6,Netherlands,Morocco,,Monterrey (Guadalupe),scheduled,,,wc26-20260626T190005z
+wc26-076,Round of 32,2026-06-29,12:00 UTC-5,Brazil,Japan,,Houston,scheduled,,,wc26-20260626T190005z
+wc26-077,Round of 32,2026-06-30,17:00 UTC-4,1I,3C/D/F/G/H,,New York/New Jersey (East Rutherford),scheduled,,,wc26-20260626T190005z
+wc26-078,Round of 32,2026-06-30,12:00 UTC-5,Ivory Coast,2I,,Dallas (Arlington),scheduled,,,wc26-20260626T190005z
+wc26-079,Round of 32,2026-06-30,19:00 UTC-6,Mexico,3C/E/F/H/I,,Mexico City,scheduled,,,wc26-20260626T190005z
+wc26-080,Round of 32,2026-07-01,12:00 UTC-4,1L,3E/H/I/J/K,,Atlanta,scheduled,,,wc26-20260626T190005z
+wc26-081,Round of 32,2026-07-01,17:00 UTC-7,USA,3B/E/F/I/J,,San Francisco Bay Area (Santa Clara),scheduled,,,wc26-20260626T190005z
+wc26-082,Round of 32,2026-07-01,13:00 UTC-7,1G,3A/E/H/I/J,,Seattle,scheduled,,,wc26-20260626T190005z
+wc26-083,Round of 32,2026-07-02,19:00 UTC-4,2K,2L,,Toronto,scheduled,,,wc26-20260626T190005z
+wc26-084,Round of 32,2026-07-02,12:00 UTC-7,1H,2J,,Los Angeles (Inglewood),scheduled,,,wc26-20260626T190005z
+wc26-085,Round of 32,2026-07-02,20:00 UTC-7,Switzerland,3E/F/G/I/J,,Vancouver,scheduled,,,wc26-20260626T190005z
+wc26-086,Round of 32,2026-07-03,18:00 UTC-4,1J,2H,,Miami (Miami Gardens),scheduled,,,wc26-20260626T190005z
+wc26-087,Round of 32,2026-07-03,20:30 UTC-5,1K,3D/E/I/J/L,,Kansas City,scheduled,,,wc26-20260626T190005z
+wc26-088,Round of 32,2026-07-03,13:00 UTC-5,Australia,2G,,Dallas (Arlington),scheduled,,,wc26-20260626T190005z
+wc26-089,Round of 16,2026-07-04,17:00 UTC-4,W74,W77,,Philadelphia,scheduled,,,wc26-20260626T190005z
+wc26-090,Round of 16,2026-07-04,12:00 UTC-5,W73,W75,,Houston,scheduled,,,wc26-20260626T190005z
+wc26-091,Round of 16,2026-07-05,16:00 UTC-4,W76,W78,,New York/New Jersey (East Rutherford),scheduled,,,wc26-20260626T190005z
+wc26-092,Round of 16,2026-07-05,18:00 UTC-6,W79,W80,,Mexico City,scheduled,,,wc26-20260626T190005z
+wc26-093,Round of 16,2026-07-06,14:00 UTC-5,W83,W84,,Dallas (Arlington),scheduled,,,wc26-20260626T190005z
+wc26-094,Round of 16,2026-07-06,17:00 UTC-7,W81,W82,,Seattle,scheduled,,,wc26-20260626T190005z
+wc26-095,Round of 16,2026-07-07,12:00 UTC-4,W86,W88,,Atlanta,scheduled,,,wc26-20260626T190005z
+wc26-096,Round of 16,2026-07-07,13:00 UTC-7,W85,W87,,Vancouver,scheduled,,,wc26-20260626T190005z
+wc26-097,Quarter-final,2026-07-09,16:00 UTC-4,W89,W90,,Boston (Foxborough),scheduled,,,wc26-20260626T190005z
+wc26-098,Quarter-final,2026-07-10,12:00 UTC-7,W93,W94,,Los Angeles (Inglewood),scheduled,,,wc26-20260626T190005z
+wc26-099,Quarter-final,2026-07-11,17:00 UTC-4,W91,W92,,Miami (Miami Gardens),scheduled,,,wc26-20260626T190005z
+wc26-100,Quarter-final,2026-07-11,20:00 UTC-5,W95,W96,,Kansas City,scheduled,,,wc26-20260626T190005z
+wc26-101,Semi-final,2026-07-14,14:00 UTC-5,W97,W98,,Dallas (Arlington),scheduled,,,wc26-20260626T190005z
+wc26-102,Semi-final,2026-07-15,15:00 UTC-4,W99,W100,,Atlanta,scheduled,,,wc26-20260626T190005z
+wc26-103,Match for third place,2026-07-18,17:00 UTC-4,L101,L102,,Miami (Miami Gardens),scheduled,,,wc26-20260626T190005z
+wc26-104,Final,2026-07-19,15:00 UTC-4,W101,W102,,New York/New Jersey (East Rutherford),scheduled,,,wc26-20260626T190005z
