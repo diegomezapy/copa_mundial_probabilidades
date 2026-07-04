@@ -1,15 +1,15 @@
 {
   "metadata": {
     "app_version": "0.2.15",
-    "data_version": "wc26-20260704T140402z",
-    "generated_at": "2026-07-04T14:04:02Z",
+    "data_version": "wc26-20260704T194106z",
+    "generated_at": "2026-07-04T19:41:06Z",
     "timezone": "UTC",
     "tournament": "World Cup 2026",
     "coverage": {
       "teams": 48,
       "players": 1248,
       "matches": 104,
-      "completed_matches": 88,
+      "completed_matches": 89,
       "groups": 12,
       "historical_tournaments": 22,
       "historical_matches": 964,
@@ -33,17 +33,17 @@
   "sources": {
     "openfootball_worldcup_json": {
       "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json",
-      "downloaded_at": "2026-07-04T14:03:56Z",
+      "downloaded_at": "2026-07-04T19:40:58Z",
       "status_code": 200,
-      "bytes": 38801,
-      "sha256": "f84a316464f1a414a14cd24d923b8fb5683f4519e34b077e9211ee703c42888f"
+      "bytes": 39033,
+      "sha256": "7ba0b4ed0355fba2dcc766202025e9607b4011249f7cfb707f98ae54edd252a0"
     },
     "wikipedia_squads": {
       "url": "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads",
-      "downloaded_at": "2026-07-04T14:03:56Z",
+      "downloaded_at": "2026-07-04T19:40:58Z",
       "status_code": 200,
-      "bytes": 2778157,
-      "sha256": "a54af60aa2d814a966aa9e430380905cdafaa731174fda67842e6665dfe1f11e",
+      "bytes": 2778069,
+      "sha256": "1269f398bd1c9db69fa0ee34584686ec2f26f90d3d7a1525f63a5916df6f18fe",
       "rows_extracted": 1248
     },
     "official_reference": {
@@ -96,7 +96,7 @@
     "openfootball_historical_worldcups": [
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1930/worldcup.json",
-        "downloaded_at": "2026-07-04T14:03:57Z",
+        "downloaded_at": "2026-07-04T19:41:00Z",
         "status_code": 200,
         "bytes": 7578,
         "sha256": "24e0fa5793715c8b8d218f57230f6579e0516d9507224f3f74ae874df0f402c9",
@@ -104,7 +104,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1934/worldcup.json",
-        "downloaded_at": "2026-07-04T14:03:57Z",
+        "downloaded_at": "2026-07-04T19:41:00Z",
         "status_code": 200,
         "bytes": 6935,
         "sha256": "0939c8d517b4f302b8be4568af62f85f8a2a0fccce4e6690d7a7417f7a85a549",
@@ -112,7 +112,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1938/worldcup.json",
-        "downloaded_at": "2026-07-04T14:03:57Z",
+        "downloaded_at": "2026-07-04T19:41:00Z",
         "status_code": 200,
         "bytes": 8087,
         "sha256": "e4a9f079cbd3c724e279287ac7d14407e50a151c7d25a75d7a526c4f6de51cc5",
@@ -120,7 +120,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1950/worldcup.json",
-        "downloaded_at": "2026-07-04T14:03:58Z",
+        "downloaded_at": "2026-07-04T19:41:00Z",
         "status_code": 200,
         "bytes": 9132,
         "sha256": "50bf66cbe8c437e3e84cdfad914e3a0fd52fcc8dec651e2cf9cbaf056402b3a9",
@@ -128,7 +128,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1954/worldcup.json",
-        "downloaded_at": "2026-07-04T14:03:58Z",
+        "downloaded_at": "2026-07-04T19:41:01Z",
         "status_code": 200,
         "bytes": 5318,
         "sha256": "310b5ef1aeece5f050bb3caa2069eed0ef66e31b7db93e61e64ca9d17455a256",
@@ -136,7 +136,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1958/worldcup.json",
-        "downloaded_at": "2026-07-04T14:03:58Z",
+        "downloaded_at": "2026-07-04T19:41:01Z",
         "status_code": 200,
         "bytes": 7004,
         "sha256": "c33302ab0d3658ae8c00575bf2e72d0f7e6e7d829bb6b6eb24eccca503d6419c",
@@ -144,7 +144,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1962/worldcup.json",
-        "downloaded_at": "2026-07-04T14:03:58Z",
+        "downloaded_at": "2026-07-04T19:41:01Z",
         "status_code": 200,
         "bytes": 6643,
         "sha256": "fbf9cf0fe64fe31db78e742edb1d24a1acee227cf4710a3713500bfca331a30f",
@@ -152,7 +152,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1966/worldcup.json",
-        "downloaded_at": "2026-07-04T14:03:58Z",
+        "downloaded_at": "2026-07-04T19:41:01Z",
         "status_code": 200,
         "bytes": 6502,
         "sha256": "54f7943a6a11396a405479814b4bd114e6094243fd54ebaea7b2e3fd3807b7a4",
@@ -160,7 +160,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1970/worldcup.json",
-        "downloaded_at": "2026-07-04T14:03:58Z",
+        "downloaded_at": "2026-07-04T19:41:02Z",
         "status_code": 200,
         "bytes": 6555,
         "sha256": "60124878cda29bd5848b44fbf5f4668f5344fd64ab4b26b91c364c74761f52fa",
@@ -168,7 +168,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1974/worldcup.json",
-        "downloaded_at": "2026-07-04T14:03:58Z",
+        "downloaded_at": "2026-07-04T19:41:02Z",
         "status_code": 200,
         "bytes": 7887,
         "sha256": "3eb873244c9902ba6fdab6087a0c746f6f5289ead66f6151b9e5c1878e8508d1",
@@ -176,7 +176,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1978/worldcup.json",
-        "downloaded_at": "2026-07-04T14:03:59Z",
+        "downloaded_at": "2026-07-04T19:41:02Z",
         "status_code": 200,
         "bytes": 8214,
         "sha256": "b05ba19b2406564a4e7584e6fa57d263212a081a2bf6a6d831bca3d3d57fec82",
@@ -184,7 +184,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1982/worldcup.json",
-        "downloaded_at": "2026-07-04T14:03:59Z",
+        "downloaded_at": "2026-07-04T19:41:02Z",
         "status_code": 200,
         "bytes": 10868,
         "sha256": "680cee2bca9def804b71055e236062fafacbb031feb9ab10bde32f7f071d53db",
@@ -192,7 +192,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1986/worldcup.json",
-        "downloaded_at": "2026-07-04T14:03:59Z",
+        "downloaded_at": "2026-07-04T19:41:02Z",
         "status_code": 200,
         "bytes": 10809,
         "sha256": "8312ff289b6683c2b43821f05472b89da38eea6732090c00db3bdee70264880e",
@@ -200,7 +200,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1990/worldcup.json",
-        "downloaded_at": "2026-07-04T14:03:59Z",
+        "downloaded_at": "2026-07-04T19:41:03Z",
         "status_code": 200,
         "bytes": 11130,
         "sha256": "77be0a9ca518c6f1346f90d1669bfbe45c69c084fabffc611dd65c615ab2d146",
@@ -208,7 +208,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1994/worldcup.json",
-        "downloaded_at": "2026-07-04T14:03:59Z",
+        "downloaded_at": "2026-07-04T19:41:03Z",
         "status_code": 200,
         "bytes": 10382,
         "sha256": "ff290bc3f040d1d7e134e6ff96aa34543e53947f4bc9fc1699942ebf59b1361e",
@@ -216,7 +216,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1998/worldcup.json",
-        "downloaded_at": "2026-07-04T14:03:59Z",
+        "downloaded_at": "2026-07-04T19:41:03Z",
         "status_code": 200,
         "bytes": 13064,
         "sha256": "6addf8d8ee4befad154c36943233b9f4db89032531cc37992c7d212433b779a6",
@@ -224,7 +224,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2002/worldcup.json",
-        "downloaded_at": "2026-07-04T14:03:59Z",
+        "downloaded_at": "2026-07-04T19:41:03Z",
         "status_code": 200,
         "bytes": 13064,
         "sha256": "10a452ba237a07876efde0d29bb00dd824b0a87cd452f9f5d2763b6ff1ed0c71",
@@ -232,7 +232,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2006/worldcup.json",
-        "downloaded_at": "2026-07-04T14:04:00Z",
+        "downloaded_at": "2026-07-04T19:41:04Z",
         "status_code": 200,
         "bytes": 14482,
         "sha256": "de004d88a0a374b054ed3bc8bfcbb5b4b12abc3b837b6b949a4dc8750eef3eba",
@@ -240,7 +240,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2010/worldcup.json",
-        "downloaded_at": "2026-07-04T14:04:00Z",
+        "downloaded_at": "2026-07-04T19:41:04Z",
         "status_code": 200,
         "bytes": 14787,
         "sha256": "dd36ad80ca6caf0bb2e1aff350d97d5b322e1e130a241e44fcd5f5c424b6f356",
@@ -248,7 +248,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2014/worldcup.json",
-        "downloaded_at": "2026-07-04T14:04:00Z",
+        "downloaded_at": "2026-07-04T19:41:04Z",
         "status_code": 200,
         "bytes": 25864,
         "sha256": "a5614bec9bccb26d4eb639607eb7fabceef98fee6743b910985132f13e26977f",
@@ -256,7 +256,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2018/worldcup.json",
-        "downloaded_at": "2026-07-04T14:04:00Z",
+        "downloaded_at": "2026-07-04T19:41:04Z",
         "status_code": 200,
         "bytes": 25988,
         "sha256": "1fb1038ca41e81887c994560fdf5e2bb014eedda7ea7f2e0cd2c5bced5711017",
@@ -264,7 +264,7 @@
       },
       {
         "url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2022/worldcup.json",
-        "downloaded_at": "2026-07-04T14:04:00Z",
+        "downloaded_at": "2026-07-04T19:41:04Z",
         "status_code": 200,
         "bytes": 26072,
         "sha256": "5b81ae4dd5f2da1f0083f9da987e95e10b898e399c53dcd6bc28c0d016e4dcdd",
@@ -471,12 +471,12 @@
       "team": "Canada",
       "team_id": "canada",
       "group": "Group B",
-      "rating": 1547.4,
-      "attack_posterior_mean": 1.847,
-      "defense_posterior_mean": 0.997,
-      "matches_observed_2026": 4,
+      "rating": 1533.7,
+      "attack_posterior_mean": 1.628,
+      "defense_posterior_mean": 1.231,
+      "matches_observed_2026": 5,
       "goals_for_observed_2026": 9,
-      "goals_against_observed_2026": 3,
+      "goals_against_observed_2026": 6,
       "squad": {
         "players": 26,
         "avg_age": 26.46,
@@ -489,7 +489,7 @@
       },
       "p_top2": 1.0,
       "p_advance_group": 1.0,
-      "p_champion_rough": 0.024
+      "p_champion_rough": 0.0229
     },
     {
       "team": "Qatar",
@@ -591,11 +591,11 @@
       "team": "Morocco",
       "team_id": "morocco",
       "group": "Group C",
-      "rating": 1611.3,
-      "attack_posterior_mean": 1.672,
-      "defense_posterior_mean": 1.064,
-      "matches_observed_2026": 4,
-      "goals_for_observed_2026": 7,
+      "rating": 1625.0,
+      "attack_posterior_mean": 1.834,
+      "defense_posterior_mean": 0.935,
+      "matches_observed_2026": 5,
+      "goals_for_observed_2026": 10,
       "goals_against_observed_2026": 4,
       "squad": {
         "players": 26,
@@ -609,7 +609,7 @@
       },
       "p_top2": 1.0,
       "p_advance_group": 1.0,
-      "p_champion_rough": 0.0292
+      "p_champion_rough": 0.0303
     },
     {
       "team": "Scotland",
@@ -17969,11 +17969,11 @@
         }
       ],
       "prediction": {
-        "home_win": 0.5061,
-        "draw": 0.2374,
-        "away_win": 0.2564,
-        "expected_goals_home": 1.727,
-        "expected_goals_away": 1.162
+        "home_win": 0.4517,
+        "draw": 0.2434,
+        "away_win": 0.3049,
+        "expected_goals_home": 1.622,
+        "expected_goals_away": 1.291
       }
     },
     {
@@ -18108,11 +18108,11 @@
       ],
       "goals2": [],
       "prediction": {
-        "home_win": 0.5962,
-        "draw": 0.2128,
-        "away_win": 0.191,
-        "expected_goals_home": 1.999,
-        "expected_goals_away": 1.039
+        "home_win": 0.5424,
+        "draw": 0.2251,
+        "away_win": 0.2326,
+        "expected_goals_home": 1.877,
+        "expected_goals_away": 1.155
       }
     },
     {
@@ -18148,11 +18148,11 @@
         }
       ],
       "prediction": {
-        "home_win": 0.3907,
-        "draw": 0.258,
-        "away_win": 0.3513,
-        "expected_goals_home": 1.392,
-        "expected_goals_away": 1.306
+        "home_win": 0.4474,
+        "draw": 0.2505,
+        "away_win": 0.3021,
+        "expected_goals_home": 1.547,
+        "expected_goals_away": 1.226
       }
     },
     {
@@ -18229,11 +18229,11 @@
         }
       ],
       "prediction": {
-        "home_win": 0.4822,
-        "draw": 0.256,
-        "away_win": 0.2619,
-        "expected_goals_home": 1.53,
-        "expected_goals_away": 1.056
+        "home_win": 0.4457,
+        "draw": 0.2632,
+        "away_win": 0.2912,
+        "expected_goals_home": 1.434,
+        "expected_goals_away": 1.106
       }
     },
     {
@@ -18291,11 +18291,11 @@
         }
       ],
       "prediction": {
-        "home_win": 0.2579,
-        "draw": 0.2624,
-        "away_win": 0.4797,
-        "expected_goals_home": 1.005,
-        "expected_goals_away": 1.473
+        "home_win": 0.2306,
+        "draw": 0.2562,
+        "away_win": 0.5132,
+        "expected_goals_home": 0.942,
+        "expected_goals_away": 1.543
       }
     },
     {
@@ -18422,11 +18422,11 @@
         }
       ],
       "prediction": {
-        "home_win": 0.5424,
-        "draw": 0.2328,
-        "away_win": 0.2248,
-        "expected_goals_home": 1.782,
-        "expected_goals_away": 1.062
+        "home_win": 0.5777,
+        "draw": 0.2241,
+        "away_win": 0.1982,
+        "expected_goals_home": 1.867,
+        "expected_goals_away": 0.996
       }
     },
     {
@@ -20607,11 +20607,11 @@
         }
       ],
       "prediction": {
-        "home_win": 0.2592,
-        "draw": 0.2665,
-        "away_win": 0.4743,
-        "expected_goals_home": 0.987,
-        "expected_goals_away": 1.436
+        "home_win": 0.3042,
+        "draw": 0.2709,
+        "away_win": 0.4249,
+        "expected_goals_home": 1.097,
+        "expected_goals_away": 1.349
       }
     },
     {
@@ -20679,11 +20679,11 @@
         }
       ],
       "prediction": {
-        "home_win": 0.4451,
-        "draw": 0.243,
-        "away_win": 0.3119,
-        "expected_goals_home": 1.618,
-        "expected_goals_away": 1.317
+        "home_win": 0.407,
+        "draw": 0.2473,
+        "away_win": 0.3458,
+        "expected_goals_home": 1.517,
+        "expected_goals_away": 1.38
       }
     },
     {
@@ -21230,16 +21230,32 @@
       "team2_id": "morocco",
       "group": "",
       "ground": "Houston",
-      "status": "scheduled",
-      "score": null,
+      "status": "final",
+      "score": {
+        "team1": 0,
+        "team2": 3
+      },
       "goals1": [],
-      "goals2": [],
+      "goals2": [
+        {
+          "name": "Azzedine Ounahi",
+          "minute": "50"
+        },
+        {
+          "name": "Azzedine Ounahi",
+          "minute": "82"
+        },
+        {
+          "name": "Soufiane Rahimi",
+          "minute": "90+8"
+        }
+      ],
       "prediction": {
-        "home_win": 0.3965,
-        "draw": 0.2581,
-        "away_win": 0.3454,
-        "expected_goals_home": 1.402,
-        "expected_goals_away": 1.291
+        "home_win": 0.3118,
+        "draw": 0.2535,
+        "away_win": 0.4347,
+        "expected_goals_home": 1.234,
+        "expected_goals_away": 1.503
       }
     },
     {
